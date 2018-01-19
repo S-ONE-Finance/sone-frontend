@@ -1,12 +1,13 @@
 import { createAction } from '@reduxjs/toolkit'
 import { TokenList } from '@uniswap/token-lists'
+import { TransactionSummary } from '../transactions/reducer'
 
 export type PopupContent =
   | {
       txn: {
         hash: string
         success: boolean
-        summary?: string
+        summary?: string | TransactionSummary
       }
     }
   | {

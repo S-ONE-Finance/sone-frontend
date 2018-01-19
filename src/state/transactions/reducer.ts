@@ -9,10 +9,20 @@ import {
 
 const now = () => new Date().getTime()
 
+export interface SwapSummary {
+  type: 'swap'
+  inputAmount: string
+  inputSymbol?: string
+  outputAmount: string
+  outputSymbol?: string
+}
+
+export type TransactionSummary = SwapSummary
+
 export interface TransactionDetails {
   hash: string
   approval?: { tokenAddress: string; spender: string }
-  summary?: string
+  summary?: string | TransactionSummary
   claim?: { recipient: string }
   receipt?: SerializableTransactionReceipt
   lastCheckedBlockNumber?: number

@@ -1,6 +1,5 @@
 import { TokenAmount } from '@uniswap/sdk'
 import React from 'react'
-import { Text } from 'rebass'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CountUp } from 'use-count-up'
@@ -13,7 +12,7 @@ import LogoToken from '../../assets/svg/logo_token_sone.svg'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
-import { useETHBalances, useAggregateUniBalance } from '../../state/wallet/hooks'
+import { useAggregateUniBalance } from '../../state/wallet/hooks'
 import { useUserHasAvailableClaim } from '../../state/claim/hooks'
 import usePrevious from '../../hooks/usePrevious'
 import useLanguage from '../../hooks/useLanguage'
@@ -23,6 +22,7 @@ import Row, { RowFixed } from '../Row'
 import ClaimModal from '../claim/ClaimModal'
 import PendingStatus from './PendingStatus'
 import MyAccountPanel from './MyAccountPanel'
+import Web3Status from '../Web3Status'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -45,10 +45,6 @@ const HeaderFrame = styled.div`
     width: calc(100%);
     position: relative;
   `};
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 0.5rem 1rem;
-  `}
 `
 
 const HeaderElement = styled.div`
@@ -90,7 +86,7 @@ const HeaderRow = styled(RowFixed)`
 const HeaderMenu = styled(Row)`
   justify-content: center;
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    padding: 1rem 0 1rem 1rem;
+    // padding: 1rem 0 1rem 1rem;
     justify-content: flex-end;
 `};
 `
@@ -101,7 +97,7 @@ const Title = styled.a`
   pointer-events: auto;
   justify-self: flex-start;
   margin-right: 1rem;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     justify-self: center;
   `};
   :hover {
@@ -178,12 +174,10 @@ const StyledExternalLink = styled(ExternalLink).attrs({
     margin-left: 0.25rem;
     margin-top: -0.25rem;
   }
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    display: none;
-  `}
 `
 
+// Đưa `display` vào props để ép kiểu block trong lúc dev.
+//
 const SubMenu = styled.div<{ width?: string; borderRadius?: string; display?: string }>`
   position: absolute;
   top: calc(70px + 1rem);
@@ -195,32 +189,36 @@ const SubMenu = styled.div<{ width?: string; borderRadius?: string; display?: st
   width: ${({ width }) => width ?? '172px'};
   cursor: default;
   display: ${({ display }) => display ?? 'none'};
+`
 
+// Cái submenu cuối cùng ở trên top phải căn phải chứ không căn giữa.
+const ResponsiveTopEndSubMenu = styled(SubMenu)`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    left: unset;
+    transform: none;
+    right: 0;
+  `}
+`
+
+// Đưa submenu bám vào bên trái phía dưới màn hình
+const ResponsiveBottomLeftSubMenu = styled(SubMenu)`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     top: unset;
     bottom: calc(70px + 1rem);
     left: 0;
     transform: none;
-  `}
+`}
 `
 
-const ButtonConnectWallet = styled.div`
-  background-color: ${({ theme }) => theme.red1Sone};
-  color: #ffffff;
-  width: 154px;
-  padding: 0;
-  height: 35px;
-  border-radius: 31px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 16px;
-  font-weight: 500;
-
-  :hover,
-  :focus {
-    background-color: ${({ theme }) => theme.red1Sone};
-  }
+// Đưa submenu bám vào bên phải phía dưới màn hình
+const ResponsiveBottomRightSubMenu = styled(SubMenu)`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    top: unset;
+    bottom: calc(70px + 1rem);
+    transform: none;
+    left: unset;
+    right: 0;
+  `}
 `
 
 const SubMenuItemNavLink = styled(NavLink).attrs({
@@ -303,7 +301,7 @@ const SubMenuItemText = styled.span`
   }
 `
 
-export const StyledMenuButton = styled.button`
+export const StyledMenuButton = styled.button<{ cursor?: string }>`
   position: relative;
   width: 100%;
   height: 100%;
@@ -316,11 +314,11 @@ export const StyledMenuButton = styled.button`
   padding: 0.15rem 1rem;
   border-radius: 20px;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.12);
+  cursor: ${({ cursor }) => cursor || 'default'};
+  outline: none;
 
   :hover,
   :focus {
-    cursor: pointer;
-    outline: none;
     background-color: ${({ theme }) => theme.bg4};
   }
 
@@ -344,7 +342,7 @@ const MenuItem = styled.div.attrs({
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
   outline: none;
-  cursor: pointer;
+  cursor: default;
   text-decoration: none;
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
@@ -374,12 +372,12 @@ const MenuItem = styled.div.attrs({
     content: '';
     display: block;
     position: absolute;
-    height: 1rem;
     width: calc(100% + 2rem);
+    height: 1rem;
     left: 50%;
-    bottom: -1rem;
     transform: translateX(-50%);
     cursor: default;
+    bottom: -1rem;
   }
 
   &.${activeClassName} {
@@ -393,6 +391,16 @@ const MenuItem = styled.div.attrs({
       position: absolute;
       bottom: 0;
     }
+  }
+`
+
+// Khi màn hình kéo về medium thì phải hover lên trên menuitem phải giữ submenu hiện ra.
+const ResponsiveMenuItem = styled(MenuItem)`
+  ::before {
+    ${({ theme }) => theme.mediaWidth.upToLarge`
+    bottom: unset;
+    top: -1rem;
+  `}
   }
 `
 
@@ -426,7 +434,7 @@ const AccountElement = styled.div`
   border-radius: 12px;
   white-space: nowrap;
   width: 100%;
-  cursor: pointer;
+  /* cursor: pointer; */
 
   :focus {
     border: 1px solid blue;
@@ -454,7 +462,7 @@ const HideSmall = styled.span`
   `};
 `
 
-const BalanceText = styled(Text)`
+const HideExtraSmall = styled.span`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
   `};
@@ -465,7 +473,6 @@ export default function Header() {
   const { t } = useTranslation()
   const [language, setLanguage] = useLanguage()
 
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
   const [darkMode, toggleDarkMode] = useDarkModeManager()
 
   const availableClaim: boolean = useUserHasAvailableClaim(account)
@@ -480,65 +487,69 @@ export default function Header() {
   return (
     <HeaderFrame>
       <ClaimModal />
-      <HeaderRow>
-        <Title href="https://www.lipsum.com/" target="_blank">
-          <img width={'100px'} src={darkMode ? LogoDark : Logo} alt="logo" />
-        </Title>
-        <HeaderMenu>
-          <StyledExternalLink href={'https://www.lipsum.com/'}>S-ONE Wallet</StyledExternalLink>
-          <MenuItem
-            className={
-              location.pathname.startsWith('/swap') ||
-              location.pathname.startsWith('/pool') ||
-              location.pathname.startsWith('/add')
-                ? 'ACTIVE'
-                : undefined
-            }
-          >
-            {t('swap')}
-            <SubMenu>
-              <SubMenuItemNavLink to={'/swap'}>{t('swap')}</SubMenuItemNavLink>
-              <SubMenuItemNavLink
-                id={`pool-nav-link`}
-                to={'/pool'}
-                isActive={(match, { pathname }) =>
-                  Boolean(match) ||
-                  pathname.startsWith('/add') ||
-                  pathname.startsWith('/remove') ||
-                  pathname.startsWith('/create') ||
-                  pathname.startsWith('/find')
-                }
-              >
-                {t('pool')}
-              </SubMenuItemNavLink>
-            </SubMenu>
-          </MenuItem>
-          <StyledNavLink to={'/uni'}>{t('staking')}</StyledNavLink>
-          <MenuItem>
-            {t('stats')}
-            <SubMenu>
-              <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swapStats')}</SubMenuItemExternalLink>
-              <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('stakingStats')}</SubMenuItemExternalLink>
-              {/* <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('lendingStats')}</SubMenuItemExternalLink> */}
-            </SubMenu>
-          </MenuItem>
-          <MenuItem>
-            {t('docs')}
-            <SubMenu>
-              <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('whitePaper')}</SubMenuItemExternalLink>
-              <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</SubMenuItemExternalLink>
-              <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('blog')}</SubMenuItemExternalLink>
-            </SubMenu>
-          </MenuItem>
-        </HeaderMenu>
-      </HeaderRow>
+      <HideExtraSmall>
+        <HeaderRow>
+          <Title href="https://www.lipsum.com/" target="_blank">
+            <img width={'100px'} src={darkMode ? LogoDark : Logo} alt="logo" />
+          </Title>
+          <HeaderMenu>
+            <HideSmall>
+              <StyledExternalLink href={'https://www.lipsum.com/'}>S-ONE Wallet</StyledExternalLink>
+            </HideSmall>
+            <MenuItem
+              className={
+                location.pathname.startsWith('/swap') ||
+                location.pathname.startsWith('/pool') ||
+                location.pathname.startsWith('/add')
+                  ? 'ACTIVE'
+                  : undefined
+              }
+            >
+              {t('swap')}
+              <SubMenu>
+                <SubMenuItemNavLink to={'/swap'}>{t('swap')}</SubMenuItemNavLink>
+                <SubMenuItemNavLink
+                  id={`pool-nav-link`}
+                  to={'/pool'}
+                  isActive={(match, { pathname }) =>
+                    Boolean(match) ||
+                    pathname.startsWith('/add') ||
+                    pathname.startsWith('/remove') ||
+                    pathname.startsWith('/create') ||
+                    pathname.startsWith('/find')
+                  }
+                >
+                  {t('liquidity')}
+                </SubMenuItemNavLink>
+              </SubMenu>
+            </MenuItem>
+            <StyledNavLink to={'/uni'}>{t('staking')}</StyledNavLink>
+            <MenuItem>
+              {t('stats')}
+              <SubMenu>
+                <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swapStats')}</SubMenuItemExternalLink>
+                <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('stakingStats')}</SubMenuItemExternalLink>
+                {/* <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('lendingStats')}</SubMenuItemExternalLink> */}
+              </SubMenu>
+            </MenuItem>
+            <MenuItem>
+              {t('docs')}
+              <ResponsiveTopEndSubMenu>
+                <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('whitePaper')}</SubMenuItemExternalLink>
+                <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</SubMenuItemExternalLink>
+                <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('blog')}</SubMenuItemExternalLink>
+              </ResponsiveTopEndSubMenu>
+            </MenuItem>
+          </HeaderMenu>
+        </HeaderRow>
+      </HideExtraSmall>
       <HeaderControls>
         <HeaderElement>
           <AccountElement style={{ pointerEvents: 'auto' }}>
             <PendingStatus />
           </AccountElement>
           {!availableClaim && aggregateBalance && account && (
-            <HideSmall>
+            <HideExtraSmall>
               <SONEWrapper>
                 <SONEAmount style={{ pointerEvents: 'auto' }}>
                   <img width={'21px'} src={LogoToken} alt="logo" />
@@ -554,44 +565,36 @@ export default function Header() {
                   </TYPE.red1Sone>
                 </SONEAmount>
               </SONEWrapper>
-            </HideSmall>
+            </HideExtraSmall>
           )}
-          {/* Cái này liên quan đến show giá trị ETH nên phải giữ lại để đọc lại */}
-          {/* <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-            {account && userEthBalance ? (
-              <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={400}>
-                {userEthBalance?.toSignificant(4)} ETH
-              </BalanceText>
-            ) : null}
-            <Web3Status />
-          </AccountElement> */}
-          {/* TODO: lỗi ko tự động logout khi user lock ví trên metamask */}
-          <MenuItem>
+          <ResponsiveMenuItem>
             <AccountElement style={{ pointerEvents: 'auto' }}>
-              <ButtonConnectWallet>{t('myAccount')}</ButtonConnectWallet>
+              <Web3Status />
             </AccountElement>
-            <SubMenu width={'fit-content'} borderRadius={'20px'} display={'block'}>
-              <MyAccountPanel />
-            </SubMenu>
-          </MenuItem>
+            {account && (
+              <ResponsiveBottomLeftSubMenu width={'fit-content'} borderRadius={'20px'}>
+                <MyAccountPanel />
+              </ResponsiveBottomLeftSubMenu>
+            )}
+          </ResponsiveMenuItem>
         </HeaderElement>
         <HeaderElementWrap>
-          <StyledMenuButton onClick={() => toggleDarkMode()}>
+          <StyledMenuButton onClick={() => toggleDarkMode()} cursor="pointer">
             {darkMode ? <Moon size={20} strokeWidth={2.5} /> : <Sun size={20} strokeWidth={2.5} />}
           </StyledMenuButton>
-          <MenuItem style={{ marginLeft: '0.5rem' }}>
+          <ResponsiveMenuItem style={{ marginLeft: '0.5rem' }}>
             <StyledMenuButtonWithText style={{ marginLeft: 0 }}>
               <Globe size={20} />
               <TYPE.language style={{ marginLeft: '5px' }}>
-                {language === 'en' ? 'EN' : language === 'jp' ? 'JP' : language === 'zh-CN' ? 'CN' : null}
+                {language === 'en' ? 'EN' : language === 'jp' ? 'JP' : language === 'zh-CN' ? 'CN' : 'EN'}
               </TYPE.language>
             </StyledMenuButtonWithText>
-            <SubMenu>
+            <ResponsiveBottomRightSubMenu>
               <SubMenuItemText onClick={() => setLanguage('jp')}>日本語</SubMenuItemText>
               <SubMenuItemText onClick={() => setLanguage('en')}>English</SubMenuItemText>
               <SubMenuItemText onClick={() => setLanguage('zh-CN')}>中文</SubMenuItemText>
-            </SubMenu>
-          </MenuItem>
+            </ResponsiveBottomRightSubMenu>
+          </ResponsiveMenuItem>
         </HeaderElementWrap>
       </HeaderControls>
     </HeaderFrame>

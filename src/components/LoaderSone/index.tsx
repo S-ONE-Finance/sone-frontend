@@ -25,7 +25,7 @@ const StyledLoader = styled.img<{ size: string }>`
  * Takes in custom size and stroke for circle color, default to primary color as fill,
  * need ...rest for layered styles on top
  */
-export default function Loader({ size = '16px', ...rest }: { size?: string; [k: string]: any }) {
+export default function LoaderSone({ size = '16px', ...rest }: { size?: string; [k: string]: any }) {
   const [darkMode] = useDarkModeManager()
 
   return <StyledLoader src={darkMode ? LoaderDark : LoaderLight} alt="loader" size={size} {...rest} />

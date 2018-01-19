@@ -1,3 +1,4 @@
+// import { useTranslation } from 'react-i18next'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@uniswap/sdk'
@@ -5,7 +6,8 @@ import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
 import { getTradeVersion, useV1TradeExchangeAddress } from '../data/V1'
 import { useTransactionAdder } from '../state/transactions/hooks'
-import { calculateGasMargin, getRouterContract, isAddress, shortenAddress } from '../utils'
+// import { calculateGasMargin, getRouterContract, isAddress, shortenAddress } from '../utils'
+import { calculateGasMargin, getRouterContract } from '../utils'
 import isZero from '../utils/isZero'
 import v1SwapArguments from '../utils/v1SwapArguments'
 import { useActiveWeb3React } from './index'
@@ -13,6 +15,7 @@ import { useV1ExchangeContract } from './useContract'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './useENS'
 import { Version } from './useToggledVersion'
+// import { spawn } from 'child_process'
 
 export enum SwapCallbackState {
   INVALID,
@@ -111,6 +114,8 @@ export function useSwapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
+  // const { t } = useTranslation()
+
   const { account, chainId, library } = useActiveWeb3React()
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
@@ -132,7 +137,7 @@ export function useSwapCallback(
       }
     }
 
-    const tradeVersion = getTradeVersion(trade)
+    // const tradeVersion = getTradeVersion(trade)
 
     return {
       state: SwapCallbackState.VALID,
@@ -208,6 +213,9 @@ export function useSwapCallback(
             const inputAmount = trade.inputAmount.toSignificant(3)
             const outputAmount = trade.outputAmount.toSignificant(3)
 
+            /*
+            NOTE: S-ONE no longer needs recipient.
+
             const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
             const withRecipient =
               recipient === account
@@ -223,6 +231,17 @@ export function useSwapCallback(
 
             addTransaction(response, {
               summary: withVersion
+            })
+            */
+
+            addTransaction(response, {
+              summary: {
+                type: 'swap',
+                inputAmount,
+                inputSymbol,
+                outputAmount,
+                outputSymbol
+              }
             })
 
             return response.hash

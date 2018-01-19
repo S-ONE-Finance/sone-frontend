@@ -57,6 +57,7 @@ export interface Colors {
   bg3Sone: Color
   stroke1Sone: Color
   divider1Sone: Color
+  scrollbarThumb: Color
 }
 
 export interface Grids {
@@ -85,5 +86,8 @@ declare module 'styled-components' {
     flexRowNoWrap: FlattenSimpleInterpolation
 
     bgImage: string
+    bgImageUpToLarge: string
+    bgImageUpToSmall: string
+    bgImageUpToExtraSmall: string
   }
 }

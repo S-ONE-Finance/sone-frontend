@@ -10,6 +10,12 @@ import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
 import backgroundImage from '../assets/images/background-light.svg'
 import backgroundImageDark from '../assets/images/background-dark.svg'
+import backgroundImageUpToLarge from '../assets/images/background-light-uptolarge.svg'
+import backgroundImageUpToLargeDark from '../assets/images/background-dark-uptolarge.svg'
+import backgroundImageUpToSmall from '../assets/images/background-light-uptosmall.svg'
+import backgroundImageUpToSmallDark from '../assets/images/background-dark-uptosmall.svg'
+import backgroundImageUpToExtraSmall from '../assets/images/background-light-uptoextrasmall.svg'
+import backgroundImageUpToExtraSmallDark from '../assets/images/background-dark-uptoextrasmall.svg'
 
 export * from './components'
 
@@ -98,7 +104,8 @@ export function colors(darkMode: boolean): Colors {
     bg2Sone: darkMode ? '#3B5183' : '#FAEDED',
     bg3Sone: darkMode ? '#3B5183' : '#FFFFFF',
     stroke1Sone: darkMode ? '#3FAAB0' : '#F05359',
-    divider1Sone: darkMode ? '#AAAAAA' : 'rgba(0, 0, 0, 0.25)'
+    divider1Sone: darkMode ? '#AAAAAA' : 'rgba(0, 0, 0, 0.25)',
+    scrollbarThumb: darkMode ? '#3B5183' : '#808080'
   }
 }
 
@@ -129,7 +136,10 @@ export function theme(darkMode: boolean): DefaultTheme {
     `,
 
     // Background image
-    bgImage: darkMode ? backgroundImageDark : backgroundImage
+    bgImage: darkMode ? backgroundImageDark : backgroundImage,
+    bgImageUpToLarge: darkMode ? backgroundImageUpToLargeDark : backgroundImageUpToLarge,
+    bgImageUpToSmall: darkMode ? backgroundImageUpToSmallDark : backgroundImageUpToSmall,
+    bgImageUpToExtraSmall: darkMode ? backgroundImageUpToExtraSmallDark : backgroundImageUpToExtraSmall
   }
 }
 
@@ -233,7 +243,6 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   font-feature-settings: 'ss01' on, 'ss02' on, 'cv01' on, 'cv03' on;
-  
 }
 `
 
@@ -250,5 +259,16 @@ body {
   background-repeat: no-repeat;
   background-image: url(${({ theme }) => theme.bgImage});
   background-size: cover;
-}
-`
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    background-image: url(${({ theme }) => theme.bgImageUpToLarge});
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    background-image: url(${({ theme }) => theme.bgImageUpToSmall});
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    background-image: url(${({ theme }) => theme.bgImageUpToExtraSmall});
+  `}
+}`

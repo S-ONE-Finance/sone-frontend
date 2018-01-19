@@ -1,6 +1,8 @@
 import { createAction } from '@reduxjs/toolkit'
 import { ChainId } from '@uniswap/sdk'
 
+import { TransactionSummary } from '../transactions/reducer'
+
 export interface SerializableTransactionReceipt {
   to: string
   from: string
@@ -18,7 +20,7 @@ export const addTransaction = createAction<{
   from: string
   approval?: { tokenAddress: string; spender: string }
   claim?: { recipient: string }
-  summary?: string
+  summary?: string | TransactionSummary
 }>('transactions/addTransaction')
 export const clearAllTransactions = createAction<{ chainId: ChainId }>('transactions/clearAllTransactions')
 export const finalizeTransaction = createAction<{
