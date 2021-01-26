@@ -1,12 +1,12 @@
-import React from 'react'
-import ReactConfetti from 'react-confetti'
-import { useWindowSize } from '../../hooks/useWindowSize'
+import React from 'react';
+import ReactConfetti from 'react-confetti';
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 // eslint-disable-next-line react/prop-types
 export default function Confetti({ start, variant }: { start: boolean; variant?: string }) {
-  const { width, height } = useWindowSize()
+  const { width, height } = useWindowSize();
 
-  const _variant = variant ? variant : height && width && height > 1.5 * width ? 'bottom' : variant
+  const _variant = variant ? variant : height && width && height > 1.5 * width ? 'bottom' : variant;
 
   return start && width && height ? (
     <ReactConfetti
@@ -28,5 +28,5 @@ export default function Confetti({ start, variant }: { start: boolean; variant?:
       tweenDuration={100}
       wind={0.05}
     />
-  ) : null
+  ) : null;
 }

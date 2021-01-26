@@ -1,10 +1,10 @@
-import { Placement } from '@popperjs/core'
-import { transparentize } from 'polished'
-import React, { useCallback, useState } from 'react'
-import { usePopper } from 'react-popper'
-import styled from 'styled-components'
-import useInterval from '../../hooks/useInterval'
-import Portal from '@reach/portal'
+import { Placement } from '@popperjs/core';
+import { transparentize } from 'polished';
+import React, { useCallback, useState } from 'react';
+import { usePopper } from 'react-popper';
+import styled from 'styled-components';
+import useInterval from '../../hooks/useInterval';
+import Portal from '@reach/portal';
 
 const PopoverContainer = styled.div<{ show: boolean }>`
   z-index: 9999;
@@ -18,11 +18,11 @@ const PopoverContainer = styled.div<{ show: boolean }>`
   box-shadow: 0 4px 8px 0 ${({ theme }) => transparentize(0.9, theme.shadow1)};
   color: ${({ theme }) => theme.text2};
   border-radius: 8px;
-`
+`;
 
 const ReferenceElement = styled.div`
   display: inline-block;
-`
+`;
 
 const Arrow = styled.div`
   width: 8px;
@@ -73,19 +73,19 @@ const Arrow = styled.div`
       border-top: none;
     }
   }
-`
+`;
 
 export interface PopoverProps {
-  content: React.ReactNode
-  show: boolean
-  children: React.ReactNode
-  placement?: Placement
+  content: React.ReactNode;
+  show: boolean;
+  children: React.ReactNode;
+  placement?: Placement;
 }
 
 export default function Popover({ content, show, children, placement = 'auto' }: PopoverProps) {
-  const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null)
-  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null)
-  const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null)
+  const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null);
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
+  const [arrowElement, setArrowElement] = useState<HTMLDivElement | null>(null);
   const { styles, update, attributes } = usePopper(referenceElement, popperElement, {
     placement,
     strategy: 'fixed',
@@ -93,11 +93,11 @@ export default function Popover({ content, show, children, placement = 'auto' }:
       { name: 'offset', options: { offset: [8, 8] } },
       { name: 'arrow', options: { element: arrowElement } }
     ]
-  })
+  });
   const updateCallback = useCallback(() => {
-    update && update()
-  }, [update])
-  useInterval(updateCallback, show ? 100 : null)
+    update && update();
+  }, [update]);
+  useInterval(updateCallback, show ? 100 : null);
 
   return (
     <>
@@ -114,5 +114,5 @@ export default function Popover({ content, show, children, placement = 'auto' }:
         </PopoverContainer>
       </Portal>
     </>
-  )
+  );
 }

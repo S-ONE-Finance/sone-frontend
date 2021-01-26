@@ -1,12 +1,12 @@
-import { Currency, Percent, Price } from '@uniswap/sdk'
-import React, { useContext } from 'react'
-import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
-import { AutoColumn } from '../../components/Column'
-import { AutoRow } from '../../components/Row'
-import { ONE_BIPS } from '../../constants'
-import { Field } from '../../state/mint/actions'
-import { TYPE } from '../../theme'
+import { Currency, Percent, Price } from '@uniswap/sdk';
+import React, { useContext } from 'react';
+import { Text } from 'rebass';
+import { ThemeContext } from 'styled-components';
+import { AutoColumn } from '../../components/Column';
+import { AutoRow } from '../../components/Row';
+import { ONE_BIPS } from '../../constants';
+import { Field } from '../../state/mint/actions';
+import { TYPE } from '../../theme';
 
 export function PoolPriceBar({
   currencies,
@@ -14,12 +14,12 @@ export function PoolPriceBar({
   poolTokenPercentage,
   price
 }: {
-  currencies: { [field in Field]?: Currency }
-  noLiquidity?: boolean
-  poolTokenPercentage?: Percent
-  price?: Price
+  currencies: { [field in Field]?: Currency };
+  noLiquidity?: boolean;
+  poolTokenPercentage?: Percent;
+  price?: Price;
 }) {
-  const theme = useContext(ThemeContext)
+  const theme = useContext(ThemeContext);
   return (
     <AutoColumn gap="md">
       <AutoRow justify="space-around" gap="4px">
@@ -48,5 +48,5 @@ export function PoolPriceBar({
         </AutoColumn>
       </AutoRow>
     </AutoColumn>
-  )
+  );
 }

@@ -1,14 +1,14 @@
-import React from 'react'
-import styled from 'styled-components'
-import { RowBetween } from '../Row'
-import { AutoColumn } from '../Column'
-import { transparentize } from 'polished'
+import React from 'react';
+import styled from 'styled-components';
+import { RowBetween } from '../Row';
+import { AutoColumn } from '../Column';
+import { transparentize } from 'polished';
 
-const Wrapper = styled(AutoColumn)``
+const Wrapper = styled(AutoColumn)``;
 
 const Grouping = styled(RowBetween)`
   width: 50%;
-`
+`;
 
 const Circle = styled.div<{ confirmed?: boolean; disabled?: boolean }>`
   min-width: 20px;
@@ -22,13 +22,13 @@ const Circle = styled.div<{ confirmed?: boolean; disabled?: boolean }>`
   justify-content: center;
   line-height: 8px;
   font-size: 12px;
-`
+`;
 
 const CircleRow = styled.div`
   width: calc(100% - 20px);
   display: flex;
   align-items: center;
-`
+`;
 
 const Connector = styled.div<{ prevConfirmed?: boolean; disabled?: boolean }>`
   width: 100%;
@@ -42,11 +42,11 @@ const Connector = styled.div<{ prevConfirmed?: boolean; disabled?: boolean }>`
     ${({ theme, prevConfirmed, disabled }) => (disabled ? theme.bg4 : prevConfirmed ? theme.primary1 : theme.bg4)} 80%
   );
   opacity: 0.6;
-`
+`;
 
 interface ProgressCirclesProps {
-  steps: boolean[]
-  disabled?: boolean
+  steps: boolean[];
+  disabled?: boolean;
 }
 
 /**
@@ -71,10 +71,10 @@ export default function ProgressCircles({ steps, disabled = false, ...rest }: Pr
               </Circle>
               <Connector prevConfirmed={step} disabled={disabled} />
             </CircleRow>
-          )
+          );
         })}
         <Circle disabled={disabled || !steps[steps.length - 1]}>{steps.length + 1}</Circle>
       </Grouping>
     </Wrapper>
-  )
+  );
 }

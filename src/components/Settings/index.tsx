@@ -1,24 +1,24 @@
-import React, { useContext, useRef, useState } from 'react'
-import { Settings, X } from 'react-feather'
-import { Text } from 'rebass'
-import styled, { ThemeContext } from 'styled-components'
-import { useOnClickOutside } from '../../hooks/useOnClickOutside'
-import { ApplicationModal } from '../../state/application/actions'
-import { useModalOpen, useToggleSettingsMenu } from '../../state/application/hooks'
+import React, { useContext, useRef, useState } from 'react';
+import { Settings, X } from 'react-feather';
+import { Text } from 'rebass';
+import styled, { ThemeContext } from 'styled-components';
+import { useOnClickOutside } from '../../hooks/useOnClickOutside';
+import { ApplicationModal } from '../../state/application/actions';
+import { useModalOpen, useToggleSettingsMenu } from '../../state/application/hooks';
 import {
   useExpertModeManager,
   useUserTransactionTTL,
   useUserSlippageTolerance,
   useUserSingleHopOnly
-} from '../../state/user/hooks'
-import { TYPE } from '../../theme'
-import { ButtonError } from '../Button'
-import { AutoColumn } from '../Column'
-import Modal from '../Modal'
-import QuestionHelper from '../QuestionHelper'
-import { RowBetween, RowFixed } from '../Row'
-import Toggle from '../Toggle'
-import TransactionSettings from '../TransactionSettings'
+} from '../../state/user/hooks';
+import { TYPE } from '../../theme';
+import { ButtonError } from '../Button';
+import { AutoColumn } from '../Column';
+import Modal from '../Modal';
+import QuestionHelper from '../QuestionHelper';
+import { RowBetween, RowFixed } from '../Row';
+import Toggle from '../Toggle';
+import TransactionSettings from '../TransactionSettings';
 
 const StyledMenuIcon = styled(Settings)`
   height: 20px;
@@ -31,7 +31,7 @@ const StyledMenuIcon = styled(Settings)`
   :hover {
     opacity: 0.7;
   }
-`
+`;
 
 const StyledCloseIcon = styled(X)`
   height: 20px;
@@ -43,7 +43,7 @@ const StyledCloseIcon = styled(X)`
   > * {
     stroke: ${({ theme }) => theme.text1};
   }
-`
+`;
 
 const StyledMenuButton = styled.button`
   position: relative;
@@ -67,13 +67,13 @@ const StyledMenuButton = styled.button`
   svg {
     margin-top: 2px;
   }
-`
+`;
 const EmojiWrapper = styled.div`
   position: absolute;
   bottom: -6px;
   right: 0px;
   font-size: 14px;
-`
+`;
 
 const StyledMenu = styled.div`
   margin-left: 0.5rem;
@@ -83,7 +83,7 @@ const StyledMenu = styled.div`
   position: relative;
   border: none;
   text-align: left;
-`
+`;
 
 const MenuFlyout = styled.span`
   min-width: 20.125rem;
@@ -102,13 +102,13 @@ const MenuFlyout = styled.span`
   ${({ theme }) => theme.mediaWidth.upToMedium`
     min-width: 18.125rem;
   `};
-`
+`;
 
 const Break = styled.div`
   width: 100%;
   height: 1px;
   background-color: ${({ theme }) => theme.bg3};
-`
+`;
 
 const ModalContentWrapper = styled.div`
   display: flex;
@@ -117,26 +117,26 @@ const ModalContentWrapper = styled.div`
   padding: 2rem 0;
   background-color: ${({ theme }) => theme.bg2};
   border-radius: 20px;
-`
+`;
 
 export default function SettingsTab() {
-  const node = useRef<HTMLDivElement>()
-  const open = useModalOpen(ApplicationModal.SETTINGS)
-  const toggle = useToggleSettingsMenu()
+  const node = useRef<HTMLDivElement>();
+  const open = useModalOpen(ApplicationModal.SETTINGS);
+  const toggle = useToggleSettingsMenu();
 
-  const theme = useContext(ThemeContext)
-  const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
+  const theme = useContext(ThemeContext);
+  const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance();
 
-  const [ttl, setTtl] = useUserTransactionTTL()
+  const [ttl, setTtl] = useUserTransactionTTL();
 
-  const [expertMode, toggleExpertMode] = useExpertModeManager()
+  const [expertMode, toggleExpertMode] = useExpertModeManager();
 
-  const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
+  const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly();
 
   // show confirmation view before turning on
-  const [showConfirmation, setShowConfirmation] = useState(false)
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-  useOnClickOutside(node, open ? toggle : undefined)
+  useOnClickOutside(node, open ? toggle : undefined);
 
   return (
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
@@ -165,8 +165,8 @@ export default function SettingsTab() {
                 padding={'12px'}
                 onClick={() => {
                   if (window.prompt(`Please type the word "confirm" to enable expert mode.`) === 'confirm') {
-                    toggleExpertMode()
-                    setShowConfirmation(false)
+                    toggleExpertMode();
+                    setShowConfirmation(false);
                   }
                 }}
               >
@@ -216,12 +216,12 @@ export default function SettingsTab() {
                 toggle={
                   expertMode
                     ? () => {
-                        toggleExpertMode()
-                        setShowConfirmation(false)
+                        toggleExpertMode();
+                        setShowConfirmation(false);
                       }
                     : () => {
-                        toggle()
-                        setShowConfirmation(true)
+                        toggle();
+                        setShowConfirmation(true);
                       }
                 }
               />
@@ -243,5 +243,5 @@ export default function SettingsTab() {
         </MenuFlyout>
       )}
     </StyledMenu>
-  )
+  );
 }

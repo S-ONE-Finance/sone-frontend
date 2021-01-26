@@ -1,35 +1,35 @@
-import { ChainId, TokenAmount } from '@uniswap/sdk'
-import React, { useState } from 'react'
-import { Text } from 'rebass'
-import { NavLink } from 'react-router-dom'
-import { darken } from 'polished'
-import { useTranslation } from 'react-i18next'
+import { ChainId, TokenAmount } from '@uniswap/sdk';
+import React, { useState } from 'react';
+import { Text } from 'rebass';
+import { NavLink } from 'react-router-dom';
+import { darken } from 'polished';
+import { useTranslation } from 'react-i18next';
 
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import Logo from '../../assets/svg/logo.svg'
-import LogoDark from '../../assets/svg/logo_white.svg'
-import { useActiveWeb3React } from '../../hooks'
-import { useDarkModeManager } from '../../state/user/hooks'
-import { useETHBalances, useAggregateUniBalance } from '../../state/wallet/hooks'
-import { CardNoise } from '../earn/styled'
-import { CountUp } from 'use-count-up'
-import { TYPE, ExternalLink } from '../../theme'
+import Logo from '../../assets/svg/logo.svg';
+import LogoDark from '../../assets/svg/logo_white.svg';
+import { useActiveWeb3React } from '../../hooks';
+import { useDarkModeManager } from '../../state/user/hooks';
+import { useETHBalances, useAggregateUniBalance } from '../../state/wallet/hooks';
+import { CardNoise } from '../earn/styled';
+import { CountUp } from 'use-count-up';
+import { TYPE, ExternalLink } from '../../theme';
 
-import { YellowCard } from '../Card'
-import { Moon, Sun } from 'react-feather'
-import Menu from '../Menu'
+import { YellowCard } from '../Card';
+import { Moon, Sun } from 'react-feather';
+import Menu from '../Menu';
 
-import Row, { RowFixed } from '../Row'
-import Web3Status from '../Web3Status'
-import ClaimModal from '../claim/ClaimModal'
-import { useToggleSelfClaimModal, useShowClaimPopup } from '../../state/application/hooks'
-import { useUserHasAvailableClaim } from '../../state/claim/hooks'
-import { useUserHasSubmittedClaim } from '../../state/transactions/hooks'
-import { Dots } from '../swap/styleds'
-import Modal from '../Modal'
-import UniBalanceContent from './UniBalanceContent'
-import usePrevious from '../../hooks/usePrevious'
+import Row, { RowFixed } from '../Row';
+import Web3Status from '../Web3Status';
+import ClaimModal from '../claim/ClaimModal';
+import { useToggleSelfClaimModal, useShowClaimPopup } from '../../state/application/hooks';
+import { useUserHasAvailableClaim } from '../../state/claim/hooks';
+import { useUserHasSubmittedClaim } from '../../state/transactions/hooks';
+import { Dots } from '../swap/styleds';
+import Modal from '../Modal';
+import UniBalanceContent from './UniBalanceContent';
+import usePrevious from '../../hooks/usePrevious';
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -54,7 +54,7 @@ const HeaderFrame = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
         padding: 0.5rem 1rem;
   `}
-`
+`;
 
 const HeaderControls = styled.div`
   display: flex;
@@ -78,7 +78,7 @@ const HeaderControls = styled.div`
     border-radius: 12px 12px 0 0;
     background-color: ${({ theme }) => theme.bg1};
   `};
-`
+`;
 
 const HeaderElement = styled.div`
   display: flex;
@@ -89,18 +89,18 @@ const HeaderElement = styled.div`
    flex-direction: row-reverse;
     align-items: center;
   `};
-`
+`;
 
 const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
-`
+`;
 
 const HeaderRow = styled(RowFixed)`
   ${({ theme }) => theme.mediaWidth.upToMedium`
    width: 100%;
   `};
-`
+`;
 
 const HeaderLinks = styled(Row)`
   justify-content: center;
@@ -108,7 +108,7 @@ const HeaderLinks = styled(Row)`
     padding: 1rem 0 1rem 1rem;
     justify-content: flex-end;
 `};
-`
+`;
 
 const AccountElement = styled.div<{ active: boolean }>`
   display: flex;
@@ -123,7 +123,7 @@ const AccountElement = styled.div<{ active: boolean }>`
   :focus {
     border: 1px solid blue;
   }
-`
+`;
 
 const UNIAmount = styled(AccountElement)`
   color: white;
@@ -132,7 +132,7 @@ const UNIAmount = styled(AccountElement)`
   font-weight: 500;
   background-color: ${({ theme }) => theme.bg3};
   background: radial-gradient(174.47% 188.91% at 1.84% 0%, #ff007a 0%, #2172e5 100%), #edeef2;
-`
+`;
 
 const UNIWrapper = styled.span`
   width: fit-content;
@@ -146,13 +146,13 @@ const UNIWrapper = styled.span`
   :active {
     opacity: 0.9;
   }
-`
+`;
 
 const HideSmall = styled.span`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
-`
+`;
 
 const NetworkCard = styled(YellowCard)`
   border-radius: 12px;
@@ -165,13 +165,13 @@ const NetworkCard = styled(YellowCard)`
     text-overflow: ellipsis;
     flex-shrink: 1;
   `};
-`
+`;
 
 const BalanceText = styled(Text)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
   `};
-`
+`;
 
 const Title = styled.a`
   display: flex;
@@ -185,16 +185,16 @@ const Title = styled.a`
   :hover {
     cursor: pointer;
   }
-`
+`;
 
 const UniIcon = styled.div`
   transition: transform 0.3s ease;
   :hover {
     transform: rotate(-5deg);
   }
-`
+`;
 
-const activeClassName = 'ACTIVE'
+const activeClassName = 'ACTIVE';
 
 const StyledNavLink = styled(NavLink).attrs({
   activeClassName
@@ -221,7 +221,7 @@ const StyledNavLink = styled(NavLink).attrs({
   :focus {
     color: ${({ theme }) => darken(0.1, theme.text1)};
   }
-`
+`;
 
 const StyledExternalLink = styled(ExternalLink).attrs({
   activeClassName
@@ -252,7 +252,7 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
       display: none;
 `}
-`
+`;
 
 export const StyledMenuButton = styled.button`
   position: relative;
@@ -281,36 +281,36 @@ export const StyledMenuButton = styled.button`
   > * {
     stroke: ${({ theme }) => theme.text1};
   }
-`
+`;
 
 const NETWORK_LABELS: { [chainId in ChainId]?: string } = {
   [ChainId.RINKEBY]: 'Rinkeby',
   [ChainId.ROPSTEN]: 'Ropsten',
   [ChainId.GÖRLI]: 'Görli',
   [ChainId.KOVAN]: 'Kovan'
-}
+};
 
 export default function Header() {
-  const { account, chainId } = useActiveWeb3React()
-  const { t } = useTranslation()
+  const { account, chainId } = useActiveWeb3React();
+  const { t } = useTranslation();
 
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']
+  const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? ''];
   // const [isDark] = useDarkModeManager()
-  const [darkMode, toggleDarkMode] = useDarkModeManager()
+  const [darkMode, toggleDarkMode] = useDarkModeManager();
 
-  const toggleClaimModal = useToggleSelfClaimModal()
+  const toggleClaimModal = useToggleSelfClaimModal();
 
-  const availableClaim: boolean = useUserHasAvailableClaim(account)
+  const availableClaim: boolean = useUserHasAvailableClaim(account);
 
-  const { claimTxn } = useUserHasSubmittedClaim(account ?? undefined)
+  const { claimTxn } = useUserHasSubmittedClaim(account ?? undefined);
 
-  const aggregateBalance: TokenAmount | undefined = useAggregateUniBalance()
+  const aggregateBalance: TokenAmount | undefined = useAggregateUniBalance();
 
-  const [showUniBalanceModal, setShowUniBalanceModal] = useState(false)
-  const showClaimPopup = useShowClaimPopup()
+  const [showUniBalanceModal, setShowUniBalanceModal] = useState(false);
+  const showClaimPopup = useShowClaimPopup();
 
-  const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
-  const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
+  const countUpValue = aggregateBalance?.toFixed(0) ?? '0';
+  const countUpValuePrevious = usePrevious(countUpValue) ?? '0';
 
   return (
     <HeaderFrame>
@@ -412,5 +412,5 @@ export default function Header() {
         </HeaderElementWrap>
       </HeaderControls>
     </HeaderFrame>
-  )
+  );
 }

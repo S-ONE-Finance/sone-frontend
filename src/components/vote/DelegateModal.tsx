@@ -1,89 +1,89 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-import Modal from '../Modal'
-import { AutoColumn } from '../Column'
-import styled from 'styled-components'
-import { RowBetween } from '../Row'
-import { TYPE } from '../../theme'
-import { X } from 'react-feather'
-import { ButtonPrimary } from '../Button'
-import { useActiveWeb3React } from '../../hooks'
-import AddressInputPanel from '../AddressInputPanel'
-import { isAddress } from 'ethers/lib/utils'
-import useENS from '../../hooks/useENS'
-import { useDelegateCallback } from '../../state/governance/hooks'
-import { useTokenBalance } from '../../state/wallet/hooks'
-import { UNI } from '../../constants'
-import { LoadingView, SubmittedView } from '../ModalViews'
+import Modal from '../Modal';
+import { AutoColumn } from '../Column';
+import styled from 'styled-components';
+import { RowBetween } from '../Row';
+import { TYPE } from '../../theme';
+import { X } from 'react-feather';
+import { ButtonPrimary } from '../Button';
+import { useActiveWeb3React } from '../../hooks';
+import AddressInputPanel from '../AddressInputPanel';
+import { isAddress } from 'ethers/lib/utils';
+import useENS from '../../hooks/useENS';
+import { useDelegateCallback } from '../../state/governance/hooks';
+import { useTokenBalance } from '../../state/wallet/hooks';
+import { UNI } from '../../constants';
+import { LoadingView, SubmittedView } from '../ModalViews';
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
   padding: 24px;
-`
+`;
 
 const StyledClosed = styled(X)`
   :hover {
     cursor: pointer;
   }
-`
+`;
 
 const TextButton = styled.div`
   :hover {
     cursor: pointer;
   }
-`
+`;
 
 interface VoteModalProps {
-  isOpen: boolean
-  onDismiss: () => void
-  title: string
+  isOpen: boolean;
+  onDismiss: () => void;
+  title: string;
 }
 
 export default function DelegateModal({ isOpen, onDismiss, title }: VoteModalProps) {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React();
 
   // state for delegate input
-  const [usingDelegate, setUsingDelegate] = useState(false)
-  const [typed, setTyped] = useState('')
+  const [usingDelegate, setUsingDelegate] = useState(false);
+  const [typed, setTyped] = useState('');
   function handleRecipientType(val: string) {
-    setTyped(val)
+    setTyped(val);
   }
 
   // monitor for self delegation or input for third part delegate
   // default is self delegation
-  const activeDelegate = usingDelegate ? typed : account
-  const { address: parsedAddress } = useENS(activeDelegate)
+  const activeDelegate = usingDelegate ? typed : account;
+  const { address: parsedAddress } = useENS(activeDelegate);
 
   // get the number of votes available to delegate
-  const uniBalance = useTokenBalance(account ?? undefined, chainId ? UNI[chainId] : undefined)
+  const uniBalance = useTokenBalance(account ?? undefined, chainId ? UNI[chainId] : undefined);
 
-  const delegateCallback = useDelegateCallback()
+  const delegateCallback = useDelegateCallback();
 
   // monitor call to help UI loading state
-  const [hash, setHash] = useState<string | undefined>()
-  const [attempting, setAttempting] = useState(false)
+  const [hash, setHash] = useState<string | undefined>();
+  const [attempting, setAttempting] = useState(false);
 
   // wrapper to reset state on modal close
   function wrappedOndismiss() {
-    setHash(undefined)
-    setAttempting(false)
-    onDismiss()
+    setHash(undefined);
+    setAttempting(false);
+    onDismiss();
   }
 
   async function onDelegate() {
-    setAttempting(true)
+    setAttempting(true);
 
     // if callback not returned properly ignore
-    if (!delegateCallback) return
+    if (!delegateCallback) return;
 
     // try delegation and store hash
     const hash = await delegateCallback(parsedAddress ?? undefined)?.catch(error => {
-      setAttempting(false)
-      console.log(error)
-    })
+      setAttempting(false);
+      console.log(error);
+    });
 
     if (hash) {
-      setHash(hash)
+      setHash(hash);
     }
   }
 
@@ -129,5 +129,5 @@ export default function DelegateModal({ isOpen, onDismiss, title }: VoteModalPro
         </SubmittedView>
       )}
     </Modal>
-  )
+  );
 }
