@@ -1,22 +1,22 @@
-import { diffTokenLists, TokenList } from '@uniswap/token-lists'
-import React, { useCallback, useMemo } from 'react'
-import ReactGA from 'react-ga'
-import { useDispatch } from 'react-redux'
-import { Text } from 'rebass'
-import styled from 'styled-components'
-import { AppDispatch } from '../../state'
-import { useRemovePopup } from '../../state/application/hooks'
-import { acceptListUpdate } from '../../state/lists/actions'
-import { TYPE } from '../../theme'
-import listVersionLabel from '../../utils/listVersionLabel'
-import { ButtonSecondary } from '../Button'
-import { AutoColumn } from '../Column'
-import { AutoRow } from '../Row'
+import { diffTokenLists, TokenList } from '@uniswap/token-lists';
+import React, { useCallback, useMemo } from 'react';
+import ReactGA from 'react-ga';
+import { useDispatch } from 'react-redux';
+import { Text } from 'rebass';
+import styled from 'styled-components';
+import { AppDispatch } from '../../state';
+import { useRemovePopup } from '../../state/application/hooks';
+import { acceptListUpdate } from '../../state/lists/actions';
+import { TYPE } from '../../theme';
+import listVersionLabel from '../../utils/listVersionLabel';
+import { ButtonSecondary } from '../Button';
+import { AutoColumn } from '../Column';
+import { AutoRow } from '../Row';
 
 export const ChangesList = styled.ul`
   max-height: 400px;
   overflow: auto;
-`
+`;
 
 export default function ListUpdatePopup({
   popKey,
@@ -25,35 +25,35 @@ export default function ListUpdatePopup({
   newList,
   auto
 }: {
-  popKey: string
-  listUrl: string
-  oldList: TokenList
-  newList: TokenList
-  auto: boolean
+  popKey: string;
+  listUrl: string;
+  oldList: TokenList;
+  newList: TokenList;
+  auto: boolean;
 }) {
-  const removePopup = useRemovePopup()
-  const removeThisPopup = useCallback(() => removePopup(popKey), [popKey, removePopup])
-  const dispatch = useDispatch<AppDispatch>()
+  const removePopup = useRemovePopup();
+  const removeThisPopup = useCallback(() => removePopup(popKey), [popKey, removePopup]);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleAcceptUpdate = useCallback(() => {
-    if (auto) return
+    if (auto) return;
     ReactGA.event({
       category: 'Lists',
       action: 'Update List from Popup',
       label: listUrl
-    })
-    dispatch(acceptListUpdate(listUrl))
-    removeThisPopup()
-  }, [auto, dispatch, listUrl, removeThisPopup])
+    });
+    dispatch(acceptListUpdate(listUrl));
+    removeThisPopup();
+  }, [auto, dispatch, listUrl, removeThisPopup]);
 
   const { added: tokensAdded, changed: tokensChanged, removed: tokensRemoved } = useMemo(() => {
-    return diffTokenLists(oldList.tokens, newList.tokens)
-  }, [newList.tokens, oldList.tokens])
+    return diffTokenLists(oldList.tokens, newList.tokens);
+  }, [newList.tokens, oldList.tokens]);
   const numTokensChanged = useMemo(
     () =>
       Object.keys(tokensChanged).reduce((memo, chainId: any) => memo + Object.keys(tokensChanged[chainId]).length, 0),
     [tokensChanged]
-  )
+  );
 
   return (
     <AutoRow>
@@ -108,5 +108,5 @@ export default function ListUpdatePopup({
         )}
       </AutoColumn>
     </AutoRow>
-  )
+  );
 }

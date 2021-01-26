@@ -1,68 +1,68 @@
-import React, { useState } from 'react'
-import Modal from '../Modal'
-import { AutoColumn } from '../Column'
-import styled from 'styled-components'
-import { RowBetween } from '../Row'
-import { TYPE, CloseIcon } from '../../theme'
-import { ButtonError } from '../Button'
-import { StakingInfo } from '../../state/stake/hooks'
-import { useStakingContract } from '../../hooks/useContract'
-import { SubmittedView, LoadingView } from '../ModalViews'
-import { TransactionResponse } from '@ethersproject/providers'
-import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useActiveWeb3React } from '../../hooks'
+import React, { useState } from 'react';
+import Modal from '../Modal';
+import { AutoColumn } from '../Column';
+import styled from 'styled-components';
+import { RowBetween } from '../Row';
+import { TYPE, CloseIcon } from '../../theme';
+import { ButtonError } from '../Button';
+import { StakingInfo } from '../../state/stake/hooks';
+import { useStakingContract } from '../../hooks/useContract';
+import { SubmittedView, LoadingView } from '../ModalViews';
+import { TransactionResponse } from '@ethersproject/providers';
+import { useTransactionAdder } from '../../state/transactions/hooks';
+import { useActiveWeb3React } from '../../hooks';
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
   padding: 1rem;
-`
+`;
 
 interface StakingModalProps {
-  isOpen: boolean
-  onDismiss: () => void
-  stakingInfo: StakingInfo
+  isOpen: boolean;
+  onDismiss: () => void;
+  stakingInfo: StakingInfo;
 }
 
 export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: StakingModalProps) {
-  const { account } = useActiveWeb3React()
+  const { account } = useActiveWeb3React();
 
   // monitor call to help UI loading state
-  const addTransaction = useTransactionAdder()
-  const [hash, setHash] = useState<string | undefined>()
-  const [attempting, setAttempting] = useState(false)
+  const addTransaction = useTransactionAdder();
+  const [hash, setHash] = useState<string | undefined>();
+  const [attempting, setAttempting] = useState(false);
 
   function wrappedOnDismiss() {
-    setHash(undefined)
-    setAttempting(false)
-    onDismiss()
+    setHash(undefined);
+    setAttempting(false);
+    onDismiss();
   }
 
-  const stakingContract = useStakingContract(stakingInfo.stakingRewardAddress)
+  const stakingContract = useStakingContract(stakingInfo.stakingRewardAddress);
 
   async function onClaimReward() {
     if (stakingContract && stakingInfo?.stakedAmount) {
-      setAttempting(true)
+      setAttempting(true);
       await stakingContract
         .getReward({ gasLimit: 350000 })
         .then((response: TransactionResponse) => {
           addTransaction(response, {
             summary: `Claim accumulated UNI rewards`
-          })
-          setHash(response.hash)
+          });
+          setHash(response.hash);
         })
         .catch((error: any) => {
-          setAttempting(false)
-          console.log(error)
-        })
+          setAttempting(false);
+          console.log(error);
+        });
     }
   }
 
-  let error: string | undefined
+  let error: string | undefined;
   if (!account) {
-    error = 'Connect Wallet'
+    error = 'Connect Wallet';
   }
   if (!stakingInfo?.stakedAmount) {
-    error = error ?? 'Enter an amount'
+    error = error ?? 'Enter an amount';
   }
 
   return (
@@ -105,5 +105,5 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
         </SubmittedView>
       )}
     </Modal>
-  )
+  );
 }

@@ -1,25 +1,25 @@
-import { Currency, Pair } from '@uniswap/sdk'
-import React, { useState, useCallback } from 'react'
-import styled from 'styled-components'
-import { darken } from 'polished'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
-import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
-import CurrencyLogo from '../CurrencyLogo'
-import DoubleCurrencyLogo from '../DoubleLogo'
-import { RowBetween } from '../Row'
-import { TYPE } from '../../theme'
-import { Input as NumericalInput } from '../NumericalInput'
-import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
+import { Currency, Pair } from '@uniswap/sdk';
+import React, { useState, useCallback } from 'react';
+import styled from 'styled-components';
+import { darken } from 'polished';
+import { useCurrencyBalance } from '../../state/wallet/hooks';
+import CurrencySearchModal from '../SearchModal/CurrencySearchModal';
+import CurrencyLogo from '../CurrencyLogo';
+import DoubleCurrencyLogo from '../DoubleLogo';
+import { RowBetween } from '../Row';
+import { TYPE } from '../../theme';
+import { Input as NumericalInput } from '../NumericalInput';
+import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg';
 
-import { useActiveWeb3React } from '../../hooks'
-import { useTranslation } from 'react-i18next'
-import useTheme from '../../hooks/useTheme'
+import { useActiveWeb3React } from '../../hooks';
+import { useTranslation } from 'react-i18next';
+import useTheme from '../../hooks/useTheme';
 
 const InputRow = styled.div<{ selected: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
-`
+`;
 
 const CurrencySelect = styled.button<{ selected: boolean }>`
   align-items: center;
@@ -40,7 +40,7 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   :hover {
     background-color: ${({ selected, theme }) => (selected ? theme.bg2 : darken(0.05, theme.primary1))};
   }
-`
+`;
 
 const LabelRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -53,13 +53,13 @@ const LabelRow = styled.div`
     cursor: pointer;
     color: ${({ theme }) => darken(0.2, theme.text2)};
   }
-`
+`;
 
 const Aligner = styled.span`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
   margin: 0 0.25rem 0 0.5rem;
@@ -69,7 +69,7 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
     stroke: ${({ selected, theme }) => (selected ? theme.text1 : theme.white)};
     stroke-width: 1.5px;
   }
-`
+`;
 
 const InputPanel = styled.div<{ hideInput?: boolean }>`
   ${({ theme }) => theme.flexColumnNoWrap}
@@ -77,19 +77,19 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
   border-radius: ${({ hideInput }) => (hideInput ? '8px' : '20px')};
   background-color: ${({ theme }) => theme.bg2};
   z-index: 1;
-`
+`;
 
 const Container = styled.div<{ hideInput: boolean }>`
   border-radius: ${({ hideInput }) => (hideInput ? '8px' : '20px')};
   border: 1px solid ${({ theme }) => theme.bg2};
   background-color: ${({ theme }) => theme.bg1};
-`
+`;
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
   ${({ active }) => (active ? '  margin: 0 0.25rem 0 0.75rem;' : '  margin: 0 0.25rem 0 0.25rem;')}
   font-size:  ${({ active }) => (active ? '20px' : '16px')};
 
-`
+`;
 
 const StyledBalanceMax = styled.button`
   height: 28px;
@@ -113,24 +113,24 @@ const StyledBalanceMax = styled.button`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-right: 0.5rem;
   `};
-`
+`;
 
 interface CurrencyInputPanelProps {
-  value: string
-  onUserInput: (value: string) => void
-  onMax?: () => void
-  showMaxButton: boolean
-  label?: string
-  onCurrencySelect?: (currency: Currency) => void
-  currency?: Currency | null
-  disableCurrencySelect?: boolean
-  hideBalance?: boolean
-  pair?: Pair | null
-  hideInput?: boolean
-  otherCurrency?: Currency | null
-  id: string
-  showCommonBases?: boolean
-  customBalanceText?: string
+  value: string;
+  onUserInput: (value: string) => void;
+  onMax?: () => void;
+  showMaxButton: boolean;
+  label?: string;
+  onCurrencySelect?: (currency: Currency) => void;
+  currency?: Currency | null;
+  disableCurrencySelect?: boolean;
+  hideBalance?: boolean;
+  pair?: Pair | null;
+  hideInput?: boolean;
+  otherCurrency?: Currency | null;
+  id: string;
+  showCommonBases?: boolean;
+  customBalanceText?: string;
 }
 
 export default function CurrencyInputPanel({
@@ -150,16 +150,16 @@ export default function CurrencyInputPanel({
   showCommonBases,
   customBalanceText
 }: CurrencyInputPanelProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const [modalOpen, setModalOpen] = useState(false)
-  const { account } = useActiveWeb3React()
-  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  const theme = useTheme()
+  const [modalOpen, setModalOpen] = useState(false);
+  const { account } = useActiveWeb3React();
+  const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined);
+  const theme = useTheme();
 
   const handleDismissSearch = useCallback(() => {
-    setModalOpen(false)
-  }, [setModalOpen])
+    setModalOpen(false);
+  }, [setModalOpen]);
 
   return (
     <InputPanel id={id}>
@@ -193,7 +193,7 @@ export default function CurrencyInputPanel({
                 className="token-amount-input"
                 value={value}
                 onUserInput={val => {
-                  onUserInput(val)
+                  onUserInput(val);
                 }}
               />
               {account && currency && showMaxButton && label !== 'To' && (
@@ -206,7 +206,7 @@ export default function CurrencyInputPanel({
             className="open-currency-select-button"
             onClick={() => {
               if (!disableCurrencySelect) {
-                setModalOpen(true)
+                setModalOpen(true);
               }
             }}
           >
@@ -245,5 +245,5 @@ export default function CurrencyInputPanel({
         />
       )}
     </InputPanel>
-  )
+  );
 }

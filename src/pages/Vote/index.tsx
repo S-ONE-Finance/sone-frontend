@@ -1,33 +1,33 @@
-import React from 'react'
-import { AutoColumn } from '../../components/Column'
-import styled from 'styled-components'
-import { TYPE, ExternalLink } from '../../theme'
-import { RowBetween, RowFixed } from '../../components/Row'
-import { Link } from 'react-router-dom'
-import { ProposalStatus } from './styled'
-import { ButtonPrimary } from '../../components/Button'
+import React from 'react';
+import { AutoColumn } from '../../components/Column';
+import styled from 'styled-components';
+import { TYPE, ExternalLink } from '../../theme';
+import { RowBetween, RowFixed } from '../../components/Row';
+import { Link } from 'react-router-dom';
+import { ProposalStatus } from './styled';
+import { ButtonPrimary } from '../../components/Button';
 
-import { Button } from 'rebass/styled-components'
-import { darken } from 'polished'
-import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled'
-import { useAllProposalData, ProposalData, useUserVotes, useUserDelegatee } from '../../state/governance/hooks'
-import DelegateModal from '../../components/vote/DelegateModal'
-import { useTokenBalance } from '../../state/wallet/hooks'
-import { useActiveWeb3React } from '../../hooks'
-import { UNI, ZERO_ADDRESS } from '../../constants'
-import { JSBI, TokenAmount, ChainId } from '@uniswap/sdk'
-import { shortenAddress, getEtherscanLink } from '../../utils'
-import Loader from '../../components/Loader'
-import FormattedCurrencyAmount from '../../components/FormattedCurrencyAmount'
-import { useModalOpen, useToggleDelegateModal } from '../../state/application/hooks'
-import { ApplicationModal } from '../../state/application/actions'
+import { Button } from 'rebass/styled-components';
+import { darken } from 'polished';
+import { CardSection, DataCard, CardNoise, CardBGImage } from '../../components/earn/styled';
+import { useAllProposalData, ProposalData, useUserVotes, useUserDelegatee } from '../../state/governance/hooks';
+import DelegateModal from '../../components/vote/DelegateModal';
+import { useTokenBalance } from '../../state/wallet/hooks';
+import { useActiveWeb3React } from '../../hooks';
+import { UNI, ZERO_ADDRESS } from '../../constants';
+import { JSBI, TokenAmount, ChainId } from '@uniswap/sdk';
+import { shortenAddress, getEtherscanLink } from '../../utils';
+import Loader from '../../components/Loader';
+import FormattedCurrencyAmount from '../../components/FormattedCurrencyAmount';
+import { useModalOpen, useToggleDelegateModal } from '../../state/application/hooks';
+import { ApplicationModal } from '../../state/application/actions';
 
-const PageWrapper = styled(AutoColumn)``
+const PageWrapper = styled(AutoColumn)``;
 
 const TopSection = styled(AutoColumn)`
   max-width: 640px;
   width: 100%;
-`
+`;
 
 const Proposal = styled(Button)`
   padding: 0.75rem 1rem;
@@ -49,27 +49,27 @@ const Proposal = styled(Button)`
   &:hover {
     background-color: ${({ theme }) => darken(0.05, theme.bg1)};
   }
-`
+`;
 
 const ProposalNumber = styled.span`
   opacity: 0.6;
-`
+`;
 
 const ProposalTitle = styled.span`
   font-weight: 600;
-`
+`;
 
 const VoteCard = styled(DataCard)`
   background: radial-gradient(76.02% 75.41% at 1.84% 0%, #27ae60 0%, #000000 100%);
   overflow: hidden;
-`
+`;
 
 const WrapSmall = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     flex-wrap: wrap;
   
   `};
-`
+`;
 
 const TextButton = styled(TYPE.main)`
   color: ${({ theme }) => theme.primary1};
@@ -77,7 +77,7 @@ const TextButton = styled(TYPE.main)`
     cursor: pointer;
     text-decoration: underline;
   }
-`
+`;
 
 const AddressButton = styled.div`
   border: 1px solid ${({ theme }) => theme.bg3};
@@ -86,11 +86,11 @@ const AddressButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const StyledExternalLink = styled(ExternalLink)`
   color: ${({ theme }) => theme.text1};
-`
+`;
 
 const EmptyProposals = styled.div`
   border: 1px solid ${({ theme }) => theme.text4};
@@ -100,27 +100,27 @@ const EmptyProposals = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`
+`;
 
 export default function Vote() {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React();
 
   // toggle for showing delegation modal
-  const showDelegateModal = useModalOpen(ApplicationModal.DELEGATE)
-  const toggleDelegateModal = useToggleDelegateModal()
+  const showDelegateModal = useModalOpen(ApplicationModal.DELEGATE);
+  const toggleDelegateModal = useToggleDelegateModal();
 
   // get data to list all proposals
-  const allProposals: ProposalData[] = useAllProposalData()
+  const allProposals: ProposalData[] = useAllProposalData();
 
   // user data
-  const availableVotes: TokenAmount | undefined = useUserVotes()
-  const uniBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, chainId ? UNI[chainId] : undefined)
-  const userDelegatee: string | undefined = useUserDelegatee()
+  const availableVotes: TokenAmount | undefined = useUserVotes();
+  const uniBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, chainId ? UNI[chainId] : undefined);
+  const userDelegatee: string | undefined = useUserDelegatee();
 
   // show delegation option if they have have a balance, but have not delegated
   const showUnlockVoting = Boolean(
     uniBalance && JSBI.notEqual(uniBalance.raw, JSBI.BigInt(0)) && userDelegatee === ZERO_ADDRESS
-  )
+  );
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -225,12 +225,12 @@ export default function Vote() {
               <ProposalTitle>{p.title}</ProposalTitle>
               <ProposalStatus status={p.status}>{p.status}</ProposalStatus>
             </Proposal>
-          )
+          );
         })}
       </TopSection>
       <TYPE.subHeader color="text3">
         A minimum threshhold of 1% of the total UNI supply is required to submit proposals
       </TYPE.subHeader>
     </PageWrapper>
-  )
+  );
 }

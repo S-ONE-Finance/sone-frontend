@@ -1,22 +1,22 @@
-import { TokenAmount } from '@uniswap/sdk'
-import React, { useEffect } from 'react'
-import { X } from 'react-feather'
-import styled, { keyframes } from 'styled-components'
-import tokenLogo from '../../assets/images/token-logo.png'
-import { ButtonPrimary } from '../../components/Button'
-import { useActiveWeb3React } from '../../hooks'
-import { ApplicationModal } from '../../state/application/actions'
+import { TokenAmount } from '@uniswap/sdk';
+import React, { useEffect } from 'react';
+import { X } from 'react-feather';
+import styled, { keyframes } from 'styled-components';
+import tokenLogo from '../../assets/images/token-logo.png';
+import { ButtonPrimary } from '../../components/Button';
+import { useActiveWeb3React } from '../../hooks';
+import { ApplicationModal } from '../../state/application/actions';
 import {
   useModalOpen,
   useShowClaimPopup,
   useToggleSelfClaimModal,
   useToggleShowClaimPopup
-} from '../../state/application/hooks'
+} from '../../state/application/hooks';
 
-import { useUserHasAvailableClaim, useUserUnclaimedAmount } from '../../state/claim/hooks'
-import { TYPE } from '../../theme'
-import { AutoColumn } from '../Column'
-import { CardBGImage, CardNoise } from '../earn/styled'
+import { useUserHasAvailableClaim, useUserUnclaimedAmount } from '../../state/claim/hooks';
+import { TYPE } from '../../theme';
+import { AutoColumn } from '../Column';
+import { CardBGImage, CardNoise } from '../earn/styled';
 
 const StyledClaimPopup = styled(AutoColumn)`
   background: radial-gradient(76.02% 75.41% at 1.84% 0%, #ff007a 0%, #021d43 100%);
@@ -26,7 +26,7 @@ const StyledClaimPopup = styled(AutoColumn)`
   position: relative;
   max-width: 360px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-`
+`;
 
 const StyledClose = styled(X)`
   position: absolute;
@@ -36,7 +36,7 @@ const StyledClose = styled(X)`
   :hover {
     cursor: pointer;
   }
-`
+`;
 
 const rotate = keyframes`
   0% {
@@ -46,35 +46,35 @@ const rotate = keyframes`
   100% {
     transform: perspective(1000px) rotateY(360deg);
   }
-`
+`;
 
 const UniToken = styled.img`
   animation: ${rotate} 5s cubic-bezier(0.83, 0, 0.17, 1) infinite;
-`
+`;
 
 export default function ClaimPopup() {
-  const { account } = useActiveWeb3React()
+  const { account } = useActiveWeb3React();
 
   // dont store these in persisted state yet
-  const showClaimPopup: boolean = useShowClaimPopup()
-  const toggleShowClaimPopup = useToggleShowClaimPopup()
+  const showClaimPopup: boolean = useShowClaimPopup();
+  const toggleShowClaimPopup = useToggleShowClaimPopup();
 
   // toggle for showing this modal
-  const showClaimModal = useModalOpen(ApplicationModal.SELF_CLAIM)
-  const toggleSelfClaimModal = useToggleSelfClaimModal()
+  const showClaimModal = useModalOpen(ApplicationModal.SELF_CLAIM);
+  const toggleSelfClaimModal = useToggleSelfClaimModal();
 
   // const userHasAvailableclaim = useUserHasAvailableClaim()
-  const userHasAvailableclaim: boolean = useUserHasAvailableClaim(account)
-  const unclaimedAmount: TokenAmount | undefined = useUserUnclaimedAmount(account)
+  const userHasAvailableclaim: boolean = useUserHasAvailableClaim(account);
+  const unclaimedAmount: TokenAmount | undefined = useUserUnclaimedAmount(account);
 
   // listen for available claim and show popup if needed
   useEffect(() => {
     if (userHasAvailableclaim) {
-      toggleShowClaimPopup()
+      toggleShowClaimPopup();
     }
     // the toggleShowClaimPopup function changes every time the popup changes, so this will cause an infinite loop.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userHasAvailableclaim])
+  }, [userHasAvailableclaim]);
 
   return (
     <>
@@ -109,5 +109,5 @@ export default function ClaimPopup() {
         </StyledClaimPopup>
       )}
     </>
-  )
+  );
 }

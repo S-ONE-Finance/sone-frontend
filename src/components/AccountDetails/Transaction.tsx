@@ -1,15 +1,15 @@
-import React from 'react'
-import styled from 'styled-components'
-import { CheckCircle, Triangle } from 'react-feather'
+import React from 'react';
+import styled from 'styled-components';
+import { CheckCircle, Triangle } from 'react-feather';
 
-import { useActiveWeb3React } from '../../hooks'
-import { getEtherscanLink } from '../../utils'
-import { ExternalLink } from '../../theme'
-import { useAllTransactions } from '../../state/transactions/hooks'
-import { RowFixed } from '../Row'
-import Loader from '../Loader'
+import { useActiveWeb3React } from '../../hooks';
+import { getEtherscanLink } from '../../utils';
+import { ExternalLink } from '../../theme';
+import { useAllTransactions } from '../../state/transactions/hooks';
+import { RowFixed } from '../Row';
+import Loader from '../Loader';
 
-const TransactionWrapper = styled.div``
+const TransactionWrapper = styled.div``;
 
 const TransactionStatusText = styled.div`
   margin-right: 0.5rem;
@@ -18,7 +18,7 @@ const TransactionStatusText = styled.div`
   :hover {
     text-decoration: underline;
   }
-`
+`;
 
 const TransactionState = styled(ExternalLink)<{ pending: boolean; success?: boolean }>`
   display: flex;
@@ -30,22 +30,22 @@ const TransactionState = styled(ExternalLink)<{ pending: boolean; success?: bool
   font-weight: 500;
   font-size: 0.825rem;
   color: ${({ theme }) => theme.primary1};
-`
+`;
 
 const IconWrapper = styled.div<{ pending: boolean; success?: boolean }>`
   color: ${({ pending, success, theme }) => (pending ? theme.primary1 : success ? theme.green1 : theme.red1)};
-`
+`;
 
 export default function Transaction({ hash }: { hash: string }) {
-  const { chainId } = useActiveWeb3React()
-  const allTransactions = useAllTransactions()
+  const { chainId } = useActiveWeb3React();
+  const allTransactions = useAllTransactions();
 
-  const tx = allTransactions?.[hash]
-  const summary = tx?.summary
-  const pending = !tx?.receipt
-  const success = !pending && tx && (tx.receipt?.status === 1 || typeof tx.receipt?.status === 'undefined')
+  const tx = allTransactions?.[hash];
+  const summary = tx?.summary;
+  const pending = !tx?.receipt;
+  const success = !pending && tx && (tx.receipt?.status === 1 || typeof tx.receipt?.status === 'undefined');
 
-  if (!chainId) return null
+  if (!chainId) return null;
 
   return (
     <TransactionWrapper>
@@ -58,5 +58,5 @@ export default function Transaction({ hash }: { hash: string }) {
         </IconWrapper>
       </TransactionState>
     </TransactionWrapper>
-  )
+  );
 }

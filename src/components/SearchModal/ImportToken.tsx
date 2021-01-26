@@ -1,34 +1,34 @@
-import React, { useState } from 'react'
-import { Token, Currency } from '@uniswap/sdk'
-import styled from 'styled-components'
-import { TYPE, CloseIcon } from 'theme'
-import Card from 'components/Card'
-import { AutoColumn } from 'components/Column'
-import { RowBetween, RowFixed, AutoRow } from 'components/Row'
-import CurrencyLogo from 'components/CurrencyLogo'
-import { ArrowLeft, AlertTriangle } from 'react-feather'
-import { transparentize } from 'polished'
-import useTheme from 'hooks/useTheme'
-import { ButtonPrimary } from 'components/Button'
-import { SectionBreak } from 'components/swap/styleds'
-import { useAddUserToken } from 'state/user/hooks'
-import { getEtherscanLink } from 'utils'
-import { useActiveWeb3React } from 'hooks'
-import { ExternalLink } from '../../theme/components'
-import { useCombinedInactiveList } from 'state/lists/hooks'
-import ListLogo from 'components/ListLogo'
-import { PaddedColumn, Checkbox } from './styleds'
+import React, { useState } from 'react';
+import { Token, Currency } from '@uniswap/sdk';
+import styled from 'styled-components';
+import { TYPE, CloseIcon } from 'theme';
+import Card from 'components/Card';
+import { AutoColumn } from 'components/Column';
+import { RowBetween, RowFixed, AutoRow } from 'components/Row';
+import CurrencyLogo from 'components/CurrencyLogo';
+import { ArrowLeft, AlertTriangle } from 'react-feather';
+import { transparentize } from 'polished';
+import useTheme from 'hooks/useTheme';
+import { ButtonPrimary } from 'components/Button';
+import { SectionBreak } from 'components/swap/styleds';
+import { useAddUserToken } from 'state/user/hooks';
+import { getEtherscanLink } from 'utils';
+import { useActiveWeb3React } from 'hooks';
+import { ExternalLink } from '../../theme/components';
+import { useCombinedInactiveList } from 'state/lists/hooks';
+import ListLogo from 'components/ListLogo';
+import { PaddedColumn, Checkbox } from './styleds';
 
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
-`
+`;
 
 const WarningWrapper = styled(Card)<{ highWarning: boolean }>`
   background-color: ${({ theme, highWarning }) =>
     highWarning ? transparentize(0.8, theme.red1) : transparentize(0.8, theme.yellow2)};
   width: fit-content;
-`
+`;
 
 const AddressText = styled(TYPE.blue)`
   font-size: 12px;
@@ -36,28 +36,28 @@ const AddressText = styled(TYPE.blue)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: 10px;
 `}
-`
+`;
 
 interface ImportProps {
-  token: Token
-  onBack: () => void
-  onDismiss: () => void
-  handleCurrencySelect: (currency: Currency) => void
+  token: Token;
+  onBack: () => void;
+  onDismiss: () => void;
+  handleCurrencySelect: (currency: Currency) => void;
 }
 
 export function ImportToken({ token, onBack, onDismiss, handleCurrencySelect }: ImportProps) {
-  const theme = useTheme()
+  const theme = useTheme();
 
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React();
 
-  const [confirmed, setConfirmed] = useState(false)
+  const [confirmed, setConfirmed] = useState(false);
 
-  const addToken = useAddUserToken()
+  const addToken = useAddUserToken();
 
   // use for showing import source on inactive tokens
-  const inactiveTokenList = useCombinedInactiveList()
+  const inactiveTokenList = useCombinedInactiveList();
 
-  const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
+  const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list;
 
   return (
     <Wrapper>
@@ -134,13 +134,13 @@ export function ImportToken({ token, onBack, onDismiss, handleCurrencySelect }: 
           borderRadius="20px"
           padding="10px 1rem"
           onClick={() => {
-            addToken(token)
-            handleCurrencySelect(token)
+            addToken(token);
+            handleCurrencySelect(token);
           }}
         >
           Import
         </ButtonPrimary>
       </PaddedColumn>
     </Wrapper>
-  )
+  );
 }
