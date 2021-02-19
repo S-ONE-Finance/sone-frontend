@@ -1,6 +1,6 @@
 {
-  "name": "@uniswap/interface",
-  "description": "Uniswap Interface",
+  "name": "@bhswap/sone-front-end",
+  "description": "Sone Front-end",
   "homepage": ".",
   "private": true,
   "devDependencies": {
