@@ -45,6 +45,12 @@ export interface Colors {
   yellow1: Color
   yellow2: Color
   blue1: Color
+
+  // S-ONE
+  text1Sone: Color
+  red1Sone: Color
+  bg1Sone: Color
+  bg2Sone: Color
 }
 
 export interface Grids {
@@ -71,5 +77,7 @@ declare module 'styled-components' {
     // css snippets
     flexColumnNoWrap: FlattenSimpleInterpolation
     flexRowNoWrap: FlattenSimpleInterpolation
+
+    bgImage: string
   }
 }
