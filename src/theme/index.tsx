@@ -1,4 +1,3 @@
-import { transparentize } from 'polished'
 import React, { useMemo } from 'react'
 import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
@@ -9,6 +8,8 @@ import styled, {
 import { useIsDarkMode } from '../state/user/hooks'
 import { Text, TextProps } from 'rebass'
 import { Colors } from './styled'
+import backgroundImage from '../assets/images/background-light.svg'
+import backgroundImageDark from '../assets/images/background-dark.svg'
 
 export * from './components'
 
@@ -80,11 +81,17 @@ export function colors(darkMode: boolean): Colors {
     green1: '#27AE60',
     yellow1: '#FFE270',
     yellow2: '#F3841E',
-    blue1: '#2172E5'
+    blue1: '#2172E5',
 
     // dont wanna forget these blue yet
     // blue4: darkMode ? '#153d6f70' : '#C4D9F8',
     // blue5: darkMode ? '#153d6f70' : '#EBF4FF',
+
+    // S-ONE
+    text1Sone: darkMode ? '#FFFFFF' : '#111111',
+    red1Sone: '#F05359',
+    bg1Sone: darkMode ? '#0E2B4A' : '#FFFFFF',
+    bg2Sone: darkMode ? '#3B5183' : '#FAEDED'
   }
 }
 
@@ -112,7 +119,10 @@ export function theme(darkMode: boolean): DefaultTheme {
     flexRowNoWrap: css`
       display: flex;
       flex-flow: row nowrap;
-    `
+    `,
+
+    // Background image
+    bgImage: darkMode ? backgroundImageDark : backgroundImage
   }
 }
 
@@ -177,14 +187,9 @@ export const TYPE = {
 }
 
 export const FixedGlobalStyle = createGlobalStyle`
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 html, input, textarea, button {
-  font-family: 'Inter', sans-serif;
-  font-display: fallback;
-}
-@supports (font-variation-settings: normal) {
-  html, input, textarea, button {
-    font-family: 'Inter var', sans-serif;
-  }
+  font-family: 'Roboto', sans-serif;
 }
 
 html,
@@ -217,6 +222,7 @@ html {
 `
 
 export const ThemedGlobalStyle = createGlobalStyle`
+
 html {
   color: ${({ theme }) => theme.text1};
   background-color: ${({ theme }) => theme.bg2};
@@ -224,12 +230,9 @@ html {
 
 body {
   min-height: 100vh;
-  background-position: 0 -30vh;
+  background-position: center;
   background-repeat: no-repeat;
-  background-image: ${({ theme }) =>
-    `radial-gradient(50% 50% at 50% 50%, ${transparentize(0.9, theme.primary1)} 0%, ${transparentize(
-      1,
-      theme.bg1
-    )} 100%)`};
+  background-image: url(${({ theme }) => theme.bgImage});
+  background-size: cover;
 }
 `
