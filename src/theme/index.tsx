@@ -89,9 +89,12 @@ export function colors(darkMode: boolean): Colors {
 
     // S-ONE
     text1Sone: darkMode ? '#FFFFFF' : '#111111',
+    text2Sone: darkMode ? '#7AA3E5' : '#111111',
     red1Sone: '#F05359',
     bg1Sone: darkMode ? '#0E2B4A' : '#FFFFFF',
-    bg2Sone: darkMode ? '#3B5183' : '#FAEDED'
+    bg2Sone: darkMode ? '#3B5183' : '#FAEDED',
+    bg3Sone: darkMode ? '#3B5183' : '#FFFFFF',
+    stroke1Sone: darkMode ? '#3FAAB0' : '#F05359'
   }
 }
 
@@ -150,6 +153,12 @@ export const TYPE = {
   },
   white(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'white'} {...props} />
+  },
+  red1Sone(props: TextProps) {
+    return <TextWrapper fontWeight={500} color={'red1Sone'} {...props} />
+  },
+  language(props: TextProps) {
+    return <TextWrapper fontWeight={500} color={'text2Sone'} {...props} />
   },
   body(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={16} color={'text1'} {...props} />
