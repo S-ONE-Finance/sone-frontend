@@ -87,5 +87,16 @@
   "forAtLeast": "for at least ",
   "brokenToken": "The selected token is not compatible with Uniswap V1. Adding liquidity will result in locked funds.",
   "toleranceExplanation": "Lowering this limit decreases your risk of frontrunning. However, this makes more likely that your transaction will fail due to normal price movements.",
-  "tokenSearchPlaceholder": "Search name or paste address"
+  "tokenSearchPlaceholder": "Search name or paste address",
+  "staking": "Staking",
+  "stats": "Stats",
+  "swapStats": "Swap Stats",
+  "stakingStats": "Staking Stats",
+  "lendingStats": "Lending Stats",
+  "docs": "Docs",
+  "whitePaper": "White Paper",
+  "faq": "FAQ",
+  "blog": "Blog",
+  "connectWallet": "Connect Wallet",
+  "myAccount": "My Account"
 }
