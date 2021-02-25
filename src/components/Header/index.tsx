@@ -22,7 +22,7 @@ import { TYPE, ExternalLink } from '../../theme'
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
 import ClaimModal from '../claim/ClaimModal'
-import PendingStatus from '../PendingStatus'
+import PendingStatus from './PendingStatus'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -39,7 +39,7 @@ const HeaderFrame = styled.div`
   z-index: 2;
   background-color: ${({ theme }) => theme.bg1Sone};
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     grid-template-columns: 1fr;
     padding: 0 1rem;
     width: calc(100%);
@@ -47,7 +47,7 @@ const HeaderFrame = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-        padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem;
   `}
 `
 
@@ -64,7 +64,7 @@ const HeaderElement = styled.div`
     margin-left: 0;
   }
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     flex-direction: row-reverse;
     align-items: center;
     & > *:last-child {
@@ -82,14 +82,14 @@ const HeaderElementWrap = styled.div`
 `
 
 const HeaderRow = styled(RowFixed)`
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
    width: 100%;
   `};
 `
 
 const HeaderMenu = styled(Row)`
   justify-content: center;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     padding: 1rem 0 1rem 1rem;
     justify-content: flex-end;
 `};
@@ -375,12 +375,11 @@ const HeaderControls = styled.div`
   align-items: center;
   justify-self: flex-end;
 
-  ${({ theme }) => theme.mediaWidth.upToMedium`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     flex-direction: row;
     justify-content: space-between;
     justify-self: center;
     width: 100%;
-    max-width: 960px;
     padding: 1rem;
     position: fixed;
     bottom: 0px;

@@ -17,7 +17,7 @@ const MEDIA_WIDTHS = {
   upToExtraSmall: 500,
   upToSmall: 768,
   upToMedium: 992,
-  upToLarge: 1200,
+  upToLarge: 1280,
   upToExtraLarge: 1920
 }
 
@@ -91,6 +91,7 @@ export function colors(darkMode: boolean): Colors {
     // S-ONE
     text1Sone: darkMode ? '#FFFFFF' : '#111111',
     text2Sone: darkMode ? '#7AA3E5' : '#111111',
+    text3Sone: darkMode ? '#FFFFFF' : '#767676',
     red1Sone: '#F05359',
     bg1Sone: darkMode ? '#0E2B4A' : '#FFFFFF',
     bg2Sone: darkMode ? '#3B5183' : '#FAEDED',
