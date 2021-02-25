@@ -15,9 +15,10 @@ export * from './components'
 
 const MEDIA_WIDTHS = {
   upToExtraSmall: 500,
-  upToSmall: 720,
-  upToMedium: 960,
-  upToLarge: 1280
+  upToSmall: 768,
+  upToMedium: 992,
+  upToLarge: 1200,
+  upToExtraLarge: 1920
 }
 
 const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(MEDIA_WIDTHS).reduce(
