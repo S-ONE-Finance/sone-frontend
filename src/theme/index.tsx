@@ -241,6 +241,7 @@ html {
 
 body {
   min-height: 100vh;
+  background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-image: url(${({ theme }) => theme.bgImage});
