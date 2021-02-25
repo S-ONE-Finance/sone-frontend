@@ -55,7 +55,7 @@ const BodyWrapper = styled.div`
   overflow-x: hidden;
   z-index: 10;
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     padding: 16px;
     padding-top: 2rem;
   `};
@@ -64,7 +64,7 @@ const BodyWrapper = styled.div`
 `
 
 const Marginer = styled.div`
-  /* margin-top: 5rem; */
+  margin-top: 5rem;
 `
 
 function TopLevelModals() {

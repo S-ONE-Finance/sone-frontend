@@ -49,6 +49,7 @@ export interface Colors {
   // S-ONE
   text1Sone: Color
   text2Sone: Color
+  text3Sone: Color
   red1Sone: Color
   bg1Sone: Color
   bg2Sone: Color

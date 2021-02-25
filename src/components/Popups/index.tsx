@@ -11,10 +11,10 @@ const MobilePopupWrapper = styled.div<{ height: string | number }>`
   max-width: 100%;
   height: ${({ height }) => height};
   margin: ${({ height }) => (height ? '0 auto;' : 0)};
-  margin-bottom: ${({ height }) => (height ? '20px' : 0)}};
+  margin-bottom: ${({ height }) => (height ? '20px' : 0)};
 
   display: none;
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     display: block;
   `};
 `
@@ -39,7 +39,7 @@ const FixedPopupColumn = styled(AutoColumn)<{ extraPadding: boolean }>`
   width: 100%;
   z-index: 3;
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     display: none;
   `};
 `
@@ -55,7 +55,8 @@ export default function Popups() {
       <FixedPopupColumn gap="20px" extraPadding={urlWarningActive}>
         <ClaimPopup />
         {activePopups.map(item => (
-          <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={item.removeAfterMs} />
+          // <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={item.removeAfterMs} />
+          <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={100000} />
         ))}
       </FixedPopupColumn>
       <MobilePopupWrapper height={activePopups?.length > 0 ? 'fit-content' : 0}>
@@ -64,7 +65,8 @@ export default function Popups() {
             .slice(0)
             .reverse()
             .map(item => (
-              <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={item.removeAfterMs} />
+              <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={100000} />
+              // <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={item.removeAfterMs} />
             ))}
         </MobilePopupInner>
       </MobilePopupWrapper>
