@@ -25,8 +25,6 @@ import Loader from '../Loader'
 import { RowBetween } from '../Row'
 import WalletModal from '../WalletModal'
 
-import { ButtonPrimary } from '../Button'
-
 const IconWrapper = styled.div<{ size?: number }>`
   ${({ theme }) => theme.flexColumnNoWrap};
   align-items: center;
@@ -120,21 +118,6 @@ const NetworkIcon = styled(Activity)`
   height: 16px;
 `
 
-const ButtonConnectWallet = styled(ButtonPrimary)`
-  background-color: ${({ theme }) => theme.red1Sone};
-  color: #ffffff;
-  width: 154px;
-  padding: 0;
-  height: 35px;
-  font-size: 16px;
-  border-radius: 31px;
-
-  :hover,
-  :focus {
-    background-color: ${({ theme }) => theme.red1Sone};
-  }
-`
-
 // we want the latest one to come first, so return negative if a is after b
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
@@ -199,41 +182,32 @@ function Web3StatusInner() {
 
   if (account) {
     return (
-      // <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
-      //   {hasPendingTransactions ? (
-      //     <RowBetween>
-      //       <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
-      //     </RowBetween>
-      //   ) : (
-      //     <>
-      //       {hasSocks ? SOCK : null}
-      //       <Text>{ENSName || shortenAddress(account)}</Text>
-      //     </>
-      //   )}
-      //   {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
-      // </Web3StatusConnected>
-      <ButtonConnectWallet id="web3-status-connected" onClick={toggleWalletModal}>
-        {t('myAccount')}
-      </ButtonConnectWallet>
+      <Web3StatusConnected id="web3-status-connected" onClick={toggleWalletModal} pending={hasPendingTransactions}>
+        {hasPendingTransactions ? (
+          <RowBetween>
+            <Text>{pending?.length} Pending</Text> <Loader stroke="white" />
+          </RowBetween>
+        ) : (
+          <>
+            {hasSocks ? SOCK : null}
+            <Text>{ENSName || shortenAddress(account)}</Text>
+          </>
+        )}
+        {!hasPendingTransactions && connector && <StatusIcon connector={connector} />}
+      </Web3StatusConnected>
     )
   } else if (error) {
     return (
-      // <Web3StatusError onClick={toggleWalletModal}>
-      //   <NetworkIcon />
-      //   <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
-      // </Web3StatusError>
-      <ButtonConnectWallet onClick={toggleWalletModal}>
-        {error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}
-      </ButtonConnectWallet>
+      <Web3StatusError onClick={toggleWalletModal}>
+        <NetworkIcon />
+        <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
+      </Web3StatusError>
     )
   } else {
     return (
-      // <Web3StatusConnect id="connect-wallet" onClick={toggleWalletModal} faded={!account}>
-      //   <Text>{t('connectWallet')}</Text>
-      // </Web3StatusConnect>
-      <ButtonConnectWallet id="connect-wallet" onClick={toggleWalletModal}>
-        {t('connectWallet')}
-      </ButtonConnectWallet>
+      <Web3StatusConnect id="connect-wallet" onClick={toggleWalletModal} faded={!account}>
+        <Text>{t('connectWallet')}</Text>
+      </Web3StatusConnect>
     )
   }
 }

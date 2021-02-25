@@ -1,6 +1,6 @@
 import { TokenAmount } from '@uniswap/sdk'
 import React from 'react'
-import { Text, Button } from 'rebass'
+import { Text } from 'rebass'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CountUp } from 'use-count-up'
@@ -15,13 +15,14 @@ import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useETHBalances, useAggregateUniBalance } from '../../state/wallet/hooks'
 import { useUserHasAvailableClaim } from '../../state/claim/hooks'
+import usePrevious from '../../hooks/usePrevious'
 import useLanguage from '../../hooks/useLanguage'
 
 import { TYPE, ExternalLink } from '../../theme'
 import Row, { RowFixed } from '../Row'
 import Web3Status from '../Web3Status'
 import ClaimModal from '../claim/ClaimModal'
-import usePrevious from '../../hooks/usePrevious'
+import PendingStatus from '../PendingStatus'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -56,12 +57,22 @@ const HeaderElement = styled.div`
 
   /* addresses safari's lack of support for "gap" */
   & > *:not(:first-child) {
-    margin-left: 8px;
+    margin-left: 0.5rem;
+  }
+
+  & > *:first-child {
+    margin-left: 0;
   }
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
-   flex-direction: row-reverse;
+    flex-direction: row-reverse;
     align-items: center;
+    & > *:last-child {
+      margin-left: 0 !important;
+    }
+    & > *:first-child {
+      margin-left: 0.5rem !important;
+    }
   `};
 `
 
@@ -397,9 +408,9 @@ const AccountElement = styled.div<{ active: boolean }>`
   }
 `
 
-const UNIAmount = styled(AccountElement)`
+const SONEAmount = styled(AccountElement)`
   color: white;
-  padding: 4px 8px;
+  padding: 0 0.5rem;
   height: 37px;
   font-weight: 400;
   color: ${({ theme }) => theme.red1Sone};
@@ -407,7 +418,7 @@ const UNIAmount = styled(AccountElement)`
   display: flex;
 `
 
-const UNIWrapper = styled.span`
+const SONEWrapper = styled.span`
   width: fit-content;
   position: relative;
 `
@@ -422,6 +433,12 @@ const BalanceText = styled(Text)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
   `};
+`
+
+const PendingStatusWrapper = styled(PendingStatus)`
+  /* ${({ theme }) => theme.mediaWidth.upToSmall`
+    margin-left: 4px;
+`} */
 `
 
 export default function Header() {
@@ -500,10 +517,13 @@ export default function Header() {
       </HeaderRow>
       <HeaderControls>
         <HeaderElement>
+          <AccountElement active={true} style={{ pointerEvents: 'auto' }}>
+            <PendingStatus />
+          </AccountElement>
           {!availableClaim && aggregateBalance && account && (
             <HideSmall>
-              <UNIWrapper>
-                <UNIAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
+              <SONEWrapper>
+                <SONEAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
                   <img width={'21px'} src={LogoToken} alt="logo" />
                   <TYPE.red1Sone style={{ marginLeft: '5px', fontSize: '18px' }}>
                     <CountUp
@@ -515,11 +535,11 @@ export default function Header() {
                       duration={1}
                     />
                   </TYPE.red1Sone>
-                </UNIAmount>
-              </UNIWrapper>
+                </SONEAmount>
+              </SONEWrapper>
             </HideSmall>
           )}
-          {/* Cái này liên quan đến show giá trị ETH và địa chỉ nên phải giữ lại để đọc lại */}
+          {/* Cái này liên quan đến show giá trị ETH nên phải giữ lại để đọc lại */}
           {/* <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
             {account && userEthBalance ? (
               <BalanceText style={{ flexShrink: 0 }} pl="0.75rem" pr="0.5rem" fontWeight={400}>
@@ -540,7 +560,9 @@ export default function Header() {
           <MenuItem style={{ marginLeft: '0.5rem' }}>
             <StyledMenuButtonWithText style={{ marginLeft: 0 }}>
               <Globe size={20} />
-              <TYPE.language style={{ marginLeft: '5px' }}>EN</TYPE.language>
+              <TYPE.language style={{ marginLeft: '5px' }}>
+                {language === 'en' ? 'EN' : language === 'jp' ? 'JP' : language === 'zh-CN' ? 'CN' : null}
+              </TYPE.language>
             </StyledMenuButtonWithText>
             <SubMenu>
               <SubMenuItemText onClick={() => setLanguage('jp')}>日本語</SubMenuItemText>
