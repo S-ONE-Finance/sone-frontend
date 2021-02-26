@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 
-const Column = styled.div`
+const Column = styled.div<{ width?: string }>`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  width: ${({ width }) => width ?? '100%'};
 `
+
 export const ColumnCenter = styled(Column)`
   width: 100%;
   align-items: center;

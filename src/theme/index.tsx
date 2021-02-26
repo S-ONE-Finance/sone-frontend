@@ -92,11 +92,13 @@ export function colors(darkMode: boolean): Colors {
     text1Sone: darkMode ? '#FFFFFF' : '#111111',
     text2Sone: darkMode ? '#7AA3E5' : '#111111',
     text3Sone: darkMode ? '#FFFFFF' : '#767676',
+    text4Sone: darkMode ? '#AAAAAA' : '#767676',
     red1Sone: '#F05359',
     bg1Sone: darkMode ? '#0E2B4A' : '#FFFFFF',
     bg2Sone: darkMode ? '#3B5183' : '#FAEDED',
     bg3Sone: darkMode ? '#3B5183' : '#FFFFFF',
-    stroke1Sone: darkMode ? '#3FAAB0' : '#F05359'
+    stroke1Sone: darkMode ? '#3FAAB0' : '#F05359',
+    divider1Sone: darkMode ? '#AAAAAA' : 'rgba(0, 0, 0, 0.25)'
   }
 }
 
@@ -156,12 +158,6 @@ export const TYPE = {
   white(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'white'} {...props} />
   },
-  red1Sone(props: TextProps) {
-    return <TextWrapper fontWeight={500} color={'red1Sone'} {...props} />
-  },
-  language(props: TextProps) {
-    return <TextWrapper fontWeight={500} color={'text2Sone'} {...props} />
-  },
   body(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={16} color={'text1'} {...props} />
   },
@@ -194,6 +190,15 @@ export const TYPE = {
   },
   error({ error, ...props }: { error: boolean } & TextProps) {
     return <TextWrapper fontWeight={500} color={error ? 'red1' : 'text2'} {...props} />
+  },
+  red1Sone(props: TextProps) {
+    return <TextWrapper fontWeight={500} color={'red1Sone'} {...props} />
+  },
+  language(props: TextProps) {
+    return <TextWrapper fontWeight={500} color={'text2Sone'} {...props} />
+  },
+  subText(props: TextProps) {
+    return <TextWrapper fontWeight={400} fontSize={16} color={'text4Sone'} {...props} />
   }
 }
 

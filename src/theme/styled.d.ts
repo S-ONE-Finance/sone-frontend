@@ -50,11 +50,13 @@ export interface Colors {
   text1Sone: Color
   text2Sone: Color
   text3Sone: Color
+  text4Sone: Color
   red1Sone: Color
   bg1Sone: Color
   bg2Sone: Color
   bg3Sone: Color
   stroke1Sone: Color
+  divider1Sone: Color
 }
 
 export interface Grids {

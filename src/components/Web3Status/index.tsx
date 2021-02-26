@@ -123,11 +123,11 @@ const NetworkIcon = styled(Activity)`
 const ButtonConnectWallet = styled(ButtonPrimary)`
   background-color: ${({ theme }) => theme.red1Sone};
   color: #ffffff;
-  width: 154px;
+  width: 100%;
+  height: 50px;
   padding: 0;
-  height: 35px;
   font-size: 16px;
-  border-radius: 31px;
+  border-radius: 30px;
 
   :hover,
   :focus {

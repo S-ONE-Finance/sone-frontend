@@ -20,9 +20,9 @@ import useLanguage from '../../hooks/useLanguage'
 
 import { TYPE, ExternalLink } from '../../theme'
 import Row, { RowFixed } from '../Row'
-import Web3Status from '../Web3Status'
 import ClaimModal from '../claim/ClaimModal'
 import PendingStatus from './PendingStatus'
+import MyAccountPanel from './MyAccountPanel'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -181,19 +181,46 @@ const StyledExternalLink = styled(ExternalLink).attrs({
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
-`}
+  `}
 `
 
-const SubMenu = styled.div`
+const SubMenu = styled.div<{ width?: string; borderRadius?: string; display?: string }>`
   position: absolute;
   top: calc(70px + 1rem);
   left: 50%;
   transform: translateX(-50%);
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.24);
   background-color: ${({ theme }) => theme.bg1Sone};
-  border-radius: 10px;
-  width: 172px;
-  display: none;
+  border-radius: ${({ borderRadius }) => borderRadius ?? '10px'};
+  width: ${({ width }) => width ?? '172px'};
+  cursor: default;
+  display: ${({ display }) => display ?? 'none'};
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    top: unset;
+    bottom: calc(70px + 1rem);
+    left: 0;
+    transform: none;
+  `}
+`
+
+const ButtonConnectWallet = styled.div`
+  background-color: ${({ theme }) => theme.red1Sone};
+  color: #ffffff;
+  width: 154px;
+  padding: 0;
+  height: 35px;
+  border-radius: 31px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 500;
+
+  :hover,
+  :focus {
+    background-color: ${({ theme }) => theme.red1Sone};
+  }
 `
 
 const SubMenuItemNavLink = styled(NavLink).attrs({
@@ -392,11 +419,10 @@ const HeaderControls = styled.div`
   `};
 `
 
-const AccountElement = styled.div<{ active: boolean }>`
+const AccountElement = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: ${({ theme, active }) => (!active ? theme.bg1 : theme.bg3)};
   border-radius: 12px;
   white-space: nowrap;
   width: 100%;
@@ -432,12 +458,6 @@ const BalanceText = styled(Text)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
   `};
-`
-
-const PendingStatusWrapper = styled(PendingStatus)`
-  /* ${({ theme }) => theme.mediaWidth.upToSmall`
-    margin-left: 4px;
-`} */
 `
 
 export default function Header() {
@@ -477,9 +497,7 @@ export default function Header() {
           >
             {t('swap')}
             <SubMenu>
-              <SubMenuItemNavLink id={`swap-nav-link`} to={'/swap'}>
-                {t('swap')}
-              </SubMenuItemNavLink>
+              <SubMenuItemNavLink to={'/swap'}>{t('swap')}</SubMenuItemNavLink>
               <SubMenuItemNavLink
                 id={`pool-nav-link`}
                 to={'/pool'}
@@ -501,7 +519,7 @@ export default function Header() {
             <SubMenu>
               <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swapStats')}</SubMenuItemExternalLink>
               <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('stakingStats')}</SubMenuItemExternalLink>
-              <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('lendingStats')}</SubMenuItemExternalLink>
+              {/* <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('lendingStats')}</SubMenuItemExternalLink> */}
             </SubMenu>
           </MenuItem>
           <MenuItem>
@@ -516,13 +534,13 @@ export default function Header() {
       </HeaderRow>
       <HeaderControls>
         <HeaderElement>
-          <AccountElement active={true} style={{ pointerEvents: 'auto' }}>
+          <AccountElement style={{ pointerEvents: 'auto' }}>
             <PendingStatus />
           </AccountElement>
           {!availableClaim && aggregateBalance && account && (
             <HideSmall>
               <SONEWrapper>
-                <SONEAmount active={!!account && !availableClaim} style={{ pointerEvents: 'auto' }}>
+                <SONEAmount style={{ pointerEvents: 'auto' }}>
                   <img width={'21px'} src={LogoToken} alt="logo" />
                   <TYPE.red1Sone style={{ marginLeft: '5px', fontSize: '18px' }}>
                     <CountUp
@@ -548,9 +566,14 @@ export default function Header() {
             <Web3Status />
           </AccountElement> */}
           {/* TODO: lỗi ko tự động logout khi user lock ví trên metamask */}
-          <AccountElement active={!!account} style={{ pointerEvents: 'auto' }}>
-            <Web3Status />
-          </AccountElement>
+          <MenuItem>
+            <AccountElement style={{ pointerEvents: 'auto' }}>
+              <ButtonConnectWallet>{t('myAccount')}</ButtonConnectWallet>
+            </AccountElement>
+            <SubMenu width={'fit-content'} borderRadius={'20px'} display={'block'}>
+              <MyAccountPanel />
+            </SubMenu>
+          </MenuItem>
         </HeaderElement>
         <HeaderElementWrap>
           <StyledMenuButton onClick={() => toggleDarkMode()}>
