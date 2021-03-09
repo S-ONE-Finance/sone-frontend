@@ -1,15 +1,15 @@
-import { Trade, TradeType } from '@uniswap/sdk';
-import React, { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
-import { Field } from '../../state/swap/actions';
-import { useUserSlippageTolerance } from '../../state/user/hooks';
-import { TYPE, ExternalLink } from '../../theme';
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from '../../utils/prices';
-import { AutoColumn } from '../Column';
-import QuestionHelper from '../QuestionHelper';
-import { RowBetween, RowFixed } from '../Row';
-import FormattedPriceImpact from './FormattedPriceImpact';
-import SwapRoute from './SwapRoute';
+import { Trade, TradeType } from '@uniswap/sdk'
+import React, { useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
+import { Field } from '../../state/swap/actions'
+import { useUserSlippageTolerance } from '../../state/user/hooks'
+import { TYPE, ExternalLink } from '../../theme'
+import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from '../../utils/prices'
+import { AutoColumn } from '../Column'
+import QuestionHelper from '../QuestionHelper'
+import { RowBetween, RowFixed } from '../Row'
+import FormattedPriceImpact from './FormattedPriceImpact'
+import SwapRoute from './SwapRoute'
 
 const InfoLink = styled(ExternalLink)`
   width: 100%;
@@ -19,13 +19,13 @@ const InfoLink = styled(ExternalLink)`
   text-align: center;
   font-size: 14px;
   color: ${({ theme }) => theme.text1};
-`;
+`
 
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
-  const theme = useContext(ThemeContext);
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade);
-  const isExactIn = trade.tradeType === TradeType.EXACT_INPUT;
-  const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage);
+  const theme = useContext(ThemeContext)
+  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
+  const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
+  const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
 
   return (
     <>
@@ -70,19 +70,19 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         </RowBetween>
       </AutoColumn>
     </>
-  );
+  )
 }
 
 export interface AdvancedSwapDetailsProps {
-  trade?: Trade;
+  trade?: Trade
 }
 
 export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
-  const theme = useContext(ThemeContext);
+  const theme = useContext(ThemeContext)
 
-  const [allowedSlippage] = useUserSlippageTolerance();
+  const [allowedSlippage] = useUserSlippageTolerance()
 
-  const showRoute = Boolean(trade && trade.route.path.length > 2);
+  const showRoute = Boolean(trade && trade.route.path.length > 2)
 
   return (
     <AutoColumn gap="0px">
@@ -115,5 +115,5 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
         </>
       )}
     </AutoColumn>
-  );
+  )
 }

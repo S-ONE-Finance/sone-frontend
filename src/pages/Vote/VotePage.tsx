@@ -1,38 +1,33 @@
-import React, { useState } from 'react';
-import { AutoColumn } from '../../components/Column';
-import styled from 'styled-components';
+import React, { useState } from 'react'
+import { AutoColumn } from '../../components/Column'
+import styled from 'styled-components'
 
-import { RouteComponentProps } from 'react-router-dom';
-import { TYPE, StyledInternalLink, ExternalLink } from '../../theme';
-import { RowFixed, RowBetween } from '../../components/Row';
-import { CardSection, DataCard } from '../../components/earn/styled';
-import { ArrowLeft } from 'react-feather';
-import { ButtonPrimary } from '../../components/Button';
-import { ProposalStatus } from './styled';
-import { useProposalData, useUserVotesAsOfBlock, ProposalData, useUserDelegatee } from '../../state/governance/hooks';
-import { DateTime } from 'luxon';
-import ReactMarkdown from 'react-markdown';
-import VoteModal from '../../components/vote/VoteModal';
-import { TokenAmount, JSBI } from '@uniswap/sdk';
-import { useActiveWeb3React } from '../../hooks';
-import { AVERAGE_BLOCK_TIME_IN_SECS, COMMON_CONTRACT_NAMES, UNI, ZERO_ADDRESS } from '../../constants';
-import { isAddress, getEtherscanLink } from '../../utils';
-import { ApplicationModal } from '../../state/application/actions';
-import {
-  useModalOpen,
-  useToggleDelegateModal,
-  useToggleVoteModal,
-  useBlockNumber
-} from '../../state/application/hooks';
-import DelegateModal from '../../components/vote/DelegateModal';
-import { GreyCard } from '../../components/Card';
-import { useTokenBalance } from '../../state/wallet/hooks';
-import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp';
-import { BigNumber } from 'ethers';
+import { RouteComponentProps } from 'react-router-dom'
+import { TYPE, StyledInternalLink, ExternalLink } from '../../theme'
+import { RowFixed, RowBetween } from '../../components/Row'
+import { CardSection, DataCard } from '../../components/earn/styled'
+import { ArrowLeft } from 'react-feather'
+import { ButtonPrimary } from '../../components/Button'
+import { ProposalStatus } from './styled'
+import { useProposalData, useUserVotesAsOfBlock, ProposalData, useUserDelegatee } from '../../state/governance/hooks'
+import { DateTime } from 'luxon'
+import ReactMarkdown from 'react-markdown'
+import VoteModal from '../../components/vote/VoteModal'
+import { TokenAmount, JSBI } from '@uniswap/sdk'
+import { useActiveWeb3React } from '../../hooks'
+import { AVERAGE_BLOCK_TIME_IN_SECS, COMMON_CONTRACT_NAMES, UNI, ZERO_ADDRESS } from '../../constants'
+import { isAddress, getEtherscanLink } from '../../utils'
+import { ApplicationModal } from '../../state/application/actions'
+import { useModalOpen, useToggleDelegateModal, useToggleVoteModal, useBlockNumber } from '../../state/application/hooks'
+import DelegateModal from '../../components/vote/DelegateModal'
+import { GreyCard } from '../../components/Card'
+import { useTokenBalance } from '../../state/wallet/hooks'
+import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
+import { BigNumber } from 'ethers'
 
 const PageWrapper = styled(AutoColumn)`
   width: 100%;
-`;
+`
 
 const ProposalInfo = styled(AutoColumn)`
   border: 1px solid ${({ theme }) => theme.bg4};
@@ -41,7 +36,7 @@ const ProposalInfo = styled(AutoColumn)`
   position: relative;
   max-width: 640px;
   width: 100%;
-`;
+`
 const ArrowWrapper = styled(StyledInternalLink)`
   display: flex;
   align-items: center;
@@ -56,13 +51,13 @@ const ArrowWrapper = styled(StyledInternalLink)`
   :hover {
     text-decoration: none;
   }
-`;
+`
 const CardWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   width: 100%;
-`;
+`
 
 const StyledDataCard = styled(DataCard)`
   width: 100%;
@@ -70,7 +65,7 @@ const StyledDataCard = styled(DataCard)`
   background-color: ${({ theme }) => theme.bg1};
   height: fit-content;
   z-index: 2;
-`;
+`
 
 const ProgressWrapper = styled.div`
   width: 100%;
@@ -79,59 +74,59 @@ const ProgressWrapper = styled.div`
   border-radius: 4px;
   background-color: ${({ theme }) => theme.bg3};
   position: relative;
-`;
+`
 
 const Progress = styled.div<{ status: 'for' | 'against'; percentageString?: string }>`
   height: 4px;
   border-radius: 4px;
   background-color: ${({ theme, status }) => (status === 'for' ? theme.green1 : theme.red1)};
   width: ${({ percentageString }) => percentageString};
-`;
+`
 
 const MarkDownWrapper = styled.div`
   max-width: 640px;
   overflow: hidden;
-`;
+`
 
 const WrapSmall = styled(RowBetween)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     align-items: flex-start;
     flex-direction: column;
   `};
-`;
+`
 
 const DetailText = styled.div`
   word-break: break-all;
-`;
+`
 
 const ProposerAddressLink = styled(ExternalLink)`
   word-break: break-all;
-`;
+`
 
 export default function VotePage({
   match: {
     params: { id }
   }
 }: RouteComponentProps<{ id: string }>) {
-  const { chainId, account } = useActiveWeb3React();
+  const { chainId, account } = useActiveWeb3React()
 
   // get data for this specific proposal
-  const proposalData: ProposalData | undefined = useProposalData(id);
+  const proposalData: ProposalData | undefined = useProposalData(id)
 
   // update support based on button interactions
-  const [support, setSupport] = useState<boolean>(true);
+  const [support, setSupport] = useState<boolean>(true)
 
   // modal for casting votes
-  const showVoteModal = useModalOpen(ApplicationModal.VOTE);
-  const toggleVoteModal = useToggleVoteModal();
+  const showVoteModal = useModalOpen(ApplicationModal.VOTE)
+  const toggleVoteModal = useToggleVoteModal()
 
   // toggle for showing delegation modal
-  const showDelegateModal = useModalOpen(ApplicationModal.DELEGATE);
-  const toggleDelegateModal = useToggleDelegateModal();
+  const showDelegateModal = useModalOpen(ApplicationModal.DELEGATE)
+  const toggleDelegateModal = useToggleDelegateModal()
 
   // get and format date from data
-  const currentTimestamp = useCurrentBlockTimestamp();
-  const currentBlock = useBlockNumber();
+  const currentTimestamp = useCurrentBlockTimestamp()
+  const currentBlock = useBlockNumber()
   const endDate: DateTime | undefined =
     proposalData && currentTimestamp && currentBlock
       ? DateTime.fromSeconds(
@@ -139,43 +134,43 @@ export default function VotePage({
             .add(BigNumber.from(AVERAGE_BLOCK_TIME_IN_SECS).mul(BigNumber.from(proposalData.endBlock - currentBlock)))
             .toNumber()
         )
-      : undefined;
-  const now: DateTime = DateTime.local();
+      : undefined
+  const now: DateTime = DateTime.local()
 
   // get total votes and format percentages for UI
-  const totalVotes: number | undefined = proposalData ? proposalData.forCount + proposalData.againstCount : undefined;
+  const totalVotes: number | undefined = proposalData ? proposalData.forCount + proposalData.againstCount : undefined
   const forPercentage: string =
-    proposalData && totalVotes ? ((proposalData.forCount * 100) / totalVotes).toFixed(0) + '%' : '0%';
+    proposalData && totalVotes ? ((proposalData.forCount * 100) / totalVotes).toFixed(0) + '%' : '0%'
   const againstPercentage: string =
-    proposalData && totalVotes ? ((proposalData.againstCount * 100) / totalVotes).toFixed(0) + '%' : '0%';
+    proposalData && totalVotes ? ((proposalData.againstCount * 100) / totalVotes).toFixed(0) + '%' : '0%'
 
   // only count available votes as of the proposal start block
-  const availableVotes: TokenAmount | undefined = useUserVotesAsOfBlock(proposalData?.startBlock ?? undefined);
+  const availableVotes: TokenAmount | undefined = useUserVotesAsOfBlock(proposalData?.startBlock ?? undefined)
 
   // only show voting if user has > 0 votes at proposal start block and proposal is active,
   const showVotingButtons =
     availableVotes &&
     JSBI.greaterThan(availableVotes.raw, JSBI.BigInt(0)) &&
     proposalData &&
-    proposalData.status === 'active';
+    proposalData.status === 'active'
 
-  const uniBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, chainId ? UNI[chainId] : undefined);
-  const userDelegatee: string | undefined = useUserDelegatee();
+  const uniBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, chainId ? UNI[chainId] : undefined)
+  const userDelegatee: string | undefined = useUserDelegatee()
 
   // in blurb link to home page if they are able to unlock
   const showLinkForUnlock = Boolean(
     uniBalance && JSBI.notEqual(uniBalance.raw, JSBI.BigInt(0)) && userDelegatee === ZERO_ADDRESS
-  );
+  )
 
   // show links in propsoal details if content is an address
   // if content is contract with common name, replace address with common name
   const linkIfAddress = (content: string) => {
     if (isAddress(content) && chainId) {
-      const commonName = COMMON_CONTRACT_NAMES[content] ?? content;
-      return <ExternalLink href={getEtherscanLink(chainId, content, 'address')}>{commonName}</ExternalLink>;
+      const commonName = COMMON_CONTRACT_NAMES[content] ?? content
+      return <ExternalLink href={getEtherscanLink(chainId, content, 'address')}>{commonName}</ExternalLink>
     }
-    return <span>{content}</span>;
-  };
+    return <span>{content}</span>
+  }
 
   return (
     <PageWrapper gap="lg" justify="center">
@@ -219,8 +214,8 @@ export default function VotePage({
               padding="8px"
               borderRadius="8px"
               onClick={() => {
-                setSupport(true);
-                toggleVoteModal();
+                setSupport(true)
+                toggleVoteModal()
               }}
             >
               Vote For
@@ -229,8 +224,8 @@ export default function VotePage({
               padding="8px"
               borderRadius="8px"
               onClick={() => {
-                setSupport(false);
-                toggleVoteModal();
+                setSupport(false)
+                toggleVoteModal()
               }}
             >
               Vote Against
@@ -284,11 +279,11 @@ export default function VotePage({
                       {linkIfAddress(content)}
                       {d.callData.split(',').length - 1 === i ? '' : ','}
                     </span>
-                  );
+                  )
                 })}
                 )
               </DetailText>
-            );
+            )
           })}
         </AutoColumn>
         <AutoColumn gap="md">
@@ -307,5 +302,5 @@ export default function VotePage({
         </AutoColumn>
       </ProposalInfo>
     </PageWrapper>
-  );
+  )
 }

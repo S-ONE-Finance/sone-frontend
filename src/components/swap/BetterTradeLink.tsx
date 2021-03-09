@@ -1,17 +1,17 @@
-import { stringify } from 'qs';
-import React, { useContext, useMemo } from 'react';
-import { useLocation } from 'react-router';
-import { Text } from 'rebass';
-import { ThemeContext } from 'styled-components';
-import useParsedQueryString from '../../hooks/useParsedQueryString';
-import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion';
+import { stringify } from 'qs'
+import React, { useContext, useMemo } from 'react'
+import { useLocation } from 'react-router'
+import { Text } from 'rebass'
+import { ThemeContext } from 'styled-components'
+import useParsedQueryString from '../../hooks/useParsedQueryString'
+import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
 
-import { StyledInternalLink } from '../../theme';
-import { YellowCard } from '../Card';
-import { AutoColumn } from '../Column';
+import { StyledInternalLink } from '../../theme'
+import { YellowCard } from '../Card'
+import { AutoColumn } from '../Column'
 
 function VersionLinkContainer({ children }: { children: React.ReactNode }) {
-  const theme = useContext(ThemeContext);
+  const theme = useContext(ThemeContext)
 
   return (
     <YellowCard style={{ marginTop: '12px', padding: '0.5rem 0.5rem' }}>
@@ -21,12 +21,12 @@ function VersionLinkContainer({ children }: { children: React.ReactNode }) {
         </Text>
       </AutoColumn>
     </YellowCard>
-  );
+  )
 }
 
 export default function BetterTradeLink({ version }: { version: Version }) {
-  const location = useLocation();
-  const search = useParsedQueryString();
+  const location = useLocation()
+  const search = useParsedQueryString()
 
   const linkDestination = useMemo(() => {
     return {
@@ -35,8 +35,8 @@ export default function BetterTradeLink({ version }: { version: Version }) {
         ...search,
         use: version !== DEFAULT_VERSION ? version : undefined
       })}`
-    };
-  }, [location, search, version]);
+    }
+  }, [location, search, version])
 
   return (
     <VersionLinkContainer>
@@ -45,13 +45,13 @@ export default function BetterTradeLink({ version }: { version: Version }) {
         <b>Uniswap {version.toUpperCase()} ↗</b>
       </StyledInternalLink>
     </VersionLinkContainer>
-  );
+  )
 }
 
 export function DefaultVersionLink() {
-  const location = useLocation();
-  const search = useParsedQueryString();
-  const version = useToggledVersion();
+  const location = useLocation()
+  const search = useParsedQueryString()
+  const version = useToggledVersion()
 
   const linkDestination = useMemo(() => {
     return {
@@ -60,8 +60,8 @@ export function DefaultVersionLink() {
         ...search,
         use: DEFAULT_VERSION
       })}`
-    };
-  }, [location, search]);
+    }
+  }, [location, search])
 
   return (
     <VersionLinkContainer>
@@ -70,5 +70,5 @@ export function DefaultVersionLink() {
         <b>Switch to Uniswap {DEFAULT_VERSION.toUpperCase()} ↗</b>
       </StyledInternalLink>
     </VersionLinkContainer>
-  );
+  )
 }

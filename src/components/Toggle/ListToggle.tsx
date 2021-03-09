@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { TYPE } from '../../theme';
+import React from 'react'
+import styled from 'styled-components'
+import { TYPE } from '../../theme'
 
 const Wrapper = styled.button<{ isActive?: boolean; activeElement?: boolean }>`
   border-radius: 20px;
@@ -12,7 +12,7 @@ const Wrapper = styled.button<{ isActive?: boolean; activeElement?: boolean }>`
   outline: none;
   padding: 0.4rem 0.4rem;
   align-items: center;
-`;
+`
 
 const ToggleElement = styled.span<{ isActive?: boolean; bgColor?: string }>`
   border-radius: 50%;
@@ -22,19 +22,19 @@ const ToggleElement = styled.span<{ isActive?: boolean; bgColor?: string }>`
   :hover {
     opacity: 0.8;
   }
-`;
+`
 
 const StatusText = styled(TYPE.main)<{ isActive?: boolean }>`
   margin: 0 10px;
   width: 24px;
   color: ${({ theme, isActive }) => (isActive ? theme.text1 : theme.text3)};
-`;
+`
 
 export interface ToggleProps {
-  id?: string;
-  isActive: boolean;
-  bgColor: string;
-  toggle: () => void;
+  id?: string
+  isActive: boolean
+  bgColor: string
+  toggle: () => void
 }
 
 export default function ListToggle({ id, isActive, bgColor, toggle }: ToggleProps) {
@@ -52,5 +52,5 @@ export default function ListToggle({ id, isActive, bgColor, toggle }: ToggleProp
         </StatusText>
       )}
     </Wrapper>
-  );
+  )
 }

@@ -1,39 +1,39 @@
-import { TransactionResponse } from '@ethersproject/abstract-provider';
-import { AddressZero } from '@ethersproject/constants';
-import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Token, TokenAmount, WETH } from '@uniswap/sdk';
-import React, { useCallback, useMemo, useState } from 'react';
-import ReactGA from 'react-ga';
-import { Redirect, RouteComponentProps } from 'react-router';
-import { Text } from 'rebass';
-import { ButtonConfirmed } from '../../components/Button';
-import { LightCard, PinkCard, YellowCard } from '../../components/Card';
-import { AutoColumn } from '../../components/Column';
-import CurrencyLogo from '../../components/CurrencyLogo';
-import FormattedCurrencyAmount from '../../components/FormattedCurrencyAmount';
-import QuestionHelper from '../../components/QuestionHelper';
-import { AutoRow, RowBetween, RowFixed } from '../../components/Row';
-import { Dots } from '../../components/swap/styleds';
-import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../constants';
-import { MIGRATOR_ADDRESS } from '../../constants/abis/migrator';
-import { PairState, usePair } from '../../data/Reserves';
-import { useTotalSupply } from '../../data/TotalSupply';
-import { useActiveWeb3React } from '../../hooks';
-import { useToken } from '../../hooks/Tokens';
-import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback';
-import { useV1ExchangeContract, useV2MigratorContract } from '../../hooks/useContract';
-import { NEVER_RELOAD, useSingleCallResult } from '../../state/multicall/hooks';
-import { useIsTransactionPending, useTransactionAdder } from '../../state/transactions/hooks';
-import { useETHBalances, useTokenBalance } from '../../state/wallet/hooks';
-import { BackArrow, ExternalLink, TYPE } from '../../theme';
-import { getEtherscanLink, isAddress } from '../../utils';
-import { BodyWrapper } from '../AppBody';
-import { EmptyState } from './EmptyState';
+import { TransactionResponse } from '@ethersproject/abstract-provider'
+import { AddressZero } from '@ethersproject/constants'
+import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Token, TokenAmount, WETH } from '@uniswap/sdk'
+import React, { useCallback, useMemo, useState } from 'react'
+import ReactGA from 'react-ga'
+import { Redirect, RouteComponentProps } from 'react-router'
+import { Text } from 'rebass'
+import { ButtonConfirmed } from '../../components/Button'
+import { LightCard, PinkCard, YellowCard } from '../../components/Card'
+import { AutoColumn } from '../../components/Column'
+import CurrencyLogo from '../../components/CurrencyLogo'
+import FormattedCurrencyAmount from '../../components/FormattedCurrencyAmount'
+import QuestionHelper from '../../components/QuestionHelper'
+import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
+import { Dots } from '../../components/swap/styleds'
+import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
+import { MIGRATOR_ADDRESS } from '../../constants/abis/migrator'
+import { PairState, usePair } from '../../data/Reserves'
+import { useTotalSupply } from '../../data/TotalSupply'
+import { useActiveWeb3React } from '../../hooks'
+import { useToken } from '../../hooks/Tokens'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
+import { useV1ExchangeContract, useV2MigratorContract } from '../../hooks/useContract'
+import { NEVER_RELOAD, useSingleCallResult } from '../../state/multicall/hooks'
+import { useIsTransactionPending, useTransactionAdder } from '../../state/transactions/hooks'
+import { useETHBalances, useTokenBalance } from '../../state/wallet/hooks'
+import { BackArrow, ExternalLink, TYPE } from '../../theme'
+import { getEtherscanLink, isAddress } from '../../utils'
+import { BodyWrapper } from '../AppBody'
+import { EmptyState } from './EmptyState'
 
-const WEI_DENOM = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18));
-const ZERO = JSBI.BigInt(0);
-const ONE = JSBI.BigInt(1);
-const ZERO_FRACTION = new Fraction(ZERO, ONE);
-const ALLOWED_OUTPUT_MIN_PERCENT = new Percent(JSBI.BigInt(10000 - INITIAL_ALLOWED_SLIPPAGE), JSBI.BigInt(10000));
+const WEI_DENOM = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+const ZERO = JSBI.BigInt(0)
+const ONE = JSBI.BigInt(1)
+const ZERO_FRACTION = new Fraction(ZERO, ONE)
+const ALLOWED_OUTPUT_MIN_PERCENT = new Percent(JSBI.BigInt(10000 - INITIAL_ALLOWED_SLIPPAGE), JSBI.BigInt(10000))
 
 export function V1LiquidityInfo({
   token,
@@ -41,12 +41,12 @@ export function V1LiquidityInfo({
   tokenWorth,
   ethWorth
 }: {
-  token: Token;
-  liquidityTokenAmount: TokenAmount;
-  tokenWorth: TokenAmount;
-  ethWorth: CurrencyAmount;
+  token: Token
+  liquidityTokenAmount: TokenAmount
+  tokenWorth: TokenAmount
+  ethWorth: CurrencyAmount
 }) {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useActiveWeb3React()
 
   return (
     <>
@@ -83,39 +83,39 @@ export function V1LiquidityInfo({
         </RowFixed>
       </RowBetween>
     </>
-  );
+  )
 }
 
 function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount: TokenAmount; token: Token }) {
-  const { account, chainId } = useActiveWeb3React();
-  const totalSupply = useTotalSupply(liquidityTokenAmount.token);
-  const exchangeETHBalance = useETHBalances([liquidityTokenAmount.token.address])?.[liquidityTokenAmount.token.address];
-  const exchangeTokenBalance = useTokenBalance(liquidityTokenAmount.token.address, token);
+  const { account, chainId } = useActiveWeb3React()
+  const totalSupply = useTotalSupply(liquidityTokenAmount.token)
+  const exchangeETHBalance = useETHBalances([liquidityTokenAmount.token.address])?.[liquidityTokenAmount.token.address]
+  const exchangeTokenBalance = useTokenBalance(liquidityTokenAmount.token.address, token)
 
-  const [v2PairState, v2Pair] = usePair(chainId ? WETH[chainId] : undefined, token);
-  const isFirstLiquidityProvider: boolean = v2PairState === PairState.NOT_EXISTS;
+  const [v2PairState, v2Pair] = usePair(chainId ? WETH[chainId] : undefined, token)
+  const isFirstLiquidityProvider: boolean = v2PairState === PairState.NOT_EXISTS
 
-  const v2SpotPrice = chainId && v2Pair ? v2Pair.reserveOf(token).divide(v2Pair.reserveOf(WETH[chainId])) : undefined;
+  const v2SpotPrice = chainId && v2Pair ? v2Pair.reserveOf(token).divide(v2Pair.reserveOf(WETH[chainId])) : undefined
 
-  const [confirmingMigration, setConfirmingMigration] = useState<boolean>(false);
-  const [pendingMigrationHash, setPendingMigrationHash] = useState<string | null>(null);
+  const [confirmingMigration, setConfirmingMigration] = useState<boolean>(false)
+  const [pendingMigrationHash, setPendingMigrationHash] = useState<string | null>(null)
 
-  const shareFraction: Fraction = totalSupply ? new Percent(liquidityTokenAmount.raw, totalSupply.raw) : ZERO_FRACTION;
+  const shareFraction: Fraction = totalSupply ? new Percent(liquidityTokenAmount.raw, totalSupply.raw) : ZERO_FRACTION
 
   const ethWorth: CurrencyAmount = exchangeETHBalance
     ? CurrencyAmount.ether(exchangeETHBalance.multiply(shareFraction).multiply(WEI_DENOM).quotient)
-    : CurrencyAmount.ether(ZERO);
+    : CurrencyAmount.ether(ZERO)
 
   const tokenWorth: TokenAmount = exchangeTokenBalance
     ? new TokenAmount(token, shareFraction.multiply(exchangeTokenBalance.raw).quotient)
-    : new TokenAmount(token, ZERO);
+    : new TokenAmount(token, ZERO)
 
-  const [approval, approve] = useApproveCallback(liquidityTokenAmount, MIGRATOR_ADDRESS);
+  const [approval, approve] = useApproveCallback(liquidityTokenAmount, MIGRATOR_ADDRESS)
 
   const v1SpotPrice =
     exchangeTokenBalance && exchangeETHBalance
       ? exchangeTokenBalance.divide(new Fraction(exchangeETHBalance.raw, WEI_DENOM))
-      : null;
+      : null
 
   const priceDifferenceFraction: Fraction | undefined =
     v1SpotPrice && v2SpotPrice
@@ -123,11 +123,11 @@ function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount
           .divide(v2SpotPrice)
           .multiply('100')
           .subtract('100')
-      : undefined;
+      : undefined
 
   const priceDifferenceAbs: Fraction | undefined = priceDifferenceFraction?.lessThan(ZERO)
     ? priceDifferenceFraction?.multiply('-1')
-    : priceDifferenceFraction;
+    : priceDifferenceFraction
 
   const minAmountETH: JSBI | undefined =
     v2SpotPrice && tokenWorth
@@ -135,7 +135,7 @@ function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount
           .divide(v2SpotPrice)
           .multiply(WEI_DENOM)
           .multiply(ALLOWED_OUTPUT_MIN_PERCENT).quotient
-      : ethWorth?.numerator;
+      : ethWorth?.numerator
 
   const minAmountToken: JSBI | undefined =
     v2SpotPrice && ethWorth
@@ -143,16 +143,16 @@ function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount
           .multiply(v2SpotPrice)
           .multiply(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(token.decimals)))
           .multiply(ALLOWED_OUTPUT_MIN_PERCENT).quotient
-      : tokenWorth?.numerator;
+      : tokenWorth?.numerator
 
-  const addTransaction = useTransactionAdder();
-  const isMigrationPending = useIsTransactionPending(pendingMigrationHash ?? undefined);
+  const addTransaction = useTransactionAdder()
+  const isMigrationPending = useIsTransactionPending(pendingMigrationHash ?? undefined)
 
-  const migrator = useV2MigratorContract();
+  const migrator = useV2MigratorContract()
   const migrate = useCallback(() => {
-    if (!minAmountToken || !minAmountETH || !migrator) return;
+    if (!minAmountToken || !minAmountETH || !migrator) return
 
-    setConfirmingMigration(true);
+    setConfirmingMigration(true)
     migrator
       .migrate(
         token.address,
@@ -166,23 +166,23 @@ function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount
           category: 'Migrate',
           action: 'V1->V2',
           label: token?.symbol
-        });
+        })
 
         addTransaction(response, {
           summary: `Migrate ${token.symbol} liquidity to V2`
-        });
-        setPendingMigrationHash(response.hash);
+        })
+        setPendingMigrationHash(response.hash)
       })
       .catch(() => {
-        setConfirmingMigration(false);
-      });
-  }, [minAmountToken, minAmountETH, migrator, token, account, addTransaction]);
+        setConfirmingMigration(false)
+      })
+  }, [minAmountToken, minAmountETH, migrator, token, account, addTransaction])
 
-  const noLiquidityTokens = !!liquidityTokenAmount && liquidityTokenAmount.equalTo(ZERO);
+  const noLiquidityTokens = !!liquidityTokenAmount && liquidityTokenAmount.equalTo(ZERO)
 
-  const largePriceDifference = !!priceDifferenceAbs && !priceDifferenceAbs.lessThan(JSBI.BigInt(5));
+  const largePriceDifference = !!priceDifferenceAbs && !priceDifferenceAbs.lessThan(JSBI.BigInt(5))
 
-  const isSuccessfullyMigrated = !!pendingMigrationHash && noLiquidityTokens;
+  const isSuccessfullyMigrated = !!pendingMigrationHash && noLiquidityTokens
 
   return (
     <AutoColumn gap="20px">
@@ -307,7 +307,7 @@ function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount
         {`Your Uniswap V1 ${token.symbol}/ETH liquidity will become Uniswap V2 ${token.symbol}/ETH liquidity.`}
       </TYPE.darkGray>
     </AutoColumn>
-  );
+  )
 }
 
 export default function MigrateV1Exchange({
@@ -316,13 +316,13 @@ export default function MigrateV1Exchange({
     params: { address }
   }
 }: RouteComponentProps<{ address: string }>) {
-  const validatedAddress = isAddress(address);
-  const { chainId, account } = useActiveWeb3React();
+  const validatedAddress = isAddress(address)
+  const { chainId, account } = useActiveWeb3React()
 
-  const exchangeContract = useV1ExchangeContract(validatedAddress ? validatedAddress : undefined);
-  const tokenAddress = useSingleCallResult(exchangeContract, 'tokenAddress', undefined, NEVER_RELOAD)?.result?.[0];
+  const exchangeContract = useV1ExchangeContract(validatedAddress ? validatedAddress : undefined)
+  const tokenAddress = useSingleCallResult(exchangeContract, 'tokenAddress', undefined, NEVER_RELOAD)?.result?.[0]
 
-  const token = useToken(tokenAddress);
+  const token = useToken(tokenAddress)
 
   const liquidityToken: Token | undefined = useMemo(
     () =>
@@ -330,13 +330,13 @@ export default function MigrateV1Exchange({
         ? new Token(chainId, validatedAddress, 18, `UNI-V1-${token.symbol}`, 'Uniswap V1')
         : undefined,
     [chainId, validatedAddress, token]
-  );
-  const userLiquidityBalance = useTokenBalance(account ?? undefined, liquidityToken);
+  )
+  const userLiquidityBalance = useTokenBalance(account ?? undefined, liquidityToken)
 
   // redirect for invalid url params
   if (!validatedAddress || tokenAddress === AddressZero) {
-    console.error('Invalid address in path', address);
-    return <Redirect to="/migrate/v1" />;
+    console.error('Invalid address in path', address)
+    return <Redirect to="/migrate/v1" />
   }
 
   return (
@@ -361,7 +361,7 @@ export default function MigrateV1Exchange({
 
             <ButtonConfirmed
               onClick={() => {
-                history.push(`/remove/v1/${validatedAddress}`);
+                history.push(`/remove/v1/${validatedAddress}`)
               }}
             >
               Remove
@@ -374,5 +374,5 @@ export default function MigrateV1Exchange({
         )}
       </AutoColumn>
     </BodyWrapper>
-  );
+  )
 }
