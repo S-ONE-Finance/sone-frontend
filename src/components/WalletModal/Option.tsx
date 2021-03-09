@@ -12,7 +12,7 @@ const InfoCard = styled.button<{ active?: boolean }>`
   &:focus {
     box-shadow: 0 0 0 1px ${({ theme }) => theme.primary1};
   }
-  border-color: ${({ theme, active }) => (active ? 'transparent' : theme.bg3)};
+  border-color: ${({ theme, active }) => (active ? 'transparent' : theme.text4Sone)};
 `
 
 const OptionCard = styled(InfoCard as any)`
@@ -21,7 +21,7 @@ const OptionCard = styled(InfoCard as any)`
   align-items: center;
   justify-content: space-between;
   margin-top: 2rem;
-  padding: 1rem;
+  padding: 1rem 2rem;
 `
 
 const OptionCardLeft = styled.div`

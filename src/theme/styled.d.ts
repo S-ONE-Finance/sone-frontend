@@ -51,6 +51,7 @@ export interface Colors {
   text2Sone: Color
   text3Sone: Color
   text4Sone: Color
+  text5Sone: Color
   red1Sone: Color
   bg1Sone: Color
   bg2Sone: Color

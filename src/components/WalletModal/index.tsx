@@ -23,11 +23,16 @@ import PendingView from './PendingView'
 const CloseIcon = styled.div`
   position: absolute;
   right: 2rem;
-  top: 2rem;
+  top: 2.5rem;
+
   &:hover {
     cursor: pointer;
     opacity: 0.6;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    top: 1.75rem;
+  `};
 `
 
 const CloseColor = styled(Close)`
@@ -54,9 +59,14 @@ const HeaderRow = styled.div`
 
 const ContentWrapper = styled.div`
   background-color: ${({ theme }) => theme.bg2};
-  padding: 2rem;
+  padding: 2rem 4rem;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 2rem;
+    padding-bottom: 0.75rem;
+  `};
 `
 
 const UpperSection = styled.div`
@@ -85,18 +95,25 @@ const Blurb = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 2rem;
+  font-weight: 500;
+  color: ${({ theme }) => theme.text5Sone};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     margin: 1rem;
-    font-size: 12px;
+    // font-size: 12px;
   `};
+`
+
+const StyledExternalLink = styled(ExternalLink)`
+  font-weight: 700;
+  color: ${({ theme }) => theme.text4Sone};
 `
 
 const OptionGrid = styled.div`
   display: grid;
-  grid-gap: 10px;
+  grid-gap: 20px;
   ${({ theme }) => theme.mediaWidth.upToMedium`
     grid-template-columns: 1fr;
-    grid-gap: 10px;
+    grid-gap: 20px;
   `};
 `
 
@@ -104,6 +121,15 @@ const HoverText = styled.div`
   :hover {
     cursor: pointer;
   }
+`
+
+const Title = styled.div`
+  font-size: 28px;
+  font-weight: 700;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 1rem;
+  `};
 `
 
 const WALLET_VIEWS = {
@@ -147,7 +173,8 @@ export default function WalletModal({
   useEffect(() => {
     if (walletModalOpen) {
       setPendingError(false)
-      setWalletView(WALLET_VIEWS.ACCOUNT)
+      // setWalletView(WALLET_VIEWS.ACCOUNT) // Không cần WALLET_VIEWS.ACCOUNT nữa vì đã có MyAccountPanel
+      setWalletView(WALLET_VIEWS.OPTIONS)
     }
   }, [walletModalOpen])
 
@@ -268,9 +295,8 @@ export default function WalletModal({
           <Option
             id={`connect-${key}`}
             onClick={() => {
-              option.connector === connector
-                ? setWalletView(WALLET_VIEWS.ACCOUNT)
-                : !option.href && tryActivation(option.connector)
+              // option.connector === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : !option.href && tryActivation(option.connector)
+              if (option.connector !== connector && !option.href) tryActivation(option.connector)
             }}
             key={key}
             active={option.connector === connector}
@@ -319,7 +345,7 @@ export default function WalletModal({
         <CloseIcon onClick={toggleWalletModal}>
           <CloseColor />
         </CloseIcon>
-        {walletView !== WALLET_VIEWS.ACCOUNT ? (
+        {/* {walletView !== WALLET_VIEWS.ACCOUNT ? (
           <HeaderRow color="blue">
             <HoverText
               onClick={() => {
@@ -331,7 +357,25 @@ export default function WalletModal({
             </HoverText>
           </HeaderRow>
         ) : (
-          <HeaderRow>Connect to a wallet</HeaderRow>
+          <HeaderRow>
+            <Title>Connect to a wallet</Title>
+          </HeaderRow>
+        )} */}
+        {walletView !== WALLET_VIEWS.OPTIONS ? (
+          <HeaderRow color="blue">
+            <HoverText
+              onClick={() => {
+                setPendingError(false)
+                setWalletView(WALLET_VIEWS.OPTIONS)
+              }}
+            >
+              Back
+            </HoverText>
+          </HeaderRow>
+        ) : (
+          <HeaderRow>
+            <Title>Connect to a wallet</Title>
+          </HeaderRow>
         )}
         <ContentWrapper>
           {walletView === WALLET_VIEWS.PENDING ? (
@@ -347,7 +391,7 @@ export default function WalletModal({
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
               <span>New to Ethereum? &nbsp;</span>{' '}
-              <ExternalLink href="https://ethereum.org/wallets/">Learn more about wallets</ExternalLink>
+              <StyledExternalLink href="https://ethereum.org/wallets/">Learn more about wallets</StyledExternalLink>
             </Blurb>
           )}
         </ContentWrapper>
@@ -356,8 +400,8 @@ export default function WalletModal({
   }
 
   return (
-    // <Modal isOpen={walletModalOpen} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}>
-    <Modal isOpen={true} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}>
+    <Modal isOpen={walletModalOpen} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}>
+      {/* <Modal isOpen={true} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}> */}
       <Wrapper>{getModalContent()}</Wrapper>
     </Modal>
   )
