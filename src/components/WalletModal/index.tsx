@@ -54,11 +54,11 @@ const HeaderRow = styled.div`
   padding-bottom: 0;
   font-weight: 500;
   color: ${props => (props.color === 'blue' ? ({ theme }) => theme.primary1 : 'inherit')};
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.bg1Sone};
 `
 
 const ContentWrapper = styled.div`
-  background-color: ${({ theme }) => theme.bg2};
+  background-color: ${({ theme }) => theme.bg1Sone};
   padding: 2rem 4rem;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
@@ -299,7 +299,7 @@ export default function WalletModal({
               if (option.connector !== connector && !option.href) tryActivation(option.connector)
             }}
             key={key}
-            active={option.connector === connector}
+            active={option.connector && option.connector === connector}
             color={option.color}
             link={option.href}
             header={option.name}
@@ -362,14 +362,14 @@ export default function WalletModal({
           </HeaderRow>
         )} */}
         {walletView !== WALLET_VIEWS.OPTIONS ? (
-          <HeaderRow color="blue">
+          <HeaderRow>
             <HoverText
               onClick={() => {
                 setPendingError(false)
                 setWalletView(WALLET_VIEWS.OPTIONS)
               }}
             >
-              Back
+              <Title>Back</Title>
             </HoverText>
           </HeaderRow>
         ) : (

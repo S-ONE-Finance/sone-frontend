@@ -8,7 +8,7 @@ import { Moon, Sun, Globe } from 'react-feather'
 
 import Logo from '../../assets/svg/logo_text_sone.svg'
 import LogoDark from '../../assets/svg/logo_text_white_sone.svg'
-import LogoToken from '../../assets/svg/logo_token_sone.svg'
+import LogoToken from '../../assets/images/logo_token_sone.svg'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
@@ -84,6 +84,7 @@ const HeaderRow = styled(RowFixed)`
 `
 
 const HeaderMenu = styled(Row)`
+  margin-left: 2rem;
   justify-content: center;
   ${({ theme }) => theme.mediaWidth.upToLarge`
     // padding: 1rem 0 1rem 1rem;
@@ -118,7 +119,6 @@ const StyledNavLink = styled(NavLink).attrs({
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
   width: fit-content;
-  margin-left: 2rem;
   font-weight: 400;
   height: 70px;
   display: flex;
@@ -156,7 +156,6 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
   width: fit-content;
-  margin-left: 2rem;
   font-weight: 400;
   height: 70px;
   display: flex;
@@ -505,7 +504,7 @@ export default function Header() {
                   : undefined
               }
             >
-              {t('swap')}
+              <StyledNavLink to={'/swap'}>{t('swap')}</StyledNavLink>
               <SubMenu>
                 <SubMenuItemNavLink to={'/swap'}>{t('swap')}</SubMenuItemNavLink>
                 <SubMenuItemNavLink
@@ -523,9 +522,11 @@ export default function Header() {
                 </SubMenuItemNavLink>
               </SubMenu>
             </MenuItem>
-            <StyledNavLink to={'/uni'}>{t('staking')}</StyledNavLink>
             <MenuItem>
-              {t('stats')}
+              <StyledNavLink to={'/uni'}>{t('staking')}</StyledNavLink>
+            </MenuItem>
+            <MenuItem>
+              <StyledExternalLink href={'https://www.lipsum.com/'}>{t('stats')}</StyledExternalLink>
               <SubMenu>
                 <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swapStats')}</SubMenuItemExternalLink>
                 <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('stakingStats')}</SubMenuItemExternalLink>
@@ -533,7 +534,7 @@ export default function Header() {
               </SubMenu>
             </MenuItem>
             <MenuItem>
-              {t('docs')}
+              <StyledExternalLink href={'https://www.lipsum.com/'}>{t('docs')}</StyledExternalLink>
               <ResponsiveTopEndSubMenu>
                 <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('whitePaper')}</SubMenuItemExternalLink>
                 <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</SubMenuItemExternalLink>

@@ -56,6 +56,7 @@ export interface Colors {
   bg1Sone: Color
   bg2Sone: Color
   bg3Sone: Color
+  border1Sone: Color
   stroke1Sone: Color
   divider1Sone: Color
   scrollbarThumb: Color

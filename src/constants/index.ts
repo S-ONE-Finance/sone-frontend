@@ -1,6 +1,7 @@
 import { ChainId, JSBI, Percent, Token, WETH } from '@uniswap/sdk'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
 
 export const ROUTER_ADDRESS = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D'
@@ -120,6 +121,14 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#010101',
     primary: true
   },
+  SONE_WALLET: {
+    name: 'S-One Wallet',
+    iconName: 'logo_token_sone.svg',
+    description: 'Open in S-One Wallet app.',
+    href: 'https://www.lipsum.com/',
+    color: '#F05359',
+    mobile: true
+  },
   METAMASK: {
     connector: injected,
     name: 'MetaMask',
@@ -137,7 +146,17 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#4196FC',
     mobile: true
   },
-  WALLET_LINK: {
+  TRUST_WALLET: {
+    name: 'Trust Wallet',
+    iconName: 'trustWallet.png',
+    description: 'Open in Trust Wallet app.',
+    href: 'https://www.lipsum.com/',
+    color: '#2F73BD',
+    mobile: true
+  }
+  // S-One doén't need below options.
+  /* 
+    WALLET_LINK: {
     connector: walletlink,
     name: 'Coinbase Wallet',
     iconName: 'coinbaseWalletIcon.svg',
@@ -172,6 +191,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#4A6C9B',
     mobile: true
   }
+  */
 }
 
 export const NetworkContextName = 'NETWORK'
