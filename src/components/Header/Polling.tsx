@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
-import { TYPE, ExternalLink } from '../../theme'
+import { ExternalLink, TYPE } from '../../theme'
 
 import { useBlockNumber } from '../../state/application/hooks'
 import { getEtherscanLink } from '../../utils'
@@ -10,7 +10,7 @@ const StyledPolling = styled.div`
   position: fixed;
   display: flex;
   right: 0;
-  bottom: 0;
+  bottom: 45px; // Equals footer's height.
   padding: 1rem;
   color: white;
   transition: opacity 0.25s ease;
