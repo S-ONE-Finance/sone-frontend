@@ -73,7 +73,7 @@ const FooterWrapper = styled.div`
   bottom: 0;
   width: 100%;
   height: 45px;
-  background: red;
+  background: ${({ theme }) => theme.bg4Sone};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     display: none;
   `};
