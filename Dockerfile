@@ -1,25 +1,18 @@
-FROM ubuntu:20.04
+# build env
+FROM node:12-alpine as build
 
-ENV TZ=Asia/Ho_Chi_Minh
+RUN apk update && apk add git
 
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-RUN apt update && apt install curl -y \
-    && apt install -y git \
-    && apt-get install -y gnupg2 \
-    && curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-    && apt update && apt install -y nodejs && apt install -y yarn \
-    && apt install -y tzdata
-
-# Create app directory
 WORKDIR /app
 
-# Install app dependencies
-COPY . ./
+COPY . .
 
-RUN yarn --pure-lockfile && yarn
+RUN yarn cache clean && yarn
 
-EXPOSE 3000
+RUN yarn run build
 
-CMD [ "yarn", "start" ]
+# production env
+FROM nginx:stable-alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
