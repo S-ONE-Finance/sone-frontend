@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { AlertCircle, CheckCircle } from 'react-feather'
 import styled, { ThemeContext } from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
-import { TYPE } from '../../theme'
-import { ExternalLink } from '../../theme/components'
+import { ExternalLink, TYPE } from '../../theme'
 import { getEtherscanLink } from '../../utils'
 import { AutoColumn } from '../Column'
 import { AutoRow } from '../Row'
@@ -24,9 +23,8 @@ export default function TransactionPopup({
   success?: boolean
   summary?: string | TransactionSummary
 }) {
-  // Để đây chỉ để cho thằng StyledSummary nó được render lại khi thay đổi ngôn ngữ.
-  // TODO: Optimize chỗ này.
-  const { t } = useTranslation()
+  // TODO: Để đây chỉ để cho thằng StyledSummary nó được render lại khi thay đổi ngôn ngữ.
+  useTranslation()
   const { chainId } = useActiveWeb3React()
 
   const theme = useContext(ThemeContext)

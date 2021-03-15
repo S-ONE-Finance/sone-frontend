@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 import styled, {
-  ThemeProvider as StyledComponentsThemeProvider,
   createGlobalStyle,
   css,
-  DefaultTheme
+  DefaultTheme,
+  ThemeProvider as StyledComponentsThemeProvider
 } from 'styled-components'
 import { useIsDarkMode } from '../state/user/hooks'
 import { Text, TextProps } from 'rebass'
@@ -101,9 +101,12 @@ export function colors(darkMode: boolean): Colors {
     text4Sone: darkMode ? '#AAAAAA' : '#767676',
     text5Sone: darkMode ? '#3FAAB0' : '#3FAAB0',
     red1Sone: '#F05359',
+    green1Sone: '#7AC51B',
     bg1Sone: darkMode ? '#0E2B4A' : '#FFFFFF',
     bg2Sone: darkMode ? '#3B5183' : '#FAEDED',
     bg3Sone: darkMode ? '#3B5183' : '#FFFFFF',
+    bg4Sone: darkMode ? 'rgba(0,0,0,0.6)' : '#F3F3F3',
+    border1Sone: darkMode ? '#AAAAAA' : '#C9C9C9',
     stroke1Sone: darkMode ? '#3FAAB0' : '#F05359',
     divider1Sone: darkMode ? '#AAAAAA' : 'rgba(0, 0, 0, 0.25)',
     scrollbarThumb: darkMode ? '#3B5183' : '#808080'
@@ -204,6 +207,9 @@ export const TYPE = {
   },
   red1Sone(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'red1Sone'} {...props} />
+  },
+  green1Sone(props: TextProps) {
+    return <TextWrapper fontWeight={500} color={'green1Sone'} {...props} />
   },
   language(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'text2Sone'} {...props} />

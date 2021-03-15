@@ -68,6 +68,7 @@ const ButtonConnectWallet = styled.div<{ cursor?: string }>`
   font-size: 16px;
   font-weight: 500;
   cursor: ${({ cursor }) => cursor || 'pointer'};
+  box-shadow: 4px 4px 4px rgb(0 0 0 / 12%);
 
   :hover,
   :focus {

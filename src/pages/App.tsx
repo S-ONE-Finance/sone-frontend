@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
 import AddressClaimModal from '../components/claim/AddressClaimModal'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import Polling from '../components/Header/Polling'
 import URLWarning from '../components/Header/URLWarning'
 import Popups from '../components/Popups'
@@ -53,7 +54,6 @@ const BodyWrapper = styled.div`
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  z-index: 10;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     padding: 16px;
@@ -65,6 +65,18 @@ const BodyWrapper = styled.div`
 
 const Marginer = styled.div`
   margin-top: 5rem;
+`
+
+const FooterWrapper = styled.div`
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 45px;
+  background: ${({ theme }) => theme.bg4Sone};
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: none;
+  `};
 `
 
 function TopLevelModals() {
@@ -114,8 +126,11 @@ export default function App() {
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
-          <Marginer />
         </BodyWrapper>
+        <FooterWrapper>
+          <Footer />
+        </FooterWrapper>
+        <Marginer />
       </AppWrapper>
     </Suspense>
   )
