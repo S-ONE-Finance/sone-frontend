@@ -4,7 +4,8 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CountUp } from 'use-count-up'
 import styled from 'styled-components'
-import { Moon, Sun, Globe } from 'react-feather'
+import { Globe, Menu as MenuIcon, Moon, Sun } from 'react-feather'
+import { isMobile } from 'react-device-detect'
 
 import Logo from '../../assets/svg/logo_text_sone.svg'
 import LogoDark from '../../assets/svg/logo_text_white_sone.svg'
@@ -17,7 +18,7 @@ import { useUserHasAvailableClaim } from '../../state/claim/hooks'
 import usePrevious from '../../hooks/usePrevious'
 import useLanguage from '../../hooks/useLanguage'
 
-import { TYPE, ExternalLink } from '../../theme'
+import { ExternalLink, TYPE } from '../../theme'
 import Row, { RowFixed } from '../Row'
 import ClaimModal from '../claim/ClaimModal'
 import PendingStatus from './PendingStatus'
@@ -29,12 +30,11 @@ const HeaderFrame = styled.div`
   grid-template-columns: 1fr 120px;
   align-items: center;
   justify-content: space-between;
-  align-items: center;
   flex-direction: row;
   width: 100%;
   top: 0;
   position: relative;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: 0 80px;
   z-index: 2;
   background-color: ${({ theme }) => theme.bg1Sone};
@@ -75,6 +75,12 @@ const HeaderElement = styled.div`
 const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    > *:first-child {
+      margin-left: 0;
+    }
+  `};
 `
 
 const HeaderRow = styled(RowFixed)`
@@ -175,14 +181,13 @@ const StyledExternalLink = styled(ExternalLink).attrs({
   }
 `
 
-// Đưa `display` vào props để ép kiểu block trong lúc dev.
-//
+// Put `display` in props to cast block during dev.
 const SubMenu = styled.div<{ width?: string; borderRadius?: string; display?: string }>`
   position: absolute;
   top: calc(70px + 1rem);
   left: 50%;
   transform: translateX(-50%);
-  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.24);
   background-color: ${({ theme }) => theme.bg1Sone};
   border-radius: ${({ borderRadius }) => borderRadius ?? '10px'};
   width: ${({ width }) => width ?? '172px'};
@@ -190,7 +195,7 @@ const SubMenu = styled.div<{ width?: string; borderRadius?: string; display?: st
   display: ${({ display }) => display ?? 'none'};
 `
 
-// Cái submenu cuối cùng ở trên top phải căn phải chứ không căn giữa.
+// The last submenu in the top must be right-aligned, not centered.
 const ResponsiveTopEndSubMenu = styled(SubMenu)`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     left: unset;
@@ -199,7 +204,7 @@ const ResponsiveTopEndSubMenu = styled(SubMenu)`
   `}
 `
 
-// Đưa submenu bám vào bên trái phía dưới màn hình
+// Put submenu cling to the bottom left of the screen.
 const ResponsiveBottomLeftSubMenu = styled(SubMenu)`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     top: unset;
@@ -209,7 +214,7 @@ const ResponsiveBottomLeftSubMenu = styled(SubMenu)`
 `}
 `
 
-// Đưa submenu bám vào bên phải phía dưới màn hình
+// Put submenu cling to the bottom right of the screen.
 const ResponsiveBottomRightSubMenu = styled(SubMenu)`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     top: unset;
@@ -230,7 +235,6 @@ const SubMenuItemNavLink = styled(NavLink).attrs({
   text-decoration: none;
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
-  width: fit-content;
   font-weight: 400;
   height: 50px;
   width: 100%;
@@ -246,7 +250,7 @@ const SubMenuItemNavLink = styled(NavLink).attrs({
   }
 `
 
-// The same style as SubMenuItemNavLink
+// The same style as SubMenuItemNavLink.
 const SubMenuItemExternalLink = styled(ExternalLink).attrs({
   activeClassName
 })<{ isActive?: boolean }>`
@@ -257,7 +261,6 @@ const SubMenuItemExternalLink = styled(ExternalLink).attrs({
   text-decoration: none;
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
-  width: fit-content;
   font-weight: 400;
   height: 50px;
   width: 100%;
@@ -274,7 +277,7 @@ const SubMenuItemExternalLink = styled(ExternalLink).attrs({
   }
 `
 
-// The same style as SubMenuItemNavLink
+// The same style as SubMenuItemNavLink.
 const SubMenuItemText = styled.span`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
@@ -283,7 +286,6 @@ const SubMenuItemText = styled.span`
   text-decoration: none;
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
-  width: fit-content;
   font-weight: 400;
   height: 50px;
   width: 100%;
@@ -300,32 +302,29 @@ const SubMenuItemText = styled.span`
   }
 `
 
-export const StyledMenuButton = styled.button<{ cursor?: string }>`
+export const StyledMenuButton = styled.button<{ cursor?: string; primary?: boolean }>`
   position: relative;
   width: 100%;
-  height: 100%;
   border: none;
-  background-color: ${({ theme }) => theme.bg3Sone};
-  margin: 0;
-  padding: 0;
+  background-color: ${({ theme, primary }) => (primary ? theme.red1Sone : theme.bg3Sone)};
   height: 35px;
-  margin-left: 8px;
+  margin: 0 0 0 8px;
   padding: 0.15rem 1rem;
   border-radius: 20px;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.12);
   cursor: ${({ cursor }) => cursor || 'default'};
   outline: none;
 
-  :hover,
-  :focus {
+  :hover {
     background-color: ${({ theme }) => theme.bg4};
   }
 
   svg {
     margin-top: 2px;
   }
+
   > * {
-    stroke: ${({ theme }) => theme.stroke1Sone};
+    stroke: ${({ theme, primary }) => (primary ? '#FFFFFF' : theme.stroke1Sone)};
   }
 `
 
@@ -393,13 +392,13 @@ const MenuItem = styled.div.attrs({
   }
 `
 
-// Khi màn hình kéo về medium thì phải hover lên trên menuitem phải giữ submenu hiện ra.
+// Khi màn hình kéo về large thì phải hover lên trên menuitem phải giữ submenu hiện ra.
 const ResponsiveMenuItem = styled(MenuItem)`
   ::before {
     ${({ theme }) => theme.mediaWidth.upToLarge`
-    bottom: unset;
-    top: -1rem;
-  `}
+      bottom: unset;
+      top: -1rem;
+    `}
   }
 `
 
@@ -421,8 +420,11 @@ const HeaderControls = styled.div`
     width: 100%;
     z-index: 99;
     height: 72px;
-    border-radius: 12px 12px 0 0;
-    background-color: ${({ theme }) => theme.bg1};
+    background-color: ${({ theme }) => theme.bg1Sone};
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    justify-content: center;
   `};
 `
 
@@ -441,7 +443,6 @@ const AccountElement = styled.div`
 `
 
 const SONEAmount = styled(AccountElement)`
-  color: white;
   padding: 0 0.5rem;
   height: 37px;
   font-weight: 400;
@@ -467,21 +468,24 @@ const HideExtraSmall = styled.span`
   `};
 `
 
+const ShowOnlyExtraSmall = styled.div`
+  display: none;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    display: inherit;
+  `};
+`
+
 export default function Header() {
   const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const [language, setLanguage] = useLanguage()
-
   const [darkMode, toggleDarkMode] = useDarkModeManager()
-
   const availableClaim: boolean = useUserHasAvailableClaim(account)
-
   const aggregateBalance: TokenAmount | undefined = useAggregateUniBalance()
+  const location = useLocation()
 
   const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
-
-  const location = useLocation()
 
   return (
     <HeaderFrame>
@@ -526,7 +530,12 @@ export default function Header() {
               <StyledNavLink to={'/uni'}>{t('staking')}</StyledNavLink>
             </MenuItem>
             <MenuItem>
-              <StyledExternalLink href={'https://www.lipsum.com/'}>{t('stats')}</StyledExternalLink>
+              <StyledExternalLink
+                href={isMobile ? '' : 'https://www.lipsum.com/'}
+                target={isMobile ? '_self' : '_blank'}
+              >
+                {t('stats')}
+              </StyledExternalLink>
               <SubMenu>
                 <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swapStats')}</SubMenuItemExternalLink>
                 <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('stakingStats')}</SubMenuItemExternalLink>
@@ -534,7 +543,12 @@ export default function Header() {
               </SubMenu>
             </MenuItem>
             <MenuItem>
-              <StyledExternalLink href={'https://www.lipsum.com/'}>{t('docs')}</StyledExternalLink>
+              <StyledExternalLink
+                href={isMobile ? '' : 'https://docs.s-one.finance/'}
+                target={isMobile ? '_self' : '_blank'}
+              >
+                {t('docs')}
+              </StyledExternalLink>
               <ResponsiveTopEndSubMenu>
                 <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('whitePaper')}</SubMenuItemExternalLink>
                 <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</SubMenuItemExternalLink>
@@ -573,9 +587,11 @@ export default function Header() {
               <Web3Status />
             </AccountElement>
             {account && (
-              <ResponsiveBottomLeftSubMenu width={'fit-content'} borderRadius={'20px'}>
-                <MyAccountPanel />
-              </ResponsiveBottomLeftSubMenu>
+              <HideExtraSmall>
+                <ResponsiveBottomLeftSubMenu width={'fit-content'} borderRadius={'20px'}>
+                  <MyAccountPanel />
+                </ResponsiveBottomLeftSubMenu>
+              </HideExtraSmall>
             )}
           </ResponsiveMenuItem>
         </HeaderElement>
@@ -583,8 +599,8 @@ export default function Header() {
           <StyledMenuButton onClick={() => toggleDarkMode()} cursor="pointer">
             {darkMode ? <Moon size={20} strokeWidth={2.5} /> : <Sun size={20} strokeWidth={2.5} />}
           </StyledMenuButton>
-          <ResponsiveMenuItem style={{ marginLeft: '0.5rem' }}>
-            <StyledMenuButtonWithText style={{ marginLeft: 0 }}>
+          <ResponsiveMenuItem style={{ margin: '0' }}>
+            <StyledMenuButtonWithText>
               <Globe size={20} />
               <TYPE.language style={{ marginLeft: '5px' }}>
                 {language === 'en' ? 'EN' : language === 'jp' ? 'JP' : language === 'zh-CN' ? 'CN' : 'EN'}
@@ -596,6 +612,11 @@ export default function Header() {
               <SubMenuItemText onClick={() => setLanguage('zh-CN')}>中文</SubMenuItemText>
             </ResponsiveBottomRightSubMenu>
           </ResponsiveMenuItem>
+          <ShowOnlyExtraSmall>
+            <StyledMenuButton primary={true} cursor="pointer" onClick={() => toggleDarkMode()}>
+              <MenuIcon size={20} strokeWidth={2.5} />
+            </StyledMenuButton>
+          </ShowOnlyExtraSmall>
         </HeaderElementWrap>
       </HeaderControls>
     </HeaderFrame>

@@ -1,9 +1,14 @@
+// Libs.
 import React from 'react'
-import PairInfo from './PairInfo'
+// import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
+
+// Hooks.
+// import { useTranslation } from 'react-i18next'
+// import { useWindowSize } from '../../hooks/useWindowSize'
+// Components.
 import { RowFixed } from '../Row'
-import { useTranslation } from 'react-i18next'
-import { useWindowSize } from '../../hooks/useWindowSize'
+import PairInfo from './PairInfo'
 
 const data = [
   {
@@ -62,162 +67,163 @@ const data = [
   }
 ]
 
-const StyledRowFixed = styled(RowFixed)`
-  height: 100%;
-  position: relative;
-`
+// const StyledRowFixed = styled(RowFixed)`
+//   height: 100%;
+//   position: relative;
+// `
+//
+// const ListWrapper = styled.div<{ width: number; left: number }>`
+//   height: 100%;
+//   position: absolute;
+//   display: flex;
+//   width: ${({ width }) => (width === -1 ? 'max-content' : width + 'px')};
+//   left: ${({ left }) => left + 'px'};
+// `
+//
+// NOTE: This is a practice using javascript for horizontal scroll infinite, it has the downside that the list will be jerky.
+// export default function Footer() {
+//   // Remove useTranslation() here makes list1Ref.current.clientWidth always equal to 0 ==> BUG.
+//   useTranslation()
+//   const windowSize = useWindowSize()
+//   const list1Ref = React.useRef<HTMLDivElement>(null)
+//   const [list1Left, setList1Left] = React.useState(0)
+//   const [list2Left, setList2Left] = React.useState(0)
+//   const [pause, setPause] = React.useState(false)
+//   const [width, setWidth] = React.useState(-1)
+//
+//   React.useEffect(() => {
+//     if (list1Ref.current) {
+//       setWidth(list1Ref.current.clientWidth)
+//     }
+//   }, [])
+//
+//   React.useEffect(() => {
+//     if (width !== -1) {
+//       setList1Left(0)
+//       setList2Left(width)
+//     }
+//   }, [width])
+//
+//   React.useEffect(() => {
+//     let interval: NodeJS.Timeout
+//     if (width !== -1) {
+//       interval = setInterval(() => {
+//         if (!pause) {
+//           setList1Left(list1Left => list1Left - 0.75)
+//           setList2Left(list2Left => list2Left - 0.75)
+//         }
+//       }, 12)
+//     }
+//     return () => {
+//       if (interval) clearInterval(interval)
+//     }
+//   }, [width, pause])
+//
+//   React.useEffect(() => {
+//     if (width === -1 || !windowSize.width) return
+//
+//     if (list1Left <= -width) {
+//       setList1Left(Math.max(list2Left + width, windowSize.width))
+//     }
+//   }, [list1Left, list2Left, width, windowSize])
+//
+//   React.useEffect(() => {
+//     if (width === -1 || !windowSize.width) return
+//
+//     if (list2Left <= -width) {
+//       setList2Left(Math.max(list1Left + width, windowSize.width))
+//     }
+//   }, [list1Left, list2Left, width, windowSize])
+//
+//   const getListJSX = React.useMemo(
+//     () => (
+//       <>
+//         {data.slice(0).map(pair => (
+//           <PairInfo
+//             key={pair._id}
+//             pairName={pair.pairName}
+//             changeAmount={pair.changeAmount}
+//             changePercentage={pair.changePercentage}
+//           />
+//         ))}
+//       </>
+//     ),
+//     []
+//   )
+//
+//   return (
+//     <StyledRowFixed onMouseEnter={() => !isMobile && setPause(true)} onMouseLeave={() => !isMobile && setPause(false)}>
+//       <ListWrapper ref={list1Ref} width={width} left={list1Left}>
+//         {getListJSX}
+//       </ListWrapper>
+//       <ListWrapper width={width} left={list2Left}>
+//         {getListJSX}
+//       </ListWrapper>
+//     </StyledRowFixed>
+//   )
+// }
 
-const ListWrapper = styled.div<{ width: number; left: number }>`
+// NOTE: This is a practice using only CSS, it has the downside that the list cannot be contiguous.
+const Marquee = styled.div`
+  width: 100%;
   height: 100%;
-  position: absolute;
+  margin: 0 auto;
+  overflow: hidden;
+  box-sizing: border-box;
   display: flex;
-  width: ${({ width }) => (width === -1 ? 'max-content' : width + 'px')};
-  left: ${({ left }) => left + 'px'};
+
+  > * {
+    display: inline-block;
+    width: max-content;
+
+    padding-left: 100%;
+    /* show the marquee just outside the paragraph */
+    will-change: transform;
+    animation: marquee 60s linear infinite;
+  }
+
+  > :hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(-100%, 0);
+    }
+  }
+
+  /* Respect user preferences about animations */
+  @media (prefers-reduced-motion: reduce) {
+    > * {
+      animation-iteration-count: 1;
+      animation-duration: 0.01s;
+      /* instead of animation: none, so an animationend event is
+       * still available, if previously attached.
+       */
+      width: auto;
+      padding-left: 0;
+    }
+  }
 `
 
 export default function Footer() {
-  // TODO: Nếu bỏ useTranslation() ở đây sẽ khiến cho list1Ref.current.clientWidth luôn bằng 0 ==> BUG.
-  useTranslation()
-  const windowSize = useWindowSize()
-  const list1Ref = React.useRef<HTMLDivElement>(null)
-  const [list1Left, setList1Left] = React.useState(0)
-  const [list2Left, setList2Left] = React.useState(0)
-  const [pause, setPause] = React.useState(false)
-  const [width, setWidth] = React.useState(-1)
-
-  React.useEffect(() => {
-    if (list1Ref.current) {
-      setWidth(list1Ref.current.clientWidth)
-    }
-  }, [])
-
-  React.useEffect(() => {
-    if (width !== -1) {
-      setList1Left(0)
-      setList2Left(width)
-    }
-  }, [width])
-
-  React.useEffect(() => {
-    let interval: NodeJS.Timeout
-    if (width !== -1) {
-      interval = setInterval(() => {
-        if (!pause) {
-          setList1Left(list1Left => list1Left - 1)
-          setList2Left(list2Left => list2Left - 1)
-        }
-      }, 24)
-    }
-    return () => {
-      if (interval) clearInterval(interval)
-    }
-  }, [width, pause])
-
-  React.useEffect(() => {
-    if (width === -1 || !windowSize.width) return
-
-    if (list1Left <= -width) {
-      setList1Left(Math.max(list2Left + width, windowSize.width))
-    }
-  }, [list1Left, list2Left, width, windowSize])
-
-  React.useEffect(() => {
-    if (width === -1 || !windowSize.width) return
-
-    if (list2Left <= -width) {
-      setList2Left(Math.max(list1Left + width, windowSize.width))
-    }
-  }, [list1Left, list2Left, width, windowSize])
-
-  const getListJSX = React.useMemo(
-    () => (
-      <>
-        {data.slice(0).map(pair => (
-          <PairInfo
-            key={pair._id}
-            pairName={pair.pairName}
-            changeAmount={pair.changeAmount}
-            changePercentage={pair.changePercentage}
-          />
-        ))}
-      </>
-    ),
-    []
-  )
-
   return (
-    <StyledRowFixed onMouseEnter={() => setPause(true)} onMouseLeave={() => setPause(false)}>
-      <ListWrapper ref={list1Ref} width={width} left={list1Left}>
-        {getListJSX}
-      </ListWrapper>
-      <ListWrapper width={width} left={list2Left}>
-        {getListJSX}
-      </ListWrapper>
-    </StyledRowFixed>
+    <Marquee>
+      <div>
+        <RowFixed height={'100%'}>
+          {data.slice(0).map(pair => (
+            <PairInfo
+              key={pair._id}
+              pairName={pair.pairName}
+              changeAmount={pair.changeAmount}
+              changePercentage={pair.changePercentage}
+            />
+          ))}
+        </RowFixed>
+      </div>
+    </Marquee>
   )
 }
-
-// NOTE: This is a practice using only CSS, but the list will not be concatenated forever.
-// const Marquee = styled.div`
-//   width: 100%;
-//   height: 100%;
-//   margin: 0 auto;
-//   overflow: hidden;
-//   box-sizing: border-box;
-//   display: flex;
-//
-//   > * {
-//     display: inline-block;
-//     width: max-content;
-//
-//     padding-left: 100%;
-//     /* show the marquee just outside the paragraph */
-//     will-change: transform;
-//     animation: marquee 24s linear infinite;
-//   }
-//
-//   > :hover {
-//     animation-play-state: paused;
-//   }
-//
-//   @keyframes marquee {
-//     0% {
-//       transform: translate(0, 0);
-//     }
-//     100% {
-//       transform: translate(-100%, 0);
-//     }
-//   }
-//
-//   /* Respect user preferences about animations */
-//   @media (prefers-reduced-motion: reduce) {
-//     > * {
-//       animation-iteration-count: 1;
-//       animation-duration: 0.01s;
-//       /* instead of animation: none, so an animationend event is
-//        * still available, if previously attached.
-//        */
-//       width: auto;
-//       padding-left: 0;
-//     }
-//   }
-// `
-//
-// export default function Footer() {
-//   return (
-//     <Marquee>
-//       <div>
-//         <RowFixed height={'100%'}>
-//           {data.slice(0).map(pair => (
-//             <PairInfo
-//               key={pair._id}
-//               pairName={pair.pairName}
-//               changeAmount={pair.changeAmount}
-//               changePercentage={pair.changePercentage}
-//             />
-//           ))}
-//         </RowFixed>
-//       </div>
-//     </Marquee>
-//   )
-// }
