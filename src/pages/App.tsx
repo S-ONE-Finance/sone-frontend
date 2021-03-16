@@ -74,8 +74,15 @@ const FooterWrapper = styled.div`
   width: 100%;
   height: 45px;
   background: ${({ theme }) => theme.bg4Sone};
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    display: none;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    bottom: 72px;
+    border-radius: 12px 12px 0 0;
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    height: 31px;
   `};
 `
 

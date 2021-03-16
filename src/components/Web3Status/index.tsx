@@ -1,11 +1,16 @@
+// Sau khi chuyển hết logic sang bên MyAccountPanel (desktop) và màn Modal khi click
+// vào hamburger icon trên mobile thì sẽ xoá hết logic của file này đi. Chỉ để lại
+// Button Text My Account or Connect Wallet or Error
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import { darken } from 'polished'
 import React, { useMemo } from 'react'
 import { Activity } from 'react-feather'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import { useHistory } from 'react-router-dom'
 
 import useENSName from '../../hooks/useENSName'
+import { useWindowSize } from '../../hooks/useWindowSize'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 
@@ -32,6 +37,7 @@ const Web3StatusError = styled(Web3StatusGeneric)`
   border: 1px solid ${({ theme }) => theme.red1Sone};
   color: ${({ theme }) => theme.white};
   font-weight: 500;
+
   :hover,
   :focus {
     background-color: ${({ theme }) => darken(0.1, theme.red1Sone)};
@@ -74,6 +80,10 @@ const ButtonConnectWallet = styled.div<{ cursor?: string }>`
   :focus {
     background-color: ${({ theme }) => theme.red1Sone};
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      width: 140px;
+  `}
 `
 
 // we want the latest one to come first, so return negative if a is after b
@@ -84,12 +94,22 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 function Web3StatusInner() {
   const { t } = useTranslation()
   const { account, error } = useWeb3React()
-
   const toggleWalletModal = useWalletModalToggle()
+  const history = useHistory()
+  const size = useWindowSize()
 
   if (account) {
     return (
-      <ButtonConnectWallet id="web3-status-connected" cursor="normal">
+      <ButtonConnectWallet
+        id="web3-status-connected"
+        cursor="normal"
+        onClick={() => {
+          // Dưới 500px thì mới hiển thị, vì sao á? CC.
+          if (size?.width && size?.width <= 500) {
+            history.push('/my-account')
+          }
+        }}
+      >
         {t('myAccount')}
       </ButtonConnectWallet>
     )

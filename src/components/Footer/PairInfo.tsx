@@ -15,24 +15,75 @@ const PairInfoWrapper = styled(RowFixed)`
   height: 100%;
   width: max-content;
   padding: 0 45px;
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 0 12.5px;
+  `};
+`
+
+const Text = {
+  PairName: styled(TYPE.black)`
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 11px;
+    `};
+  `,
+  ChangeAmount: styled(TYPE.black)`
+    margin-left: 10px !important;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 11px;
+    margin-left: 5px !important;
+    `};
+  `,
+  Up: styled(TYPE.green1Sone)`
+    display: flex;
+    align-items: center;
+    font-weight: 400 !important;
+    margin-left: 10px !important;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 11px;
+    margin-left: 5px !important;
+    `};
+  `,
+  Down: styled(TYPE.red1Sone)`
+    display: flex;
+    align-items: center;
+    font-weight: 400 !important;
+    margin-left: 10px !important;
+    ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 11px;
+    margin-left: 5px !important;
+    `};
+  `
+}
+
+const ResponsiveArrowUp = styled(ArrowUp)`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    width: 15px;
+    height: 15px;
+  `};
+`
+
+const ResponsiveArrowDown = styled(ArrowDown)`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    width: 15px;
+    height: 15px;
+  `};
 `
 
 export default function PairInfo({ pairName, changeAmount, changePercentage }: PairInfoProps) {
   return (
     <PairInfoWrapper>
-      <TYPE.black>{pairName}</TYPE.black>
-      <TYPE.subText fontWeight={500} marginLeft={'10px'}>
-        {changeAmount}
-      </TYPE.subText>
+      <Text.PairName>{pairName}</Text.PairName>
+      <Text.ChangeAmount>{changeAmount}</Text.ChangeAmount>
       {changePercentage > 0 ? (
-        <TYPE.green1Sone fontWeight={400} marginLeft={'10px'} display={'flex'}>
-          <ArrowUp size={19} />
+        <Text.Up>
+          <ResponsiveArrowUp size={19} />
           <span>+{changePercentage}%</span>
-        </TYPE.green1Sone>
+        </Text.Up>
       ) : (
-        <TYPE.red1Sone fontWeight={400} marginLeft={'10px'} display={'flex'}>
-          <ArrowDown size={19} />−{changePercentage * -1}%
-        </TYPE.red1Sone>
+        <Text.Down>
+          <ResponsiveArrowDown size={19} />
+          <span>−{changePercentage * -1}%</span>
+        </Text.Down>
       )}
     </PairInfoWrapper>
   )

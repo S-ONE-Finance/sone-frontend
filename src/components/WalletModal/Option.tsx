@@ -6,10 +6,9 @@ const InfoCard = styled.button<{ active?: boolean }>`
   background-color: ${({ theme, active }) => (active ? theme.bg3 : 'transparent')};
   padding: 1rem;
   outline: none;
-  border: 1px solid;
   border-radius: 35px;
   width: 100% !important;
-  border-color: ${({ theme, active }) => (active ? 'transparent' : theme.border1Sone)};
+  border: 1px solid ${({ theme, active }) => (active ? 'transparent' : theme.border1Sone)};
 `
 
 const OptionCard = styled(InfoCard as any)`
@@ -29,10 +28,12 @@ const OptionCardLeft = styled.div`
 
 const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
   margin-top: 0;
+
   &:hover {
     cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
     box-shadow: ${({ clickable }) => (clickable ? '0px 2px 20px rgba(0, 0, 0, 0.18)' : 'none')};
   }
+
   opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `
 
@@ -74,11 +75,13 @@ const IconWrapper = styled.div<{ size?: number | null }>`
   ${({ theme }) => theme.flexColumnNoWrap};
   align-items: center;
   justify-content: center;
+
   & > img,
   span {
     height: ${({ size }) => (size ? size + 'px' : '24px')};
     width: ${({ size }) => (size ? size + 'px' : '24px')};
   }
+
   ${({ theme }) => theme.mediaWidth.upToMedium`
     align-items: flex-end;
   `};
