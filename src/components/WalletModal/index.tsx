@@ -20,7 +20,7 @@ import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
 
-const CloseIcon = styled.div`
+export const CloseIcon = styled.div`
   position: absolute;
   right: 2rem;
   top: 2.5rem;
@@ -35,7 +35,7 @@ const CloseIcon = styled.div`
   `};
 `
 
-const CloseColor = styled(Close)`
+export const CloseColor = styled(Close)`
   path {
     stroke: ${({ theme }) => theme.text4};
   }
