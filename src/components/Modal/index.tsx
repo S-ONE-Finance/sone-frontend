@@ -1,7 +1,3 @@
-// "useGesture" of "react-use-gesture" cause error "Can't perform a React
-// state update on an unmounted component".
-// PS: If remove "bind" in "StyledDialogContent", the error will gone.
-// PS2: Investigate later!
 import React from 'react'
 import styled, { css } from 'styled-components'
 import { animated, useTransition, useSpring } from 'react-spring'
@@ -103,9 +99,11 @@ export default function Modal({
   const [{ y }, set] = useSpring(() => ({ y: 0, config: { mass: 1, tension: 210, friction: 20 } }))
   const bind = useGesture({
     onDrag: state => {
+      // FIXME: This line causes "Warning: Can't perform a React state update on an unmounted component".
       set({
         y: state.down ? state.movement[1] : 0
       })
+
       if (state.movement[1] > 300 || (state.velocity > 3 && state.direction[1] > 0)) {
         onDismiss()
       }
