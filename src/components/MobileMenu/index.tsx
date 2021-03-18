@@ -1,18 +1,23 @@
-// On mobile devices, when the user presses the hamburger icon (menu), this modal will pop up.
+/**
+ * "MobileMenu" is the content inside a modal.
+ * On mobile devices, when the user presses the hamburger icon (menu), the modal will pop up.
+ */
 
-import { useActiveWeb3React } from '../../hooks'
-import { shortenAddress } from '../../utils'
-import { ExternalLink, TYPE } from '../../theme'
-import React from 'react'
-import SoneAmount from '../SoneAmount'
-import { useWalletModalToggle } from '../../state/application/hooks'
+import React, { useCallback } from 'react'
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import { useTranslation } from 'react-i18next'
+
+import { useActiveWeb3React } from '../../hooks'
+import { useWalletModalToggle } from '../../state/application/hooks'
+import { shortenAddress } from '../../utils'
+
+import { ExternalLink, TYPE } from '../../theme'
+import SoneAmount from '../SoneAmount'
 import RecentTransactions from '../RecentTransactions'
 import Column from '../Column'
 import { RowBetween } from '../Row'
-import { NavLink } from 'react-router-dom'
 import { CloseColor, CloseIcon } from '../WalletModal'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
@@ -103,7 +108,7 @@ const StyledExternalLink = styled(ExternalLink).attrs({
 `
 
 interface MobileMenuProps {
-  setIsShowMobileMenu: any
+  setIsShowMobileMenu: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
@@ -111,7 +116,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
   const { account } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
-  const closeModal = React.useCallback(() => {
+  const closeModal = useCallback(() => {
     setIsShowMobileMenu(false)
   }, [setIsShowMobileMenu])
 
@@ -124,7 +129,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         <TYPE.black fontSize={14}>{t('address')}:</TYPE.black>
         <TYPE.subText marginTop={'0.25rem'}>{account && shortenAddress(account, 14)}</TYPE.subText>
         <RowBetween marginTop={'1rem'}>
-          <SoneAmount inMobileMenu={true} />
+          <SoneAmount isSmall={true} />
           <TextBoxChangeAccount onClick={toggleWalletModal}>{t('changeAccount')}</TextBoxChangeAccount>
         </RowBetween>
       </Column>
@@ -150,7 +155,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         <StyledExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</StyledExternalLink>
         <StyledExternalLink href={'https://www.lipsum.com/'}>{t('blog')}</StyledExternalLink>
       </Column>
-      <RecentTransactions inMobileMenu={true} />
+      <RecentTransactions isSmall={true} />
     </ColumnWrapper>
   )
 }

@@ -23,6 +23,8 @@ import Modal from '../Modal'
 import SoneAmount from '../SoneAmount'
 import MobileMenu from '../MobileMenu'
 
+const activeClassName = 'ACTIVE'
+
 const HeaderFrame = styled.div`
   display: grid;
   grid-template-columns: 1fr 120px;
@@ -109,8 +111,6 @@ const Title = styled.a`
     cursor: pointer;
   }
 `
-
-const activeClassName = 'ACTIVE'
 
 const StyledNavLink = styled(NavLink).attrs({
   activeClassName
@@ -475,7 +475,8 @@ export default function Header() {
         <MobileMenu setIsShowMobileMenu={setIsShowMobileMenu} />
       </Modal>
       <HeaderFrame>
-        <ClaimModal /> {/* NOTE: Cái này là modal thông báo claim uni, giờ chưa cần sử dụng. */}
+        {/* NOTE: Cái này là modal thông báo claim uni, sau này cho thành clame sone modal, giờ chưa cần sử dụng. */}
+        <ClaimModal />
         <HideExtraSmall>
           <HeaderRow>
             <Title href="https://www.lipsum.com/" target="_blank">
@@ -527,7 +528,9 @@ export default function Header() {
                   <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>
                     {t('stakingStats')}
                   </SubMenuItemExternalLink>
-                  {/* <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('lendingStats')}</SubMenuItemExternalLink> */}
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>
+                    {t('lendingStats')}
+                  </SubMenuItemExternalLink>
                 </SubMenu>
               </MenuItem>
               <MenuItem>

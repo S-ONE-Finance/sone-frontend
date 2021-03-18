@@ -68,7 +68,7 @@ function renderTransactions(transactions: string[]) {
   )
 }
 
-export default function RecentTransactions({ inMobileMenu = false }: { inMobileMenu?: boolean }) {
+export default function RecentTransactions({ isSmall = false }: { isSmall?: boolean }) {
   const { t } = useTranslation()
 
   const allTransactions = useAllTransactions()
@@ -83,7 +83,7 @@ export default function RecentTransactions({ inMobileMenu = false }: { inMobileM
 
   return (
     <ColumnScroll>
-      <TYPE.red1Sone marginBottom={'0.75rem'} fontSize={inMobileMenu ? '18px' : '20px'} fontWeight={700}>
+      <TYPE.red1Sone marginBottom={'0.75rem'} fontSize={isSmall ? '18px' : '20px'} fontWeight={700}>
         {t('transactionHistory')}
       </TYPE.red1Sone>
       {pending.length || confirmed.length ? (

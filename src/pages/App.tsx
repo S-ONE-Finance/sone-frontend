@@ -1,6 +1,21 @@
 import React, { Suspense } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
+
+import { ApplicationModal } from '../state/application/actions'
+
+import { useModalOpen, useToggleModal } from '../state/application/hooks'
+
+import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
+
+import {
+  RedirectDuplicateTokenIds,
+  RedirectOldAddLiquidityPathStructure,
+  RedirectToAddLiquidity
+} from './AddLiquidity/redirects'
+import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
+import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
+
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
 import AddressClaimModal from '../components/claim/AddressClaimModal'
 import Header from '../components/Header'
@@ -9,15 +24,8 @@ import Polling from '../components/Polling'
 import URLWarning from '../components/Header/URLWarning'
 import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
-import { ApplicationModal } from '../state/application/actions'
-import { useModalOpen, useToggleModal } from '../state/application/hooks'
-import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
+
 import AddLiquidity from './AddLiquidity'
-import {
-  RedirectDuplicateTokenIds,
-  RedirectOldAddLiquidityPathStructure,
-  RedirectToAddLiquidity
-} from './AddLiquidity/redirects'
 import Earn from './Earn'
 import Manage from './Earn/Manage'
 import MigrateV1 from './MigrateV1'
@@ -26,9 +34,7 @@ import RemoveV1Exchange from './MigrateV1/RemoveV1Exchange'
 import Pool from './Pool'
 import PoolFinder from './PoolFinder'
 import RemoveLiquidity from './RemoveLiquidity'
-import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
 import Swap from './Swap'
-import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
 
@@ -57,6 +63,16 @@ const BodyWrapper = styled.div`
   overflow-x: hidden;
   padding-top: 100px;
   padding-bottom: 45px;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    padding: 2rem 1rem 5rem 1rem;
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding-bottom: 3rem;
+  `};
+
+  z-index: 1;
 `
 
 const Marginer = styled.div`
