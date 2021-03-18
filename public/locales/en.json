@@ -15,7 +15,7 @@
   "selectToken": "Select a token",
   "changeAccount": "Change Account",
   "recentTransactions": "Recent Transactions",
-  "emptyRecentTransactionsMessage": "You don't have any transactions recently...",
+  "emptyRecentTransactionsMessage": "Your transactions will appear here...",
   "address": "Address",
   "summarySwap": "Swap <0>{{inputAmount}} </0><1>{{inputSymbol}}</1> for <2>{{outputAmount}} </2><1>{{outputSymbol}}</1>"
 }

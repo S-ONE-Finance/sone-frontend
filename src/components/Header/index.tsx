@@ -1,5 +1,5 @@
 import { TokenAmount } from '@uniswap/sdk'
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CountUp } from 'use-count-up'
@@ -24,6 +24,7 @@ import ClaimModal from '../claim/ClaimModal'
 import PendingStatus from './PendingStatus'
 import MyAccountPanel from './MyAccountPanel'
 import Web3Status from '../Web3Status'
+import Modal from '../Modal'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -78,7 +79,7 @@ const HeaderElementWrap = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     > *:first-child {
-      margin-left: 0;
+      // margin-left: 0;
     }
   `};
 `
@@ -487,138 +488,150 @@ export default function Header() {
   const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
+  const [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
+
   return (
-    <HeaderFrame>
-      <ClaimModal />
-      <HideExtraSmall>
-        <HeaderRow>
-          <Title href="https://www.lipsum.com/" target="_blank">
-            <img width={'100px'} src={darkMode ? LogoDark : Logo} alt="logo" />
-          </Title>
-          <HeaderMenu>
-            <HideSmall>
-              <StyledExternalLink href={'https://www.lipsum.com/'}>S-ONE Wallet</StyledExternalLink>
-            </HideSmall>
-            <MenuItem
-              className={
-                location.pathname.startsWith('/swap') ||
-                location.pathname.startsWith('/pool') ||
-                location.pathname.startsWith('/add')
-                  ? 'ACTIVE'
-                  : undefined
-              }
-            >
-              <StyledNavLink to={'/swap'}>{t('swap')}</StyledNavLink>
-              <SubMenu>
-                <SubMenuItemNavLink to={'/swap'}>{t('swap')}</SubMenuItemNavLink>
-                <SubMenuItemNavLink
-                  id={`pool-nav-link`}
-                  to={'/pool'}
-                  isActive={(match, { pathname }) =>
-                    Boolean(match) ||
-                    pathname.startsWith('/add') ||
-                    pathname.startsWith('/remove') ||
-                    pathname.startsWith('/create') ||
-                    pathname.startsWith('/find')
-                  }
+    <>
+      <Modal isOpen={isShowMobileMenu} onDismiss={() => setIsShowMobileMenu(false)}>
+        <MyAccountPanel />
+      </Modal>
+      <HeaderFrame>
+        <ClaimModal /> {/* NOTE: Cái này là modal thông báo claim uni, giờ chưa cần sử dụng. */}
+        <HideExtraSmall>
+          <HeaderRow>
+            <Title href="https://www.lipsum.com/" target="_blank">
+              <img width={'100px'} src={darkMode ? LogoDark : Logo} alt="logo" />
+            </Title>
+            <HeaderMenu>
+              <HideSmall>
+                <StyledExternalLink href={'https://www.lipsum.com/'}>S-ONE Wallet</StyledExternalLink>
+              </HideSmall>
+              <MenuItem
+                className={
+                  location.pathname.startsWith('/swap') ||
+                  location.pathname.startsWith('/pool') ||
+                  location.pathname.startsWith('/add')
+                    ? 'ACTIVE'
+                    : undefined
+                }
+              >
+                <StyledNavLink to={'/swap'}>{t('swap')}</StyledNavLink>
+                <SubMenu>
+                  <SubMenuItemNavLink to={'/swap'}>{t('swap')}</SubMenuItemNavLink>
+                  <SubMenuItemNavLink
+                    id={`pool-nav-link`}
+                    to={'/pool'}
+                    isActive={(match, { pathname }) =>
+                      Boolean(match) ||
+                      pathname.startsWith('/add') ||
+                      pathname.startsWith('/remove') ||
+                      pathname.startsWith('/create') ||
+                      pathname.startsWith('/find')
+                    }
+                  >
+                    {t('liquidity')}
+                  </SubMenuItemNavLink>
+                </SubMenu>
+              </MenuItem>
+              <MenuItem>
+                <StyledNavLink to={'/uni'}>{t('staking')}</StyledNavLink>
+              </MenuItem>
+              <MenuItem>
+                <StyledExternalLink
+                  href={isMobile ? '' : 'https://www.lipsum.com/'}
+                  target={isMobile ? '_self' : '_blank'}
                 >
-                  {t('liquidity')}
-                </SubMenuItemNavLink>
-              </SubMenu>
-            </MenuItem>
-            <MenuItem>
-              <StyledNavLink to={'/uni'}>{t('staking')}</StyledNavLink>
-            </MenuItem>
-            <MenuItem>
-              <StyledExternalLink
-                href={isMobile ? '' : 'https://www.lipsum.com/'}
-                target={isMobile ? '_self' : '_blank'}
-              >
-                {t('stats')}
-              </StyledExternalLink>
-              <SubMenu>
-                <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swapStats')}</SubMenuItemExternalLink>
-                <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('stakingStats')}</SubMenuItemExternalLink>
-                {/* <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('lendingStats')}</SubMenuItemExternalLink> */}
-              </SubMenu>
-            </MenuItem>
-            <MenuItem>
-              <StyledExternalLink
-                href={isMobile ? '' : 'https://docs.s-one.finance/'}
-                target={isMobile ? '_self' : '_blank'}
-              >
-                {t('docs')}
-              </StyledExternalLink>
-              <ResponsiveTopEndSubMenu>
-                <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('whitePaper')}</SubMenuItemExternalLink>
-                <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</SubMenuItemExternalLink>
-                <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('blog')}</SubMenuItemExternalLink>
-              </ResponsiveTopEndSubMenu>
-            </MenuItem>
-          </HeaderMenu>
-        </HeaderRow>
-      </HideExtraSmall>
-      <HeaderControls>
-        <HeaderElement>
-          <AccountElement style={{ pointerEvents: 'auto' }}>
-            <PendingStatus />
-          </AccountElement>
-          {!availableClaim && aggregateBalance && account && (
+                  {t('stats')}
+                </StyledExternalLink>
+                <SubMenu>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swapStats')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>
+                    {t('stakingStats')}
+                  </SubMenuItemExternalLink>
+                  {/* <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('lendingStats')}</SubMenuItemExternalLink> */}
+                </SubMenu>
+              </MenuItem>
+              <MenuItem>
+                <StyledExternalLink
+                  href={isMobile ? '' : 'https://docs.s-one.finance/'}
+                  target={isMobile ? '_self' : '_blank'}
+                >
+                  {t('docs')}
+                </StyledExternalLink>
+                <ResponsiveTopEndSubMenu>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('whitePaper')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('blog')}</SubMenuItemExternalLink>
+                </ResponsiveTopEndSubMenu>
+              </MenuItem>
+            </HeaderMenu>
+          </HeaderRow>
+        </HideExtraSmall>
+        <HeaderControls>
+          <HeaderElement>
             <HideExtraSmall>
-              <SONEWrapper>
-                <SONEAmount style={{ pointerEvents: 'auto' }}>
-                  <img width={'21px'} src={LogoToken} alt="logo" />
-                  <TYPE.red1Sone style={{ marginLeft: '5px', fontSize: '18px' }}>
-                    <CountUp
-                      key={countUpValue}
-                      isCounting
-                      start={parseFloat(countUpValuePrevious)}
-                      end={parseFloat(countUpValue)}
-                      thousandsSeparator={','}
-                      duration={1}
-                    />
-                  </TYPE.red1Sone>
-                </SONEAmount>
-              </SONEWrapper>
+              <AccountElement style={{ pointerEvents: 'auto' }}>
+                <PendingStatus />
+              </AccountElement>
             </HideExtraSmall>
-          )}
-          <ResponsiveMenuItem>
-            <AccountElement style={{ pointerEvents: 'auto' }}>
-              <Web3Status />
-            </AccountElement>
-            {account && (
+            {!availableClaim && aggregateBalance && account && (
               <HideExtraSmall>
-                <ResponsiveBottomLeftSubMenu width={'fit-content'} borderRadius={'20px'}>
-                  <MyAccountPanel />
-                </ResponsiveBottomLeftSubMenu>
+                <SONEWrapper>
+                  <SONEAmount style={{ pointerEvents: 'auto' }}>
+                    <img width={'21px'} src={LogoToken} alt="logo" />
+                    <TYPE.red1Sone style={{ marginLeft: '5px', fontSize: '18px' }}>
+                      <CountUp
+                        key={countUpValue}
+                        isCounting
+                        start={parseFloat(countUpValuePrevious)}
+                        end={parseFloat(countUpValue)}
+                        thousandsSeparator={','}
+                        duration={1}
+                      />
+                    </TYPE.red1Sone>
+                  </SONEAmount>
+                </SONEWrapper>
               </HideExtraSmall>
             )}
-          </ResponsiveMenuItem>
-        </HeaderElement>
-        <HeaderElementWrap>
-          <StyledMenuButton onClick={() => toggleDarkMode()} cursor="pointer">
-            {darkMode ? <Moon size={20} strokeWidth={2.5} /> : <Sun size={20} strokeWidth={2.5} />}
-          </StyledMenuButton>
-          <ResponsiveMenuItem style={{ margin: '0' }}>
-            <StyledMenuButtonWithText>
-              <Globe size={20} />
-              <TYPE.language style={{ marginLeft: '5px' }}>
-                {language === 'en' ? 'EN' : language === 'jp' ? 'JP' : language === 'zh-CN' ? 'CN' : 'EN'}
-              </TYPE.language>
-            </StyledMenuButtonWithText>
-            <ResponsiveBottomRightSubMenu>
-              <SubMenuItemText onClick={() => setLanguage('jp')}>日本語</SubMenuItemText>
-              <SubMenuItemText onClick={() => setLanguage('en')}>English</SubMenuItemText>
-              <SubMenuItemText onClick={() => setLanguage('zh-CN')}>中文</SubMenuItemText>
-            </ResponsiveBottomRightSubMenu>
-          </ResponsiveMenuItem>
-          <ShowOnlyExtraSmall>
-            <StyledMenuButton primary={true} cursor="pointer" onClick={() => toggleDarkMode()}>
-              <MenuIcon size={20} strokeWidth={2.5} />
+            <ResponsiveMenuItem>
+              <AccountElement style={{ pointerEvents: 'auto' }}>
+                <Web3Status />
+              </AccountElement>
+              {account && (
+                <HideExtraSmall>
+                  <ResponsiveBottomLeftSubMenu width={'fit-content'} borderRadius={'20px'}>
+                    <MyAccountPanel />
+                  </ResponsiveBottomLeftSubMenu>
+                </HideExtraSmall>
+              )}
+            </ResponsiveMenuItem>
+          </HeaderElement>
+          <HeaderElementWrap>
+            <StyledMenuButton onClick={() => toggleDarkMode()} cursor="pointer">
+              {darkMode ? <Moon size={20} strokeWidth={2.5} /> : <Sun size={20} strokeWidth={2.5} />}
             </StyledMenuButton>
-          </ShowOnlyExtraSmall>
-        </HeaderElementWrap>
-      </HeaderControls>
-    </HeaderFrame>
+            <ResponsiveMenuItem style={{ margin: '0' }}>
+              <StyledMenuButtonWithText>
+                <Globe size={20} />
+                {/* Only support 3 languages */}
+                <TYPE.language style={{ marginLeft: '5px' }}>
+                  {language === 'en' ? 'EN' : language === 'jp' ? 'JP' : language === 'zh-CN' ? 'CN' : 'EN'}
+                </TYPE.language>
+              </StyledMenuButtonWithText>
+              <ResponsiveBottomRightSubMenu>
+                <SubMenuItemText onClick={() => setLanguage('jp')}>日本語</SubMenuItemText>
+                <SubMenuItemText onClick={() => setLanguage('en')}>English</SubMenuItemText>
+                <SubMenuItemText onClick={() => setLanguage('zh-CN')}>中文</SubMenuItemText>
+              </ResponsiveBottomRightSubMenu>
+            </ResponsiveMenuItem>
+            <ShowOnlyExtraSmall>
+              <StyledMenuButton primary={true} onClick={() => setIsShowMobileMenu(true)}>
+                <MenuIcon size={20} strokeWidth={2.5} />
+              </StyledMenuButton>
+            </ShowOnlyExtraSmall>
+          </HeaderElementWrap>
+        </HeaderControls>
+      </HeaderFrame>
+    </>
   )
 }

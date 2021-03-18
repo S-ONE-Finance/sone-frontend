@@ -1,3 +1,7 @@
+// "useGesture" of "react-use-gesture" cause error "Can't perform a React
+// state update on an unmounted component".
+// PS: If remove "bind" in "StyledDialogContent", the error will gone.
+// PS2: Investigate later!
 import React from 'react'
 import styled, { css } from 'styled-components'
 import { animated, useTransition, useSpring } from 'react-spring'
@@ -66,9 +70,7 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
       ${mobile &&
         css`
           width: 100vw;
-          border-radius: 25px;
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
+          border-radius: 25px 25px 0 0;
         `}
     `}
   }

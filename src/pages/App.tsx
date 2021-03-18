@@ -37,6 +37,8 @@ const AppWrapper = styled.div`
   flex-flow: column;
   align-items: flex-start;
   overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
 `
 
 const HeaderWrapper = styled.div`
@@ -68,7 +70,7 @@ const Marginer = styled.div`
 `
 
 const FooterWrapper = styled.div`
-  position: fixed;
+  position: absolute;
   left: 0;
   bottom: 0;
   width: 100%;
@@ -134,10 +136,10 @@ export default function App() {
             </Switch>
           </Web3ReactManager>
         </BodyWrapper>
+        <Marginer />
         <FooterWrapper>
           <Footer />
         </FooterWrapper>
-        <Marginer />
       </AppWrapper>
     </Suspense>
   )
