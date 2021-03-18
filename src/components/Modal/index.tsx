@@ -66,9 +66,7 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
       ${mobile &&
         css`
           width: 100vw;
-          border-radius: 25px;
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
+          border-radius: 25px 25px 0 0;
         `}
     `}
   }
@@ -101,9 +99,11 @@ export default function Modal({
   const [{ y }, set] = useSpring(() => ({ y: 0, config: { mass: 1, tension: 210, friction: 20 } }))
   const bind = useGesture({
     onDrag: state => {
+      // FIXME: This line causes "Warning: Can't perform a React state update on an unmounted component".
       set({
         y: state.down ? state.movement[1] : 0
       })
+
       if (state.movement[1] > 300 || (state.velocity > 3 && state.direction[1] > 0)) {
         onDismiss()
       }

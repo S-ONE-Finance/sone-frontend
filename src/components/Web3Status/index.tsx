@@ -104,7 +104,7 @@ function Web3StatusInner() {
         id="web3-status-connected"
         cursor="normal"
         onClick={() => {
-          // Dưới 500px thì mới hiển thị, vì sao á? CC.
+          // Trên điện thoại và dưới 500px thì click vào sẽ ra my account.
           if (size?.width && size?.width <= 500) {
             history.push('/my-account')
           }

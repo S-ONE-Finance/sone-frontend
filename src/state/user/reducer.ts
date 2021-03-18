@@ -58,8 +58,8 @@ function pairKey(token0Address: string, token1Address: string) {
 }
 
 export const initialState: UserState = {
-  userDarkMode: null,
-  matchesDarkMode: false,
+  userDarkMode: true, // Ví dark mode mới xây quá đẹp nên set default luôn.
+  matchesDarkMode: false, // Cái này là dể xác định hệ thống có dùng darkmode không để set.
   userExpertMode: false,
   userSingleHopOnly: false,
   userSlippageTolerance: INITIAL_ALLOWED_SLIPPAGE,

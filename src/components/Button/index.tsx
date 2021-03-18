@@ -6,6 +6,8 @@ import { RowBetween } from '../Row'
 import { ChevronDown } from 'react-feather'
 import { Button as RebassButton, ButtonProps } from 'rebass/styled-components'
 
+// FIXME: "styled-components" causes "Warning: React does not recognize the `borderRadius` prop on a DOM element".
+// https://styled-system.com/guides/removing-props-from-html/#styled-components
 const Base = styled(RebassButton)<{
   padding?: string
   width?: string
@@ -16,8 +18,7 @@ const Base = styled(RebassButton)<{
   width: ${({ width }) => (width ? width : '100%')};
   font-weight: 500;
   text-align: center;
-  border-radius: 20px;
-  border-radius: ${({ borderRadius }) => borderRadius && borderRadius};
+  border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '20px')};
   outline: none;
   border: 1px solid transparent;
   color: white;
