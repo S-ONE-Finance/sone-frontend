@@ -13,7 +13,7 @@ import { NetworkContextName } from '../../constants'
 import Column from '../Column'
 import { TYPE } from '../../theme'
 import { ButtonPrimary } from '../Button'
-import RecentTransactions from './RecentTransactions'
+import RecentTransactions from '../RecentTransactions'
 import { shortenAddress } from '../../utils'
 
 const MyAccountPanelWrapper = styled.div`
@@ -75,7 +75,7 @@ const PaddingColumn = styled(Column)`
 `
 
 export default function MyAccountPanel() {
-  const { chainId, account, connector } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const toggleWalletModal = useWalletModalToggle()
 
@@ -85,10 +85,6 @@ export default function MyAccountPanel() {
   if (!contextNetwork.active && !active) {
     return null
   }
-
-  console.log(`account`, account)
-  console.log(`chainId`, chainId)
-  console.log(`connector`, connector)
 
   return (
     <MyAccountPanelWrapper>

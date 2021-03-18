@@ -5,7 +5,7 @@ import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsRepo
 import AddressClaimModal from '../components/claim/AddressClaimModal'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import Polling from '../components/Header/Polling'
+import Polling from '../components/Polling'
 import URLWarning from '../components/Header/URLWarning'
 import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
@@ -52,14 +52,16 @@ const BodyWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   padding-top: 100px;
+  padding-bottom: 100px;
   align-items: center;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    padding: 16px;
+    padding: 1rem;
     padding-top: 2rem;
+    padding-bottom: 2rem;
   `};
 
   z-index: 1;

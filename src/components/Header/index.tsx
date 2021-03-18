@@ -1,21 +1,16 @@
-import { TokenAmount } from '@uniswap/sdk'
 import React, { useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { CountUp } from 'use-count-up'
 import styled from 'styled-components'
 import { Globe, Menu as MenuIcon, Moon, Sun } from 'react-feather'
 import { isMobile } from 'react-device-detect'
 
 import Logo from '../../assets/svg/logo_text_sone.svg'
 import LogoDark from '../../assets/svg/logo_text_white_sone.svg'
-import LogoToken from '../../assets/images/logo_token_sone.svg'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
-import { useAggregateUniBalance } from '../../state/wallet/hooks'
 import { useUserHasAvailableClaim } from '../../state/claim/hooks'
-import usePrevious from '../../hooks/usePrevious'
 import useLanguage from '../../hooks/useLanguage'
 
 import { ExternalLink, TYPE } from '../../theme'
@@ -25,6 +20,8 @@ import PendingStatus from './PendingStatus'
 import MyAccountPanel from './MyAccountPanel'
 import Web3Status from '../Web3Status'
 import Modal from '../Modal'
+import SoneAmount from '../SoneAmount'
+import MobileMenu from '../MobileMenu'
 
 const HeaderFrame = styled.div`
   display: grid;
@@ -443,27 +440,13 @@ const AccountElement = styled.div`
   }
 `
 
-const SONEAmount = styled(AccountElement)`
-  padding: 0 0.5rem;
-  height: 37px;
-  font-weight: 400;
-  color: ${({ theme }) => theme.red1Sone};
-  background: transparent;
-  display: flex;
-`
-
-const SONEWrapper = styled.span`
-  width: fit-content;
-  position: relative;
-`
-
 const HideSmall = styled.span`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
   `};
 `
 
-const HideExtraSmall = styled.span`
+const HideExtraSmall = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
   `};
@@ -482,18 +465,14 @@ export default function Header() {
   const [language, setLanguage] = useLanguage()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
   const availableClaim: boolean = useUserHasAvailableClaim(account)
-  const aggregateBalance: TokenAmount | undefined = useAggregateUniBalance()
   const location = useLocation()
-
-  const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
-  const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
   const [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
 
   return (
     <>
       <Modal isOpen={isShowMobileMenu} onDismiss={() => setIsShowMobileMenu(false)}>
-        <MyAccountPanel />
+        <MobileMenu setIsShowMobileMenu={setIsShowMobileMenu} />
       </Modal>
       <HeaderFrame>
         <ClaimModal /> {/* NOTE: Cái này là modal thông báo claim uni, giờ chưa cần sử dụng. */}
@@ -574,23 +553,9 @@ export default function Header() {
                 <PendingStatus />
               </AccountElement>
             </HideExtraSmall>
-            {!availableClaim && aggregateBalance && account && (
+            {!availableClaim && account && (
               <HideExtraSmall>
-                <SONEWrapper>
-                  <SONEAmount style={{ pointerEvents: 'auto' }}>
-                    <img width={'21px'} src={LogoToken} alt="logo" />
-                    <TYPE.red1Sone style={{ marginLeft: '5px', fontSize: '18px' }}>
-                      <CountUp
-                        key={countUpValue}
-                        isCounting
-                        start={parseFloat(countUpValuePrevious)}
-                        end={parseFloat(countUpValue)}
-                        thousandsSeparator={','}
-                        duration={1}
-                      />
-                    </TYPE.red1Sone>
-                  </SONEAmount>
-                </SONEWrapper>
+                <SoneAmount />
               </HideExtraSmall>
             )}
             <ResponsiveMenuItem>
