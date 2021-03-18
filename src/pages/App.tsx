@@ -51,20 +51,12 @@ const BodyWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-top: 100px;
-  padding-bottom: 100px;
   align-items: center;
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-
-  ${({ theme }) => theme.mediaWidth.upToLarge`
-    padding: 1rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  `};
-
-  z-index: 1;
+  padding-top: 100px;
+  padding-bottom: 45px;
 `
 
 const Marginer = styled.div`
@@ -72,13 +64,14 @@ const Marginer = styled.div`
 `
 
 const FooterWrapper = styled.div`
-  position: absolute;
+  position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
   height: 45px;
   background: ${({ theme }) => theme.bg4Sone};
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  z-index: 1;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     bottom: 72px;
@@ -86,6 +79,7 @@ const FooterWrapper = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
+    position: fixed;
     height: 31px;
   `};
 `
