@@ -16,14 +16,14 @@ const Wrapper = styled.div`
   background: transparent;
 `
 
-export default function SoneAmount({ inMobileMenu = false }: { inMobileMenu?: boolean }) {
+export default function SoneAmount({ isSmall = false }: { isSmall?: boolean }) {
   const aggregateBalance: TokenAmount | undefined = useAggregateUniBalance()
   const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
   return aggregateBalance ? (
     <Wrapper style={{ pointerEvents: 'auto' }}>
-      <img width={inMobileMenu ? '18px' : '21px'} src={LogoToken} alt="logo" />
-      <TYPE.red1Sone style={{ marginLeft: '5px', fontSize: inMobileMenu ? '16px' : '18px' }}>
+      <img width={isSmall ? '18px' : '21px'} src={LogoToken} alt="logo" />
+      <TYPE.red1Sone style={{ marginLeft: '5px', fontSize: isSmall ? '16px' : '18px' }}>
         <CountUp
           key={countUpValue}
           isCounting

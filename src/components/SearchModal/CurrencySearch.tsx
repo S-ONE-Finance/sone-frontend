@@ -32,10 +32,8 @@ const ContentWrapper = styled(Column)`
 
 const Footer = styled.div`
   width: 100%;
-  border-radius: 20px;
   padding: 20px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  border-radius: 0 0 20px 20px;
   background-color: ${({ theme }) => theme.bg1};
   border-top: 1px solid ${({ theme }) => theme.bg2};
 `

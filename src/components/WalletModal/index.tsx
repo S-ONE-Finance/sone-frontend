@@ -50,8 +50,7 @@ const Wrapper = styled.div`
 
 const HeaderRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap};
-  padding: 2rem;
-  padding-bottom: 0;
+  padding: 2rem 2rem 0;
   font-weight: 500;
   color: ${props => (props.color === 'blue' ? ({ theme }) => theme.primary1 : 'inherit')};
   background-color: ${({ theme }) => theme.bg1Sone};
@@ -73,14 +72,13 @@ const UpperSection = styled.div`
   position: relative;
 
   h5 {
-    margin: 0;
-    margin-bottom: 0.5rem;
+    margin: 0 0 0.5rem;
     font-size: 1rem;
     font-weight: 400;
   }
 
   h5:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 
   h4 {
@@ -296,7 +294,8 @@ export default function WalletModal({
             id={`connect-${key}`}
             onClick={() => {
               // option.connector === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : !option.href && tryActivation(option.connector)
-              if (option.connector !== connector && !option.href) tryActivation(option.connector)
+              if (option.connector !== connector && !option.href)
+                tryActivation(option.connector).then(e => console.info('Try activation success.', e))
             }}
             key={key}
             active={option.connector && option.connector === connector}

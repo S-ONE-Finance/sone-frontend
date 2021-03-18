@@ -1,12 +1,6 @@
-// Libs.
 import React from 'react'
-// import { isMobile } from 'react-device-detect'
 import styled from 'styled-components'
 
-// Hooks.
-// import { useTranslation } from 'react-i18next'
-// import { useWindowSize } from '../../hooks/useWindowSize'
-// Components.
 import { RowFixed } from '../Row'
 import PairInfo from './PairInfo'
 

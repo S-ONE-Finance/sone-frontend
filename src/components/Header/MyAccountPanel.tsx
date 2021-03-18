@@ -1,20 +1,27 @@
-// MyAccountPanel is used only in Header component.
+/**
+ * MyAccountPanel is used only in Header component.
+ */
+
+// Libraries.
 import React from 'react'
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import { useTranslation } from 'react-i18next'
 import { useWeb3React } from '@web3-react/core'
 
+// Hooks and Utils.
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useActiveWeb3React } from '../../hooks'
+import { shortenAddress } from '../../utils'
 
+// Constants.
 import { NetworkContextName } from '../../constants'
 
+// Components.
 import Column from '../Column'
 import { TYPE } from '../../theme'
 import { ButtonPrimary } from '../Button'
 import RecentTransactions from '../RecentTransactions'
-import { shortenAddress } from '../../utils'
 
 const MyAccountPanelWrapper = styled.div`
   cursor: default;
@@ -91,7 +98,6 @@ export default function MyAccountPanel() {
       <ColumnWrapper>
         <Column>
           <TYPE.black fontSize={16}>{t('address')}:</TYPE.black>
-          {/*<TYPE.subText marginTop={'0.25rem'}>0x8DE6...e4AE0x8DE6e4AEe4AEe4AE</TYPE.subText>*/}
           <TYPE.subText marginTop={'0.25rem'}>{account && shortenAddress(account, 14)}</TYPE.subText>
           <TextBoxChangeAccount onClick={toggleWalletModal}>{t('changeAccount')}</TextBoxChangeAccount>
         </Column>
