@@ -1,7 +1,7 @@
 // import { useTranslation } from 'react-i18next'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@uniswap/sdk'
+import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@s-one-finance/sdk-core'
 import { useMemo } from 'react'
 import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
 import { getTradeVersion, useV1TradeExchangeAddress } from '../data/V1'

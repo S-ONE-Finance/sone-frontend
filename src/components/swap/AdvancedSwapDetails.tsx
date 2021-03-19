@@ -1,4 +1,4 @@
-import { Trade, TradeType } from '@uniswap/sdk'
+import { Trade, TradeType } from '@s-one-finance/sdk-core'
 import React, { useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components'
 import { Field } from '../../state/swap/actions'

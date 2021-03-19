@@ -12,7 +12,7 @@ import {
   Trade,
   TradeType,
   WETH
-} from '@uniswap/sdk'
+} from '@s-one-finance/sdk-core'
 import { useMemo } from 'react'
 import { useActiveWeb3React } from '../hooks'
 import { useAllTokens } from '../hooks/Tokens'

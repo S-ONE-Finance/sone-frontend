@@ -3,7 +3,7 @@ import LogoToken from '../../assets/images/logo_token_sone.svg'
 import { TYPE } from '../../theme'
 import { CountUp } from 'use-count-up'
 import styled from 'styled-components'
-import { TokenAmount } from '@uniswap/sdk'
+import { TokenAmount } from '@s-one-finance/sdk-core'
 import { useAggregateUniBalance } from '../../state/wallet/hooks'
 import usePrevious from '../../hooks/usePrevious'
 

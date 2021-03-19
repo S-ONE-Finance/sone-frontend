@@ -1,6 +1,7 @@
-import { TokenAmount, Pair, Currency } from '@uniswap/sdk'
+import { TokenAmount, Pair, Currency } from '@s-one-finance/sdk-core'
 import { useMemo } from 'react'
-import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+// import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
+import { abi as IUniswapV2PairABI } from '@s-one-finance/core/build/contracts/IUniswapV2Pair.json'
 import { Interface } from '@ethersproject/abi'
 import { useActiveWeb3React } from '../hooks'
 

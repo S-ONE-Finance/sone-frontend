@@ -1,4 +1,4 @@
-import { JSBI } from '@uniswap/sdk'
+import { JSBI } from '@s-one-finance/sdk-core'
 import { useMemo } from 'react'
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
 import { useActiveWeb3React } from './index'

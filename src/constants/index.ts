@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@uniswap/sdk'
+import { ChainId, JSBI, Percent, Token, WETH } from '@s-one-finance/sdk-core'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

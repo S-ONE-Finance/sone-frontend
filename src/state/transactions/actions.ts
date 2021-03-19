@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
-import { ChainId } from '@uniswap/sdk'
+import { ChainId } from '@s-one-finance/sdk-core'
 
 import { TransactionSummary } from '../transactions/reducer'
 

@@ -1,6 +1,6 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Trade, TokenAmount, CurrencyAmount, ETHER } from '@uniswap/sdk'
+import { Trade, TokenAmount, CurrencyAmount, ETHER } from '@s-one-finance/sdk-core'
 import { useCallback, useMemo } from 'react'
 import { ROUTER_ADDRESS } from '../constants'
 import { useTokenAllowance } from '../data/Allowances'
