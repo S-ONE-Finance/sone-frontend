@@ -1,4 +1,4 @@
-import { Currency, Token } from '@uniswap/sdk'
+import { Currency, Token } from '@s-one-finance/sdk-core'
 import React, { useCallback, useEffect, useState } from 'react'
 import useLast from '../../hooks/useLast'
 import Modal from '../Modal'

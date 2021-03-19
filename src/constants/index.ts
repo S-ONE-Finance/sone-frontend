@@ -1,10 +1,10 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@uniswap/sdk'
+import { ChainId, JSBI, Percent, Token, WETH } from '@s-one-finance/sdk-core'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
 
-export const ROUTER_ADDRESS = '0xF48162DBf2B03004dF354c6011d7f42294aDCbA6'
+export const ROUTER_ADDRESS = '0xFa09c1fc9B94d17Deb44e6B492A5E8C3945109F5'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
