@@ -1,82 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { useOneDayPairPriceChange } from '../../subgraph'
+
 import { RowFixed } from '../Row'
 import PairInfo from './PairInfo'
 
-const data = [
-  {
-    _id: '6049a5432f9c2855457799b7',
-    pairName: 'PA1-PA1',
-    changeAmount: 27.885373,
-    changePercentage: -15.51
-  },
-  {
-    _id: '6049a5433951003a1146f1a4',
-    pairName: 'PA2-PA2',
-    changeAmount: 77.549591,
-    changePercentage: 0.59
-  },
-  {
-    _id: '6049a543b531b77ea5702226',
-    pairName: 'PA3-PA3',
-    changeAmount: 75.541272,
-    changePercentage: -8.9
-  },
-  {
-    _id: '6049a5438fcb9a9a1d026995',
-    pairName: 'PA4-PA4',
-    changeAmount: 70.774764,
-    changePercentage: 12.88
-  },
-  {
-    _id: '6049a543cd3b8af49cdfcfbb',
-    pairName: 'PA5-PA5',
-    changeAmount: 97.206592,
-    changePercentage: -4.25
-  },
-  {
-    _id: '6049a54318417a2849b0fa86',
-    pairName: 'PA6-PA6',
-    changeAmount: 73.995237,
-    changePercentage: -21.17
-  },
-  {
-    _id: '6049a543c8f649c28dc1958f',
-    pairName: 'PA7-PA7',
-    changeAmount: 22.686879,
-    changePercentage: 10.39
-  },
-  {
-    _id: '6049a543edd359adff67df53',
-    pairName: 'PA8-PA8',
-    changeAmount: 14.938418,
-    changePercentage: -5.79
-  },
-  {
-    _id: '6049a543784433750ed1adc8',
-    pairName: 'PA9-PA9',
-    changeAmount: 29.716898,
-    changePercentage: 2.19
-  }
-]
-
-// const StyledRowFixed = styled(RowFixed)`
-//   height: 100%;
-//   position: relative;
-// `
-//
-// const ListWrapper = styled.div<{ width: number; left: number }>`
-//   height: 100%;
-//   position: absolute;
-//   display: flex;
-//   width: ${({ width }) => (width === -1 ? 'max-content' : width + 'px')};
-//   left: ${({ left }) => left + 'px'};
-// `
-//
 // NOTE: This is a practice using javascript for horizontal scroll infinite, it has the downside that the list will be jerky.
 // export default function Footer() {
-//   // Remove useTranslation() here makes list1Ref.current.clientWidth always equal to 0 ==> BUG.
+//   // BUG: Remove useTranslation() here makes list1Ref.current.clientWidth always equal to 0.
 //   useTranslation()
 //   const windowSize = useWindowSize()
 //   const list1Ref = React.useRef<HTMLDivElement>(null)
@@ -158,7 +90,7 @@ const data = [
 // }
 
 // NOTE: This is a practice using only CSS, it has the downside that the list cannot be contiguous.
-const Marquee = styled.div`
+const Marquee = styled.div<{ pairSize: number }>`
   width: 100%;
   height: 100%;
   margin: 0 auto;
@@ -173,7 +105,7 @@ const Marquee = styled.div`
     padding-left: 100%;
     /* show the marquee just outside the paragraph */
     will-change: transform;
-    animation: marquee 60s linear infinite;
+    animation: ${({ pairSize }) => `marquee ${pairSize === 0 ? '100' : pairSize * 5}s linear infinite`};
   }
 
   > :hover {
@@ -204,16 +136,18 @@ const Marquee = styled.div`
 `
 
 export default function Footer() {
+  const data = useOneDayPairPriceChange()
+
   return (
-    <Marquee>
+    <Marquee pairSize={data.length}>
       <div>
         <RowFixed height={'100%'}>
           {data.slice(0).map(pair => (
             <PairInfo
-              key={pair._id}
-              pairName={pair.pairName}
-              changeAmount={pair.changeAmount}
-              changePercentage={pair.changePercentage}
+              key={pair.id}
+              pairName={pair.token0Symbol + '/' + pair.token1Symbol}
+              tokenPrice={pair.token1Price}
+              tokenPriceChange={pair.oneDayToken1PriceChange}
             />
           ))}
         </RowFixed>

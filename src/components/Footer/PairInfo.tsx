@@ -1,13 +1,16 @@
 import React from 'react'
+import styled from 'styled-components'
+
 import { RowFixed } from '../Row'
 import { TYPE } from '../../theme'
-import styled from 'styled-components'
 import { ArrowDown, ArrowUp } from 'react-feather'
+
+import { toK } from '../../subgraph/utils/formatter'
 
 interface PairInfoProps {
   pairName: string
-  changeAmount: number
-  changePercentage: number
+  tokenPrice: number
+  tokenPriceChange: number
 }
 
 const PairInfoWrapper = styled(RowFixed)`
@@ -69,20 +72,23 @@ const ResponsiveArrowDown = styled(ArrowDown)`
   `};
 `
 
-export default function PairInfo({ pairName, changeAmount, changePercentage }: PairInfoProps) {
+export default function PairInfo({ pairName, tokenPrice, tokenPriceChange }: PairInfoProps) {
+  const formattedTokenPrice = toK(tokenPrice, 6)
+  const formattedTokenPriceChange = tokenPriceChange > 0 ? toK(tokenPriceChange, 2) : toK(tokenPriceChange * -1, 2)
+
   return (
     <PairInfoWrapper>
       <Text.PairName>{pairName}</Text.PairName>
-      <Text.ChangeAmount>{changeAmount}</Text.ChangeAmount>
-      {changePercentage > 0 ? (
+      <Text.ChangeAmount>{formattedTokenPrice}</Text.ChangeAmount>
+      {tokenPriceChange > 0 ? (
         <Text.Up>
           <ResponsiveArrowUp size={19} />
-          <span>+{changePercentage}%</span>
+          <span>+{formattedTokenPriceChange}%</span>
         </Text.Up>
       ) : (
         <Text.Down>
           <ResponsiveArrowDown size={19} />
-          <span>−{changePercentage * -1}%</span>
+          <span>−{formattedTokenPriceChange}%</span>
         </Text.Down>
       )}
     </PairInfoWrapper>

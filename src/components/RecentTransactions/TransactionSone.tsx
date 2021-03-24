@@ -58,7 +58,6 @@ export default function TransactionSone({ hash }: { hash: string }) {
   const allTransactions = useAllTransactions()
 
   const tx = allTransactions?.[hash]
-  // console.log(`tx`, tx)
   const summary = tx?.summary
   const pending = !tx?.receipt
   const success = !pending && tx && (tx.receipt?.status === 1 || typeof tx.receipt?.status === 'undefined')
