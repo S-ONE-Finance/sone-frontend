@@ -6,7 +6,7 @@ import { RowBetween } from '../Row'
 import { ChevronDown } from 'react-feather'
 import { Button as RebassButton, ButtonProps } from 'rebass/styled-components'
 
-// FIXME: "styled-components" causes "Warning: React does not recognize the `borderRadius` prop on a DOM element".
+// BUG: "styled-components" causes "Warning: React does not recognize the `borderRadius` prop on a DOM element".
 // https://styled-system.com/guides/removing-props-from-html/#styled-components
 const Base = styled(RebassButton)<{
   padding?: string

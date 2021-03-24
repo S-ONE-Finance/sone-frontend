@@ -99,7 +99,7 @@ export default function Modal({
   const [{ y }, set] = useSpring(() => ({ y: 0, config: { mass: 1, tension: 210, friction: 20 } }))
   const bind = useGesture({
     onDrag: state => {
-      // FIXME: This line causes "Warning: Can't perform a React state update on an unmounted component".
+      // BUG: This line causes "Warning: Can't perform a React state update on an unmounted component".
       set({
         y: state.down ? state.movement[1] : 0
       })
