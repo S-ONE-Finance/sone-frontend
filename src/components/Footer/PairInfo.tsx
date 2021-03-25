@@ -20,6 +20,9 @@ const PairInfoWrapper = styled(RowFixed)`
   //padding: 0 45px;
   width: 350px;
   padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 0 12.5px;
   `};
