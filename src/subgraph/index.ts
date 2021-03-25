@@ -8,10 +8,14 @@ import { PAIRS_CURRENT } from './apollo/queries'
 import getBulkPairData from './utils/getBulkPairData'
 import { useActiveWeb3React } from '../hooks'
 
-function useTheGraphData() {
-  const [state, setState] = useState<any>({})
+/**
+ * Use Subgraph to query data for pairs.
+ */
+function useSubgraphData() {
+  const [subgraphData, setSubgraphData] = useState<any>({})
   const { library } = useActiveWeb3React()
 
+  // region Callback functions.
   const getData = useCallback(async () => {
     let {
       data: { pairs }
@@ -21,31 +25,35 @@ function useTheGraphData() {
     })
 
     // Format as array of addresses.
-    const formattedPairs = pairs.map((pair: { id: string }) => {
-      return pair.id
-    })
+    const pairIds = pairs.map((pair: { id: string }) => pair.id)
+
     // Get data for every pair in list.
-    const topPairs = await getBulkPairData(formattedPairs)
+    const topPairs = await getBulkPairData(pairIds)
+    topPairs && setSubgraphData(topPairs)
+
+    // Log out to track query results.
     if (topPairs?.length > 0) {
       console.log('Array trả về có ' + topPairs.length + ' items.')
     } else {
       console.error('TheGraph trả về có thể có biến undefined', 'topPairs', topPairs)
     }
-    topPairs && setState(topPairs)
   }, [])
 
-  // Đợi 5s sau khi có block mới để TheGraph mapping data xong mới query.
+  // Wait 5s for TheGraph mapping data.
   const getDataAfter5Seconds = useCallback(() => {
     setTimeout(() => {
       getData()
     }, 5000)
   }, [getData])
+  // endregion
 
-  // Query data lần đầu tiên khi vào page.
+  // region Effects.
+  // Query data the first time.
   useEffect(() => {
     getData()
   }, [getData])
 
+  // When new block created, run the getDataAfter5Seconds callback function.
   useEffect(() => {
     if (!library) return
 
@@ -54,8 +62,9 @@ function useTheGraphData() {
       library.removeListener('block', getDataAfter5Seconds)
     }
   }, [library, getDataAfter5Seconds])
+  // endregion
 
-  return state
+  return subgraphData
 }
 
 /**
@@ -67,18 +76,19 @@ function useTheGraphData() {
  * bug do token1 bị swap với token0, source: uniswap-info).
  */
 export function useOneDayPairPriceChange() {
-  const data = useTheGraphData()
+  const data = useSubgraphData()
 
   return (
     data &&
     Object.values(data).map((item: any) => {
+      // BUG: Đã từng thấy lỗi 'token0 undefined' nhưng chưa tái hiện được, log tạm ở đây.
       if (!item?.token0?.symbol || !item?.token1?.symbol) {
         console.error('WTF? Tại sao lại không có token symbol?', item)
       }
       return {
         id: item.id,
-        token0Symbol: item?.token0?.symbol || '???',
-        token1Symbol: item?.token1?.symbol || '???',
+        token0Symbol: item?.token0?.symbol || '???', // BUG: ???
+        token1Symbol: item?.token1?.symbol || '???', // BUG: ???
         token1Price: item.token1Price,
         oneDayToken1PriceChange: item.oneDayToken1PriceChange
       }
@@ -87,7 +97,7 @@ export function useOneDayPairPriceChange() {
 }
 
 export function useWeeklyRanking() {
-  const data = useTheGraphData()
+  const data = useSubgraphData()
 
   // TODO: Có thể tối ưu câu query graphql để speed nhanh hơn.
   return (

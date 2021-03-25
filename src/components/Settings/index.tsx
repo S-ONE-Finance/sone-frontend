@@ -125,7 +125,7 @@ export default function SettingsTab() {
   const toggle = useToggleSettingsMenu()
 
   const theme = useContext(ThemeContext)
-  const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
+  const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippageTolerance()
 
   const [ttl, setTtl] = useUserTransactionTTL()
 
@@ -196,7 +196,7 @@ export default function SettingsTab() {
             </Text>
             <TransactionSettings
               rawSlippage={userSlippageTolerance}
-              setRawSlippage={setUserslippageTolerance}
+              setRawSlippage={setUserSlippageTolerance}
               deadline={ttl}
               setDeadline={setTtl}
             />
