@@ -29,12 +29,14 @@ function useTheGraphData() {
     topPairs && setState(topPairs)
   }, [])
 
+  // Đợi 5s sau khi có block mới để TheGraph mapping data xong mới query.
   const getDataAfter5Seconds = useCallback(() => {
     setTimeout(() => {
       getData()
     }, 5000)
   }, [getData])
 
+  // Query data lần đầu tiên khi vào page.
   useEffect(() => {
     getData()
   }, [getData])
