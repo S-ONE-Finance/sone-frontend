@@ -72,12 +72,13 @@ export default async function getBulkPairData(pairList: string[]) {
           let twoDayHistory = await getHistoryFromData(twoDayData, b2Day)
           let oneWeekHistory = await getHistoryFromData(oneWeekData, b1Week)
           let twoWeekHistory = await getHistoryFromData(twoWeekData, b2Week)
+          // BUG: Có bug bị token1Price undefined ở đây nhưng chưa tái hiện lại được nên chưa fix.
           data = parseData(data, oneDayHistory, twoDayHistory, oneWeekHistory, twoWeekHistory, b1Day)
           return data
         })
     )
   } catch (e) {
-    console.error(e)
+    console.error('GraphQL error: Failed to get entities from store.')
     return []
   }
 }

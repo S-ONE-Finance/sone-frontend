@@ -25,16 +25,23 @@ function useTheGraphData() {
       return pair.id
     })
     // Get data for every pair in list.
-    let topPairs = await getBulkPairData(formattedPairs)
+    const topPairs = await getBulkPairData(formattedPairs)
+    if (topPairs?.length > 0) {
+      console.log('Array trả về có ' + topPairs.length + ' items.')
+    } else {
+      console.error('TheGraph trả về có thể có biến undefined', 'topPairs', topPairs)
+    }
     topPairs && setState(topPairs)
   }, [])
 
+  // Đợi 5s sau khi có block mới để TheGraph mapping data xong mới query.
   const getDataAfter5Seconds = useCallback(() => {
     setTimeout(() => {
       getData()
     }, 5000)
   }, [getData])
 
+  // Query data lần đầu tiên khi vào page.
   useEffect(() => {
     getData()
   }, [getData])
@@ -64,13 +71,18 @@ export function useOneDayPairPriceChange() {
 
   return (
     data &&
-    Object.values(data).map((item: any) => ({
-      id: item.id,
-      token0Symbol: item.token0.symbol,
-      token1Symbol: item.token1.symbol,
-      token1Price: item.token1Price,
-      oneDayToken1PriceChange: item.oneDayToken1PriceChange
-    }))
+    Object.values(data).map((item: any) => {
+      if (!item?.token0?.symbol || !item?.token1?.symbol) {
+        console.error('WTF? Tại sao lại không có token symbol?', item)
+      }
+      return {
+        id: item.id,
+        token0Symbol: item?.token0?.symbol || '???',
+        token1Symbol: item?.token1?.symbol || '???',
+        token1Price: item.token1Price,
+        oneDayToken1PriceChange: item.oneDayToken1PriceChange
+      }
+    })
   )
 }
 
