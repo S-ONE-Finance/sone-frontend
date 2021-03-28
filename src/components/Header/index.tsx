@@ -471,7 +471,7 @@ export default function Header() {
 
   return (
     <>
-      <Modal isOpen={isShowMobileMenu} onDismiss={() => setIsShowMobileMenu(false)}>
+      <Modal isOpen={isShowMobileMenu} onDismiss={() => setIsShowMobileMenu(false)} isBottomOnMobile={true}>
         <MobileMenu setIsShowMobileMenu={setIsShowMobileMenu} />
       </Modal>
       <HeaderFrame>

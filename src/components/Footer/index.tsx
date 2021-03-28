@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 
 import { useOneDayPairPriceChange } from '../../subgraph'
@@ -90,7 +90,7 @@ import PairInfo from './PairInfo'
 // }
 
 // NOTE: This is a practice using only CSS, it has the downside that the list cannot be contiguous.
-const Marquee = styled.div<{ pairSize: number }>`
+const Marquee = styled.div<{ pairSize: number; pauseAnimation: boolean }>`
   width: 100%;
   height: 100%;
   margin: 0 auto;
@@ -105,11 +105,10 @@ const Marquee = styled.div<{ pairSize: number }>`
     padding-left: 100%;
     /* show the marquee just outside the paragraph */
     will-change: transform;
-    animation: ${({ pairSize }) => `marquee ${pairSize === 0 ? '100' : pairSize * 5}s linear infinite`};
-  }
-
-  > :hover {
-    animation-play-state: paused;
+    animation: ${({ pairSize }) => `marquee ${pairSize === 0 ? '100' : pairSize * 3.5}s linear infinite`};
+    animation-delay: 3.5s;
+    animation-play-state: ${({ pauseAnimation }) => (pauseAnimation ? 'paused' : 'running')};
+    cursor: pointer;
   }
 
   @keyframes marquee {
@@ -136,10 +135,16 @@ const Marquee = styled.div<{ pairSize: number }>`
 `
 
 export default function Footer() {
+  const [pauseAnimation, setPauseAnimation] = useState(false)
+
   const data = useOneDayPairPriceChange()
 
+  const toggleAnimation = useCallback(() => {
+    setPauseAnimation(prev => !prev)
+  }, [])
+
   return (
-    <Marquee pairSize={data.length}>
+    <Marquee pairSize={data.length} pauseAnimation={pauseAnimation} onClick={toggleAnimation}>
       <div>
         <RowFixed height={'100%'}>
           {data.slice(0).map(pair => (

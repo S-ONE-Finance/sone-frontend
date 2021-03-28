@@ -20,6 +20,7 @@ export default async function getBulkPairData(pairList: string[]) {
   ])
 
   try {
+    // Lấy data current.
     let current = await client.query({
       query: PAIRS_BULK,
       variables: {
@@ -28,6 +29,7 @@ export default async function getBulkPairData(pairList: string[]) {
       fetchPolicy: 'network-only'
     })
 
+    // Lấy data quá khứ.
     let [oneDayResult, twoDayResult, oneWeekResult, twoWeekResult] = await Promise.all(
       [b1Day, b2Day, b1Week, b2Week].map(async block => {
         return client.query({
@@ -37,6 +39,7 @@ export default async function getBulkPairData(pairList: string[]) {
       })
     )
 
+    // Làm đẹp data quá khứ.
     let oneDayData = oneDayResult?.data?.pairs.reduce((obj: any, cur: any) => {
       return { ...obj, [cur.id]: cur }
     }, {})
@@ -53,7 +56,9 @@ export default async function getBulkPairData(pairList: string[]) {
       return { ...obj, [cur.id]: cur }
     }, {})
 
-    return await Promise.all(
+    // So sánh data hiện tại và quá khứ và trả về giá trị mong muốn:
+    // Với mỗi pair ở hiện tại, tìm data của nó trong quá khứ rồi map sự thay đổi.
+    const pairs = await Promise.all(
       current &&
         current.data.pairs.map(async (pair: any) => {
           let data = pair
@@ -72,13 +77,21 @@ export default async function getBulkPairData(pairList: string[]) {
           let twoDayHistory = await getHistoryFromData(twoDayData, b2Day)
           let oneWeekHistory = await getHistoryFromData(oneWeekData, b1Week)
           let twoWeekHistory = await getHistoryFromData(twoWeekData, b2Week)
-          // BUG: Có bug bị token1Price undefined ở đây nhưng chưa tái hiện lại được nên chưa fix.
-          data = parseData(data, oneDayHistory, twoDayHistory, oneWeekHistory, twoWeekHistory, b1Day)
-          return data
+
+          // Nếu không có data quá khứ thì trả về null.
+          if (oneDayHistory && twoDayHistory && oneWeekHistory && twoWeekHistory) {
+            data = parseData(data, oneDayHistory, twoDayHistory, oneWeekHistory, twoWeekHistory, b1Day)
+            return data
+          } else {
+            return null
+          }
         })
     )
+
+    // Lọc những pair nào bị null.
+    return pairs.filter(pair => pair !== null)
   } catch (e) {
-    console.error('GraphQL error: Failed to get entities from store.')
+    console.error(e)
     return []
   }
 }

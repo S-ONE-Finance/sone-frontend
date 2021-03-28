@@ -24,6 +24,7 @@ const PairInfoWrapper = styled(RowFixed)`
   justify-content: center;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
+    width: 200px;
     padding: 0 12.5px;
   `};
 `

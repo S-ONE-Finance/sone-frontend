@@ -9,12 +9,11 @@ const QuestionWrapper = styled.div`
   justify-content: center;
   padding: 0.2rem;
   border: none;
-  background: none;
   outline: none;
   cursor: default;
   border-radius: 36px;
   background-color: ${({ theme }) => theme.bg2};
-  color: ${({ theme }) => theme.text2};
+  color: ${({ theme }) => theme.text1};
 
   :hover,
   :focus {
@@ -28,7 +27,6 @@ const LightQuestionWrapper = styled.div`
   justify-content: center;
   padding: 0.2rem;
   border: none;
-  background: none;
   outline: none;
   cursor: default;
   border-radius: 36px;

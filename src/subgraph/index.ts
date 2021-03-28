@@ -35,7 +35,7 @@ function useSubgraphData() {
     if (topPairs?.length > 0) {
       console.log('Array trả về có ' + topPairs.length + ' items.')
     } else {
-      console.error('TheGraph trả về có thể có biến undefined', 'topPairs', topPairs)
+      console.error('topPairs', topPairs)
     }
   }, [])
 
@@ -81,14 +81,10 @@ export function useOneDayPairPriceChange() {
   return (
     data &&
     Object.values(data).map((item: any) => {
-      // BUG: Đã từng thấy lỗi 'token0 undefined' nhưng chưa tái hiện được, log tạm ở đây.
-      if (!item?.token0?.symbol || !item?.token1?.symbol) {
-        console.error('WTF? Tại sao lại không có token symbol?', item)
-      }
       return {
         id: item.id,
-        token0Symbol: item?.token0?.symbol || '???', // BUG: ???
-        token1Symbol: item?.token1?.symbol || '???', // BUG: ???
+        token0Symbol: item.token0.symbol,
+        token1Symbol: item.token1.symbol,
         token1Price: item.token1Price,
         oneDayToken1PriceChange: item.oneDayToken1PriceChange
       }

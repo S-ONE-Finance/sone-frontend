@@ -106,6 +106,7 @@ export function colors(darkMode: boolean): Colors {
     bg2Sone: darkMode ? '#3B5183' : '#FAEDED',
     bg3Sone: darkMode ? '#3B5183' : '#FFFFFF',
     bg4Sone: darkMode ? '#111111' : '#F3F3F3',
+    bg5Sone: darkMode ? '#DFDFDF' : '#DFDFDF',
     border1Sone: darkMode ? '#AAAAAA' : '#C9C9C9',
     stroke1Sone: darkMode ? '#3FAAB0' : '#F05359',
     divider1Sone: darkMode ? '#AAAAAA' : 'rgba(0, 0, 0, 0.25)',

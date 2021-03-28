@@ -58,6 +58,7 @@ export interface Colors {
   bg2Sone: Color
   bg3Sone: Color
   bg4Sone: Color
+  bg5Sone: Color
   border1Sone: Color
   stroke1Sone: Color
   divider1Sone: Color

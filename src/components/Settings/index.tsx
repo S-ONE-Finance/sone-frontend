@@ -1,17 +1,16 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Settings, X } from 'react-feather'
 import { Text } from 'rebass'
-import styled, { ThemeContext } from 'styled-components'
-import { useOnClickOutside } from '../../hooks/useOnClickOutside'
+import styled from 'styled-components'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleSettingsMenu } from '../../state/application/hooks'
 import {
   useExpertModeManager,
   useUserTransactionTTL,
   useUserSlippageTolerance,
-  useUserSingleHopOnly
+  useIsDarkMode
 } from '../../state/user/hooks'
-import { TYPE } from '../../theme'
+import { CloseIcon } from '../../theme'
 import { ButtonError } from '../Button'
 import { AutoColumn } from '../Column'
 import Modal from '../Modal'
@@ -19,6 +18,9 @@ import QuestionHelper from '../QuestionHelper'
 import { RowBetween, RowFixed } from '../Row'
 import Toggle from '../Toggle'
 import TransactionSettings from '../TransactionSettings'
+import SwapVectorLight from '../../assets/images/swap-vector-light.svg'
+import SwapVectorDark from '../../assets/images/swap-vector-dark.svg'
+import { ReactComponent as ExpertIcon } from '../../assets/svg/expert_icon.svg'
 
 const StyledMenuIcon = styled(Settings)`
   height: 20px;
@@ -48,13 +50,10 @@ const StyledCloseIcon = styled(X)`
 const StyledMenuButton = styled.button`
   position: relative;
   width: 100%;
-  height: 100%;
   border: none;
   background-color: transparent;
   margin: 0;
-  padding: 0;
   height: 35px;
-
   padding: 0.15rem 0.5rem;
   border-radius: 0.5rem;
 
@@ -71,7 +70,7 @@ const StyledMenuButton = styled.button`
 const EmojiWrapper = styled.div`
   position: absolute;
   bottom: -6px;
-  right: 0px;
+  right: 0;
   font-size: 14px;
 `
 
@@ -86,21 +85,25 @@ const StyledMenu = styled.div`
 `
 
 const MenuFlyout = styled.span`
+  position: relative;
   min-width: 20.125rem;
-  background-color: ${({ theme }) => theme.bg2};
-  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-    0px 24px 32px rgba(0, 0, 0, 0.01);
+  background-color: ${({ theme }) => theme.bg1Sone};
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.01), 0 4px 8px rgba(0, 0, 0, 0.04), 0 16px 24px rgba(0, 0, 0, 0.04),
+    0 24px 32px rgba(0, 0, 0, 0.01);
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   font-size: 1rem;
-  position: absolute;
-  top: 3rem;
-  right: 0rem;
+  width: 100%;
   z-index: 100;
+  padding: 2.5rem;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     min-width: 18.125rem;
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 20px;
   `};
 `
 
@@ -119,28 +122,90 @@ const ModalContentWrapper = styled.div`
   border-radius: 20px;
 `
 
+const Title = styled.div`
+  font-size: 40px;
+  font-weight: 700;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 20px;
+  `};
+`
+
+export const SectionWrapper = styled(AutoColumn)`
+  grid-row-gap: 35px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-row-gap: 20px;
+  `};
+`
+
+export const ResponsiveAutoColumn = styled(AutoColumn)`
+  grid-row-gap: 15px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-row-gap: 10px;
+  `};
+`
+
+const TitleBodyMarginer = styled(AutoColumn)`
+  grid-row-gap: 15px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-row-gap: 20px;
+  `};
+`
+
+export const SectionHeading = styled.div`
+  font-size: 20px;
+  font-weight: 500;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 1rem;
+  `};
+`
+
+const SwapVector = styled.img`
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  width: 177.12px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    bottom: 1rem;
+    right: 1rem;
+    width: 119.71px;
+  `};
+`
+
+const StyledExpertIcon = styled(ExpertIcon)`
+  path {
+    stroke: ${({ theme }) => theme.text1};
+  }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 22px;
+    height: 18px;
+    margin-right: 1px;
+  `};
+`
+
 export default function SettingsTab() {
-  const node = useRef<HTMLDivElement>()
+  const isDarkMode = useIsDarkMode()
   const open = useModalOpen(ApplicationModal.SETTINGS)
   const toggle = useToggleSettingsMenu()
 
-  const theme = useContext(ThemeContext)
   const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippageTolerance()
 
   const [ttl, setTtl] = useUserTransactionTTL()
 
   const [expertMode, toggleExpertMode] = useExpertModeManager()
 
-  const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
-
   // show confirmation view before turning on
   const [showConfirmation, setShowConfirmation] = useState(false)
 
-  useOnClickOutside(node, open ? toggle : undefined)
-
   return (
     // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/30451
-    <StyledMenu ref={node as any}>
+    <StyledMenu>
       <Modal isOpen={showConfirmation} onDismiss={() => setShowConfirmation(false)} maxHeight={100}>
         <ModalContentWrapper>
           <AutoColumn gap="lg">
@@ -189,58 +254,47 @@ export default function SettingsTab() {
         ) : null}
       </StyledMenuButton>
       {open && (
-        <MenuFlyout>
-          <AutoColumn gap="md" style={{ padding: '1rem' }}>
-            <Text fontWeight={600} fontSize={14}>
-              Transaction Settings
-            </Text>
-            <TransactionSettings
-              rawSlippage={userSlippageTolerance}
-              setRawSlippage={setUserSlippageTolerance}
-              deadline={ttl}
-              setDeadline={setTtl}
-            />
-            <Text fontWeight={600} fontSize={14}>
-              Interface Settings
-            </Text>
-            <RowBetween>
-              <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-                  Toggle Expert Mode
-                </TYPE.black>
-                <QuestionHelper text="Bypasses confirmation modals and allows high slippage trades. Use at your own risk." />
-              </RowFixed>
-              <Toggle
-                id="toggle-expert-mode-button"
-                isActive={expertMode}
-                toggle={
-                  expertMode
-                    ? () => {
-                        toggleExpertMode()
-                        setShowConfirmation(false)
-                      }
-                    : () => {
-                        toggle()
-                        setShowConfirmation(true)
-                      }
-                }
-              />
-            </RowBetween>
-            <RowBetween>
-              <RowFixed>
-                <TYPE.black fontWeight={400} fontSize={14} color={theme.text2}>
-                  Disable Multihops
-                </TYPE.black>
-                <QuestionHelper text="Restricts swaps to direct pairs only." />
-              </RowFixed>
-              <Toggle
-                id="toggle-disable-multihop-button"
-                isActive={singleHopOnly}
-                toggle={() => (singleHopOnly ? setSingleHopOnly(false) : setSingleHopOnly(true))}
-              />
-            </RowBetween>
-          </AutoColumn>
-        </MenuFlyout>
+        <Modal isOpen={open} onDismiss={toggle}>
+          <MenuFlyout>
+            <SwapVector src={isDarkMode ? SwapVectorDark : SwapVectorLight} alt="swap-vector" />
+            <TitleBodyMarginer>
+              <RowBetween>
+                <Title>Swap Settings</Title>
+                <CloseIcon onClick={toggle} />
+              </RowBetween>
+              <SectionWrapper>
+                <TransactionSettings
+                  rawSlippage={userSlippageTolerance}
+                  setRawSlippage={setUserSlippageTolerance}
+                  deadline={ttl}
+                  setDeadline={setTtl}
+                />
+                <ResponsiveAutoColumn>
+                  <RowFixed>
+                    <StyledExpertIcon />
+                    <SectionHeading>Expert Mode</SectionHeading>
+                    <QuestionHelper text="Bypasses confirmation modals and allows high slippage trades. Use at your own risk." />
+                  </RowFixed>
+                  <Toggle
+                    id="toggle-expert-mode-button"
+                    isActive={expertMode}
+                    toggle={
+                      expertMode
+                        ? () => {
+                            toggleExpertMode()
+                            setShowConfirmation(false)
+                          }
+                        : () => {
+                            toggle()
+                            setShowConfirmation(true)
+                          }
+                    }
+                  />
+                </ResponsiveAutoColumn>
+              </SectionWrapper>
+            </TitleBodyMarginer>
+          </MenuFlyout>
+        </Modal>
       )}
     </StyledMenu>
   )

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled, { css } from 'styled-components'
 import { animated, useTransition, useSpring } from 'react-spring'
 import { DialogOverlay, DialogContent } from '@reach/dialog'
@@ -25,12 +25,12 @@ const StyledDialogOverlay = styled(AnimatedDialogOverlay)`
 const AnimatedDialogContent = animated(DialogContent)
 // destructure to not pass custom props to Dialog DOM element
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...rest }) => (
+const StyledDialogContent = styled(({ minHeight, maxHeight, isModalBindToBottom, isOpen, ...rest }) => (
   <AnimatedDialogContent {...rest} />
 )).attrs({
   'aria-label': 'dialog'
 })`
-  overflow-y: ${({ mobile }) => (mobile ? 'scroll' : 'hidden')};
+  overflow-y: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'scroll' : 'hidden')};
 
   &[data-reach-dialog-content] {
     margin: 0 0 2rem 0;
@@ -38,10 +38,10 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
     box-shadow: 0 4px 8px 0 ${({ theme }) => transparentize(0.95, theme.shadow1)};
     padding: 0;
     width: 50vw;
-    overflow-y: ${({ mobile }) => (mobile ? 'scroll' : 'hidden')};
+    overflow-y: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'scroll' : 'hidden')};
     overflow-x: hidden;
 
-    align-self: ${({ mobile }) => (mobile ? 'flex-end' : 'center')};
+    align-self: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'flex-end' : 'center')};
 
     max-width: 610px;
     ${({ maxHeight }) =>
@@ -60,9 +60,9 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, mobile, isOpen, ...r
       width: 65vw;
       margin: 0;
     `}
-    ${({ theme, mobile }) => theme.mediaWidth.upToSmall`
+    ${({ theme, isModalBindToBottom }) => theme.mediaWidth.upToSmall`
       width:  85vw;
-      ${mobile &&
+      ${isModalBindToBottom &&
         css`
           width: 100vw;
           border-radius: 25px 25px 0 0;
@@ -77,6 +77,7 @@ interface ModalProps {
   minHeight?: number | false
   maxHeight?: number
   initialFocusRef?: React.RefObject<any>
+  isBottomOnMobile?: boolean // Center cả trên mobile lẫn desktop.
   children?: React.ReactNode
 }
 
@@ -86,8 +87,10 @@ export default function Modal({
   minHeight = false,
   maxHeight = 90,
   initialFocusRef,
+  isBottomOnMobile = false,
   children
 }: ModalProps) {
+  const isModalBindToBottom = useMemo(() => isMobile && isBottomOnMobile, [isBottomOnMobile])
   const fadeTransition = useTransition(isOpen, null, {
     config: { duration: 200 },
     from: { opacity: 0 },
@@ -122,7 +125,7 @@ export default function Modal({
               unstable_lockFocusAcrossFrames={false}
             >
               <StyledDialogContent
-                {...(isMobile
+                {...(isModalBindToBottom
                   ? {
                       ...bind(),
                       style: { transform: y.interpolate(y => `translateY(${y > 0 ? y : 0}px)`) }
@@ -131,10 +134,10 @@ export default function Modal({
                 aria-label="dialog content"
                 minHeight={minHeight}
                 maxHeight={maxHeight}
-                mobile={isMobile}
+                isModalBindToBottom={isModalBindToBottom}
               >
                 {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
-                {!initialFocusRef && isMobile ? <div tabIndex={1} /> : null}
+                {!initialFocusRef && isModalBindToBottom ? <div tabIndex={1} /> : null}
                 {children}
               </StyledDialogContent>
             </StyledDialogOverlay>
