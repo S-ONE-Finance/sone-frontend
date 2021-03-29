@@ -19,6 +19,7 @@ import AccountDetails from '../AccountDetails'
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
+import { useTranslation } from 'react-i18next'
 
 export const CloseIcon = styled.div`
   position: absolute;
@@ -146,6 +147,7 @@ export default function WalletModal({
   confirmedTransactions: string[] // hashes of confirmed
   ENSName?: string
 }) {
+  const { t } = useTranslation()
   // important that these are destructed from the account-specific web3-react context
   const { active, account, connector, activate, error } = useWeb3React()
 
@@ -389,8 +391,10 @@ export default function WalletModal({
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
-              <span>New to Ethereum? &nbsp;</span>{' '}
-              <StyledExternalLink href="https://ethereum.org/wallets/">Learn more about wallets</StyledExternalLink>
+              <span>{t('new-to-ethereum')} &nbsp;</span>{' '}
+              <StyledExternalLink href="https://ethereum.org/wallets/">
+                {t('learn-more-about-wallets')}
+              </StyledExternalLink>
             </Blurb>
           )}
         </ContentWrapper>

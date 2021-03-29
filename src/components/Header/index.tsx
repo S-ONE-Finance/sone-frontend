@@ -484,7 +484,7 @@ export default function Header() {
             </Title>
             <HeaderMenu>
               <HideSmall>
-                <StyledExternalLink href={'https://www.lipsum.com/'}>S-ONE Wallet</StyledExternalLink>
+                <StyledExternalLink href={'https://www.lipsum.com/'}>{t('s-one-wallet')}</StyledExternalLink>
               </HideSmall>
               <MenuItem
                 className={
@@ -524,13 +524,13 @@ export default function Header() {
                   {t('stats')}
                 </StyledExternalLink>
                 <SubMenu>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swapStats')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swap-stats')}</SubMenuItemExternalLink>
                   <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>
-                    {t('stakingStats')}
+                    {t('staking-stats')}
                   </SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>
-                    {t('lendingStats')}
-                  </SubMenuItemExternalLink>
+                  {/*<SubMenuItemExternalLink href={'https://www.lipsum.com/'}>*/}
+                  {/*  {t('lending-stats')}*/}
+                  {/*</SubMenuItemExternalLink>*/}
                 </SubMenu>
               </MenuItem>
               <MenuItem>
@@ -541,7 +541,7 @@ export default function Header() {
                   {t('docs')}
                 </StyledExternalLink>
                 <ResponsiveTopEndSubMenu>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('whitePaper')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('white-paper')}</SubMenuItemExternalLink>
                   <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</SubMenuItemExternalLink>
                   <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('blog')}</SubMenuItemExternalLink>
                 </ResponsiveTopEndSubMenu>
@@ -589,7 +589,7 @@ export default function Header() {
               <ResponsiveBottomRightSubMenu>
                 <SubMenuItemText onClick={() => setLanguage('jp')}>日本語</SubMenuItemText>
                 <SubMenuItemText onClick={() => setLanguage('en')}>English</SubMenuItemText>
-                <SubMenuItemText onClick={() => setLanguage('zh-CN')}>中文</SubMenuItemText>
+                <SubMenuItemText onClick={() => setLanguage('zh-CN')}>簡体中文</SubMenuItemText>
               </ResponsiveBottomRightSubMenu>
             </ResponsiveMenuItem>
             <ShowOnlyExtraSmall>

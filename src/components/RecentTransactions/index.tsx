@@ -84,7 +84,7 @@ export default function RecentTransactions({ isSmall = false }: { isSmall?: bool
   return (
     <ColumnScroll>
       <TYPE.red1Sone marginBottom={'0.75rem'} fontSize={isSmall ? '18px' : '20px'} fontWeight={700}>
-        {t('transactionHistory')}
+        {t('transaction-history')}
       </TYPE.red1Sone>
       {pending.length || confirmed.length ? (
         <>
@@ -92,7 +92,7 @@ export default function RecentTransactions({ isSmall = false }: { isSmall?: bool
           {renderTransactions(confirmed)}
         </>
       ) : (
-        <TYPE.subText paddingBottom={'0.75rem'}>{t('emptyRecentTransactionsMessage')}</TYPE.subText>
+        <TYPE.subText paddingBottom={'0.75rem'}>{t('your-txns-here')}</TYPE.subText>
       )}
     </ColumnScroll>
   )

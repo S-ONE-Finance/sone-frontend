@@ -110,7 +110,7 @@ function Web3StatusInner() {
           }
         }}
       >
-        {t('myAccount')}
+        {t('my-account')}
       </ButtonConnectWallet>
     )
   } else if (error) {
@@ -123,7 +123,7 @@ function Web3StatusInner() {
   } else {
     return (
       <ButtonConnectWallet id="connect-wallet" onClick={toggleWalletModal}>
-        {t('connectWallet')}
+        {t('connect-wallet')}
       </ButtonConnectWallet>
     )
   }

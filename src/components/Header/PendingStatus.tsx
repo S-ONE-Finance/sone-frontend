@@ -6,6 +6,7 @@ import { isTransactionRecent, useAllTransactions } from '../../state/transaction
 import { TransactionDetails } from '../../state/transactions/reducer'
 
 import LoaderSone from '../LoaderSone'
+import { useTranslation } from 'react-i18next'
 
 const PendingBox = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -43,6 +44,8 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 }
 
 function Web3StatusInner() {
+  const { t } = useTranslation()
+
   const { account } = useWeb3React()
 
   const allTransactions = useAllTransactions()
@@ -60,7 +63,9 @@ function Web3StatusInner() {
     return (
       <PendingBox>
         <LoaderSone size={'18px'} />
-        <Text>{pending?.length} Pending</Text>
+        <Text>
+          {pending?.length} {t('pending')}
+        </Text>
       </PendingBox>
     )
   } else {

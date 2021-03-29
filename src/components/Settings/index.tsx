@@ -21,6 +21,7 @@ import TransactionSettings from '../TransactionSettings'
 import SwapVectorLight from '../../assets/images/swap-vector-light.svg'
 import SwapVectorDark from '../../assets/images/swap-vector-dark.svg'
 import { ReactComponent as ExpertIcon } from '../../assets/svg/expert_icon.svg'
+import { useTranslation } from 'react-i18next'
 
 const StyledMenuIcon = styled(Settings)`
   height: 20px;
@@ -178,6 +179,8 @@ const SwapVector = styled.img`
 `
 
 const StyledExpertIcon = styled(ExpertIcon)`
+  margin-right: 7px;
+
   path {
     stroke: ${({ theme }) => theme.text1};
   }
@@ -190,6 +193,7 @@ const StyledExpertIcon = styled(ExpertIcon)`
 `
 
 export default function SettingsTab() {
+  const { t } = useTranslation()
   const isDarkMode = useIsDarkMode()
   const open = useModalOpen(ApplicationModal.SETTINGS)
   const toggle = useToggleSettingsMenu()
@@ -212,18 +216,17 @@ export default function SettingsTab() {
             <RowBetween style={{ padding: '0 2rem' }}>
               <div />
               <Text fontWeight={500} fontSize={20}>
-                Are you sure?
+                {t('are-you-sure')}
               </Text>
               <StyledCloseIcon onClick={() => setShowConfirmation(false)} />
             </RowBetween>
             <Break />
             <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
               <Text fontWeight={500} fontSize={20}>
-                Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result
-                in bad rates and lost funds.
+                {t('expert-mode-warning-msg-desc')}
               </Text>
               <Text fontWeight={600} fontSize={20}>
-                ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.
+                {t('only-use-this-mode-if-u-know-what-u-are-doing')}
               </Text>
               <ButtonError
                 error={true}
@@ -236,7 +239,7 @@ export default function SettingsTab() {
                 }}
               >
                 <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
-                  Turn On Expert Mode
+                  {t('turn-on-expert-mode')}
                 </Text>
               </ButtonError>
             </AutoColumn>
@@ -259,7 +262,7 @@ export default function SettingsTab() {
             <SwapVector src={isDarkMode ? SwapVectorDark : SwapVectorLight} alt="swap-vector" />
             <TitleBodyMarginer>
               <RowBetween>
-                <Title>Swap Settings</Title>
+                <Title>{t('swap-settings')}</Title>
                 <CloseIcon onClick={toggle} />
               </RowBetween>
               <SectionWrapper>
@@ -272,8 +275,8 @@ export default function SettingsTab() {
                 <ResponsiveAutoColumn>
                   <RowFixed>
                     <StyledExpertIcon />
-                    <SectionHeading>Expert Mode</SectionHeading>
-                    <QuestionHelper text="Bypasses confirmation modals and allows high slippage trades. Use at your own risk." />
+                    <SectionHeading>{t('expert-mode')}</SectionHeading>
+                    <QuestionHelper text={t('question-helper-expert-mode')} />
                   </RowFixed>
                   <Toggle
                     id="toggle-expert-mode-button"

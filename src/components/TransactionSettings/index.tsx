@@ -6,6 +6,7 @@ import Row, { RowBetween, RowFixed } from '../Row'
 import { SectionWrapper, SectionHeading, ResponsiveAutoColumn } from '../Settings'
 import { ReactComponent as SlippageIcon } from '../../assets/svg/slippage_icon.svg'
 import { ReactComponent as DeadlineIcon } from '../../assets/svg/deadline_icon.svg'
+import { useTranslation } from 'react-i18next'
 
 enum SlippageError {
   InvalidInput = 'InvalidInput',
@@ -121,6 +122,8 @@ export interface SlippageTabsProps {
 }
 
 export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, setDeadline }: SlippageTabsProps) {
+  const { t } = useTranslation()
+
   const inputRef = useRef<HTMLInputElement>()
 
   const [slippageInput, setSlippageInput] = useState('')
@@ -175,8 +178,8 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
       <ResponsiveAutoColumn>
         <RowFixed>
           <StyledSlippageIcon />
-          <SectionHeading>Slippage tolerance</SectionHeading>
-          <QuestionHelper text="Your transaction will revert if the price changes unfavorably by more than this percentage." />
+          <SectionHeading>{t('slippage-tolerance')}</SectionHeading>
+          <QuestionHelper text={t('question-helper-slippage-tolerance')} />
         </RowFixed>
         <Row>
           <Option
@@ -232,10 +235,10 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             }}
           >
             {slippageError === SlippageError.InvalidInput
-              ? 'Enter a valid slippage percentage'
+              ? t('enter-a-valid-slippage-percentage')
               : slippageError === SlippageError.RiskyLow
-              ? 'Your transaction may fail'
-              : 'Your transaction may be frontrun'}
+              ? t('your-transaction-may-fail')
+              : t('your-transaction-may-be-frontrun')}
           </RowBetween>
         )}
       </ResponsiveAutoColumn>
@@ -243,8 +246,8 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
       <ResponsiveAutoColumn>
         <RowFixed>
           <StyledDeadlineIcon />
-          <SectionHeading>Transaction deadline</SectionHeading>
-          <QuestionHelper text="Your transaction will revert if it is pending for more than this long." />
+          <SectionHeading>{t('transaction-deadline')}</SectionHeading>
+          <QuestionHelper text={t('question-helper-transaction-deadline')} />
         </RowFixed>
         <RowFixed>
           <OptionCustom tabIndex={-1}>
@@ -258,7 +261,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
                 value={deadlineInput}
                 onChange={e => parseCustomDeadline(e.target.value)}
               />
-              <MediumText>minutes</MediumText>
+              <MediumText>{t('minutes')}</MediumText>
             </RowBetween>
           </OptionCustom>
         </RowFixed>

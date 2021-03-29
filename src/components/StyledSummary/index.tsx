@@ -21,7 +21,7 @@ export default function StyledSummary({ summary }: { summary: TransactionSummary
     const { inputAmount, inputSymbol, outputAmount, outputSymbol } = summary
     return (
       <Trans
-        i18nKey="summarySwap"
+        i18nKey="summary-swap"
         values={{ inputAmount, inputSymbol, outputAmount, outputSymbol }}
         components={[<Red key="red" />, <Bold key="bold" />, <Green key="green" />]}
       />
