@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Trans } from 'react-i18next'
 
-import { TransactionSummary } from '../../state/transactions/reducer'
+import { isSummaryTwoToken, SummaryType, TransactionSummary } from '../../state/transactions/types'
 
 const Bold = styled.span`
   font-weight: 700;
@@ -17,12 +17,23 @@ const Green = styled(Bold)`
 `
 
 export default function StyledSummary({ summary }: { summary: TransactionSummary }) {
-  if (summary.type === 'swap') {
-    const { inputAmount, inputSymbol, outputAmount, outputSymbol } = summary
+  if (isSummaryTwoToken(summary)) {
+    const { token0Amount, token0Symbol, token1Amount, token1Symbol } = summary
+    let i18nKey
+    switch (summary.type) {
+      case SummaryType.SWAP:
+        i18nKey = 'summary-swap'
+        break
+      case SummaryType.ADD:
+        i18nKey = 'summary-add'
+        break
+      default:
+        console.error('This type of summary does not exist. Summary:', summary)
+    }
     return (
       <Trans
-        i18nKey="summary-swap"
-        values={{ inputAmount, inputSymbol, outputAmount, outputSymbol }}
+        i18nKey={i18nKey}
+        values={{ token0Amount, token0Symbol, token1Amount, token1Symbol }}
         components={[<Red key="red" />, <Bold key="bold" />, <Green key="green" />]}
       />
     )

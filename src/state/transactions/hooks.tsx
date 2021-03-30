@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useActiveWeb3React } from '../../hooks'
 import { AppDispatch, AppState } from '../index'
 import { addTransaction } from './actions'
-import { TransactionDetails, TransactionSummary } from './reducer'
+import { TransactionDetails } from './reducer'
+import { TransactionSummary } from './types'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
   response: TransactionResponse,
   customData?: {
-    summary?: string | TransactionSummary
+    summary: string | TransactionSummary
     approval?: { tokenAddress: string; spender: string }
     claim?: { recipient: string }
   }

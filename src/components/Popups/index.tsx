@@ -35,7 +35,7 @@ const FixedPopupColumn = styled(AutoColumn)<{ extraPadding: boolean }>`
   position: fixed;
   top: ${({ extraPadding }) => (extraPadding ? '108px' : '88px')};
   right: 1rem;
-  max-width: 355px !important;
+  max-width: 400px !important;
   width: 100%;
   z-index: 3;
 
@@ -56,7 +56,7 @@ export default function Popups() {
         <ClaimPopup />
         {activePopups.map(item => (
           // <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={item.removeAfterMs} />
-          <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={123456} />
+          <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={12345678} />
         ))}
       </FixedPopupColumn>
       <MobilePopupWrapper height={activePopups?.length > 0 ? 'fit-content' : 0}>
@@ -66,7 +66,7 @@ export default function Popups() {
             .reverse()
             .map(item => (
               // <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={item.removeAfterMs} />
-              <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={123456} />
+              <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={12345678} />
             ))}
         </MobilePopupInner>
       </MobilePopupWrapper>

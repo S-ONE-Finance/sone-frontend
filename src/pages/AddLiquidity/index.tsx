@@ -40,6 +40,7 @@ import { currencyId } from '../../utils/currencyId'
 import { PoolPriceBar } from './PoolPriceBar'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
+import { SummaryType } from '../../state/transactions/types'
 
 export default function AddLiquidity({
   match: {
@@ -182,15 +183,13 @@ export default function AddLiquidity({
           setAttemptingTxn(false)
 
           addTransaction(response, {
-            summary:
-              'Add ' +
-              parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
-              ' ' +
-              currencies[Field.CURRENCY_A]?.symbol +
-              ' and ' +
-              parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
-              ' ' +
-              currencies[Field.CURRENCY_B]?.symbol
+            summary: {
+              type: SummaryType.ADD,
+              token0Amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
+              token0Symbol: currencies[Field.CURRENCY_A]?.symbol,
+              token1Amount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
+              token1Symbol: currencies[Field.CURRENCY_B]?.symbol
+            }
           })
 
           setTxHash(response.hash)

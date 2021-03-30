@@ -61,7 +61,8 @@ const NetworkIcon = styled(Activity)`
   width: 16px;
   height: 16px;
 `
-const ButtonConnectWallet = styled.div<{ cursor?: string }>`
+
+export const ButtonMainRed = styled.div<{ cursor?: string }>`
   background-color: ${({ theme }) => theme.red1Sone};
   color: #ffffff;
   width: 154px;
@@ -100,7 +101,7 @@ function Web3StatusInner() {
 
   if (account) {
     return (
-      <ButtonConnectWallet
+      <ButtonMainRed
         id="web3-status-connected"
         cursor="normal"
         onClick={() => {
@@ -111,7 +112,7 @@ function Web3StatusInner() {
         }}
       >
         {t('my-account')}
-      </ButtonConnectWallet>
+      </ButtonMainRed>
     )
   } else if (error) {
     return (
@@ -122,9 +123,9 @@ function Web3StatusInner() {
     )
   } else {
     return (
-      <ButtonConnectWallet id="connect-wallet" onClick={toggleWalletModal}>
+      <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
         {t('connect-wallet')}
-      </ButtonConnectWallet>
+      </ButtonMainRed>
     )
   }
 }

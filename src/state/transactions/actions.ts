@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit'
 import { ChainId } from '@s-one-finance/sdk-core'
 
-import { TransactionSummary } from '../transactions/reducer'
+import { TransactionSummary } from './types'
 
 export interface SerializableTransactionReceipt {
   to: string

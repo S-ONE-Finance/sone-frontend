@@ -15,6 +15,8 @@ import { useV1ExchangeContract } from './useContract'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './useENS'
 import { Version } from './useToggledVersion'
+import { SummaryType } from '../state/transactions/types'
+
 // import { spawn } from 'child_process'
 
 export enum SwapCallbackState {
@@ -213,34 +215,13 @@ export function useSwapCallback(
             const inputAmount = trade.inputAmount.toSignificant(3)
             const outputAmount = trade.outputAmount.toSignificant(3)
 
-            /*
-            NOTE: S-ONE no longer needs recipient.
-
-            const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
-            const withRecipient =
-              recipient === account
-                ? base
-                : `${base} to ${
-                    recipientAddressOrName && isAddress(recipientAddressOrName)
-                      ? shortenAddress(recipientAddressOrName)
-                      : recipientAddressOrName
-                  }`
-
-            const withVersion =
-              tradeVersion === Version.v2 ? withRecipient : `${withRecipient} on ${(tradeVersion as any).toUpperCase()}`
-
-            addTransaction(response, {
-              summary: withVersion
-            })
-            */
-
             addTransaction(response, {
               summary: {
-                type: 'swap',
-                inputAmount,
-                inputSymbol,
-                outputAmount,
-                outputSymbol
+                type: SummaryType.SWAP,
+                token0Amount: inputAmount,
+                token0Symbol: inputSymbol,
+                token1Amount: outputAmount,
+                token1Symbol: outputSymbol
               }
             })
 

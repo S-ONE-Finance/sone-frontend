@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { TokenList } from '@uniswap/token-lists'
-import { TransactionSummary } from '../transactions/reducer'
+import { TransactionSummary } from '../transactions/types'
 
 export type PopupContent =
   | {

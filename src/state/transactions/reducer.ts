@@ -6,18 +6,9 @@ import {
   finalizeTransaction,
   SerializableTransactionReceipt
 } from './actions'
+import { TransactionSummary } from './types'
 
 const now = () => new Date().getTime()
-
-export interface SwapSummary {
-  type: 'swap'
-  inputAmount: string
-  inputSymbol?: string
-  outputAmount: string
-  outputSymbol?: string
-}
-
-export type TransactionSummary = SwapSummary
 
 export interface TransactionDetails {
   hash: string

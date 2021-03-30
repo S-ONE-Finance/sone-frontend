@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { X } from 'react-feather'
 import styled, { keyframes } from 'styled-components'
 import tokenLogo from '../../assets/images/token-logo.png'
-import { ButtonPrimary } from '../../components/Button'
+import { ButtonPrimary } from '../Button'
 import { useActiveWeb3React } from '../../hooks'
 import { ApplicationModal } from '../../state/application/actions'
 import {
@@ -25,7 +25,7 @@ const StyledClaimPopup = styled(AutoColumn)`
   overflow: hidden;
   position: relative;
   max-width: 360px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `
 
 const StyledClose = styled(X)`
