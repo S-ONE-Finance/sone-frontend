@@ -567,7 +567,7 @@ export default function Header() {
               </AccountElement>
               {account && (
                 <HideExtraSmall>
-                  <ResponsiveBottomLeftSubMenu width={'fit-content'} borderRadius={'20px'}>
+                  <ResponsiveBottomLeftSubMenu width={'fit-content'} borderRadius={'20px'} display={'block'}>
                     <MyAccountPanel />
                   </ResponsiveBottomLeftSubMenu>
                 </HideExtraSmall>

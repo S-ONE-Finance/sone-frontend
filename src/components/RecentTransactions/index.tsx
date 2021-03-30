@@ -6,9 +6,10 @@ import { useTranslation } from 'react-i18next'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { TransactionDetails } from '../../state/transactions/reducer'
 
-import { TYPE } from '../../theme'
+import { ExternalLink, TYPE } from '../../theme'
 import Column from '../Column'
 import TransactionSone from './TransactionSone'
+import Row from '../Row'
 
 const ColumnScroll = styled(Column)`
   padding-left: 0;
@@ -53,6 +54,14 @@ const TransactionList = styled.div`
   }
 `
 
+const ViewMore = styled(ExternalLink)`
+  color: ${({ theme }) => theme.red1Sone}
+  cursor: pointer;
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: 0.5rem;
+`
+
 // We want the latest one to come first, so return negative if a is after b.
 function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
   return b.addedTime - a.addedTime
@@ -90,6 +99,10 @@ export default function RecentTransactions({ isSmall = false }: { isSmall?: bool
         <>
           {renderTransactions(pending)}
           {renderTransactions(confirmed)}
+          <Row justify={'center'}>
+            {/* TODO: href chưa fill. */}
+            <ViewMore href="#">{t('view-more')}</ViewMore>
+          </Row>
         </>
       ) : (
         <TYPE.subText paddingBottom={'0.75rem'}>{t('your-txns-here')}</TYPE.subText>

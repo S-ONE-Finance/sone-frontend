@@ -38,5 +38,6 @@
   "white-paper": "White Paper",
   "your-transaction-may-be-frontrun": "Your transaction may be frontrun",
   "your-transaction-may-fail": "Your transaction may fail",
-  "your-txns-here": "Your recent transactions will appear here..."
+  "your-txns-here": "Your recent transactions will appear here...",
+  "view-more": "View more"
 }
