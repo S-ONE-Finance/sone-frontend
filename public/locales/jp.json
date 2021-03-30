@@ -35,9 +35,9 @@
   "transaction-deadline": "最大取引時間",
   "transaction-history": "取引履歴",
   "turn-on-expert-mode": "Turn On Expert Mode",
+  "view-more": "View more",
   "white-paper": "取引データ",
   "your-transaction-may-be-frontrun": "Your transaction may be frontrun",
   "your-transaction-may-fail": "Your transaction may fail",
-  "your-txns-here": "Your recent transactions will appear here...",
-  "view-more": "View more"
+  "your-txns-here": "Your recent transactions will appear here..."
 }

@@ -7,7 +7,7 @@
   "connect-wallet": "Connect Wallet",
   "docs": "Docs",
   "enter-a-valid-slippage-percentage": "Enter a valid slippage percentage",
-  "expert-mode": "Expert Mode",
+  "expert-mode": "Swap Expert",
   "expert-mode-warning-msg-desc": "Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result in bad rates and lost funds.",
   "faq": "FAQ",
   "learn-more-about-wallets": "Learn more about wallets",
@@ -35,9 +35,9 @@
   "transaction-deadline": "Transaction deadline",
   "transaction-history": "Transaction History",
   "turn-on-expert-mode": "Turn On Expert Mode",
+  "view-more": "View more",
   "white-paper": "White Paper",
   "your-transaction-may-be-frontrun": "Your transaction may be frontrun",
   "your-transaction-may-fail": "Your transaction may fail",
-  "your-txns-here": "Your recent transactions will appear here...",
-  "view-more": "View more"
+  "your-txns-here": "Your recent transactions will appear here..."
 }
