@@ -100,6 +100,8 @@ export function colors(darkMode: boolean): Colors {
     text3Sone: darkMode ? '#FFFFFF' : '#767676',
     text4Sone: darkMode ? '#AAAAAA' : '#767676',
     text5Sone: darkMode ? '#3FAAB0' : '#3FAAB0',
+    text6Sone: darkMode ? '#FFFFFF' : '#333333',
+    text7Sone: darkMode ? '#56CFD6' : '#65BAC5',
     red1Sone: '#F05359',
     green1Sone: '#7AC51B',
     bg1Sone: darkMode ? '#0E2B4A' : '#FFFFFF',

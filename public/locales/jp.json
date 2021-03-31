@@ -30,7 +30,7 @@
   "summary-add": "Add <0>{{token0Amount}} </0><1>{{token0Symbol}}</1> and <2>{{token1Amount}} </2><1>{{token1Symbol}}</1>",
   "summary-swap": "<0>{{token0Amount}}</0><1>{{token0Symbol}}</1>を<2>{{token1Amount}}</2><1>{{token1Symbol}}</1>に交換",
   "swap": "取引",
-  "swap-settings": "取引設定",
+  "settings": "設定",
   "swap-stats": "Swap Stats",
   "transaction-deadline": "最大取引時間",
   "transaction-history": "取引履歴",
@@ -39,5 +39,6 @@
   "white-paper": "取引データ",
   "your-transaction-may-be-frontrun": "Your transaction may be frontrun",
   "your-transaction-may-fail": "Your transaction may fail",
-  "your-txns-here": "Your recent transactions will appear here..."
+  "your-txns-here": "Your recent transactions will appear here...",
+  "weekly-ranking": "Weekly Ranking"
 }

@@ -262,7 +262,7 @@ export default function SettingsTab() {
             <SwapVector src={isDarkMode ? SwapVectorDark : SwapVectorLight} alt="swap-vector" />
             <TitleBodyMarginer>
               <RowBetween>
-                <Title>{t('swap-settings')}</Title>
+                <Title>{t('settings')}</Title>
                 <CloseIcon onClick={toggle} />
               </RowBetween>
               <SectionWrapper>

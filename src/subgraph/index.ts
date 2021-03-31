@@ -1,12 +1,13 @@
 // TODO: Chuyển mọi hooks sang sử dụng sdk của @s-one-finance.
 
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { client } from './apollo/client'
 import { PAIRS_CURRENT } from './apollo/queries'
 
 import getBulkPairData from './utils/getBulkPairData'
 import { useActiveWeb3React } from '../hooks'
+import getCaseSensitiveAddress from './utils/getCaseSensitiveAddress'
 
 /**
  * Use Subgraph to query data for pairs.
@@ -28,14 +29,16 @@ function useSubgraphData() {
     const pairIds = pairs.map((pair: { id: string }) => pair.id)
 
     // Get data for every pair in list.
-    const topPairs = await getBulkPairData(pairIds)
-    topPairs && setSubgraphData(topPairs)
+    const data = await getBulkPairData(pairIds)
+    if (data?.length > 0) {
+      setSubgraphData(data)
+    }
 
     // Log out to track query results.
-    if (topPairs?.length > 0) {
-      console.log('Array trả về có ' + topPairs.length + ' items.')
+    if (data?.length > 0) {
+      console.log('Array trả về có ' + data.length + ' items.')
     } else {
-      console.error('topPairs', topPairs)
+      console.error('New subgraph data', data)
     }
   }, [])
 
@@ -78,33 +81,43 @@ function useSubgraphData() {
 export function useOneDayPairPriceChange() {
   const data = useSubgraphData()
 
-  return (
-    data &&
-    Object.values(data).map((item: any) => {
-      return {
-        id: item.id,
-        token0Symbol: item.token0.symbol,
-        token1Symbol: item.token1.symbol,
-        token1Price: item.token1Price,
-        oneDayToken1PriceChange: item.oneDayToken1PriceChange
-      }
-    })
+  return useMemo(
+    () =>
+      data &&
+      Object.values(data).map((item: any) => {
+        return {
+          id: item.id,
+          token0Symbol: item.token0.symbol,
+          token1Symbol: item.token1.symbol,
+          token1Price: item.token1Price,
+          oneDayToken1PriceChange: item.oneDayToken1PriceChange
+        }
+      }),
+    [data]
   )
 }
 
 export function useWeeklyRanking() {
   const data = useSubgraphData()
 
-  // TODO: Có thể tối ưu câu query graphql để speed nhanh hơn.
-  return (
-    data &&
-    Object.values(data)
-      .filter((item: any) => !isNaN(item.oneWeekVolumeChangeUSD))
-      // BUG: Chỗ này chưa chuẩn đâu nhưng khi nào làm đến weekly thì sửa.
-      .slice(0, 4)
-      .map((item: any) => ({
-        id: item.id,
-        oneWeekVolumeChangeUSD: item.oneWeekVolumeChangeUSD
-      }))
+  return useMemo(
+    () =>
+      data &&
+      Object.values(data)
+        .filter((item: any) => !!item?.oneWeekVolumeChangeUSD)
+        .sort((a: any, b: any) => b.oneWeekVolumeChangeUSD - a.oneWeekVolumeChangeUSD)
+        .slice(0, 5)
+        .map((item: any) => ({
+          ...item,
+          token0: {
+            ...item.token0,
+            id: getCaseSensitiveAddress(item.token0.id)
+          },
+          token1: {
+            ...item.token1,
+            id: getCaseSensitiveAddress(item.token1.id)
+          }
+        })),
+    [data]
   )
 }

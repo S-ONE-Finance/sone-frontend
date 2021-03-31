@@ -63,9 +63,11 @@ const HeaderElement = styled.div`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     flex-direction: row-reverse;
     align-items: center;
+    
     & > *:last-child {
       margin-left: 0 !important;
     }
+    
     & > *:first-child {
       margin-left: 0.5rem !important;
     }
@@ -75,12 +77,6 @@ const HeaderElement = styled.div`
 const HeaderElementWrap = styled.div`
   display: flex;
   align-items: center;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    > *:first-child {
-      // margin-left: 0;
-    }
-  `};
 `
 
 const HeaderRow = styled(RowFixed)`
@@ -93,7 +89,6 @@ const HeaderMenu = styled(Row)`
   margin-left: 2rem;
   justify-content: center;
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    // padding: 1rem 0 1rem 1rem;
     justify-content: flex-end;
 `};
 `
@@ -149,9 +144,7 @@ const StyledNavLink = styled(NavLink).attrs({
 `
 
 // The same style as StyledNavLink
-const StyledExternalLink = styled(ExternalLink).attrs({
-  activeClassName
-})<{ isActive?: boolean }>`
+const StyledExternalLink = styled(ExternalLink)`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
   outline: none;
@@ -223,9 +216,7 @@ const ResponsiveBottomRightSubMenu = styled(SubMenu)`
   `}
 `
 
-const SubMenuItemNavLink = styled(NavLink).attrs({
-  activeClassName
-})`
+const SubMenuItemNavLink = styled(NavLink)`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
   outline: none;
@@ -249,9 +240,7 @@ const SubMenuItemNavLink = styled(NavLink).attrs({
 `
 
 // The same style as SubMenuItemNavLink.
-const SubMenuItemExternalLink = styled(ExternalLink).attrs({
-  activeClassName
-})<{ isActive?: boolean }>`
+const SubMenuItemExternalLink = styled(ExternalLink)<{ isActive?: boolean }>`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
   outline: none;
@@ -495,20 +484,23 @@ export default function Header() {
                     : undefined
                 }
               >
-                <StyledNavLink to={'/swap'}>{t('swap')}</StyledNavLink>
+                <StyledNavLink
+                  to={'/swap'}
+                  isActive={(match, { pathname }) =>
+                    Boolean(match) ||
+                    pathname.startsWith('/swap') ||
+                    pathname.startsWith('/pool') ||
+                    pathname.startsWith('/add') ||
+                    pathname.startsWith('/remove') ||
+                    pathname.startsWith('/create') ||
+                    pathname.startsWith('/find')
+                  }
+                >
+                  {t('swap')}
+                </StyledNavLink>
                 <SubMenu>
                   <SubMenuItemNavLink to={'/swap'}>{t('swap')}</SubMenuItemNavLink>
-                  <SubMenuItemNavLink
-                    id={`pool-nav-link`}
-                    to={'/pool'}
-                    isActive={(match, { pathname }) =>
-                      Boolean(match) ||
-                      pathname.startsWith('/add') ||
-                      pathname.startsWith('/remove') ||
-                      pathname.startsWith('/create') ||
-                      pathname.startsWith('/find')
-                    }
-                  >
+                  <SubMenuItemNavLink id={`pool-nav-link`} to={'/pool'}>
                     {t('liquidity')}
                   </SubMenuItemNavLink>
                 </SubMenu>
