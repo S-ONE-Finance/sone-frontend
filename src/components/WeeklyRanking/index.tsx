@@ -47,9 +47,9 @@ function WeeklyRanking() {
   const { t } = useTranslation()
   const ranking = useWeeklyRanking()
 
-  const getWeeklyRankingItem = useCallback((address0: string, address1: string, change: number) => {
+  const getWeeklyRankingItem = useCallback((key: string, address0: string, address1: string, change: number) => {
     return (
-      <ColumnCenter>
+      <ColumnCenter key={key}>
         <CurrencyLogoContainer>
           <CurrencyLogo address={address0} style={{ marginRight: '3px' }} />
           <CurrencyLogo address={address1} />
@@ -65,11 +65,9 @@ function WeeklyRanking() {
         <Title>{t('weekly-ranking')}</Title>
         <QuestionHelper text={t('question-helper-weekly-ranking')} size={23} />
       </SpanFullColumns>
-      {getWeeklyRankingItem(ranking[0]?.token0?.id, ranking[0]?.token1?.id, ranking[0]?.oneWeekVolumeChangeUSD)}
-      {getWeeklyRankingItem(ranking[1]?.token0?.id, ranking[1]?.token1?.id, ranking[1]?.oneWeekVolumeChangeUSD)}
-      {getWeeklyRankingItem(ranking[2]?.token0?.id, ranking[2]?.token1?.id, ranking[2]?.oneWeekVolumeChangeUSD)}
-      {getWeeklyRankingItem(ranking[3]?.token0?.id, ranking[3]?.token1?.id, ranking[3]?.oneWeekVolumeChangeUSD)}
-      {getWeeklyRankingItem(ranking[4]?.token0?.id, ranking[4]?.token1?.id, ranking[4]?.oneWeekVolumeChangeUSD)}
+      {(ranking?.length >= 1 ? ranking : [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]).map((item: any) =>
+        getWeeklyRankingItem(item?.id, item?.token0?.id, item?.token1?.id, item?.oneWeekVolumeChangeUSD)
+      )}
     </Container>
   )
 }
