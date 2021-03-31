@@ -3,7 +3,7 @@ import { useWeeklyRanking } from '../../subgraph'
 import CurrencyLogo from '../CurrencyLogo'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import Row, { RowBetween } from '../Row'
+import Row from '../Row'
 import QuestionHelper from '../QuestionHelper'
 import { ColumnCenter } from '../Column'
 import { getFormatNumber } from '../../subgraph/utils/formatter'
@@ -17,7 +17,7 @@ const Container = styled.div`
   width: 602px;
   border-radius: 40px;
   padding: 2rem;
-  box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.15);
 `
 
 const SpanFullColumns = styled(Row)`
@@ -59,22 +59,19 @@ function WeeklyRanking() {
     )
   }, [])
 
-  if (Array.isArray(ranking) && ranking?.length >= 5) {
-    return (
-      <Container>
-        <SpanFullColumns>
-          <Title>{t('weekly-ranking')}</Title>
-          <QuestionHelper text={t('question-helper-weekly-ranking')} size={23} />
-        </SpanFullColumns>
-        {getWeeklyRankingItem(ranking[0].token0.id, ranking[0].token1.id, ranking[0].oneWeekVolumeChangeUSD)}
-        {getWeeklyRankingItem(ranking[1].token0.id, ranking[1].token1.id, ranking[1].oneWeekVolumeChangeUSD)}
-        {getWeeklyRankingItem(ranking[2].token0.id, ranking[2].token1.id, ranking[2].oneWeekVolumeChangeUSD)}
-        {getWeeklyRankingItem(ranking[3].token0.id, ranking[3].token1.id, ranking[3].oneWeekVolumeChangeUSD)}
-        {getWeeklyRankingItem(ranking[4].token0.id, ranking[4].token1.id, ranking[4].oneWeekVolumeChangeUSD)}
-      </Container>
-    )
-  }
-  return null
+  return (
+    <Container>
+      <SpanFullColumns>
+        <Title>{t('weekly-ranking')}</Title>
+        <QuestionHelper text={t('question-helper-weekly-ranking')} size={23} />
+      </SpanFullColumns>
+      {getWeeklyRankingItem(ranking[0]?.token0?.id, ranking[0]?.token1?.id, ranking[0]?.oneWeekVolumeChangeUSD)}
+      {getWeeklyRankingItem(ranking[1]?.token0?.id, ranking[1]?.token1?.id, ranking[1]?.oneWeekVolumeChangeUSD)}
+      {getWeeklyRankingItem(ranking[2]?.token0?.id, ranking[2]?.token1?.id, ranking[2]?.oneWeekVolumeChangeUSD)}
+      {getWeeklyRankingItem(ranking[3]?.token0?.id, ranking[3]?.token1?.id, ranking[3]?.oneWeekVolumeChangeUSD)}
+      {getWeeklyRankingItem(ranking[4]?.token0?.id, ranking[4]?.token1?.id, ranking[4]?.oneWeekVolumeChangeUSD)}
+    </Container>
+  )
 }
 
 export default WeeklyRanking

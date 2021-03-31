@@ -52,12 +52,9 @@ export default function parseData(
   twoWeekData: any,
   oneDayBlock: []
 ) {
-  // get volume changes 24h
-  const [oneDayVolumeUSD, oneDayVolumeChangeUSD] = get2PeriodPercentChange(
-    data?.volumeUSD,
-    oneDayData?.volumeUSD ? oneDayData.volumeUSD : 0,
-    twoDayData?.volumeUSD ? twoDayData.volumeUSD : 0
-  )
+  if (!data) {
+    throw new Error('Pass the empty data current')
+  }
 
   // get volume changes 1 week
   const [oneWeekVolumeUSD, oneWeekVolumeChangeUSD] = get2PeriodPercentChange(
@@ -74,22 +71,8 @@ export default function parseData(
   data.oneDayToken1PriceChange = oneDayToken1PriceChange
 
   // set volume properties
-  data.oneDayVolumeUSD = oneDayVolumeUSD
-  data.oneDayVolumeChangeUSD = oneDayVolumeChangeUSD
-
   data.oneWeekVolumeUSD = oneWeekVolumeUSD
   data.oneWeekVolumeChangeUSD = oneWeekVolumeChangeUSD
-
-  // format if pair hasn't existed for a day or a week
-  if (!oneDayData && data && data.createdAtBlockNumber > oneDayBlock) {
-    data.oneDayVolumeUSD = parseFloat(data.volumeUSD)
-  }
-  if (!oneDayData && data) {
-    data.oneDayVolumeUSD = parseFloat(data.volumeUSD)
-  }
-  if (!oneWeekData && data) {
-    data.oneWeekVolumeUSD = parseFloat(data.volumeUSD)
-  }
 
   // format incorrect names
   updateNameData(data)
