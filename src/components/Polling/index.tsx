@@ -23,15 +23,14 @@ const StyledPolling = styled.div`
   `}
 `
 const StyledPollingDot = styled.div`
-  width: 8px;
-  height: 8px;
-  min-height: 8px;
-  min-width: 8px;
-  margin-left: 0.5rem;
-  margin-top: 3px;
+  width: 19px;
+  height: 19px;
+  min-height: 19px;
+  min-width: 19px;
+  margin-left: 10px;
   border-radius: 50%;
   position: relative;
-  background-color: ${({ theme }) => theme.green1};
+  background-color: ${({ theme }) => theme.green1Sone};
 `
 
 const rotate360 = keyframes`
@@ -52,13 +51,12 @@ const Spinner = styled.div`
   border-bottom: 1px solid transparent;
   border-left: 2px solid ${({ theme }) => theme.green1};
   background: transparent;
-  width: 14px;
-  height: 14px;
+  width: 23px;
+  height: 23px;
   border-radius: 50%;
   position: relative;
-
-  left: -3px;
-  top: -3px;
+  left: -2px;
+  top: -2px;
 `
 
 export default function Polling() {
@@ -85,7 +83,7 @@ export default function Polling() {
   return (
     <ExternalLink href={chainId && blockNumber ? getEtherscanLink(chainId, blockNumber.toString(), 'block') : ''}>
       <StyledPolling>
-        <TYPE.black fontSize={'11px'} style={{ opacity: isMounted ? '0.2' : '0.6' }}>
+        <TYPE.black fontSize={'16px'} style={{ opacity: isMounted ? '0.2' : '0.6' }}>
           {blockNumber}
         </TYPE.black>
         <StyledPollingDot>{!isMounted && <Spinner />}</StyledPollingDot>
