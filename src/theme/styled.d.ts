@@ -65,6 +65,12 @@ export interface Colors {
   stroke1Sone: Color
   divider1Sone: Color
   scrollbarThumb: Color
+
+  // Tab
+  tabBg: Color
+  tabBgActive: Color
+  tabText: Color
+  tabTextActive: Color
 }
 
 export interface Grids {

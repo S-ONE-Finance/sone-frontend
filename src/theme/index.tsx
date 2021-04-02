@@ -19,7 +19,7 @@ import backgroundImageUpToExtraSmallDark from '../assets/images/background-dark-
 
 export * from './components'
 
-const MEDIA_WIDTHS = {
+export const MEDIA_WIDTHS = {
   upToExtraSmall: 500,
   upToSmall: 768,
   upToMedium: 992,
@@ -112,7 +112,13 @@ export function colors(darkMode: boolean): Colors {
     border1Sone: darkMode ? '#AAAAAA' : '#C9C9C9',
     stroke1Sone: darkMode ? '#3FAAB0' : '#F05359',
     divider1Sone: darkMode ? '#AAAAAA' : 'rgba(0, 0, 0, 0.25)',
-    scrollbarThumb: darkMode ? '#3B5183' : '#808080'
+    scrollbarThumb: darkMode ? '#3B5183' : '#808080',
+
+    // Tab
+    tabBg: darkMode ? '#3B5183' : '#F3F3F3',
+    tabBgActive: darkMode ? '#ECECEC' : '#3FAAB0',
+    tabText: darkMode ? '#7AA3E5' : '#C9C9C9',
+    tabTextActive: darkMode ? '#4F4F4F' : '#FFFFFF'
   }
 }
 

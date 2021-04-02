@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Globe, Menu as MenuIcon, Moon, Sun } from 'react-feather'
@@ -43,7 +43,6 @@ const HeaderFrame = styled.div`
     grid-template-columns: 1fr;
     padding: 0 1rem;
     width: calc(100%);
-    position: relative;
   `};
 `
 
@@ -86,7 +85,7 @@ const HeaderRow = styled(RowFixed)`
 `
 
 const HeaderMenu = styled(Row)`
-  margin-left: 2rem;
+  margin-left: 87.52px;
   justify-content: center;
   ${({ theme }) => theme.mediaWidth.upToLarge`
     justify-content: flex-end;
@@ -332,7 +331,7 @@ const MenuItem = styled.div.attrs({
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
   width: fit-content;
-  margin-left: 2rem;
+  margin-left: 60px;
   font-weight: 400;
   height: 70px;
   display: flex;
@@ -363,19 +362,6 @@ const MenuItem = styled.div.attrs({
     transform: translateX(-50%);
     cursor: default;
     bottom: -1rem;
-  }
-
-  &.${activeClassName} {
-    color: ${({ theme }) => theme.red1Sone};
-
-    ::after {
-      content: '';
-      width: 100%;
-      height: 4px;
-      background-color: ${({ theme }) => theme.red1Sone};
-      position: absolute;
-      bottom: 0;
-    }
   }
 `
 
@@ -454,7 +440,6 @@ export default function Header() {
   const [language, setLanguage] = useLanguage()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
   const availableClaim: boolean = useUserHasAvailableClaim(account)
-  const location = useLocation()
 
   const [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
 
@@ -475,15 +460,7 @@ export default function Header() {
               <HideSmall>
                 <StyledExternalLink href={'https://www.lipsum.com/'}>{t('s-one-wallet')}</StyledExternalLink>
               </HideSmall>
-              <MenuItem
-                className={
-                  location.pathname.startsWith('/swap') ||
-                  location.pathname.startsWith('/pool') ||
-                  location.pathname.startsWith('/add')
-                    ? 'ACTIVE'
-                    : undefined
-                }
-              >
+              <MenuItem>
                 <StyledNavLink
                   to={'/swap'}
                   isActive={(match, { pathname }) =>
@@ -500,7 +477,7 @@ export default function Header() {
                 </StyledNavLink>
                 <SubMenu>
                   <SubMenuItemNavLink to={'/swap'}>{t('swap')}</SubMenuItemNavLink>
-                  <SubMenuItemNavLink id={`pool-nav-link`} to={'/pool'}>
+                  <SubMenuItemNavLink id={`pool-nav-link`} to={'/add'}>
                     {t('liquidity')}
                   </SubMenuItemNavLink>
                 </SubMenu>

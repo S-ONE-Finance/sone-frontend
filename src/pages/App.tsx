@@ -37,6 +37,9 @@ import RemoveLiquidity from './RemoveLiquidity'
 import Swap from './Swap'
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
+import TabSwapLiquidity from '../components/TabSwapLiquidity'
+import { useLocation } from 'react-router'
+import WeeklyRanking from '../components/WeeklyRanking'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -61,11 +64,11 @@ const BodyWrapper = styled.div`
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-top: 100px;
+  padding-top: 20px;
   padding-bottom: 45px;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    padding: 2rem 1rem 5rem 1rem;
+    padding: 22px 1rem 5rem 1rem;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
@@ -106,6 +109,22 @@ function TopLevelModals() {
   return <AddressClaimModal isOpen={open} onDismiss={toggle} />
 }
 
+function OnlyShowSwapAndLiquidity({ children }: { children?: React.ReactNode }) {
+  const location = useLocation()
+
+  const { pathname } = location
+
+  return children &&
+    (pathname.startsWith('/swap') ||
+      pathname.startsWith('/pool') ||
+      pathname.startsWith('/add') ||
+      pathname.startsWith('/remove') ||
+      pathname.startsWith('/create') ||
+      pathname.startsWith('/find')) ? (
+    <>{children}</>
+  ) : null
+}
+
 export default function App() {
   return (
     <Suspense fallback={null}>
@@ -120,6 +139,9 @@ export default function App() {
           <Popups />
           <Polling />
           <TopLevelModals />
+          <OnlyShowSwapAndLiquidity>
+            <TabSwapLiquidity />
+          </OnlyShowSwapAndLiquidity>
           <Web3ReactManager>
             <Switch>
               <Route exact strict path="/swap" component={Swap} />
@@ -147,6 +169,7 @@ export default function App() {
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
+          <WeeklyRanking />
         </BodyWrapper>
         <Marginer />
         <FooterWrapper>

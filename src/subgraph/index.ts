@@ -8,6 +8,8 @@ import { PAIRS_CURRENT } from './apollo/queries'
 import getBulkPairData from './utils/getBulkPairData'
 import { useActiveWeb3React } from '../hooks'
 import getCaseSensitiveAddress from './utils/getCaseSensitiveAddress'
+import { useWindowSize } from '../hooks/useWindowSize'
+import { MEDIA_WIDTHS } from '../theme'
 
 /**
  * Use Subgraph to query data for pairs.
@@ -100,13 +102,16 @@ export function useOneDayPairPriceChange() {
 export function useWeeklyRanking() {
   const data = useSubgraphData()
 
+  // Trên mobile chỉ show 4 items.
+  const { width } = useWindowSize()
+
   return useMemo(
     () =>
       data &&
       Object.values(data)
         .filter((item: any) => !!item?.oneWeekVolumeChangeUSD)
         .sort((a: any, b: any) => b.oneWeekVolumeChangeUSD - a.oneWeekVolumeChangeUSD)
-        .slice(0, 5)
+        .slice(0, width && width <= MEDIA_WIDTHS.upToExtraSmall ? 4 : 5)
         .map((item: any) => ({
           ...item,
           token0: {
@@ -118,6 +123,6 @@ export function useWeeklyRanking() {
             id: getCaseSensitiveAddress(item.token1.id)
           }
         })),
-    [data]
+    [data, width]
   )
 }
