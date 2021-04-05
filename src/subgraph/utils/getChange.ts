@@ -10,6 +10,10 @@ export const get2PeriodPercentChange = (valueNow: number, valueBefore1: number, 
   let currentChange = valueNow - valueBefore1
   let previousChange = valueBefore1 - valueBefore2
 
+  if (currentChange === 0 && previousChange === 0) {
+    return [0, 0]
+  }
+
   const adjustedPercentChange = ((currentChange - previousChange) / previousChange) * 100
 
   return [currentChange, adjustedPercentChange]
@@ -21,5 +25,8 @@ export const get2PeriodPercentChange = (valueNow: number, valueBefore1: number, 
  * @param {*} valueBefore
  */
 export const getPercentChange = (valueNow: number, valueBefore: number) => {
+  if (valueNow === 0 && valueBefore === 0) {
+    return 0
+  }
   return ((valueNow - valueBefore) / valueBefore) * 100
 }

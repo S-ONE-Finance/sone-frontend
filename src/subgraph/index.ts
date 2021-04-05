@@ -105,12 +105,12 @@ export function useWeeklyRanking() {
   // Trên mobile chỉ show 4 items.
   const { width } = useWindowSize()
 
-  return useMemo(
+  const weeklyRanking = useMemo(
     () =>
       data &&
       Object.values(data)
-        .filter((item: any) => !!item?.oneWeekVolumeChangeUSD)
-        .sort((a: any, b: any) => b.oneWeekVolumeChangeUSD - a.oneWeekVolumeChangeUSD)
+        .filter((item: any) => !!item?.oneWeekVolumeUSD)
+        .sort((a: any, b: any) => b.oneWeekVolumeUSD - a.oneWeekVolumeUSD)
         .slice(0, width && width <= MEDIA_WIDTHS.upToExtraSmall ? 4 : 5)
         .map((item: any) => ({
           ...item,
@@ -125,4 +125,6 @@ export function useWeeklyRanking() {
         })),
     [data, width]
   )
+
+  return weeklyRanking
 }

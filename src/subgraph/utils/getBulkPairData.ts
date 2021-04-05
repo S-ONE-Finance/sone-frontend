@@ -89,7 +89,7 @@ export default async function getBulkPairData(pairList: string[]) {
 
           // Nếu không có data quá khứ thì trả về null.
           if (oneDayHistory && twoDayHistory && oneWeekHistory && twoWeekHistory) {
-            data = parseData(data, oneDayHistory, twoDayHistory, oneWeekHistory, twoWeekHistory, b1Day)
+            data = parseData(data, oneDayHistory, twoDayHistory, oneWeekHistory, twoWeekHistory)
             return data
           } else {
             return null

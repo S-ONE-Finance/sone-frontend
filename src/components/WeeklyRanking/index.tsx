@@ -72,6 +72,15 @@ const CurrencyLogoContainer = styled(Row)`
   margin-bottom: 11px;
 `
 
+const StyledExternalLink = styled(ExternalLink)`
+  :focus,
+  :active,
+  :hover {
+    text-decoration: none;
+    outline: none;
+  }
+`
+
 // Ranking theo volume.
 function WeeklyRanking() {
   const { t } = useTranslation()
@@ -86,18 +95,18 @@ function WeeklyRanking() {
     [width]
   )
 
-  const getWeeklyRankingItem = useCallback((key: string, address0: string, address1: string, change: number) => {
+  const getWeeklyRankingItem = useCallback((key: string, address0: string, address1: string, volume: number) => {
     return (
       // TODO: Sau này đổi thành link của sone info.
-      <ExternalLink href={`https://info.uniswap.org/pair/${key}`} key={key}>
+      <StyledExternalLink href={`https://info.uniswap.org/pair/${key}`} key={key}>
         <ColumnCenter>
           <CurrencyLogoContainer>
             <CurrencyLogo address={address0} style={{ marginRight: '3px' }} />
             <CurrencyLogo address={address1} />
           </CurrencyLogoContainer>
-          <TextChange>{getFormatNumber(change, 3)}%</TextChange>
+          <TextChange>{getFormatNumber(volume, 3)}</TextChange>
         </ColumnCenter>
-      </ExternalLink>
+      </StyledExternalLink>
     )
   }, [])
 
@@ -111,7 +120,7 @@ function WeeklyRanking() {
         />
       </SpanFullColumns>
       {(ranking?.length >= 1 ? ranking : rankingPlaceholder).map((item: any) =>
-        getWeeklyRankingItem(item?.id, item?.token0?.id, item?.token1?.id, item?.oneWeekVolumeChangeUSD)
+        getWeeklyRankingItem(item?.id, item?.token0?.id, item?.token1?.id, item?.oneWeekVolumeUSD)
       )}
     </Container>
   )

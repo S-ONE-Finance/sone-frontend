@@ -52,7 +52,7 @@ const HeaderElement = styled.div`
 
   /* addresses safari's lack of support for "gap" */
   & > *:not(:first-child) {
-    margin-left: 0.5rem;
+    margin-left: 1rem;
   }
 
   & > *:first-child {
@@ -290,11 +290,11 @@ const SubMenuItemText = styled.span`
 
 export const StyledMenuButton = styled.button<{ cursor?: string; primary?: boolean }>`
   position: relative;
-  width: 100%;
+  width: max-content;
   border: none;
   background-color: ${({ theme, primary }) => (primary ? theme.red1Sone : theme.bg3Sone)};
   height: 35px;
-  margin: 0 0 0 8px;
+  margin: 0 0 0 1rem;
   padding: 0.15rem 1rem;
   border-radius: 20px;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.12);
@@ -552,13 +552,13 @@ export default function Header() {
                 <Globe size={20} />
                 {/* Only support 3 languages */}
                 <TYPE.language style={{ marginLeft: '5px' }}>
-                  {language === 'en' ? 'EN' : language === 'jp' ? 'JP' : language === 'zh-CN' ? 'CN' : 'EN'}
+                  {language === 'en' ? 'EN' : language === 'jp' ? '日本語' : language === 'zh-CN' ? '中文' : 'EN'}
                 </TYPE.language>
               </StyledMenuButtonWithText>
               <ResponsiveBottomRightSubMenu>
                 <SubMenuItemText onClick={() => setLanguage('jp')}>日本語</SubMenuItemText>
                 <SubMenuItemText onClick={() => setLanguage('en')}>English</SubMenuItemText>
-                <SubMenuItemText onClick={() => setLanguage('zh-CN')}>簡体中文</SubMenuItemText>
+                <SubMenuItemText onClick={() => setLanguage('zh-CN')}>中文</SubMenuItemText>
               </ResponsiveBottomRightSubMenu>
             </ResponsiveMenuItem>
             <ShowOnlyExtraSmall>

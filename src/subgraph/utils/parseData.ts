@@ -44,14 +44,7 @@ function updateNameData(data: BasicData): BasicData | undefined {
   return data
 }
 
-export default function parseData(
-  data: any,
-  oneDayData: any,
-  twoDayData: any,
-  oneWeekData: any,
-  twoWeekData: any,
-  oneDayBlock: []
-) {
+export default function parseData(data: any, oneDayData: any, twoDayData: any, oneWeekData: any, twoWeekData: any) {
   if (!data) {
     throw new Error('Pass the empty data current')
   }
