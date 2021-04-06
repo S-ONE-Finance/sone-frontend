@@ -43,7 +43,7 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, isModalBindToBottom,
 
     align-self: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'flex-end' : 'center')};
 
-    max-width: 610px;
+    max-width: 602px;
     ${({ maxHeight }) =>
       maxHeight &&
       css`

@@ -18,7 +18,7 @@ const Base = styled(RebassButton)<{
   width: ${({ width }) => (width ? width : '100%')};
   font-weight: 500;
   text-align: center;
-  border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '20px')};
+  border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '40px')};
   outline: none;
   border: 1px solid transparent;
   color: white;
@@ -40,22 +40,22 @@ const Base = styled(RebassButton)<{
 `
 
 export const ButtonPrimary = styled(Base)`
-  background-color: ${({ theme }) => theme.primary1};
+  background-color: ${({ theme }) => theme.red1Sone};
   color: white;
   &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.primary1)};
-    background-color: ${({ theme }) => darken(0.05, theme.primary1)};
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.red1Sone)};
+    background-color: ${({ theme }) => darken(0.05, theme.red1Sone)};
   }
   &:hover {
-    background-color: ${({ theme }) => darken(0.05, theme.primary1)};
+    background-color: ${({ theme }) => darken(0.05, theme.red1Sone)};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.primary1)};
-    background-color: ${({ theme }) => darken(0.1, theme.primary1)};
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.red1Sone)};
+    background-color: ${({ theme }) => darken(0.1, theme.red1Sone)};
   }
   &:disabled {
     background-color: ${({ theme, altDisabledStyle, disabled }) =>
-      altDisabledStyle ? (disabled ? theme.bg3 : theme.primary1) : theme.bg3};
+      altDisabledStyle ? (disabled ? theme.bg3 : theme.red1Sone) : theme.bg3};
     color: ${({ theme, altDisabledStyle, disabled }) =>
       altDisabledStyle ? (disabled ? theme.text3 : 'white') : theme.text3};
     cursor: auto;

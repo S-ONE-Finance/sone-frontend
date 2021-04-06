@@ -24,21 +24,18 @@ import { ReactComponent as ExpertIcon } from '../../assets/svg/expert_icon.svg'
 import { useTranslation } from 'react-i18next'
 
 const StyledMenuIcon = styled(Settings)`
-  height: 20px;
-  width: 20px;
+  height: 24px;
+  width: 24px;
 
   > * {
-    stroke: ${({ theme }) => theme.text2};
-  }
-
-  :hover {
-    opacity: 0.7;
+    stroke: ${({ theme }) => theme.text5Sone};
   }
 `
 
 const StyledCloseIcon = styled(X)`
   height: 20px;
   width: 20px;
+
   :hover {
     cursor: pointer;
   }
@@ -50,24 +47,29 @@ const StyledCloseIcon = styled(X)`
 
 const StyledMenuButton = styled.button`
   position: relative;
-  width: 100%;
   border: none;
   background-color: transparent;
   margin: 0;
-  height: 35px;
-  padding: 0.15rem 0.5rem;
-  border-radius: 0.5rem;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  border: ${({ theme }) => `2px solid ${theme.text5Sone}`};
 
-  :hover,
-  :focus {
+  :hover {
     cursor: pointer;
     outline: none;
+    opacity: 0.7;
   }
 
-  svg {
-    margin-top: 2px;
+  :focus {
+    outline: none;
   }
 `
+
 const EmojiWrapper = styled.div`
   position: absolute;
   bottom: -6px;

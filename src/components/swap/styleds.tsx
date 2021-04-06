@@ -7,12 +7,10 @@ import { AutoColumn } from '../Column'
 
 export const Wrapper = styled.div`
   position: relative;
-  padding: 1rem;
+  padding: 0 30px 35px 30px;
 `
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`
-  padding: 2px;
-
   ${({ clickable }) =>
     clickable
       ? css`
@@ -22,6 +20,10 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
           }
         `
       : null}
+
+  * {
+    stroke-width: 3px;
+  }
 `
 
 export const SectionBreak = styled.div`
@@ -31,7 +33,7 @@ export const SectionBreak = styled.div`
 `
 
 export const BottomGrouping = styled.div`
-  margin-top: 1rem;
+  margin-top: 35px;
 `
 
 export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
@@ -46,15 +48,16 @@ export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
 `
 
 export const StyledBalanceMaxMini = styled.button`
-  height: 22px;
-  width: 22px;
-  background-color: ${({ theme }) => theme.bg2};
-  border: none;
-  border-radius: 50%;
+  box-sizing: border-box;
+  height: 24px;
+  width: 24px;
+  background-color: transparent;
+  border: ${({ theme }) => `2px solid ${theme.text5Sone}`};
+  border-radius: 5px;
   padding: 0.2rem;
   font-size: 0.875rem;
   font-weight: 400;
-  margin-left: 0.4rem;
+  margin-right: 0.5rem;
   cursor: pointer;
   color: ${({ theme }) => theme.text2};
   display: flex;
@@ -63,10 +66,11 @@ export const StyledBalanceMaxMini = styled.button`
   float: right;
 
   :hover {
-    background-color: ${({ theme }) => theme.bg3};
+    outline: none;
+    opacity: 0.7;
   }
+
   :focus {
-    background-color: ${({ theme }) => theme.bg3};
     outline: none;
   }
 `

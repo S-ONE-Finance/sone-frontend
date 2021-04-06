@@ -2,7 +2,6 @@
 // vào hamburger icon trên mobile thì sẽ xoá hết logic của file này đi. Chỉ để lại
 // Button Text My Account or Connect Wallet or Error
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
-import { darken } from 'polished'
 import React, { useMemo } from 'react'
 import { Activity } from 'react-feather'
 import { useTranslation } from 'react-i18next'
@@ -17,32 +16,7 @@ import { isTransactionRecent, useAllTransactions } from '../../state/transaction
 import { NetworkContextName } from '../../constants'
 import { TransactionDetails } from '../../state/transactions/reducer'
 
-import { ButtonSecondary } from '../Button'
 import WalletModal from '../WalletModal'
-
-const Web3StatusGeneric = styled(ButtonSecondary)`
-  ${({ theme }) => theme.flexRowNoWrap}
-  width: 100%;
-  align-items: center;
-  padding: 0.5rem;
-  border-radius: 12px;
-  cursor: pointer;
-  user-select: none;
-  :focus {
-    outline: none;
-  }
-`
-const Web3StatusError = styled(Web3StatusGeneric)`
-  background-color: ${({ theme }) => theme.red1Sone};
-  border: 1px solid ${({ theme }) => theme.red1Sone};
-  color: ${({ theme }) => theme.white};
-  font-weight: 500;
-
-  :hover,
-  :focus {
-    background-color: ${({ theme }) => darken(0.1, theme.red1Sone)};
-  }
-`
 
 const Text = styled.p`
   flex: 1 1 auto;
@@ -65,8 +39,8 @@ const NetworkIcon = styled(Activity)`
 export const ButtonMainRed = styled.div<{ cursor?: string }>`
   background-color: ${({ theme }) => theme.red1Sone};
   color: #ffffff;
-  width: 154px;
-  padding: 0;
+  min-width: 154px;
+  padding: 0.5rem;
   height: 35px;
   border-radius: 31px;
   display: flex;
@@ -116,10 +90,10 @@ function Web3StatusInner() {
     )
   } else if (error) {
     return (
-      <Web3StatusError onClick={toggleWalletModal}>
+      <ButtonMainRed onClick={toggleWalletModal}>
         <NetworkIcon />
         <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
-      </Web3StatusError>
+      </ButtonMainRed>
     )
   } else {
     return (

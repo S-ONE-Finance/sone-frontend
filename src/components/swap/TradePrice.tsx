@@ -5,6 +5,7 @@ import { Repeat } from 'react-feather'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import { StyledBalanceMaxMini } from './styleds'
+import Row from '../Row'
 
 interface TradePriceProps {
   price?: Price
@@ -18,23 +19,32 @@ export default function TradePrice({ price, showInverted, setShowInverted }: Tra
   const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6)
 
   const show = Boolean(price?.baseCurrency && price?.quoteCurrency)
-  const label = showInverted
-    ? `${price?.quoteCurrency?.symbol} per ${price?.baseCurrency?.symbol}`
-    : `${price?.baseCurrency?.symbol} per ${price?.quoteCurrency?.symbol}`
+
+  const componentPrice = showInverted ? (
+    <Row align={'baseline'} style={{ whiteSpace: 'break-spaces' }}>
+      1 <Text fontSize={13}>{price?.baseCurrency?.symbol}</Text> = {formattedPrice ?? '-'}{' '}
+      <Text fontSize={13}>{price?.quoteCurrency?.symbol}</Text>
+    </Row>
+  ) : (
+    <Row align={'baseline'} style={{ whiteSpace: 'break-spaces' }}>
+      1 <Text fontSize={13}>{price?.quoteCurrency?.symbol}</Text> = {formattedPrice ?? '-'}{' '}
+      <Text fontSize={13}>{price?.baseCurrency?.symbol}</Text>
+    </Row>
+  )
 
   return (
     <Text
-      fontWeight={500}
-      fontSize={14}
-      color={theme.text2}
+      fontWeight={700}
+      fontSize={16}
+      color={theme.text6Sone}
       style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
     >
       {show ? (
         <>
-          {formattedPrice ?? '-'} {label}
           <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
             <Repeat size={14} />
           </StyledBalanceMaxMini>
+          {componentPrice}
         </>
       ) : (
         '-'

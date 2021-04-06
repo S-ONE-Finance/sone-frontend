@@ -47,6 +47,9 @@ export interface Colors {
   blue1: Color
 
   // S-ONE
+
+  /* Text */
+  textBlack: Color
   text1Sone: Color
   text2Sone: Color
   text3Sone: Color
@@ -54,19 +57,27 @@ export interface Colors {
   text5Sone: Color
   text6Sone: Color
   text7Sone: Color
-  red1Sone: Color
-  green1Sone: Color
+  text8Sone: Color
+  text9Sone: Color
+
+  /* Background */
   bg1Sone: Color
   bg2Sone: Color
   bg3Sone: Color
   bg4Sone: Color
   bg5Sone: Color
+  bgInputPanel: Color
+
+  /* Others */
+  red1Sone: Color
+  green1Sone: Color
   border1Sone: Color
+  border2Sone: Color
   stroke1Sone: Color
   divider1Sone: Color
   scrollbarThumb: Color
 
-  // Tab
+  /* Tab */
   tabBg: Color
   tabBgActive: Color
   tabText: Color

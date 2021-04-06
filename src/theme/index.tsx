@@ -95,6 +95,7 @@ export function colors(darkMode: boolean): Colors {
     // blue5: darkMode ? '#153d6f70' : '#EBF4FF',
 
     // S-ONE
+    textBlack: '#333333',
     text1Sone: darkMode ? '#FFFFFF' : '#111111',
     text2Sone: darkMode ? '#7AA3E5' : '#111111',
     text3Sone: darkMode ? '#FFFFFF' : '#767676',
@@ -102,14 +103,21 @@ export function colors(darkMode: boolean): Colors {
     text5Sone: darkMode ? '#3FAAB0' : '#3FAAB0',
     text6Sone: darkMode ? '#FFFFFF' : '#333333',
     text7Sone: darkMode ? '#56CFD6' : '#65BAC5',
+    text8Sone: '#767676',
+    text9Sone: '#C9C9C9',
+
     red1Sone: '#F05359',
     green1Sone: '#7AC51B',
+
     bg1Sone: darkMode ? '#0E2B4A' : '#FFFFFF',
     bg2Sone: darkMode ? '#3B5183' : '#FAEDED',
     bg3Sone: darkMode ? '#3B5183' : '#FFFFFF',
     bg4Sone: darkMode ? '#111111' : '#F3F3F3',
     bg5Sone: darkMode ? '#DFDFDF' : '#DFDFDF',
+    bgInputPanel: darkMode ? 'transparent' : '#F3F3F3',
+
     border1Sone: darkMode ? '#AAAAAA' : '#C9C9C9',
+    border2Sone: darkMode ? '#AAAAAA' : 'transparent',
     stroke1Sone: darkMode ? '#3FAAB0' : '#F05359',
     divider1Sone: darkMode ? '#AAAAAA' : 'rgba(0, 0, 0, 0.25)',
     scrollbarThumb: darkMode ? '#3B5183' : '#808080',
@@ -230,6 +238,7 @@ export const TYPE = {
 
 export const FixedGlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 html, input, textarea, button {
   font-family: 'Roboto', sans-serif;
 }
@@ -270,6 +279,8 @@ html {
 
 body {
   min-height: 100vh;
+  min-width: 100vw; // Bỏ qua width của scrollbar.
+  overflow-x: hidden;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
