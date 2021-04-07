@@ -32,8 +32,8 @@ export const SectionBreak = styled.div`
   background-color: ${({ theme }) => theme.bg3};
 `
 
-export const BottomGrouping = styled.div`
-  margin-top: 35px;
+export const BottomGrouping = styled.div<{ showTradeOrSlippage: boolean }>`
+  margin: ${({ showTradeOrSlippage }) => (showTradeOrSlippage ? '17.5px 0' : '35px 0 0 0')};
 `
 
 export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`

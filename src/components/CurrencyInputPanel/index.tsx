@@ -36,7 +36,6 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   border: none;
   padding: 0 12px;
 
-  :focus,
   :hover {
     background-color: ${({ theme }) => darken(0.2, theme.white)};
   }
@@ -49,6 +48,7 @@ const LabelRow = styled.div`
   font-size: 0.75rem;
   line-height: 1rem;
   padding: 21px 30px 0 30px;
+
   span:hover {
     cursor: pointer;
     color: ${({ theme }) => darken(0.2, theme.text2)};

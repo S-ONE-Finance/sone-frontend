@@ -82,6 +82,8 @@ export interface Colors {
   tabBgActive: Color
   tabText: Color
   tabTextActive: Color
+
+  f3f3f3: Color
 }
 
 export interface Grids {

@@ -1,18 +1,18 @@
 import { CurrencyAmount, JSBI, Token, Trade } from '@s-one-finance/sdk-core'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { ArrowDown } from 'react-feather'
+import { ArrowDown, ChevronDown, ChevronUp } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonError, ButtonPrimary, ButtonConfirmed } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
-import Column, { AutoColumn } from '../../components/Column'
+import Column, { AutoColumn, ColumnCenter } from '../../components/Column'
 import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { SwapPoolTabs } from '../../components/NavigationTabs'
-import { AutoRow, RowBetween } from '../../components/Row'
-import AdvancedSwapDetailsDropdown from '../../components/swap/AdvancedSwapDetailsDropdown'
+import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
+import AdvancedSwapDetails from '../../components/swap/AdvancedSwapDetails'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
 import { ArrowWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
@@ -38,7 +38,12 @@ import {
   useSwapActionHandlers,
   useSwapState
 } from '../../state/swap/hooks'
-import { useExpertModeManager, useUserSlippageTolerance, useUserSingleHopOnly } from '../../state/user/hooks'
+import {
+  useExpertModeManager,
+  useUserSlippageTolerance,
+  useUserSingleHopOnly,
+  useShowTransactionDetailsManager
+} from '../../state/user/hooks'
 import { LinkStyledButton, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
@@ -49,6 +54,7 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import { isTradeBetter } from 'utils/trades'
 import { RouteComponentProps } from 'react-router-dom'
+import QuestionHelper from '../../components/QuestionHelper'
 
 export default function Swap({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -87,6 +93,9 @@ export default function Swap({ history }: RouteComponentProps) {
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
+
+  // show swap details
+  const [isShowSwapDetails, toggleIsShowSwapDetails] = useShowTransactionDetailsManager()
 
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
@@ -338,7 +347,7 @@ export default function Swap({ history }: RouteComponentProps) {
               id="swap-currency-input"
             />
             <AutoColumn justify="space-between">
-              <AutoRow justify={isExpertMode ? 'space-between' : 'center'}>
+              <AutoRow justify={'center'}>
                 <ArrowWrapper clickable>
                   <ArrowDown
                     size="22"
@@ -349,11 +358,6 @@ export default function Swap({ history }: RouteComponentProps) {
                     color={theme.text1Sone}
                   />
                 </ArrowWrapper>
-                {recipient === null && !showWrap && isExpertMode ? (
-                  <LinkStyledButton id="add-recipient-button" onClick={() => onChangeRecipient('')}>
-                    + Add a send (optional)
-                  </LinkStyledButton>
-                ) : null}
               </AutoRow>
             </AutoColumn>
             <CurrencyInputPanel
@@ -381,14 +385,17 @@ export default function Swap({ history }: RouteComponentProps) {
               </>
             ) : null}
 
-            {showWrap || (!trade && allowedSlippage === INITIAL_ALLOWED_SLIPPAGE) ? null : (
+            {showWrap || (!Boolean(trade) && allowedSlippage === INITIAL_ALLOWED_SLIPPAGE) ? null : (
               <Card padding={'0'} borderRadius={'20px'}>
                 <AutoColumn gap="15px" style={{ padding: '23px 14px 0' }}>
                   {Boolean(trade) && (
                     <RowBetween align="center">
-                      <Text fontWeight={500} fontSize={16} color={theme.text4Sone}>
-                        Price
-                      </Text>
+                      <RowFixed>
+                        <Text fontWeight={500} fontSize={16} color={theme.text4Sone}>
+                          Price
+                        </Text>
+                        <QuestionHelper text="Lorem ipsum" />
+                      </RowFixed>
                       <TradePrice
                         price={trade?.executionPrice}
                         showInverted={showInverted}
@@ -398,9 +405,12 @@ export default function Swap({ history }: RouteComponentProps) {
                   )}
                   {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                     <RowBetween align="center">
-                      <ClickableText fontWeight={500} fontSize={16} color={theme.text4Sone} onClick={toggleSettings}>
-                        Slippage Tolerance
-                      </ClickableText>
+                      <RowFixed>
+                        <ClickableText fontWeight={500} fontSize={16} color={theme.text4Sone} onClick={toggleSettings}>
+                          Slippage Tolerance
+                        </ClickableText>
+                        <QuestionHelper text="Lorem ipsum" />
+                      </RowFixed>
                       <ClickableText fontWeight={700} fontSize={16} color={theme.text6Sone} onClick={toggleSettings}>
                         {allowedSlippage / 100}%
                       </ClickableText>
@@ -410,7 +420,8 @@ export default function Swap({ history }: RouteComponentProps) {
               </Card>
             )}
           </AutoColumn>
-          <BottomGrouping>
+          {/* Nếu không có thông tin trade và slippage mặc định thì để margin nhỏ (theo design). */}
+          <BottomGrouping showTradeOrSlippage={Boolean(trade) || allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE}>
             {swapIsUnsupported ? (
               <ButtonPrimary disabled={true}>
                 <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
@@ -423,8 +434,10 @@ export default function Swap({ history }: RouteComponentProps) {
                   (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
               </ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
-              <GreyCard style={{ textAlign: 'center' }}>
-                <TYPE.main mb="4px">Insufficient liquidity for this trade.</TYPE.main>
+              <GreyCard style={{ textAlign: 'center' }} borderRadius={'40px'} padding={'22px'}>
+                <Text fontSize={22} fontWeight={700} color={theme.text3}>
+                  Insufficient liquidity for this trade
+                </Text>
                 {singleHopOnly && <TYPE.main mb="4px">Try enabling multi-hop trades.</TYPE.main>}
               </GreyCard>
             ) : showApproveFlow ? (
@@ -467,7 +480,7 @@ export default function Swap({ history }: RouteComponentProps) {
                   }
                   error={isValid && priceImpactSeverity > 2}
                 >
-                  <Text fontSize={16} fontWeight={500}>
+                  <Text fontSize={22} fontWeight={700}>
                     {priceImpactSeverity > 3 && !isExpertMode
                       ? `Price Impact High`
                       : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
@@ -493,7 +506,7 @@ export default function Swap({ history }: RouteComponentProps) {
                 disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
                 error={isValid && priceImpactSeverity > 2 && !swapCallbackError}
               >
-                <Text fontSize={20} fontWeight={500}>
+                <Text fontSize={22} fontWeight={700}>
                   {swapInputError
                     ? swapInputError
                     : priceImpactSeverity > 3 && !isExpertMode
@@ -514,11 +527,30 @@ export default function Swap({ history }: RouteComponentProps) {
               <DefaultVersionLink />
             ) : null}
           </BottomGrouping>
+          {Boolean(trade) && !isShowSwapDetails && (
+            <ColumnCenter>
+              <ClickableText fontSize={16} fontWeight={500} color={theme.text5Sone} onClick={toggleIsShowSwapDetails}>
+                Show more information <ChevronDown size={12} />
+              </ClickableText>
+            </ColumnCenter>
+          )}
+          {!swapIsUnsupported && isShowSwapDetails && <AdvancedSwapDetails trade={trade} />}
+          {Boolean(trade) && isShowSwapDetails && (
+            <ColumnCenter>
+              <ClickableText
+                marginTop={'17.5px'}
+                fontSize={16}
+                fontWeight={500}
+                color={theme.text5Sone}
+                onClick={toggleIsShowSwapDetails}
+              >
+                Show less <ChevronUp size={12} />
+              </ClickableText>
+            </ColumnCenter>
+          )}
         </Wrapper>
       </AppBody>
-      {!swapIsUnsupported ? (
-        <AdvancedSwapDetailsDropdown trade={trade} />
-      ) : (
+      {swapIsUnsupported && (
         <UnsupportedCurrencyFooter show={swapIsUnsupported} currencies={[currencies.INPUT, currencies.OUTPUT]} />
       )}
     </>

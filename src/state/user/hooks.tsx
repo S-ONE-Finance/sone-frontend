@@ -18,7 +18,8 @@ import {
   updateUserExpertMode,
   updateUserSlippageTolerance,
   toggleURLWarning,
-  updateUserSingleHopOnly
+  updateUserSingleHopOnly,
+  toggleShowTransactionDetails
 } from './actions'
 
 function serializeToken(token: Token): SerializedToken {
@@ -80,6 +81,19 @@ export function useExpertModeManager(): [boolean, () => void] {
   }, [expertMode, dispatch])
 
   return [expertMode, toggleSetExpertMode]
+}
+
+export function useShowTransactionDetailsManager(): [boolean, () => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const isShowTransactionDetails = useSelector<AppState, AppState['user']['isShowTransactionDetails']>(
+    state => state.user.isShowTransactionDetails
+  )
+
+  const toggleIsShowTransactionDetails = useCallback(() => {
+    dispatch(toggleShowTransactionDetails())
+  }, [dispatch])
+
+  return [isShowTransactionDetails, toggleIsShowTransactionDetails]
 }
 
 export function useUserSingleHopOnly(): [boolean, (newSingleHopOnly: boolean) => void] {

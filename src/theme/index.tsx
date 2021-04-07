@@ -100,7 +100,7 @@ export function colors(darkMode: boolean): Colors {
     text2Sone: darkMode ? '#7AA3E5' : '#111111',
     text3Sone: darkMode ? '#FFFFFF' : '#767676',
     text4Sone: darkMode ? '#AAAAAA' : '#767676',
-    text5Sone: darkMode ? '#3FAAB0' : '#3FAAB0',
+    text5Sone: '#3FAAB0',
     text6Sone: darkMode ? '#FFFFFF' : '#333333',
     text7Sone: darkMode ? '#56CFD6' : '#65BAC5',
     text8Sone: '#767676',
@@ -126,7 +126,10 @@ export function colors(darkMode: boolean): Colors {
     tabBg: darkMode ? '#3B5183' : '#F3F3F3',
     tabBgActive: darkMode ? '#ECECEC' : '#3FAAB0',
     tabText: darkMode ? '#7AA3E5' : '#C9C9C9',
-    tabTextActive: darkMode ? '#4F4F4F' : '#FFFFFF'
+    tabTextActive: darkMode ? '#4F4F4F' : '#FFFFFF',
+
+    // Others
+    f3f3f3: '#f3f3f3'
   }
 }
 
