@@ -14,11 +14,12 @@ const Base = styled(RebassButton)<{
   borderRadius?: string
   altDisabledStyle?: boolean
 }>`
-  padding: ${({ padding }) => (padding ? padding : '18px')};
+  padding: ${({ padding }) => (padding ? padding : '22px')};
   width: ${({ width }) => (width ? width : '100%')};
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 22px;
   text-align: center;
-  border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '20px')};
+  border-radius: ${({ borderRadius }) => (borderRadius ? borderRadius : '40px')};
   outline: none;
   border: 1px solid transparent;
   color: white;
@@ -40,22 +41,22 @@ const Base = styled(RebassButton)<{
 `
 
 export const ButtonPrimary = styled(Base)`
-  background-color: ${({ theme }) => theme.primary1};
+  background-color: ${({ theme }) => theme.red1Sone};
   color: white;
   &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.primary1)};
-    background-color: ${({ theme }) => darken(0.05, theme.primary1)};
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.red1Sone)};
+    background-color: ${({ theme }) => darken(0.05, theme.red1Sone)};
   }
   &:hover {
-    background-color: ${({ theme }) => darken(0.05, theme.primary1)};
+    background-color: ${({ theme }) => darken(0.05, theme.red1Sone)};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.primary1)};
-    background-color: ${({ theme }) => darken(0.1, theme.primary1)};
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.red1Sone)};
+    background-color: ${({ theme }) => darken(0.1, theme.red1Sone)};
   }
   &:disabled {
     background-color: ${({ theme, altDisabledStyle, disabled }) =>
-      altDisabledStyle ? (disabled ? theme.bg3 : theme.primary1) : theme.bg3};
+      altDisabledStyle ? (disabled ? theme.bg3 : theme.red1Sone) : theme.bg3};
     color: ${({ theme, altDisabledStyle, disabled }) =>
       altDisabledStyle ? (disabled ? theme.text3 : 'white') : theme.text3};
     cursor: auto;
@@ -70,7 +71,6 @@ export const ButtonSecondary = styled(Base)`
   border: 1px solid ${({ theme }) => theme.primary4};
   color: ${({ theme }) => theme.primary1};
   background-color: transparent;
-  font-size: 16px;
   border-radius: 12px;
   padding: ${({ padding }) => (padding ? padding : '10px')};
 
@@ -97,7 +97,6 @@ export const ButtonSecondary = styled(Base)`
 export const ButtonLight = styled(Base)`
   background-color: ${({ theme }) => theme.primary5};
   color: ${({ theme }) => theme.primaryText1};
-  font-size: 16px;
   font-weight: 500;
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme, disabled }) => !disabled && darken(0.03, theme.primary5)};
@@ -125,7 +124,6 @@ export const ButtonLight = styled(Base)`
 export const ButtonGray = styled(Base)`
   background-color: ${({ theme }) => theme.bg3};
   color: ${({ theme }) => theme.text2};
-  font-size: 16px;
   font-weight: 500;
   &:focus {
     background-color: ${({ theme, disabled }) => !disabled && darken(0.05, theme.bg4)};

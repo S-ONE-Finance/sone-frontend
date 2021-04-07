@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Settings, X } from 'react-feather'
 import { Text } from 'rebass'
-import styled from 'styled-components'
+import styled, { ThemeContext } from 'styled-components'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleSettingsMenu } from '../../state/application/hooks'
 import {
@@ -21,24 +21,30 @@ import TransactionSettings from '../TransactionSettings'
 import SwapVectorLight from '../../assets/images/swap-vector-light.svg'
 import SwapVectorDark from '../../assets/images/swap-vector-dark.svg'
 import { ReactComponent as ExpertIcon } from '../../assets/svg/expert_icon.svg'
+import { ReactComponent as GlassesIcon } from '../../assets/svg/glasses_icon.svg'
 import { useTranslation } from 'react-i18next'
 
-const StyledMenuIcon = styled(Settings)`
-  height: 20px;
-  width: 20px;
+const StyledSettingsIcon = styled(Settings)`
+  height: 24px;
+  width: 24px;
 
   > * {
-    stroke: ${({ theme }) => theme.text2};
+    stroke: ${({ theme }) => theme.text5Sone};
   }
+`
 
-  :hover {
-    opacity: 0.7;
+const StyledGlassesIcon = styled(GlassesIcon)`
+  width: 24px;
+
+  > * {
+    stroke: ${({ theme }) => theme.text5Sone};
   }
 `
 
 const StyledCloseIcon = styled(X)`
   height: 20px;
   width: 20px;
+
   :hover {
     cursor: pointer;
   }
@@ -50,29 +56,27 @@ const StyledCloseIcon = styled(X)`
 
 const StyledMenuButton = styled.button`
   position: relative;
-  width: 100%;
   border: none;
   background-color: transparent;
   margin: 0;
-  height: 35px;
-  padding: 0.15rem 0.5rem;
-  border-radius: 0.5rem;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  border: ${({ theme }) => `2px solid ${theme.text5Sone}`};
 
-  :hover,
-  :focus {
+  :hover {
     cursor: pointer;
     outline: none;
+    opacity: 0.7;
   }
 
-  svg {
-    margin-top: 2px;
+  :focus {
+    outline: none;
   }
-`
-const EmojiWrapper = styled.div`
-  position: absolute;
-  bottom: -6px;
-  right: 0;
-  font-size: 14px;
 `
 
 const StyledMenu = styled.div`
@@ -197,6 +201,7 @@ export default function SettingsTab() {
   const isDarkMode = useIsDarkMode()
   const open = useModalOpen(ApplicationModal.SETTINGS)
   const toggle = useToggleSettingsMenu()
+  const theme = useContext(ThemeContext)
 
   const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippageTolerance()
 
@@ -246,16 +251,16 @@ export default function SettingsTab() {
           </AutoColumn>
         </ModalContentWrapper>
       </Modal>
-      <StyledMenuButton onClick={toggle} id="open-settings-dialog-button">
-        <StyledMenuIcon />
-        {expertMode ? (
-          <EmojiWrapper>
-            <span role="img" aria-label="wizard-icon">
-              🧙
-            </span>
-          </EmojiWrapper>
-        ) : null}
-      </StyledMenuButton>
+      <RowFixed>
+        {expertMode && (
+          <Text fontSize={13} fontWeight={700} color={theme.text5Sone} marginRight={'8px'}>
+            Expert
+          </Text>
+        )}
+        <StyledMenuButton onClick={toggle} id="open-settings-dialog-button">
+          {expertMode ? <StyledGlassesIcon /> : <StyledSettingsIcon />}
+        </StyledMenuButton>
+      </RowFixed>
       {open && (
         <Modal isOpen={open} onDismiss={toggle}>
           <MenuFlyout>

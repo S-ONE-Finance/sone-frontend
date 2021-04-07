@@ -1,16 +1,19 @@
 import { Text } from 'rebass'
 import styled from 'styled-components'
+import { darken } from 'polished'
 
 export const Wrapper = styled.div`
   position: relative;
   padding: 1rem;
 `
 
-export const ClickableText = styled(Text)`
+export const ClickableText = styled(Text)<{ color?: string }>`
+  color: ${({ color }) => color && color};
+
   :hover {
     cursor: pointer;
+    ${({ color }) => color && `color: ${darken(0.1, color)}`};
   }
-  color: ${({ theme }) => theme.primary1};
 `
 export const MaxButton = styled.button<{ width: string }>`
   padding: 0.5rem 1rem;

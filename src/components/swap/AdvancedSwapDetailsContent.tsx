@@ -1,0 +1,134 @@
+import { Trade, TradeType } from '@s-one-finance/sdk-core'
+import React, { useContext } from 'react'
+import styled, { ThemeContext } from 'styled-components'
+import { Field } from '../../state/swap/actions'
+import { useUserSlippageTolerance } from '../../state/user/hooks'
+import { ExternalLink } from '../../theme'
+import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from '../../utils/prices'
+import { AutoColumn, ColumnCenter } from '../Column'
+import QuestionHelper from '../QuestionHelper'
+import Row, { RowBetween, RowFixed } from '../Row'
+import FormattedPriceImpact from './FormattedPriceImpact'
+import SwapRoute from './SwapRoute'
+import { Text } from 'rebass'
+import { darken } from 'polished'
+
+const InfoLink = styled(ExternalLink)`
+  width: fit-content;
+  font-size: 16px;
+  padding: 10px 35px;
+  border-radius: 20px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.text5Sone};
+  background-color: ${({ theme }) => theme.f3f3f3};
+
+  :hover,
+  :active,
+  :focus {
+    outline: none;
+    text-decoration: unset;
+  }
+
+  :hover {
+    background-color: ${({ theme }) => darken(0.1, theme.f3f3f3)};
+  }
+`
+
+function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
+  const theme = useContext(ThemeContext)
+  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
+  const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
+  const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
+
+  return (
+    <>
+      <AutoColumn style={{ padding: '0 16px' }} gap={'15px'}>
+        <RowBetween>
+          <RowFixed>
+            <Text fontWeight={500} fontSize={16} color={theme.text4Sone}>
+              {isExactIn ? 'Minimum received' : 'Maximum sold'}
+            </Text>
+            <QuestionHelper text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />
+          </RowFixed>
+          <RowFixed>
+            <Text fontWeight={700} fontSize={16} color={theme.text6Sone}>
+              {isExactIn
+                ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade.outputAmount.currency.symbol}` ??
+                  '-'
+                : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade.inputAmount.currency.symbol}` ??
+                  '-'}
+            </Text>
+          </RowFixed>
+        </RowBetween>
+        <RowBetween>
+          <RowFixed>
+            <Text fontWeight={500} fontSize={16} color={theme.text4Sone}>
+              Price Impact
+            </Text>
+            <QuestionHelper text="The difference between the market price and estimated price due to trade size." />
+          </RowFixed>
+          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+        </RowBetween>
+
+        <RowBetween>
+          <RowFixed>
+            <Text fontWeight={500} fontSize={16} color={theme.text4Sone}>
+              Liquidity Provider Fee
+            </Text>
+            <QuestionHelper text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />
+          </RowFixed>
+          <Text fontWeight={700} fontSize={16} color={theme.text6Sone}>
+            {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
+          </Text>
+        </RowBetween>
+      </AutoColumn>
+    </>
+  )
+}
+
+export interface AdvancedSwapDetailsProps {
+  trade?: Trade
+}
+
+export function AdvancedSwapDetailsContent({ trade }: AdvancedSwapDetailsProps) {
+  const theme = useContext(ThemeContext)
+
+  const [allowedSlippage] = useUserSlippageTolerance()
+
+  const showRoute = Boolean(trade && trade.route.path.length > 2)
+
+  return (
+    <AutoColumn gap="0px">
+      {trade && (
+        <>
+          <TradeSummary trade={trade} allowedSlippage={allowedSlippage} />
+          {showRoute && (
+            <Row padding={'15px 16px 0'}>
+              <AutoColumn gap={'15px'} style={{ width: '100%' }}>
+                <RowBetween>
+                  <RowFixed>
+                    <Text fontWeight={500} fontSize={16} color={theme.text4Sone}>
+                      Route
+                    </Text>
+                    <QuestionHelper text="Routing through these tokens resulted in the best price for your trade." />
+                  </RowFixed>
+                </RowBetween>
+                <Row>
+                  <SwapRoute trade={trade} />
+                </Row>
+              </AutoColumn>
+            </Row>
+          )}
+          <ColumnCenter style={{ marginTop: '35px' }}>
+            <InfoLink
+              href={'https://info.uniswap.org/pair/' + trade.route.pairs[0].liquidityToken.address}
+              target="_blank"
+            >
+              View {trade.route.input.symbol} - {trade.route.output.symbol} analytics ↗
+            </InfoLink>
+          </ColumnCenter>
+        </>
+      )}
+    </AutoColumn>
+  )
+}
