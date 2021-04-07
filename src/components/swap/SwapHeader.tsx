@@ -19,7 +19,7 @@ const SwapVector = styled.img`
   width: 83.11px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    // width: 119.71px;
+    width: 39.59px;
   `};
 `
 
@@ -27,16 +27,28 @@ const Title = styled.div`
   color: ${({ theme }) => theme.text6Sone};
   font-weight: 700;
   font-size: 40px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 20px;
+  `};
 `
 
 const Description = styled.div`
   color: ${({ theme }) => theme.text4Sone};
   font-weight: 500;
   font-size: 16px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `};
 `
 
 const TitleDescWrapper = styled(Column)`
   margin-left: 20px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    margin-left: 7px;
+  `};
 `
 
 export default function SwapHeader() {

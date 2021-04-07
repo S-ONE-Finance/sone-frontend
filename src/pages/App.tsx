@@ -40,6 +40,7 @@ import VotePage from './Vote/VotePage'
 import TabSwapLiquidity from '../components/TabSwapLiquidity'
 import { useLocation } from 'react-router'
 import WeeklyRanking from '../components/WeeklyRanking'
+import { ReactComponent as LogoForMobileResponsive } from '../assets/images/logo_for_mobile_responsive.svg'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -103,6 +104,17 @@ const FooterWrapper = styled.div`
   `};
 `
 
+const LogoResponsive = styled(LogoForMobileResponsive)`
+  display: none;
+  width: 140px;
+  height: 20px;
+  margin-bottom: 20px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    display: unset;
+  `};
+`
+
 function TopLevelModals() {
   const open = useModalOpen(ApplicationModal.ADDRESS_CLAIM)
   const toggle = useToggleModal(ApplicationModal.ADDRESS_CLAIM)
@@ -139,6 +151,7 @@ export default function App() {
           <Popups />
           <Polling />
           <TopLevelModals />
+          <LogoResponsive />
           <OnlyShowSwapAndLiquidity>
             <TabSwapLiquidity />
           </OnlyShowSwapAndLiquidity>

@@ -12,6 +12,12 @@ const TabContainer = styled.div`
   background-color: ${({ theme }) => theme.tabBg};
   display: flex;
   margin-bottom: 20px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 90vw;
+    max-width: 338px;
+    height: 32px;
+  `}
 `
 
 const TabItem = styled.div<{ isActive?: boolean }>`

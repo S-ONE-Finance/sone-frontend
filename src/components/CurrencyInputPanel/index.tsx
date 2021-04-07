@@ -7,13 +7,11 @@ import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import Row, { RowBetween } from '../Row'
-import { TYPE } from '../../theme'
 import { Input as NumericalInput } from '../NumericalInput'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useTranslation } from 'react-i18next'
-import useTheme from '../../hooks/useTheme'
 
 const InputRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -39,6 +37,12 @@ const CurrencySelect = styled.button<{ selected: boolean }>`
   :hover {
     background-color: ${({ theme }) => darken(0.2, theme.white)};
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    height: 23px;
+    font-size: 13px;
+    padding: 0 10px;
+  `};
 `
 
 const LabelRow = styled.div`
@@ -62,7 +66,6 @@ const Aligner = styled.span`
 `
 
 const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
-  margin: 0 0.25rem 0 0.5rem;
   height: 35%;
 
   path {
@@ -85,9 +88,14 @@ const Container = styled.div<{ hideInput: boolean }>`
 `
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
-  ${({ active }) => (active ? 'margin: 0 0.25rem 0 0.5rem;' : 'margin: 0 0.25rem 0 0.25rem;')}
+  ${({ active }) => (active ? 'margin: 0 0.5rem 0 0.5rem;' : 'margin: 0 0.5rem 0 0;')}
   font-size: 16px;
   font-weight: 500;
+
+  ${({ theme, active }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+    ${active ? 'margin: 0 0.25rem 0 0.25rem;' : 'margin: 0 0.25rem 0 0;'}
+  `};
 `
 
 const StyledBalanceMax = styled.button`
@@ -118,6 +126,32 @@ const StyledBalanceMax = styled.button`
 const RowBalance = styled(Row)`
   width: fit-content;
   cursor: pointer;
+`
+
+const TextLabel = styled.div`
+  color: ${({ theme }) => theme.text8Sone};
+  font-size: 16px;
+  font-weight: 500;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `};
+`
+
+const TextSmaller = styled(TextLabel)`
+  line-height: normal;
+  font-size: 13px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    line-height: unset;
+  `};
+`
+
+const ResponsiveCurrencyLogo = styled(CurrencyLogo)`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 15px;
+    height: 15px;
+  `};
 `
 
 interface CurrencyInputPanelProps {
@@ -160,7 +194,6 @@ export default function CurrencyInputPanel({
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  const theme = useTheme()
 
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
@@ -172,21 +205,15 @@ export default function CurrencyInputPanel({
         {!hideInput && (
           <LabelRow>
             <RowBetween align={'flex-end'}>
-              <TYPE.body color={theme.text8Sone} fontWeight={500} fontSize={16}>
-                {label}
-              </TYPE.body>
+              <TextLabel>{label}</TextLabel>
               {account && (
                 <RowBalance onClick={onMax}>
-                  <TYPE.body color={theme.text8Sone} fontWeight={500} fontSize={16}>
+                  <TextLabel>
                     {!hideBalance && !!currency && selectedCurrencyBalance
                       ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
                       : ''}
-                  </TYPE.body>
-                  {!pair && currency && currency.symbol && (
-                    <TYPE.body color={theme.text8Sone} fontWeight={500} fontSize={13} lineHeight={'normal'}>
-                      &nbsp;{currency.symbol}
-                    </TYPE.body>
-                  )}
+                  </TextLabel>
+                  {!pair && currency && currency.symbol && <TextSmaller>&nbsp;{currency.symbol}</TextSmaller>}
                 </RowBalance>
               )}
             </RowBetween>
@@ -218,9 +245,10 @@ export default function CurrencyInputPanel({
           >
             <Aligner>
               {pair ? (
+                // TODO: Chưa responsive ở đây.
                 <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={22} margin={true} />
               ) : currency ? (
-                <CurrencyLogo currency={currency} size={'22px'} />
+                <ResponsiveCurrencyLogo currency={currency} size={'22px'} />
               ) : null}
               {pair ? (
                 <StyledTokenName className="pair-name-container">

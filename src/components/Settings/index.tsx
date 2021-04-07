@@ -31,6 +31,10 @@ const StyledSettingsIcon = styled(Settings)`
   > * {
     stroke: ${({ theme }) => theme.text5Sone};
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 14px;
+  `};
 `
 
 const StyledGlassesIcon = styled(GlassesIcon)`
@@ -39,6 +43,10 @@ const StyledGlassesIcon = styled(GlassesIcon)`
   > * {
     stroke: ${({ theme }) => theme.text5Sone};
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 14px;
+  `};
 `
 
 const StyledCloseIcon = styled(X)`
@@ -77,6 +85,12 @@ const StyledMenuButton = styled.button`
   :focus {
     outline: none;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+  `};
 `
 
 const StyledMenu = styled.div`
