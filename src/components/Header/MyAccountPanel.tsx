@@ -99,10 +99,10 @@ export default function MyAccountPanel() {
         <Column>
           <TYPE.black fontSize={16}>{t('address')}:</TYPE.black>
           <TYPE.subText marginTop={'0.25rem'}>{account && shortenAddress(account, 14)}</TYPE.subText>
-          <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change-account')}</TextBoxChangeAccount>
+          <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change_account')}</TextBoxChangeAccount>
         </Column>
         <PaddingColumn>
-          <MyAccountButton>{t('my-account')}</MyAccountButton>
+          <MyAccountButton>{t('my_account')}</MyAccountButton>
         </PaddingColumn>
         <RecentTransactions />
       </ColumnWrapper>

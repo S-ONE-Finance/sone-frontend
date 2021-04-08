@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { MEDIA_WIDTHS } from '../theme'
 
 const isClient = typeof window === 'object'
 
@@ -28,4 +29,16 @@ export function useWindowSize() {
   }, [])
 
   return windowSize
+}
+
+export function useIsUpToExtraSmall() {
+  const { width } = useWindowSize()
+
+  return width && width <= MEDIA_WIDTHS.upToExtraSmall
+}
+
+export function useIsUpToSmall() {
+  const { width } = useWindowSize()
+
+  return width && width <= MEDIA_WIDTHS.upToSmall
 }

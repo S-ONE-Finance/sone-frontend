@@ -113,11 +113,12 @@ export function colors(darkMode: boolean): Colors {
     bg2Sone: darkMode ? '#3B5183' : '#FAEDED',
     bg3Sone: darkMode ? '#3B5183' : '#FFFFFF',
     bg4Sone: darkMode ? '#111111' : '#F3F3F3',
-    bg5Sone: darkMode ? '#DFDFDF' : '#DFDFDF',
+    bg5Sone: '#DFDFDF',
     bgInputPanel: darkMode ? 'transparent' : '#F3F3F3',
 
     border1Sone: darkMode ? '#AAAAAA' : '#C9C9C9',
     border2Sone: darkMode ? '#AAAAAA' : 'transparent',
+    border3Sone: darkMode ? '#FFFFFF' : '#DFDFDF',
     stroke1Sone: darkMode ? '#3FAAB0' : '#F05359',
     divider1Sone: darkMode ? '#AAAAAA' : 'rgba(0, 0, 0, 0.25)',
     scrollbarThumb: darkMode ? '#3B5183' : '#808080',

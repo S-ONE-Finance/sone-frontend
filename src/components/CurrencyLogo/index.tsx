@@ -10,29 +10,40 @@ import Logo from '../Logo'
 export const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`
 
-const StyledEthereumLogo = styled.img<{ size: string }>`
+const StyledEthereumLogo = styled.img<{ size: string; sizeMobile: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
   border-radius: 24px;
+
+  ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
+    width: ${sizeMobile};
+    height: ${sizeMobile};
+  `};
 `
 
-const StyledLogo = styled(Logo)<{ size: string }>`
+const StyledLogo = styled(Logo)<{ size: string; sizeMobile: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   border-radius: ${({ size }) => size};
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
   background-color: ${({ theme }) => theme.white};
-`
 
+  ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
+    width: ${sizeMobile};
+    height: ${sizeMobile};
+  `};
+`
 export default function CurrencyLogo({
   currency,
   size = '24px',
+  sizeMobile = '24px',
   style,
   address
 }: {
   currency?: Currency
   size?: string
+  sizeMobile?: string
   style?: React.CSSProperties
   address?: string
 }) {
@@ -55,6 +66,7 @@ export default function CurrencyLogo({
     return (
       <StyledLogo
         size={size}
+        sizeMobile={sizeMobile}
         srcs={[getTokenLogoURL(address)]}
         alt={`${currency?.symbol ?? 'token'} logo`}
         style={style}
@@ -63,8 +75,16 @@ export default function CurrencyLogo({
   }
 
   if (currency === ETHER) {
-    return <StyledEthereumLogo src={EthereumLogo} size={size} style={style} />
+    return <StyledEthereumLogo src={EthereumLogo} size={size} sizeMobile={sizeMobile} style={style} />
   }
 
-  return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+  return (
+    <StyledLogo
+      size={size}
+      sizeMobile={sizeMobile}
+      srcs={srcs}
+      alt={`${currency?.symbol ?? 'token'} logo`}
+      style={style}
+    />
+  )
 }

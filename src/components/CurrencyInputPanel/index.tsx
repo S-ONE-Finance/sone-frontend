@@ -1,5 +1,5 @@
 import { Currency, Pair } from '@s-one-finance/sdk-core'
-import React, { useState, useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
@@ -16,7 +16,11 @@ import { useTranslation } from 'react-i18next'
 const InputRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
-  padding: 17px 30px 22px 30px;
+  padding: 17px 30px 0;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 15px 15px 0;
+  `};
 `
 
 const CurrencySelect = styled.button<{ selected: boolean }>`
@@ -57,6 +61,10 @@ const LabelRow = styled.div`
     cursor: pointer;
     color: ${({ theme }) => darken(0.2, theme.text2)};
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 19px 15px 0 15px;
+  `};
 `
 
 const Aligner = styled.span`
@@ -85,6 +93,11 @@ const Container = styled.div<{ hideInput: boolean }>`
   border-radius: ${({ hideInput }) => (hideInput ? '8px' : '32px')};
   background-color: ${({ theme }) => theme.bgInputPanel};
   border: ${({ theme }) => `1px solid ${theme.border2Sone}`};
+
+  ${({ theme, hideInput }) => theme.mediaWidth.upToExtraSmall`
+    height: 95px;
+    border-radius: ${hideInput ? '8px' : '25px'};
+  `};
 `
 
 const StyledTokenName = styled.span<{ active?: boolean }>`
@@ -120,6 +133,9 @@ const StyledBalanceMax = styled.button`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-right: 0.5rem;
+    height: 23px;
+    width: 48px;
+    font-size: 13px;
   `};
 `
 
@@ -144,13 +160,6 @@ const TextSmaller = styled(TextLabel)`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     line-height: unset;
-  `};
-`
-
-const ResponsiveCurrencyLogo = styled(CurrencyLogo)`
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    width: 15px;
-    height: 15px;
   `};
 `
 
@@ -248,7 +257,7 @@ export default function CurrencyInputPanel({
                 // TODO: Chưa responsive ở đây.
                 <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={22} margin={true} />
               ) : currency ? (
-                <ResponsiveCurrencyLogo currency={currency} size={'22px'} />
+                <CurrencyLogo currency={currency} size={'22px'} sizeMobile={'15px'} />
               ) : null}
               {pair ? (
                 <StyledTokenName className="pair-name-container">
@@ -260,7 +269,7 @@ export default function CurrencyInputPanel({
                     ? currency.symbol.slice(0, 4) +
                       '...' +
                       currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                    : currency?.symbol) || t('select-token')}
+                    : currency?.symbol) || t('select_token')}
                 </StyledTokenName>
               )}
               {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}

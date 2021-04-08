@@ -178,8 +178,8 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
       <ResponsiveAutoColumn>
         <RowFixed>
           <StyledSlippageIcon />
-          <SectionHeading>{t('slippage-tolerance')}</SectionHeading>
-          <QuestionHelper text={t('question-helper-slippage-tolerance')} />
+          <SectionHeading>{t('slippage_tolerance')}</SectionHeading>
+          <QuestionHelper text={t('question_helper_slippage_tolerance')} />
         </RowFixed>
         <Row>
           <Option
@@ -237,8 +237,8 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             {slippageError === SlippageError.InvalidInput
               ? t('enter-a-valid-slippage-percentage')
               : slippageError === SlippageError.RiskyLow
-              ? t('your-transaction-may-fail')
-              : t('your-transaction-may-be-frontrun')}
+              ? t('your_transaction_may_fail')
+              : t('your_transaction_may_be_frontrun')}
           </RowBetween>
         )}
       </ResponsiveAutoColumn>
@@ -246,8 +246,8 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
       <ResponsiveAutoColumn>
         <RowFixed>
           <StyledDeadlineIcon />
-          <SectionHeading>{t('transaction-deadline')}</SectionHeading>
-          <QuestionHelper text={t('question-helper-transaction-deadline')} />
+          <SectionHeading>{t('transaction_deadline')}</SectionHeading>
+          <QuestionHelper text={t('question_helper_transaction_deadline')} />
         </RowFixed>
         <RowFixed>
           <OptionCustom tabIndex={-1}>

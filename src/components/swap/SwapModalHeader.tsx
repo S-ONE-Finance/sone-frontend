@@ -12,6 +12,7 @@ import { AutoColumn } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
 import { RowBetween, RowFixed } from '../Row'
 import { TruncatedText, SwapShowAcceptChanges } from './styleds'
+import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 
 export default function SwapModalHeader({
   trade,
@@ -26,6 +27,8 @@ export default function SwapModalHeader({
   showAcceptChanges: boolean
   onAcceptChanges: () => void
 }) {
+  const isUpToExtraSmall = useIsUpToExtraSmall()
+  const mobile20Desktop28 = isUpToExtraSmall ? 20 : 28
   const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
     trade,
     allowedSlippage
@@ -36,33 +39,33 @@ export default function SwapModalHeader({
   const theme = useContext(ThemeContext)
 
   return (
-    <AutoColumn gap={'md'} style={{ marginTop: '20px' }}>
+    <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>
       <RowBetween align="flex-end">
         <RowFixed gap={'0px'}>
-          <CurrencyLogo currency={trade.inputAmount.currency} size={'24px'} style={{ marginRight: '12px' }} />
           <TruncatedText
-            fontSize={24}
-            fontWeight={500}
+            fontSize={mobile20Desktop28}
+            fontWeight={600}
             color={showAcceptChanges && trade.tradeType === TradeType.EXACT_OUTPUT ? theme.primary1 : ''}
           >
             {trade.inputAmount.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
-        <RowFixed gap={'0px'}>
-          <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+        {/* zIndex để hiển thị đè lên SwapVector. */}
+        <RowFixed gap={'0px'} style={{ height: '100%', zIndex: 1 }} align={'center'}>
+          <CurrencyLogo currency={trade.inputAmount.currency} size={'24px'} style={{ marginRight: '5px' }} />
+          <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
             {trade.inputAmount.currency.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
       <RowFixed>
-        <ArrowDown size="16" color={theme.text2} style={{ marginLeft: '4px', minWidth: '16px' }} />
+        <ArrowDown size="20" color={theme.text2} style={{ minWidth: '16px' }} />
       </RowFixed>
       <RowBetween align="flex-end">
         <RowFixed gap={'0px'}>
-          <CurrencyLogo currency={trade.outputAmount.currency} size={'24px'} style={{ marginRight: '12px' }} />
           <TruncatedText
-            fontSize={24}
-            fontWeight={500}
+            fontSize={mobile20Desktop28}
+            fontWeight={600}
             color={
               priceImpactSeverity > 2
                 ? theme.red1
@@ -74,8 +77,9 @@ export default function SwapModalHeader({
             {trade.outputAmount.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
-        <RowFixed gap={'0px'}>
-          <Text fontSize={24} fontWeight={500} style={{ marginLeft: '10px' }}>
+        <RowFixed gap={'0px'} style={{ height: '100%' }} align={'center'}>
+          <CurrencyLogo currency={trade.outputAmount.currency} size={'24px'} style={{ marginRight: '5px' }} />
+          <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
             {trade.outputAmount.currency.symbol}
           </Text>
         </RowFixed>

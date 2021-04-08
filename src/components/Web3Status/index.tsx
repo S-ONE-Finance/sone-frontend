@@ -81,11 +81,11 @@ function Web3StatusInner() {
         onClick={() => {
           // Trên điện thoại và dưới 500px thì click vào sẽ ra my account.
           if (size?.width && size?.width <= 500) {
-            history.push('/my-account')
+            history.push('/my_account')
           }
         }}
       >
-        {t('my-account')}
+        {t('my_account')}
       </ButtonMainRed>
     )
   } else if (error) {

@@ -1,6 +1,5 @@
 import { Trade, TradeType } from '@s-one-finance/sdk-core'
 import React, { useContext, useMemo, useState } from 'react'
-import { Repeat } from 'react-feather'
 import { Text } from 'rebass'
 import { ThemeContext } from 'styled-components'
 import { Field } from '../../state/swap/actions'
@@ -17,6 +16,8 @@ import QuestionHelper from '../QuestionHelper'
 import { AutoRow, RowBetween, RowFixed } from '../Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
+import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import { RepeatIcon } from './TradePrice'
 
 export default function SwapModalFooter({
   trade,
@@ -31,6 +32,8 @@ export default function SwapModalFooter({
   swapErrorMessage: string | undefined
   disabledConfirm: boolean
 }) {
+  const isUpToExtraSmall = useIsUpToExtraSmall()
+  const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
   const [showInverted, setShowInverted] = useState<boolean>(false)
   const theme = useContext(ThemeContext)
   const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
@@ -42,43 +45,39 @@ export default function SwapModalFooter({
 
   return (
     <>
-      <AutoColumn gap="0px">
+      <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'}>
         <RowBetween align="center">
-          <Text fontWeight={400} fontSize={14} color={theme.text2}>
+          <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
             Price
           </Text>
           <Text
-            fontWeight={500}
-            fontSize={14}
-            color={theme.text1}
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              display: 'flex',
-              textAlign: 'right',
-              paddingLeft: '10px'
-            }}
+            fontWeight={700}
+            fontSize={isUpToExtraSmall ? 13 : 16}
+            color={theme.text6Sone}
+            style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
           >
-            {formatExecutionPrice(trade, showInverted)}
-            <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
-              <Repeat size={14} />
-            </StyledBalanceMaxMini>
+            <>
+              <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
+                <RepeatIcon />
+              </StyledBalanceMaxMini>
+              {formatExecutionPrice(trade, showInverted)}
+            </>
           </Text>
         </RowBetween>
 
         <RowBetween>
           <RowFixed>
-            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+            <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
               {trade.tradeType === TradeType.EXACT_INPUT ? 'Minimum received' : 'Maximum sold'}
-            </TYPE.black>
+            </Text>
             <QuestionHelper text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />
           </RowFixed>
           <RowFixed>
-            <TYPE.black fontSize={14}>
+            <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
               {trade.tradeType === TradeType.EXACT_INPUT
                 ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) ?? '-'
                 : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4) ?? '-'}
-            </TYPE.black>
+            </Text>
             <TYPE.black fontSize={14} marginLeft={'4px'}>
               {trade.tradeType === TradeType.EXACT_INPUT
                 ? trade.outputAmount.currency.symbol
@@ -88,23 +87,23 @@ export default function SwapModalFooter({
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <TYPE.black color={theme.text2} fontSize={14} fontWeight={400}>
+            <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
               Price Impact
-            </TYPE.black>
+            </Text>
             <QuestionHelper text="The difference between the market price and your price due to trade size." />
           </RowFixed>
           <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <TYPE.black fontSize={14} fontWeight={400} color={theme.text2}>
+            <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
               Liquidity Provider Fee
-            </TYPE.black>
+            </Text>
             <QuestionHelper text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />
           </RowFixed>
-          <TYPE.black fontSize={14}>
+          <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
             {realizedLPFee ? realizedLPFee?.toSignificant(6) + ' ' + trade.inputAmount.currency.symbol : '-'}
-          </TYPE.black>
+          </Text>
         </RowBetween>
       </AutoColumn>
 

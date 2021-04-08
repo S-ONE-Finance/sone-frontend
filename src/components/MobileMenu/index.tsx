@@ -130,11 +130,11 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         <TYPE.subText marginTop={'0.25rem'}>{account && shortenAddress(account, 14)}</TYPE.subText>
         <RowBetween marginTop={'1rem'}>
           <SoneAmount isSmall={true} />
-          <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change-account')}</TextBoxChangeAccount>
+          <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change_account')}</TextBoxChangeAccount>
         </RowBetween>
       </Column>
       <Column>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('s-one-wallet')}</StyledExternalLink>
+        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('s_one_wallet')}</StyledExternalLink>
         <StyledNavLink to={'/swap'}>{t('swap')}</StyledNavLink>
         <StyledNavLink
           to={'/pool'}
@@ -149,9 +149,9 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
           {t('liquidity')}
         </StyledNavLink>
         <StyledNavLink to={'/uni'}>{t('staking')}</StyledNavLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('swap-stats')}</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('staking-stats')}</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('white-paper')}</StyledExternalLink>
+        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('swap_stats')}</StyledExternalLink>
+        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('staking_stats')}</StyledExternalLink>
+        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('white_paper')}</StyledExternalLink>
         <StyledExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</StyledExternalLink>
         <StyledExternalLink href={'https://www.lipsum.com/'}>{t('blog')}</StyledExternalLink>
       </Column>

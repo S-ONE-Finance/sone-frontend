@@ -73,6 +73,7 @@ export interface Colors {
   green1Sone: Color
   border1Sone: Color
   border2Sone: Color
+  border3Sone: Color
   stroke1Sone: Color
   divider1Sone: Color
   scrollbarThumb: Color

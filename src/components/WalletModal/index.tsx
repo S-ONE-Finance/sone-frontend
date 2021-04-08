@@ -391,9 +391,9 @@ export default function WalletModal({
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
-              <span>{t('new-to-ethereum')} &nbsp;</span>{' '}
+              <span>{t('new_to_ethereum')} &nbsp;</span>{' '}
               <StyledExternalLink href="https://ethereum.org/wallets/">
-                {t('learn-more-about-wallets')}
+                {t('learn_more_about_wallets')}
               </StyledExternalLink>
             </Blurb>
           )}

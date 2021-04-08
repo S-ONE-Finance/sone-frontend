@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { HelpCircle as Question } from 'react-feather'
 import styled from 'styled-components'
 import Tooltip from '../Tooltip'
+import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 
 const QuestionWrapper = styled.div`
   display: flex;
@@ -77,4 +78,10 @@ export function LightQuestionHelper({ text }: { text: string }) {
       </Tooltip>
     </span>
   )
+}
+
+// Responsive QuestionHelper: 14px for small devices, 16px for larger devices.
+export function QuestionHelper1416({ text }: { text: string }) {
+  const isUpToExtraSmall = useIsUpToExtraSmall()
+  return <QuestionHelper text={text} size={isUpToExtraSmall ? 14 : 16} />
 }

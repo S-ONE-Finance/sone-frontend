@@ -22,10 +22,10 @@ export default function StyledSummary({ summary }: { summary: TransactionSummary
     let i18nKey
     switch (summary.type) {
       case SummaryType.SWAP:
-        i18nKey = 'summary-swap'
+        i18nKey = 'summary_swap'
         break
       case SummaryType.ADD:
-        i18nKey = 'summary-add'
+        i18nKey = 'summary_add'
         break
       default:
         console.error('This type of summary does not exist. Summary:', summary)

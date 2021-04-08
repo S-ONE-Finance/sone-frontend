@@ -235,7 +235,7 @@ export default function SettingsTab() {
             <RowBetween style={{ padding: '0 2rem' }}>
               <div />
               <Text fontWeight={500} fontSize={20}>
-                {t('are-you-sure')}
+                {t('are_you_sure')}
               </Text>
               <StyledCloseIcon onClick={() => setShowConfirmation(false)} />
             </RowBetween>
@@ -245,7 +245,7 @@ export default function SettingsTab() {
                 {t('expert-mode-warning-msg-desc')}
               </Text>
               <Text fontWeight={600} fontSize={20}>
-                {t('only-use-this-mode-if-u-know-what-u-are-doing')}
+                {t('expert_mode_warning')}
               </Text>
               <ButtonError
                 error={true}

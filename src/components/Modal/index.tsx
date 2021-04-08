@@ -25,7 +25,7 @@ const StyledDialogOverlay = styled(AnimatedDialogOverlay)`
 const AnimatedDialogContent = animated(DialogContent)
 // destructure to not pass custom props to Dialog DOM element
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const StyledDialogContent = styled(({ minHeight, maxHeight, isModalBindToBottom, isOpen, ...rest }) => (
+const StyledDialogContent = styled(({ minHeight, maxHeight, maxWidth, isModalBindToBottom, isOpen, ...rest }) => (
   <AnimatedDialogContent {...rest} />
 )).attrs({
   'aria-label': 'dialog'
@@ -33,17 +33,16 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, isModalBindToBottom,
   overflow-y: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'scroll' : 'hidden')};
 
   &[data-reach-dialog-content] {
-    margin: 0 0 2rem 0;
     background-color: ${({ theme }) => theme.bg1};
     box-shadow: 0 4px 8px 0 ${({ theme }) => transparentize(0.95, theme.shadow1)};
+    width: ${({ isModalBindToBottom, maxWidth }) => (isModalBindToBottom ? '100vw' : `${maxWidth}px`)};
+    max-width: ${({ isModalBindToBottom }) => (isModalBindToBottom ? '100vw' : 'calc(100vw - 32px)')};
     padding: 0;
-    width: 50vw;
+    margin: 0;
     overflow-y: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'scroll' : 'hidden')};
     overflow-x: hidden;
-
     align-self: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'flex-end' : 'center')};
 
-    max-width: 602px;
     ${({ maxHeight }) =>
       maxHeight &&
       css`
@@ -56,12 +55,8 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, isModalBindToBottom,
       `}
     display: flex;
     border-radius: 25px;
-    ${({ theme }) => theme.mediaWidth.upToMedium`
-      width: 65vw;
-      margin: 0;
-    `}
+
     ${({ theme, isModalBindToBottom }) => theme.mediaWidth.upToSmall`
-      width:  85vw;
       ${isModalBindToBottom &&
         css`
           width: 100vw;
@@ -76,6 +71,7 @@ interface ModalProps {
   onDismiss: () => void
   minHeight?: number | false
   maxHeight?: number
+  maxWidth?: number
   initialFocusRef?: React.RefObject<any>
   isBottomOnMobile?: boolean // Center cả trên mobile lẫn desktop.
   children?: React.ReactNode
@@ -86,6 +82,7 @@ export default function Modal({
   onDismiss,
   minHeight = false,
   maxHeight = 90,
+  maxWidth = 602,
   initialFocusRef,
   isBottomOnMobile = false,
   children
@@ -134,6 +131,7 @@ export default function Modal({
                 aria-label="dialog content"
                 minHeight={minHeight}
                 maxHeight={maxHeight}
+                maxWidth={maxWidth}
                 isModalBindToBottom={isModalBindToBottom}
               >
                 {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}

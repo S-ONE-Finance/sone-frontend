@@ -458,7 +458,7 @@ export default function Header() {
             </Title>
             <HeaderMenu>
               <HideSmall>
-                <StyledExternalLink href={'https://www.lipsum.com/'}>{t('s-one-wallet')}</StyledExternalLink>
+                <StyledExternalLink href={'https://www.lipsum.com/'}>{t('s_one_wallet')}</StyledExternalLink>
               </HideSmall>
               <MenuItem>
                 <StyledNavLink
@@ -493,12 +493,12 @@ export default function Header() {
                   {t('stats')}
                 </StyledExternalLink>
                 <SubMenu>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swap-stats')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swap_stats')}</SubMenuItemExternalLink>
                   <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>
-                    {t('staking-stats')}
+                    {t('staking_stats')}
                   </SubMenuItemExternalLink>
                   {/*<SubMenuItemExternalLink href={'https://www.lipsum.com/'}>*/}
-                  {/*  {t('lending-stats')}*/}
+                  {/*  {t('lending_stats')}*/}
                   {/*</SubMenuItemExternalLink>*/}
                 </SubMenu>
               </MenuItem>
@@ -510,7 +510,7 @@ export default function Header() {
                   {t('docs')}
                 </StyledExternalLink>
                 <ResponsiveTopEndSubMenu>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('white-paper')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('white_paper')}</SubMenuItemExternalLink>
                   <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</SubMenuItemExternalLink>
                   <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('blog')}</SubMenuItemExternalLink>
                 </ResponsiveTopEndSubMenu>

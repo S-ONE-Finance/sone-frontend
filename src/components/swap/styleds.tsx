@@ -7,7 +7,11 @@ import { AutoColumn } from '../Column'
 
 export const Wrapper = styled.div`
   position: relative;
-  padding: 0 30px 35px 30px;
+  padding: 0 30px 35px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 0 10px 25px;
+  `}
 `
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`
@@ -20,10 +24,15 @@ export const ArrowWrapper = styled.div<{ clickable: boolean }>`
           }
         `
       : null}
-
   * {
     stroke-width: 3px;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    * {
+      stroke-width: 4.5px;
+    }
+  `}
 `
 
 export const SectionBreak = styled.div`
@@ -34,6 +43,10 @@ export const SectionBreak = styled.div`
 
 export const BottomGrouping = styled.div<{ showTradeOrSlippage: boolean }>`
   margin: ${({ showTradeOrSlippage }) => (showTradeOrSlippage ? '17.5px 0' : '35px 0 0 0')};
+
+  ${({ theme, showTradeOrSlippage }) => theme.mediaWidth.upToExtraSmall`
+    margin: ${showTradeOrSlippage ? '17.5px 0' : '20px 0 0 0'};
+  `}
 `
 
 export const ErrorText = styled(Text)<{ severity?: 0 | 1 | 2 | 3 | 4 }>`
@@ -55,7 +68,7 @@ export const StyledBalanceMaxMini = styled.button`
   border: ${({ theme }) => `2px solid ${theme.text5Sone}`};
   border-radius: 5px;
   padding: 0.2rem;
-  font-size: 0.875rem;
+  font-size: 32px;
   font-weight: 400;
   margin-right: 0.5rem;
   cursor: pointer;

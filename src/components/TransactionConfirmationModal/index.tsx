@@ -4,61 +4,99 @@ import styled, { ThemeContext } from 'styled-components'
 import Modal from '../Modal'
 import { ExternalLink } from '../../theme'
 import { Text } from 'rebass'
-import { CloseIcon, CustomLightSpinner } from '../../theme/components'
-import { RowBetween, RowFixed } from '../Row'
-import { AlertTriangle, ArrowUpCircle, CheckCircle } from 'react-feather'
-import { ButtonPrimary, ButtonLight } from '../Button'
+import { CloseIcon } from '../../theme'
+import Row, { RowBetween } from '../Row'
+import { AlertTriangle, ArrowUpCircle } from 'react-feather'
+import { ButtonPrimary } from '../Button'
 import { AutoColumn, ColumnCenter } from '../Column'
-import Circle from '../../assets/images/blue-loader.svg'
-import MetaMaskLogo from '../../assets/images/metamask.png'
 import { getEtherscanLink } from '../../utils'
 import { useActiveWeb3React } from '../../hooks'
-import useAddTokenToMetamask from 'hooks/useAddTokenToMetamask'
+import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import SwapVectorLight from '../../assets/images/swap-vector-light.svg'
+import SwapVectorDark from '../../assets/images/swap-vector-dark.svg'
+import { useIsDarkMode } from '../../state/user/hooks'
+import SpinnerImage from '../../assets/svg/spinner.svg'
+import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Wrapper = styled.div`
   width: 100%;
 `
 const Section = styled(AutoColumn)`
-  padding: 24px;
+  padding: 32px 57px 25px;
+  background-color: ${({ theme }) => theme.bg1Sone};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 18px 22px 20px;
+  `}
 `
 
 const BottomSection = styled(Section)`
-  background-color: ${({ theme }) => theme.bg2};
+  padding: 25px 57px 35px;
+  border-top: ${({ theme }) => `1px solid ${theme.border3Sone}`};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 20px 22px;
+  `}
 `
 
 const ConfirmedIcon = styled(ColumnCenter)`
-  padding: 60px 0;
+  padding: 30px 0;
 `
 
-const StyledLogo = styled.img`
-  height: 16px;
-  width: 16px;
-  margin-left: 6px;
+const ModalTitle = styled.div`
+  font-size: 28px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.text1Sone};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 20px;
+  `}
+`
+
+const SwapVector = styled.img`
+  position: absolute;
+  top: 0;
+  right: 2rem;
+  width: 119.27px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 67.84px;
+  `}
+`
+
+const Spinner = styled.img`
+  width: 108px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 52px;
+  `}
 `
 
 function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () => void; pendingText: string }) {
+  const isUpToExtraSmall = useIsUpToExtraSmall()
   return (
     <Wrapper>
       <Section>
         <RowBetween>
           <div />
-          <CloseIcon onClick={onDismiss} />
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} />
         </RowBetween>
         <ConfirmedIcon>
-          <CustomLightSpinner src={Circle} alt="loader" size={'90px'} />
+          <Spinner src={SpinnerImage} alt="spinner" />
         </ConfirmedIcon>
-        <AutoColumn gap="12px" justify={'center'}>
-          <Text fontWeight={500} fontSize={20}>
+        <AutoColumn gap="20px" justify={'center'}>
+          <Text fontWeight={700} fontSize={20}>
             Waiting For Confirmation
           </Text>
           <AutoColumn gap="12px" justify={'center'}>
-            <Text fontWeight={600} fontSize={14} color="" textAlign="center">
+            <Text fontWeight={700} fontSize={16} color="" textAlign="center">
               {pendingText}
             </Text>
           </AutoColumn>
-          <Text fontSize={12} color="#565A69" textAlign="center">
+          <Text fontWeight={400} fontSize={16} color="#565A69" textAlign="center">
             Confirm this transaction in your wallet
           </Text>
         </AutoColumn>
@@ -71,6 +109,7 @@ function TransactionSubmittedContent({
   onDismiss,
   chainId,
   hash,
+  // Dùng để "Add UNI to MetaMask".
   currencyToAdd
 }: {
   onDismiss: () => void
@@ -78,50 +117,41 @@ function TransactionSubmittedContent({
   chainId: ChainId
   currencyToAdd?: Currency | undefined
 }) {
+  const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useContext(ThemeContext)
-
-  const { library } = useActiveWeb3React()
-
-  const { addToken, success } = useAddTokenToMetamask(currencyToAdd)
+  const history = useHistory()
+  const { t } = useTranslation()
 
   return (
     <Wrapper>
       <Section>
         <RowBetween>
           <div />
-          <CloseIcon onClick={onDismiss} />
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} />
         </RowBetween>
         <ConfirmedIcon>
-          <ArrowUpCircle strokeWidth={0.5} size={90} color={theme.primary1} />
+          <ArrowUpCircle strokeWidth={1.5} size={90} color={theme.red1Sone} />
         </ConfirmedIcon>
-        <AutoColumn gap="12px" justify={'center'}>
-          <Text fontWeight={500} fontSize={20}>
+        <AutoColumn gap="20px" justify={'center'}>
+          <Text fontWeight={700} fontSize={isUpToExtraSmall ? 20 : 30}>
             Transaction Submitted
           </Text>
           {chainId && hash && (
             <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
-              <Text fontWeight={500} fontSize={14} color={theme.primary1}>
+              <Text fontWeight={700} fontSize={20} color={theme.text5Sone}>
                 View on Etherscan
               </Text>
             </ExternalLink>
           )}
-          {currencyToAdd && library?.provider?.isMetaMask && (
-            <ButtonLight mt="12px" padding="6px 12px" width="fit-content" onClick={addToken}>
-              {!success ? (
-                <RowFixed>
-                  Add {currencyToAdd.symbol} to Metamask <StyledLogo src={MetaMaskLogo} />
-                </RowFixed>
-              ) : (
-                <RowFixed>
-                  Added {currencyToAdd.symbol}{' '}
-                  <CheckCircle size={'16px'} stroke={theme.green1} style={{ marginLeft: '6px' }} />
-                </RowFixed>
-              )}
-            </ButtonLight>
-          )}
-          <ButtonPrimary onClick={onDismiss} style={{ margin: '20px 0 0 0' }}>
+          <ButtonPrimary
+            onClick={() => {
+              onDismiss()
+              history.push('/add')
+            }}
+            style={{ margin: '10px 0 0 0' }}
+          >
             <Text fontWeight={500} fontSize={20}>
-              Close
+              {t('add_liquidity')}
             </Text>
           </ButtonPrimary>
         </AutoColumn>
@@ -141,14 +171,15 @@ export function ConfirmationModalContent({
   topContent: () => React.ReactNode
   bottomContent: () => React.ReactNode
 }) {
+  const isUpToExtraSmall = useIsUpToExtraSmall()
+  const isDarkMode = useIsDarkMode()
   return (
     <Wrapper>
       <Section>
-        <RowBetween>
-          <Text fontWeight={500} fontSize={20}>
-            {title}
-          </Text>
-          <CloseIcon onClick={onDismiss} />
+        <RowBetween style={{ position: 'relative' }}>
+          <SwapVector src={isDarkMode ? SwapVectorDark : SwapVectorLight} alt="swap-vector" />
+          <ModalTitle>{title}</ModalTitle>
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} />
         </RowBetween>
         {topContent()}
       </Section>
@@ -158,26 +189,22 @@ export function ConfirmationModalContent({
 }
 
 export function TransactionErrorContent({ message, onDismiss }: { message: string; onDismiss: () => void }) {
+  const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useContext(ThemeContext)
   return (
     <Wrapper>
       <Section>
-        <RowBetween>
-          <Text fontWeight={500} fontSize={20}>
-            Error
-          </Text>
-          <CloseIcon onClick={onDismiss} />
-        </RowBetween>
-        <AutoColumn style={{ marginTop: 20, padding: '2rem 0' }} gap="24px" justify="center">
+        <Row justify={'flex-end'}>
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} />
+        </Row>
+        <AutoColumn style={{ padding: '2rem 0' }} gap="24px" justify="center">
           <AlertTriangle color={theme.red1} style={{ strokeWidth: 1.5 }} size={64} />
           <Text fontWeight={500} fontSize={16} color={theme.red1} style={{ textAlign: 'center', width: '85%' }}>
             {message}
           </Text>
         </AutoColumn>
-      </Section>
-      <BottomSection gap="12px">
         <ButtonPrimary onClick={onDismiss}>Dismiss</ButtonPrimary>
-      </BottomSection>
+      </Section>
     </Wrapper>
   )
 }
@@ -207,7 +234,8 @@ export default function TransactionConfirmationModal({
 
   // confirmation screen
   return (
-    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90}>
+    // Nếu là modal pending hoặc submitted thì width là 462.
+    <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={attemptingTxn || hash ? 462 : undefined}>
       {attemptingTxn ? (
         <ConfirmationPendingContent onDismiss={onDismiss} pendingText={pendingText} />
       ) : hash ? (
