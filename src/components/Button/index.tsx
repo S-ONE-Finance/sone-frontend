@@ -38,6 +38,11 @@ const Base = styled(RebassButton)<{
   > * {
     user-select: none;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 16px;
+    padding: 13px;
+  `}
 `
 
 export const ButtonPrimary = styled(Base)`

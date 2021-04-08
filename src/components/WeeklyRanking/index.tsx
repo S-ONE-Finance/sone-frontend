@@ -7,8 +7,8 @@ import Row from '../Row'
 import QuestionHelper from '../QuestionHelper'
 import { ColumnCenter } from '../Column'
 import { getFormatNumber } from '../../subgraph/utils/formatter'
-import { useWindowSize } from '../../hooks/useWindowSize'
-import { ExternalLink, MEDIA_WIDTHS } from '../../theme'
+import { useIsUpToExtraSmall, useIsUpToSmall } from '../../hooks/useWindowSize'
+import { ExternalLink } from '../../theme'
 
 const Container = styled.div`
   margin-top: 20px;
@@ -85,14 +85,15 @@ const StyledExternalLink = styled(ExternalLink)`
 function WeeklyRanking() {
   const { t } = useTranslation()
   const ranking = useWeeklyRanking()
-  const { width } = useWindowSize()
+  const isUpToExtraSmall = useIsUpToExtraSmall()
+  const isUpToSmall = useIsUpToSmall()
 
   const rankingPlaceholder = useMemo(
     () =>
-      width && width <= MEDIA_WIDTHS.upToExtraSmall
+      isUpToExtraSmall
         ? [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }]
         : [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }],
-    [width]
+    [isUpToExtraSmall]
   )
 
   const getWeeklyRankingItem = useCallback((key: string, address0: string, address1: string, volume: number) => {
@@ -116,7 +117,7 @@ function WeeklyRanking() {
         <Title>{t('weekly-ranking')}</Title>
         <QuestionHelper
           text={t('question-helper-weekly-ranking')}
-          size={width && width <= MEDIA_WIDTHS.upToExtraSmall ? 15 : width && width <= MEDIA_WIDTHS.upToSmall ? 19 : 23}
+          size={isUpToExtraSmall ? 15 : isUpToSmall ? 19 : 23}
         />
       </SpanFullColumns>
       {(ranking?.length >= 1 ? ranking : rankingPlaceholder).map((item: any) =>

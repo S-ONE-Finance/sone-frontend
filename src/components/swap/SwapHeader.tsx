@@ -9,10 +9,13 @@ import Column from '../Column'
 import { useTranslation } from 'react-i18next'
 
 const StyledSwapHeader = styled.div`
-  //background: #ff0000;
-  padding: 23px 30px 26px 30px;
+  padding: 23px 30px 26px;
   width: 100%;
   max-width: 602px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 23px 20px 17px;
+  `};
 `
 
 const SwapVector = styled.img`

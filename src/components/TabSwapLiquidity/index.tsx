@@ -27,7 +27,7 @@ const TabItem = styled.div<{ isActive?: boolean }>`
   background-color: ${({ theme, isActive }) => (isActive ? theme.tabBgActive : theme.tabBg)};
   color: ${({ theme, isActive }) => (isActive ? theme.tabTextActive : theme.tabText)};
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 700;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,6 +41,10 @@ const TabItem = styled.div<{ isActive?: boolean }>`
   :active {
     color: ${({ theme, isActive }) => (isActive ? darken(0.1, theme.tabTextActive) : darken(0.1, theme.tabText))};
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `}
 `
 
 function TabSwapLiquidity() {

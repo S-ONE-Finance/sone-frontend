@@ -33,17 +33,16 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, isModalBindToBottom,
   overflow-y: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'scroll' : 'hidden')};
 
   &[data-reach-dialog-content] {
-    margin: 0 0 2rem 0;
     background-color: ${({ theme }) => theme.bg1};
     box-shadow: 0 4px 8px 0 ${({ theme }) => transparentize(0.95, theme.shadow1)};
+    width: 602px;
+    max-width: calc(100vw - 32px);
     padding: 0;
-    width: 50vw;
+    margin: 0;
     overflow-y: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'scroll' : 'hidden')};
     overflow-x: hidden;
-
     align-self: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'flex-end' : 'center')};
 
-    max-width: 602px;
     ${({ maxHeight }) =>
       maxHeight &&
       css`
@@ -56,12 +55,8 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, isModalBindToBottom,
       `}
     display: flex;
     border-radius: 25px;
-    ${({ theme }) => theme.mediaWidth.upToMedium`
-      width: 65vw;
-      margin: 0;
-    `}
+
     ${({ theme, isModalBindToBottom }) => theme.mediaWidth.upToSmall`
-      width:  85vw;
       ${isModalBindToBottom &&
         css`
           width: 100vw;
