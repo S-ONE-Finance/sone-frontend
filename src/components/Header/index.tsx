@@ -136,8 +136,7 @@ const StyledNavLink = styled(NavLink).attrs({
     }
   }
 
-  :hover,
-  :focus {
+  :hover {
     color: ${({ theme }) => theme.red1Sone};
   }
 `
@@ -157,8 +156,7 @@ const StyledExternalLink = styled(ExternalLink)`
   display: flex;
   align-items: center;
 
-  :hover,
-  :focus {
+  :hover {
     color: ${({ theme }) => theme.red1Sone};
   }
 
@@ -231,8 +229,7 @@ const SubMenuItemNavLink = styled(NavLink)`
   justify-content: center;
   border-radius: 10px;
 
-  :hover,
-  :focus {
+  :hover {
     color: ${({ theme }) => theme.red1Sone};
     background-color: ${({ theme }) => theme.bg2Sone};
   }
@@ -255,8 +252,7 @@ const SubMenuItemExternalLink = styled(ExternalLink)<{ isActive?: boolean }>`
   justify-content: center;
   border-radius: 10px;
 
-  :hover,
-  :focus {
+  :hover {
     color: ${({ theme }) => theme.red1Sone};
     background-color: ${({ theme }) => theme.bg2Sone};
     text-decoration: none;
@@ -280,8 +276,7 @@ const SubMenuItemText = styled.span`
   justify-content: center;
   border-radius: 10px;
 
-  :hover,
-  :focus {
+  :hover {
     color: ${({ theme }) => theme.red1Sone};
     background-color: ${({ theme }) => theme.bg2Sone};
     text-decoration: none;
@@ -338,8 +333,7 @@ const MenuItem = styled.div.attrs({
   align-items: center;
   position: relative;
 
-  :hover,
-  :focus {
+  :hover {
     color: ${({ theme }) => theme.red1Sone};
 
     ${SubMenu} {
