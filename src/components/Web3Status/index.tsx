@@ -98,7 +98,7 @@ function Web3StatusInner() {
   } else {
     return (
       <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
-        {t('connect-wallet')}
+        {t('connect_wallet')}
       </ButtonMainRed>
     )
   }
