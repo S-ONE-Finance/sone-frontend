@@ -404,7 +404,7 @@ export default function Swap({ history }: RouteComponentProps) {
               </>
             ) : null}
 
-            {showWrap || (!Boolean(trade) && allowedSlippage === INITIAL_ALLOWED_SLIPPAGE) ? null : (
+            {showWrap || !Boolean(trade) ? null : (
               <Card padding={'0'} borderRadius={'20px'}>
                 <ResponsiveAutoColumn gap="15px">
                   {Boolean(trade) && (
@@ -422,7 +422,7 @@ export default function Swap({ history }: RouteComponentProps) {
                       />
                     </RowBetween>
                   )}
-                  {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
+                  {Boolean(trade) && allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                     <RowBetween align="center">
                       <RowFixed>
                         <ClickableText
@@ -449,8 +449,8 @@ export default function Swap({ history }: RouteComponentProps) {
               </Card>
             )}
           </AutoColumn>
-          {/* Nếu không có thông tin trade và slippage mặc định thì để margin nhỏ (theo design). */}
-          <BottomGrouping showTradeOrSlippage={Boolean(trade) || allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE}>
+          {/* Nếu không có thông tin trade thì để margin nhỏ (theo design). */}
+          <BottomGrouping hasTrade={Boolean(trade)}>
             {swapIsUnsupported ? (
               <ButtonPrimary disabled={true}>
                 <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
