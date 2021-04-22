@@ -156,7 +156,11 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
 
     try {
       const valueAsIntFromRoundedFloat = Number.parseInt((Number.parseFloat(value) * 100).toString())
-      if (!Number.isNaN(valueAsIntFromRoundedFloat) && valueAsIntFromRoundedFloat < 5000) {
+      if (
+        !Number.isNaN(valueAsIntFromRoundedFloat) &&
+        valueAsIntFromRoundedFloat < 5000 &&
+        valueAsIntFromRoundedFloat > 0
+      ) {
         setRawSlippage(valueAsIntFromRoundedFloat)
       }
     } catch {}
@@ -235,7 +239,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             }}
           >
             {slippageError === SlippageError.InvalidInput
-              ? t('enter-a-valid-slippage-percentage')
+              ? t('enter_a_valid_slippage_percentage')
               : slippageError === SlippageError.RiskyLow
               ? t('your_transaction_may_fail')
               : t('your_transaction_may_be_frontrun')}

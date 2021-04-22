@@ -43,5 +43,6 @@
   "white_paper": "White Paper",
   "your_transaction_may_be_frontrun": "Your transaction may be frontrun",
   "your_transaction_may_fail": "Your transaction may fail",
-  "your_transactions_here": "Your recent transactions will appear here..."
+  "your_transactions_here": "Your recent transactions will appear here...",
+  "enter_a_valid_slippage_percentage": "Enter a valid slippage percentage"
 }
