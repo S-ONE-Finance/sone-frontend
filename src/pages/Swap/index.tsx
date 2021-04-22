@@ -142,6 +142,9 @@ export default function Swap({ history }: RouteComponentProps) {
   const trade = showWrap ? undefined : tradesByVersion[toggledVersion]
   const defaultTrade = showWrap ? undefined : tradesByVersion[DEFAULT_VERSION]
 
+  // Liquidity Provider Fee
+  const { realizedLPFee } = computeTradePriceBreakdown(trade)
+
   const betterTradeLinkV2: Version | undefined =
     toggledVersion === Version.v1 && isTradeBetter(v1Trade, v2Trade) ? Version.v2 : undefined
 
@@ -445,6 +448,34 @@ export default function Swap({ history }: RouteComponentProps) {
                       </ClickableText>
                     </RowBetween>
                   )}
+                  <RowBetween align="center">
+                    <RowFixed>
+                      <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                        Liquidity Provider Fee
+                      </Text>
+                      <QuestionHelper1416 text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />
+                    </RowFixed>
+                    <Text
+                      fontWeight={700}
+                      fontSize={isUpToExtraSmall ? 13 : 16}
+                      color={theme.text6Sone}
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'baseline',
+                        display: 'flex',
+                        whiteSpace: 'break-spaces'
+                      }}
+                    >
+                      {realizedLPFee ? (
+                        <>
+                          {realizedLPFee.toSignificant(4)}{' '}
+                          <Text fontSize={13}>{trade?.inputAmount?.currency?.symbol}</Text>
+                        </>
+                      ) : (
+                        '-'
+                      )}
+                    </Text>
+                  </RowBetween>
                 </ResponsiveAutoColumn>
               </Card>
             )}
