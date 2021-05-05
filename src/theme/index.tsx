@@ -122,6 +122,7 @@ export function colors(darkMode: boolean): Colors {
     stroke1Sone: darkMode ? '#3FAAB0' : '#F05359',
     divider1Sone: darkMode ? '#AAAAAA' : 'rgba(0, 0, 0, 0.25)',
     scrollbarThumb: darkMode ? '#3B5183' : '#808080',
+    closeIcon: darkMode ? '#AAAAAA' : '#000000',
 
     // Tab
     tabBg: darkMode ? '#3B5183' : '#F3F3F3',

@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useActiveWeb3React } from '../../hooks'
 
 import { AutoColumn, ColumnCenter } from '../Column'
-import styled, { ThemeContext } from 'styled-components'
+import styled from 'styled-components'
 import { RowBetween } from '../Row'
 import { TYPE, CloseIcon, CustomLightSpinner } from '../../theme'
 import { ArrowUpCircle } from 'react-feather'
@@ -10,6 +10,7 @@ import { ArrowUpCircle } from 'react-feather'
 import Circle from '../../assets/images/blue-loader.svg'
 import { getEtherscanLink } from '../../utils'
 import { ExternalLink } from '../../theme/components'
+import useTheme from '../../hooks/useTheme'
 
 const ConfirmOrLoadingWrapper = styled.div`
   width: 100%;
@@ -21,11 +22,12 @@ const ConfirmedIcon = styled(ColumnCenter)`
 `
 
 export function LoadingView({ children, onDismiss }: { children: any; onDismiss: () => void }) {
+  const theme = useTheme()
   return (
     <ConfirmOrLoadingWrapper>
       <RowBetween>
         <div />
-        <CloseIcon onClick={onDismiss} />
+        <CloseIcon onClick={onDismiss} color={theme.closeIcon} />
       </RowBetween>
       <ConfirmedIcon>
         <CustomLightSpinner src={Circle} alt="loader" size={'90px'} />
@@ -47,14 +49,14 @@ export function SubmittedView({
   onDismiss: () => void
   hash: string | undefined
 }) {
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
   const { chainId } = useActiveWeb3React()
 
   return (
     <ConfirmOrLoadingWrapper>
       <RowBetween>
         <div />
-        <CloseIcon onClick={onDismiss} />
+        <CloseIcon onClick={onDismiss} color={theme.closeIcon} />
       </RowBetween>
       <ConfirmedIcon>
         <ArrowUpCircle strokeWidth={0.5} size={90} color={theme.primary1} />

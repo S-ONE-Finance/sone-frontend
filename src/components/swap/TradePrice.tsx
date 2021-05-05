@@ -1,11 +1,11 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Price } from '@s-one-finance/sdk-core'
 import { Repeat } from 'react-feather'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
 import { StyledBalanceMaxMini } from './styleds'
 import Row from '../Row'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import useTheme from '../../hooks/useTheme'
 
 interface TradePriceProps {
   price?: Price
@@ -14,7 +14,7 @@ interface TradePriceProps {
 }
 
 export const RepeatIcon = () => {
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
 
   return <Repeat size={14} style={{ stroke: theme.text5Sone, strokeWidth: 3 }} />
 }
@@ -22,7 +22,7 @@ export const RepeatIcon = () => {
 export default function TradePrice({ price, showInverted, setShowInverted }: TradePriceProps) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
 
   const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6)
 

@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { Settings, X } from 'react-feather'
 import { Text } from 'rebass'
-import styled, { ThemeContext } from 'styled-components'
+import styled from 'styled-components'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleSettingsMenu } from '../../state/application/hooks'
 import {
@@ -23,6 +23,7 @@ import SwapVectorDark from '../../assets/images/swap-vector-dark.svg'
 import { ReactComponent as ExpertIcon } from '../../assets/svg/expert_icon.svg'
 import { ReactComponent as GlassesIcon } from '../../assets/svg/glasses_icon.svg'
 import { useTranslation } from 'react-i18next'
+import useTheme from '../../hooks/useTheme'
 
 const StyledSettingsIcon = styled(Settings)`
   height: 24px;
@@ -215,7 +216,7 @@ export default function SettingsTab() {
   const isDarkMode = useIsDarkMode()
   const open = useModalOpen(ApplicationModal.SETTINGS)
   const toggle = useToggleSettingsMenu()
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
 
   const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippageTolerance()
 
@@ -282,7 +283,7 @@ export default function SettingsTab() {
             <TitleBodyMarginer>
               <RowBetween>
                 <Title>{t('settings')}</Title>
-                <CloseIcon onClick={toggle} />
+                <CloseIcon onClick={toggle} color={theme.closeIcon} />
               </RowBetween>
               <SectionWrapper>
                 <TransactionSettings

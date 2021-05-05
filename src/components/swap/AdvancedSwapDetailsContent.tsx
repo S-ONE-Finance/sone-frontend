@@ -1,6 +1,6 @@
 import { Trade, TradeType } from '@s-one-finance/sdk-core'
-import React, { useContext } from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import React from 'react'
+import styled from 'styled-components'
 import { Field } from '../../state/swap/actions'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { ExternalLink } from '../../theme'
@@ -13,6 +13,7 @@ import SwapRoute from './SwapRoute'
 import { Text } from 'rebass'
 import { darken } from 'polished'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import useTheme from '../../hooks/useTheme'
 
 const InfoLink = styled(ExternalLink)`
   width: fit-content;
@@ -44,7 +45,7 @@ const InfoLink = styled(ExternalLink)`
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
   const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
@@ -89,7 +90,7 @@ export interface AdvancedSwapDetailsProps {
 
 export function AdvancedSwapDetailsContent({ trade }: AdvancedSwapDetailsProps) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
 
   const [allowedSlippage] = useUserSlippageTolerance()
 

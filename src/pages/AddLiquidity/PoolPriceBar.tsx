@@ -1,12 +1,12 @@
 import { Currency, Percent, Price } from '@s-one-finance/sdk-core'
-import React, { useContext } from 'react'
+import React from 'react'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
 import { AutoColumn } from '../../components/Column'
 import { AutoRow } from '../../components/Row'
 import { ONE_BIPS } from '../../constants'
 import { Field } from '../../state/mint/actions'
 import { TYPE } from '../../theme'
+import useTheme from '../../hooks/useTheme'
 
 export function PoolPriceBar({
   currencies,
@@ -19,7 +19,7 @@ export function PoolPriceBar({
   poolTokenPercentage?: Percent
   price?: Price
 }) {
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
   return (
     <AutoColumn gap="md">
       <AutoRow justify="space-around" gap="4px">

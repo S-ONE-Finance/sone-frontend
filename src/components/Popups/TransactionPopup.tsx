@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { AlertCircle, CheckCircle } from 'react-feather'
-import styled, { ThemeContext } from 'styled-components'
+import styled from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
 import { ExternalLink, TYPE } from '../../theme'
 import { getEtherscanLink } from '../../utils'
@@ -10,6 +10,7 @@ import Row, { AutoRow } from '../Row'
 import { SummaryType, TransactionSummary } from '../../state/transactions/types'
 import StyledSummary from '../StyledSummary'
 import { ButtonMainRed } from '../Web3Status'
+import useTheme from '../../hooks/useTheme'
 
 const RowNoFlex = styled(AutoRow)`
   flex-wrap: nowrap;
@@ -28,7 +29,7 @@ export default function TransactionPopup({
   useTranslation()
   const { chainId } = useActiveWeb3React()
 
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
 
   return (
     <RowNoFlex>

@@ -164,7 +164,7 @@ export function CurrencySearch({
           <Text fontWeight={500} fontSize={16}>
             Select a token
           </Text>
-          <CloseIcon onClick={onDismiss} />
+          <CloseIcon onClick={onDismiss} color={theme.closeIcon}/>
         </RowBetween>
         <Row>
           <SearchInput

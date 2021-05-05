@@ -1,8 +1,7 @@
 import { Trade, TradeType } from '@s-one-finance/sdk-core'
-import React, { useContext, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { ArrowDown, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
 import { Field } from '../../state/swap/actions'
 import { TYPE } from '../../theme'
 import { ButtonPrimary } from '../Button'
@@ -13,6 +12,7 @@ import CurrencyLogo from '../CurrencyLogo'
 import { RowBetween, RowFixed } from '../Row'
 import { TruncatedText, SwapShowAcceptChanges } from './styleds'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import useTheme from '../../hooks/useTheme'
 
 export default function SwapModalHeader({
   trade,
@@ -36,7 +36,7 @@ export default function SwapModalHeader({
   const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
 
   return (
     <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>

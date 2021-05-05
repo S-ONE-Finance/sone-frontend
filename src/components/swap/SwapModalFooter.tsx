@@ -1,7 +1,6 @@
 import { Trade, TradeType } from '@s-one-finance/sdk-core'
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Text } from 'rebass'
-import { ThemeContext } from 'styled-components'
 import { Field } from '../../state/swap/actions'
 import { TYPE } from '../../theme'
 import {
@@ -18,6 +17,7 @@ import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { RepeatIcon } from './TradePrice'
+import useTheme from '../../hooks/useTheme'
 
 export default function SwapModalFooter({
   trade,
@@ -35,7 +35,7 @@ export default function SwapModalFooter({
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
   const [showInverted, setShowInverted] = useState<boolean>(false)
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
   const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
     allowedSlippage,
     trade
@@ -115,8 +115,8 @@ export default function SwapModalFooter({
           style={{ margin: '10px 0 0 0' }}
           id="confirm-swap-or-send"
         >
-          <Text fontSize={20} fontWeight={500}>
-            {severity > 2 ? 'Swap Anyway' : 'Confirm Swap'}
+          <Text fontSize={20} fontWeight={700}>
+            {severity > 2 ? 'Swap Anyway' : 'Swap'}
           </Text>
         </ButtonError>
 

@@ -1,9 +1,9 @@
 import { CurrencyAmount, JSBI, Token, Trade } from '@s-one-finance/sdk-core'
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ArrowDown, ChevronDown, ChevronUp } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
-import styled, { ThemeContext } from 'styled-components'
+import styled from 'styled-components'
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonConfirmed, ButtonError, ButtonPrimary } from '../../components/Button'
 import Card, { GreyCard } from '../../components/Card'
@@ -57,6 +57,7 @@ import { useActiveWeb3React } from '../../hooks'
 import useENSAddress from '../../hooks/useENSAddress'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import { useTranslation } from 'react-i18next'
+import useTheme from '../../hooks/useTheme'
 
 const ResponsiveAutoColumn = styled(AutoColumn)`
   padding: 23px 14px 0;
@@ -101,7 +102,7 @@ export default function Swap({ history }: RouteComponentProps) {
     })
 
   const { account } = useActiveWeb3React()
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
 
   // toggle wallet when disconnected
   const toggleWalletModal = useWalletModalToggle()

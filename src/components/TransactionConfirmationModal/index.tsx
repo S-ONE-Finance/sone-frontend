@@ -1,6 +1,6 @@
 import { ChainId, Currency } from '@s-one-finance/sdk-core'
-import React, { useContext } from 'react'
-import styled, { ThemeContext } from 'styled-components'
+import React from 'react'
+import styled from 'styled-components'
 import Modal from '../Modal'
 import { ExternalLink } from '../../theme'
 import { Text } from 'rebass'
@@ -18,12 +18,13 @@ import { useIsDarkMode } from '../../state/user/hooks'
 import SpinnerImage from '../../assets/svg/spinner.svg'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import useTheme from '../../hooks/useTheme'
 
 const Wrapper = styled.div`
   width: 100%;
 `
 const Section = styled(AutoColumn)`
-  padding: 32px 57px 25px;
+  padding: 32px 30px 25px;
   background-color: ${({ theme }) => theme.bg1Sone};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -77,12 +78,13 @@ const Spinner = styled.img`
 
 function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () => void; pendingText: string }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
+  const theme = useTheme()
   return (
     <Wrapper>
       <Section>
         <RowBetween>
           <div />
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} />
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} color={theme.closeIcon} />
         </RowBetween>
         <ConfirmedIcon>
           <Spinner src={SpinnerImage} alt="spinner" />
@@ -118,7 +120,7 @@ function TransactionSubmittedContent({
   currencyToAdd?: Currency | undefined
 }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
   const history = useHistory()
   const { t } = useTranslation()
 
@@ -127,18 +129,18 @@ function TransactionSubmittedContent({
       <Section>
         <RowBetween>
           <div />
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} />
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} color={theme.closeIcon} />
         </RowBetween>
         <ConfirmedIcon>
           <ArrowUpCircle strokeWidth={1.5} size={90} color={theme.red1Sone} />
         </ConfirmedIcon>
         <AutoColumn gap="20px" justify={'center'}>
-          <Text fontWeight={700} fontSize={isUpToExtraSmall ? 20 : 30}>
+          <Text fontWeight={700} fontSize={isUpToExtraSmall ? 16 : 18}>
             Transaction Submitted
           </Text>
           {chainId && hash && (
             <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
-              <Text fontWeight={700} fontSize={20} color={theme.text5Sone}>
+              <Text fontWeight={700} fontSize={16} color={theme.text5Sone}>
                 View on Etherscan
               </Text>
             </ExternalLink>
@@ -150,7 +152,7 @@ function TransactionSubmittedContent({
             }}
             style={{ margin: '10px 0 0 0' }}
           >
-            <Text fontWeight={500} fontSize={20}>
+            <Text fontWeight={700} fontSize={20}>
               {t('add_liquidity')}
             </Text>
           </ButtonPrimary>
@@ -173,13 +175,14 @@ export function ConfirmationModalContent({
 }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const isDarkMode = useIsDarkMode()
+  const theme = useTheme()
   return (
     <Wrapper>
       <Section>
         <RowBetween style={{ position: 'relative' }}>
           <SwapVector src={isDarkMode ? SwapVectorDark : SwapVectorLight} alt="swap-vector" />
           <ModalTitle>{title}</ModalTitle>
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} />
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} color={theme.closeIcon} />
         </RowBetween>
         {topContent()}
       </Section>
@@ -190,12 +193,12 @@ export function ConfirmationModalContent({
 
 export function TransactionErrorContent({ message, onDismiss }: { message: string; onDismiss: () => void }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
   return (
     <Wrapper>
       <Section>
         <Row justify={'flex-end'}>
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} />
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} color={theme.closeIcon} />
         </Row>
         <AutoColumn style={{ padding: '2rem 0' }} gap="24px" justify="center">
           <AlertTriangle color={theme.red1} style={{ strokeWidth: 1.5 }} size={64} />

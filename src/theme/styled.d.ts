@@ -77,6 +77,7 @@ export interface Colors {
   stroke1Sone: Color
   divider1Sone: Color
   scrollbarThumb: Color
+  closeIcon: Color
 
   /* Tab */
   tabBg: Color

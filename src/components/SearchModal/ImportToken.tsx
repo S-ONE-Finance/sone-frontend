@@ -69,7 +69,7 @@ export function ImportToken({ tokens, onBack, onDismiss, handleCurrencySelect }:
         <RowBetween>
           {onBack ? <ArrowLeft style={{ cursor: 'pointer' }} onClick={onBack} /> : <div></div>}
           <TYPE.mediumHeader>Import {tokens.length > 1 ? 'Tokens' : 'Token'}</TYPE.mediumHeader>
-          {onDismiss ? <CloseIcon onClick={onDismiss} /> : <div></div>}
+          {onDismiss ? <CloseIcon onClick={onDismiss} color={theme.closeIcon}/> : <div></div>}
         </RowBetween>
       </PaddedColumn>
       <SectionBreak />

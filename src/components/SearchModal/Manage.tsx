@@ -10,6 +10,7 @@ import { ManageLists } from './ManageLists'
 import ManageTokens from './ManageTokens'
 import { TokenList } from '@uniswap/token-lists'
 import { CurrencyModalView } from './CurrencySearchModal'
+import useTheme from '../../hooks/useTheme'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -56,6 +57,7 @@ export default function Manage({
 }) {
   // toggle between tokens and lists
   const [showLists, setShowLists] = useState(true)
+  const theme = useTheme()
 
   return (
     <Wrapper>
@@ -65,7 +67,7 @@ export default function Manage({
           <Text fontWeight={500} fontSize={20}>
             Manage
           </Text>
-          <CloseIcon onClick={onDismiss} />
+          <CloseIcon onClick={onDismiss} color={theme.closeIcon} />
         </RowBetween>
       </PaddedColumn>
       <Separator />
