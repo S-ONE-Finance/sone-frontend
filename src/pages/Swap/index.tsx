@@ -408,7 +408,7 @@ export default function Swap({ history }: RouteComponentProps) {
               </>
             ) : null}
 
-            {showWrap || !Boolean(trade) ? null : (
+            {showWrap ? null : (
               <Card padding={'0'} borderRadius={'20px'}>
                 <ResponsiveAutoColumn gap="15px">
                   {Boolean(trade) && (
@@ -426,7 +426,7 @@ export default function Swap({ history }: RouteComponentProps) {
                       />
                     </RowBetween>
                   )}
-                  {Boolean(trade) && allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
+                  {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                     <RowBetween align="center">
                       <RowFixed>
                         <ClickableText
@@ -449,34 +449,36 @@ export default function Swap({ history }: RouteComponentProps) {
                       </ClickableText>
                     </RowBetween>
                   )}
-                  <RowBetween align="center">
-                    <RowFixed>
-                      <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                        Liquidity Provider Fee
+                  {Boolean(trade) && (
+                    <RowBetween align="center">
+                      <RowFixed>
+                        <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                          Liquidity Provider Fee
+                        </Text>
+                        <QuestionHelper1416 text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />
+                      </RowFixed>
+                      <Text
+                        fontWeight={700}
+                        fontSize={isUpToExtraSmall ? 13 : 16}
+                        color={theme.text6Sone}
+                        style={{
+                          justifyContent: 'center',
+                          alignItems: 'baseline',
+                          display: 'flex',
+                          whiteSpace: 'break-spaces'
+                        }}
+                      >
+                        {realizedLPFee ? (
+                          <>
+                            {realizedLPFee.toSignificant(4)}{' '}
+                            <Text fontSize={13}>{trade?.inputAmount?.currency?.symbol}</Text>
+                          </>
+                        ) : (
+                          '-'
+                        )}
                       </Text>
-                      <QuestionHelper1416 text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />
-                    </RowFixed>
-                    <Text
-                      fontWeight={700}
-                      fontSize={isUpToExtraSmall ? 13 : 16}
-                      color={theme.text6Sone}
-                      style={{
-                        justifyContent: 'center',
-                        alignItems: 'baseline',
-                        display: 'flex',
-                        whiteSpace: 'break-spaces'
-                      }}
-                    >
-                      {realizedLPFee ? (
-                        <>
-                          {realizedLPFee.toSignificant(4)}{' '}
-                          <Text fontSize={13}>{trade?.inputAmount?.currency?.symbol}</Text>
-                        </>
-                      ) : (
-                        '-'
-                      )}
-                    </Text>
-                  </RowBetween>
+                    </RowBetween>
+                  )}
                 </ResponsiveAutoColumn>
               </Card>
             )}
