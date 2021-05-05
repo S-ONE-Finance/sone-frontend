@@ -21,10 +21,6 @@ const PendingBox = styled.div`
   :focus {
     outline: none;
   }
-
-  ${({ theme }) => theme.mediaWidth.upToLarge`
-    background: ${({ theme }) => theme.bg1};
-  `}
 `
 
 const Text = styled.p`
