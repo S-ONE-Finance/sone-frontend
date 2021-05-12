@@ -150,7 +150,7 @@ export default function Footer() {
           {data.slice(0).map(pair => (
             <PairInfo
               key={pair.id}
-              pairName={pair.token0Symbol + '/' + pair.token1Symbol}
+              pairName={pair.token0Symbol + '-' + pair.token1Symbol}
               tokenPrice={pair.token1Price}
               tokenPriceChange={pair.oneDayToken1PriceChange}
             />

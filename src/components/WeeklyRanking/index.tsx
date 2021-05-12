@@ -1,14 +1,11 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useWeeklyRanking } from '../../subgraph'
-import CurrencyLogo from '../CurrencyLogo'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import Row from '../Row'
 import QuestionHelper from '../QuestionHelper'
-import { ColumnCenter } from '../Column'
-import { getFormatNumber } from '../../subgraph/utils/formatter'
 import { useIsUpToExtraSmall, useIsUpToSmall } from '../../hooks/useWindowSize'
-import { ExternalLink } from '../../theme'
+import WeeklyRankingItem from './WeeklyRankingItem'
 
 const Container = styled.div`
   margin-top: 20px;
@@ -57,30 +54,6 @@ const Title = styled.div`
   `}
 `
 
-const TextChange = styled.div`
-  font-size: 18px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.text7Sone};
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    font-size: 13px;
-  `}
-`
-
-const CurrencyLogoContainer = styled(Row)`
-  width: fit-content;
-  margin-bottom: 11px;
-`
-
-const StyledExternalLink = styled(ExternalLink)`
-  :focus,
-  :active,
-  :hover {
-    text-decoration: none;
-    outline: none;
-  }
-`
-
 // Ranking theo volume.
 function WeeklyRanking() {
   const { t } = useTranslation()
@@ -96,21 +69,6 @@ function WeeklyRanking() {
     [isUpToExtraSmall]
   )
 
-  const getWeeklyRankingItem = useCallback((key: string, address0: string, address1: string, volume: number) => {
-    return (
-      // TODO: Sau này đổi thành link của sone info.
-      <StyledExternalLink href={`https://info.uniswap.org/pair/${key}`} key={key}>
-        <ColumnCenter>
-          <CurrencyLogoContainer>
-            <CurrencyLogo address={address0} style={{ marginRight: '3px' }} />
-            <CurrencyLogo address={address1} />
-          </CurrencyLogoContainer>
-          <TextChange>{getFormatNumber(volume, 3)}</TextChange>
-        </ColumnCenter>
-      </StyledExternalLink>
-    )
-  }, [])
-
   return (
     <Container>
       <SpanFullColumns>
@@ -120,9 +78,17 @@ function WeeklyRanking() {
           size={isUpToExtraSmall ? 15 : isUpToSmall ? 19 : 23}
         />
       </SpanFullColumns>
-      {(ranking?.length >= 1 ? ranking : rankingPlaceholder).map((item: any) =>
-        getWeeklyRankingItem(item?.id, item?.token0?.id, item?.token1?.id, item?.oneWeekVolumeUSD)
-      )}
+      {(ranking?.length >= 1 ? ranking : rankingPlaceholder).map((item: any) => (
+        <WeeklyRankingItem
+          key={item?.id}
+          id={item?.id}
+          address0={item?.token0?.id}
+          address1={item?.token1?.id}
+          symbol0={item?.token0?.symbol}
+          symbol1={item?.token1?.symbol}
+          volume={item?.oneWeekVolumeUSD}
+        />
+      ))}
     </Container>
   )
 }
