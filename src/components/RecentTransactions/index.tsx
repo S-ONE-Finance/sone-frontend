@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
 
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
@@ -22,28 +21,6 @@ const ColumnScroll = styled(Column)`
   ${({ theme }) => theme.mediaWidth.upToMedium`
     max-height: 25vh;
   `}
-
-  /* width */
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background-color: ${({ theme }) => theme.divider1Sone};
-    /* border-radius: 10px; */
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background-color: ${({ theme }) => theme.scrollbarThumb};
-    /* border-radius: 10px; */
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: ${({ theme }) => `${darken(0.05, theme.scrollbarThumb)}`};
-  }
 `
 
 const TransactionList = styled.div`

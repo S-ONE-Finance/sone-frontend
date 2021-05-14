@@ -24,6 +24,7 @@ import { ReactComponent as ExpertIcon } from '../../assets/svg/expert_icon.svg'
 import { ReactComponent as GlassesIcon } from '../../assets/svg/glasses_icon.svg'
 import { useTranslation } from 'react-i18next'
 import useTheme from '../../hooks/useTheme'
+import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 
 const StyledSettingsIcon = styled(Settings)`
   height: 24px;
@@ -213,6 +214,7 @@ const StyledExpertIcon = styled(ExpertIcon)`
 
 export default function SettingsTab() {
   const { t } = useTranslation()
+  const isUpToExtraSmall = useIsUpToExtraSmall()
   const isDarkMode = useIsDarkMode()
   const open = useModalOpen(ApplicationModal.SETTINGS)
   const toggle = useToggleSettingsMenu()
@@ -283,7 +285,7 @@ export default function SettingsTab() {
             <TitleBodyMarginer>
               <RowBetween>
                 <Title>{t('settings')}</Title>
-                <CloseIcon onClick={toggle} color={theme.closeIcon} />
+                <CloseIcon onClick={toggle} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
               </RowBetween>
               <SectionWrapper>
                 <TransactionSettings
@@ -295,8 +297,8 @@ export default function SettingsTab() {
                 <ResponsiveAutoColumn>
                   <RowFixed>
                     <StyledExpertIcon />
-                    <SectionHeading>{t('expert-mode')}</SectionHeading>
-                    <QuestionHelper text={t('question-helper-expert-mode')} />
+                    <SectionHeading>{t('expert_mode')}</SectionHeading>
+                    <QuestionHelper text={t('question_helper_expert_mode')} />
                   </RowFixed>
                   <Toggle
                     id="toggle-expert-mode-button"

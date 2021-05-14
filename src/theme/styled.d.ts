@@ -59,6 +59,7 @@ export interface Colors {
   text7Sone: Color
   text8Sone: Color
   text9Sone: Color
+  text10Sone: Color
 
   /* Background */
   bg1Sone: Color

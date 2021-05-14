@@ -48,11 +48,15 @@ const Tag = styled.div`
 `
 
 const FixedContentRow = styled.div`
-  padding: 4px 20px;
+  padding: 4px 2rem;
   height: 56px;
   display: grid;
   grid-gap: 16px;
   align-items: center;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 4px 1.25rem;
+  `}
 `
 
 function Balance({ balance }: { balance: CurrencyAmount }) {

@@ -16,6 +16,7 @@ import backgroundImageUpToSmall from '../assets/images/background-light-uptosmal
 import backgroundImageUpToSmallDark from '../assets/images/background-dark-uptosmall.svg'
 import backgroundImageUpToExtraSmall from '../assets/images/background-light-uptoextrasmall.svg'
 import backgroundImageUpToExtraSmallDark from '../assets/images/background-dark-uptoextrasmall.svg'
+import { darken } from 'polished'
 
 export * from './components'
 
@@ -105,6 +106,7 @@ export function colors(darkMode: boolean): Colors {
     text7Sone: darkMode ? '#56CFD6' : '#65BAC5',
     text8Sone: '#767676',
     text9Sone: '#C9C9C9',
+    text10Sone: darkMode ? '#AAAAAA' : '#333333',
 
     red1Sone: '#F05359',
     green1Sone: '#7AC51B',
@@ -303,4 +305,27 @@ body {
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     background-image: url(${({ theme }) => theme.bgImageUpToExtraSmall});
   `}
-}`
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: ${({ theme }) => theme.divider1Sone};
+  /* border-radius: 10px; */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: ${({ theme }) => theme.scrollbarThumb};
+  /* border-radius: 10px; */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: ${({ theme }) => `${darken(0.05, theme.scrollbarThumb)}`};
+}
+`

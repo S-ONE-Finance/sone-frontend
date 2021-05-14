@@ -14,7 +14,7 @@ import { useIsUserAddedToken, useIsTokenActive } from 'hooks/Tokens'
 import { CheckCircle } from 'react-feather'
 
 const TokenSection = styled.div<{ dim?: boolean }>`
-  padding: 4px 20px;
+  padding: 4px 2rem;
   height: 56px;
   display: grid;
   grid-template-columns: auto minmax(auto, 1fr) auto;
@@ -22,6 +22,10 @@ const TokenSection = styled.div<{ dim?: boolean }>`
   align-items: center;
 
   opacity: ${({ dim }) => (dim ? '0.4' : '1')};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 4px 1.25rem;
+  `}
 `
 
 const CheckIcon = styled(CheckCircle)`
@@ -53,7 +57,6 @@ export default function ImportRow({
   showImportView: () => void
   setImportToken: (token: Token) => void
 }) {
-  // gloabls
   const { chainId } = useActiveWeb3React()
   const theme = useTheme()
 

@@ -81,7 +81,7 @@ export function ImportList({ listURL, list, setModalView, onDismiss }: ImportPro
         <RowBetween>
           <ArrowLeft style={{ cursor: 'pointer' }} onClick={() => setModalView(CurrencyModalView.manage)} />
           <TYPE.mediumHeader>Import List</TYPE.mediumHeader>
-          <CloseIcon onClick={onDismiss} color={theme.closeIcon}/>
+          <CloseIcon onClick={onDismiss} color={theme.closeIcon} />
         </RowBetween>
       </PaddedColumn>
       <SectionBreak />
