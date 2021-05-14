@@ -11,7 +11,6 @@ import {
 } from '../../utils/prices'
 import { ButtonError } from '../Button'
 import { AutoColumn } from '../Column'
-import QuestionHelper from '../QuestionHelper'
 import { AutoRow, RowBetween, RowFixed } from '../Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
@@ -57,10 +56,10 @@ export default function SwapModalFooter({
             style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
           >
             <>
-              <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
+              {formatExecutionPrice(trade, showInverted)}
+              <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)} style={{ margin: '0 0 0 0.5rem' }}>
                 <RepeatIcon />
               </StyledBalanceMaxMini>
-              {formatExecutionPrice(trade, showInverted)}
             </>
           </Text>
         </RowBetween>
@@ -70,7 +69,6 @@ export default function SwapModalFooter({
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
               {trade.tradeType === TradeType.EXACT_INPUT ? 'Minimum received' : 'Maximum sold'}
             </Text>
-            <QuestionHelper text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />
           </RowFixed>
           <RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
@@ -90,7 +88,6 @@ export default function SwapModalFooter({
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
               Price Impact
             </Text>
-            <QuestionHelper text="The difference between the market price and your price due to trade size." />
           </RowFixed>
           <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
         </RowBetween>
@@ -99,7 +96,6 @@ export default function SwapModalFooter({
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
               Liquidity Provider Fee
             </Text>
-            <QuestionHelper text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />
           </RowFixed>
           <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
             {realizedLPFee ? realizedLPFee?.toSignificant(6) + ' ' + trade.inputAmount.currency.symbol : '-'}

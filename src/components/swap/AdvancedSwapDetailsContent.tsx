@@ -35,6 +35,14 @@ const InfoLink = styled(ExternalLink)`
     background-color: ${({ theme }) => darken(0.1, theme.f3f3f3)};
   }
 
+  ::after {
+    font-family: 'Inter var', sans-serif;
+    content: ' ↗';
+    font-size: 14px;
+    margin-left: 0.25rem;
+    margin-top: -0.25rem;
+  }
+
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 13px;
     padding: 6px 20px;
@@ -123,7 +131,7 @@ export function AdvancedSwapDetailsContent({ trade }: AdvancedSwapDetailsProps) 
               href={'https://info.uniswap.org/pair/' + trade.route.pairs[0].liquidityToken.address}
               target="_blank"
             >
-              View {trade.route.input.symbol} - {trade.route.output.symbol} analytics ↗
+              View {trade.route.input.symbol} - {trade.route.output.symbol} analytics
             </InfoLink>
           </ColumnCenter>
         </>

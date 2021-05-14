@@ -207,10 +207,9 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
 })
 
 const ListContainer = styled.div`
-  padding: 1rem;
   height: 100%;
   overflow: auto;
-  padding-bottom: 80px;
+  padding: 1rem 1rem 80px;
 `
 
 export function ManageLists({

@@ -368,6 +368,7 @@ export default function Swap({ history }: RouteComponentProps) {
               onCurrencySelect={handleInputSelect}
               otherCurrency={currencies[Field.OUTPUT]}
               id="swap-currency-input"
+              showCommonBases={true}
             />
             <AutoColumn justify="space-between">
               <AutoRow justify={'center'}>

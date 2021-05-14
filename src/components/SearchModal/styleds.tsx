@@ -61,20 +61,25 @@ export const PaddedColumn = styled(AutoColumn)`
 `
 
 export const MenuItem = styled(RowBetween)`
-  padding: 4px 20px;
+  padding: 4px 2rem;
   height: 56px;
   display: grid;
   grid-template-columns: auto minmax(auto, 1fr) auto minmax(0, 72px);
   grid-gap: 16px;
   cursor: ${({ disabled }) => !disabled && 'pointer'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
-  :hover {
-    background-color: ${({ theme, disabled }) => !disabled && theme.bg2};
-  }
   opacity: ${({ disabled, selected }) => (disabled || selected ? 0.5 : 1)};
+
+  :hover {
+    background-color: ${({ theme, disabled }) => !disabled && theme.bg2Sone};
+  }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 4px 1.25rem;
+  `}
 `
 
-export const SearchInput = styled.input`
+export const SearchInput = styled.input<{ borderRadius?: string }>`
   position: relative;
   display: flex;
   padding: 16px;
@@ -84,7 +89,7 @@ export const SearchInput = styled.input`
   background: none;
   border: none;
   outline: none;
-  border-radius: 20px;
+  border-radius: ${({ borderRadius }) => borderRadius || '20px'};
   color: ${({ theme }) => theme.text1};
   border-style: solid;
   border: 1px solid ${({ theme }) => theme.bg3};
