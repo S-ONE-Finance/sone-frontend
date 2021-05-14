@@ -209,7 +209,8 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
             padding: '.8rem .35rem',
             borderRadius: '12px',
             fontSize: '14px',
-            marginRight: '0.5rem'
+            marginRight: '0.5rem',
+            boxShadow: '0 0 0 1px #565a69'
           }}
           onClick={toggle}
           ref={setReferenceElement}
@@ -437,7 +438,7 @@ export function ManageLists({
       </ListContainer>
       <SeparatorDark />
       <Footer>
-        <ExternalLink href="https://tokenlists.org/">
+        <ExternalLink href="https://tokenlists.org/" style={{ textDecoration: 'none' }}>
           <TYPE.main color={theme.text5Sone} textAlign={'center'}>
             Browse List
           </TYPE.main>
