@@ -84,7 +84,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
       <Section>
         <RowBetween>
           <div />
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} color={theme.closeIcon} />
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
         </RowBetween>
         <ConfirmedIcon>
           <Spinner src={SpinnerImage} alt="spinner" />
@@ -129,7 +129,7 @@ function TransactionSubmittedContent({
       <Section>
         <RowBetween>
           <div />
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} color={theme.closeIcon} />
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
         </RowBetween>
         <ConfirmedIcon>
           <ArrowUpCircle strokeWidth={1.5} size={90} color={theme.red1Sone} />
@@ -182,7 +182,7 @@ export function ConfirmationModalContent({
         <RowBetween style={{ position: 'relative' }}>
           <SwapVector src={isDarkMode ? SwapVectorDark : SwapVectorLight} alt="swap-vector" />
           <ModalTitle>{title}</ModalTitle>
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} color={theme.closeIcon} />
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
         </RowBetween>
         {topContent()}
       </Section>
@@ -198,7 +198,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
     <Wrapper>
       <Section>
         <Row justify={'flex-end'}>
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} color={theme.closeIcon} />
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
         </Row>
         <AutoColumn style={{ padding: '2rem 0' }} gap="24px" justify="center">
           <AlertTriangle color={theme.red1} style={{ strokeWidth: 1.5 }} size={64} />

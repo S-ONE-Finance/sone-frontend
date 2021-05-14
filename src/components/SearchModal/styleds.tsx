@@ -105,6 +105,12 @@ export const SearchInput = styled.input<{ borderRadius?: string }>`
     border: 1px solid ${({ theme }) => theme.primary1};
     outline: none;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+    height: 40px;
+    padding: 0 1em;
+  `}
 `
 export const Separator = styled.div`
   width: 100%;

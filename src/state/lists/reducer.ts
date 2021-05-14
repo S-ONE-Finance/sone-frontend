@@ -120,19 +120,12 @@ export default createReducer(initialState, builder =>
       if (!state.byUrl[url]) {
         state.byUrl[url] = NEW_LIST_STATE
       }
-
-      if (state.activeListUrls && !state.activeListUrls.includes(url)) {
-        state.activeListUrls.push(url)
-      }
-
-      if (!state.activeListUrls) {
-        state.activeListUrls = [url]
-      }
+      // Uniswap cho phép người dùng enable nhiều list `state.activeListUrls.push(url)`,
+      // Soneswap chỉ cho phép người dùng select một list.
+      state.activeListUrls = [url]
     })
     .addCase(disableList, (state, { payload: url }) => {
-      if (state.activeListUrls && state.activeListUrls.includes(url)) {
-        state.activeListUrls = state.activeListUrls.filter(u => u !== url)
-      }
+      state.activeListUrls = []
     })
     .addCase(acceptListUpdate, (state, { payload: url }) => {
       if (!state.byUrl[url]?.pendingUpdate) {

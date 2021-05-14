@@ -9,7 +9,7 @@ import { useAllTokens, useToken, useIsUserAddedToken, useFoundOnInactiveList } f
 import { CloseIcon, TYPE, ButtonText } from '../../theme'
 import { isAddress } from '../../utils'
 import Column from '../Column'
-import Row, { AutoRow, RowBetween } from '../Row'
+import Row, { RowBetween, RowFixed } from '../Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import { filterTokens, useSortedTokensByQuery } from './filtering'
@@ -26,6 +26,11 @@ import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { QuestionHelper1416 } from '../QuestionHelper'
 import { ReactComponent as SortDownIconSvg } from '../../assets/svg/sort_down_icon.svg'
 import { ReactComponent as SortUpIconSvg } from '../../assets/svg/sort_up_icon.svg'
+import { useActiveListUrls } from '../../state/lists/hooks'
+import ListLogo from '../ListLogo'
+import { useSelector } from 'react-redux'
+import { AppState } from '../../state'
+import { TokenList } from '@uniswap/token-lists/dist/types'
 
 const SortDownIcon = styled(SortDownIconSvg)`
   cursor: pointer;
@@ -89,7 +94,7 @@ export function CurrencySearch({
   const [searchQuery, setSearchQuery] = useState<string>('')
   const debouncedQuery = useDebounce(searchQuery, 200)
 
-  const [invertSearchOrder] = useState<boolean>(false)
+  const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
 
   const allTokens = useAllTokens()
 
@@ -97,6 +102,17 @@ export function CurrencySearch({
   const isAddressSearch = isAddress(debouncedQuery)
   const searchToken = useToken(debouncedQuery)
   const searchTokenIsAdded = useIsUserAddedToken(searchToken)
+
+  const activeListUrls = useActiveListUrls()
+
+  const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
+  const [currentList, setCurrentList] = useState<TokenList | null>(null)
+
+  useEffect(() => {
+    if (activeListUrls?.length === 1) {
+      setCurrentList(listsByUrl[activeListUrls[0]].current)
+    }
+  }, [activeListUrls, listsByUrl])
 
   useEffect(() => {
     if (isAddressSearch) {
@@ -175,17 +191,21 @@ export function CurrencySearch({
   const inactiveTokens = useFoundOnInactiveList(debouncedQuery)
   const filteredInactiveTokens: Token[] = useSortedTokensByQuery(inactiveTokens, debouncedQuery)
 
+  const handleSort = useCallback(() => {
+    setInvertSearchOrder(prev => !prev)
+  }, [])
+
   return (
     <ContentWrapper>
-      <PaddedColumn gap="16px" style={{ padding: '3.5em 2em 0 2em' }}>
+      <PaddedColumn gap="16px" style={{ padding: isUpToExtraSmall ? '2em 1em 0 1em' : '2.5em 2em 0 2em' }}>
         <RowBetween>
-          <AutoRow>
+          <RowFixed>
             <Text fontWeight={700} fontSize={isUpToExtraSmall ? 20 : 28}>
               Select a token
             </Text>
             <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
-          </AutoRow>
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 16 : 36} color={theme.closeIcon} />
+          </RowFixed>
+          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
         </RowBetween>
         <Row>
           <SearchInput
@@ -214,7 +234,7 @@ export function CurrencySearch({
             <Text fontWeight={500} fontSize={16}>
               Token Name
             </Text>
-            <SortDownIcon />
+            {invertSearchOrder === false ? <SortDownIcon onClick={handleSort} /> : <SortUpIcon onClick={handleSort} />}
           </RowBetween>
           <div style={{ flex: '1' }}>
             <AutoSizer disableWidth>
@@ -247,7 +267,21 @@ export function CurrencySearch({
       <SeparatorDark />
       <Footer>
         <RowBetween>
-          <TYPE.main color={theme.text8Sone}>SONE List</TYPE.main>
+          {currentList ? (
+            <RowFixed>
+              {currentList.logoURI && (
+                <ListLogo
+                  size="24px"
+                  style={{ marginRight: '0.5em' }}
+                  logoURI={currentList.logoURI}
+                  alt={`${currentList.name} list logo`}
+                />
+              )}
+              <TYPE.main color={theme.text8Sone}>{currentList.name}</TYPE.main>
+            </RowFixed>
+          ) : (
+            <TYPE.main color={theme.text8Sone}></TYPE.main>
+          )}
           <ButtonText onClick={showManageView} color={theme.text5Sone} className="list-token-manage-button">
             <TYPE.main color={theme.text5Sone}>Change List</TYPE.main>
           </ButtonText>

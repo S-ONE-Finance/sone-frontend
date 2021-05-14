@@ -285,7 +285,7 @@ export default function SettingsTab() {
             <TitleBodyMarginer>
               <RowBetween>
                 <Title>{t('settings')}</Title>
-                <CloseIcon onClick={toggle} size={isUpToExtraSmall ? 16 : 36} color={theme.closeIcon} />
+                <CloseIcon onClick={toggle} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
               </RowBetween>
               <SectionWrapper>
                 <TransactionSettings
