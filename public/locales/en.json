@@ -44,5 +44,7 @@
   "your_transaction_may_be_frontrun": "Your transaction may be frontrun",
   "your_transaction_may_fail": "Your transaction may fail",
   "your_transactions_here": "Your recent transactions will appear here...",
-  "enter_a_valid_slippage_percentage": "Enter a valid slippage percentage"
+  "enter_a_valid_slippage_percentage": "Enter a valid slippage percentage",
+  "token-search-placeholder": "Search name or paste address",
+  "confirm-swap": "Confirm Swap"
 }
