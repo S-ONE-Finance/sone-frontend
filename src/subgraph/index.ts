@@ -39,7 +39,7 @@ function useSubgraphData() {
     if (data?.length > 0) {
       console.log('Array trả về có ' + data.length + ' items.')
     } else {
-      console.error('New subgraph data', data)
+      console.error('Array trả về lỗi', data)
     }
   }, [])
 

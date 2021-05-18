@@ -12,16 +12,14 @@ import getTimestampsForChanges from './getTimestampsForChanges'
  */
 export default async function getBulkPairData(pairList: string[]) {
   const [t1Day, t2Day, t1Week, t2Week] = getTimestampsForChanges()
-  let [{ number: b1Day }, { number: b2Day }, { number: b1Week }, { number: b2Week }] = await getBlocksFromTimestamps([
-    t1Day,
-    t2Day,
-    t1Week,
-    t2Week
-  ])
+  const [{ number: b1Day }, { number: b2Day }, { number: b1Week }, { number: b2Week }] =
+    (await getBlocksFromTimestamps([t1Day, t2Day, t1Week, t2Week])) || {}
+
+  if (b1Day === undefined || b2Day === undefined || b1Week === undefined || b2Week === undefined) return []
 
   try {
     // Lấy data current.
-    let current = await client.query({
+    const current = await client.query({
       query: PAIRS_BULK,
       variables: {
         allPairs: pairList
@@ -32,7 +30,7 @@ export default async function getBulkPairData(pairList: string[]) {
     // console.log(`current`, current?.data?.pairs)
 
     // Lấy data quá khứ.
-    let [oneDayResult, twoDayResult, oneWeekResult, twoWeekResult] = await Promise.all(
+    const [oneDayResult, twoDayResult, oneWeekResult, twoWeekResult] = await Promise.all(
       [b1Day, b2Day, b1Week, b2Week].map(async block => {
         return client.query({
           query: PAIRS_HISTORICAL_BULK(block, pairList),
@@ -44,19 +42,19 @@ export default async function getBulkPairData(pairList: string[]) {
     // console.log(`oneDayResult`, oneDayResult?.data?.pairs)
 
     // Làm đẹp data quá khứ.
-    let oneDayData = oneDayResult?.data?.pairs.reduce((obj: any, cur: any) => {
+    const oneDayData = oneDayResult?.data?.pairs.reduce((obj: any, cur: any) => {
       return { ...obj, [cur.id]: cur }
     }, {})
 
-    let twoDayData = twoDayResult?.data?.pairs.reduce((obj: any, cur: any) => {
+    const twoDayData = twoDayResult?.data?.pairs.reduce((obj: any, cur: any) => {
       return { ...obj, [cur.id]: cur }
     }, {})
 
-    let oneWeekData = oneWeekResult?.data?.pairs.reduce((obj: any, cur: any) => {
+    const oneWeekData = oneWeekResult?.data?.pairs.reduce((obj: any, cur: any) => {
       return { ...obj, [cur.id]: cur }
     }, {})
 
-    let twoWeekData = twoWeekResult?.data?.pairs.reduce((obj: any, cur: any) => {
+    const twoWeekData = twoWeekResult?.data?.pairs.reduce((obj: any, cur: any) => {
       return { ...obj, [cur.id]: cur }
     }, {})
 
@@ -69,7 +67,7 @@ export default async function getBulkPairData(pairList: string[]) {
           async function getHistoryFromData(data: any, blockNumber: number) {
             let history = data?.[pair.id]
             if (!history) {
-              let newData = await client.query({
+              const newData = await client.query({
                 query: PAIR_DATA(pair.id, blockNumber),
                 fetchPolicy: 'cache-first'
               })
@@ -77,10 +75,10 @@ export default async function getBulkPairData(pairList: string[]) {
             }
             return history
           }
-          let oneDayHistory = await getHistoryFromData(oneDayData, b1Day)
-          let twoDayHistory = await getHistoryFromData(twoDayData, b2Day)
-          let oneWeekHistory = await getHistoryFromData(oneWeekData, b1Week)
-          let twoWeekHistory = await getHistoryFromData(twoWeekData, b2Week)
+          const oneDayHistory = await getHistoryFromData(oneDayData, b1Day)
+          const twoDayHistory = await getHistoryFromData(twoDayData, b2Day)
+          const oneWeekHistory = await getHistoryFromData(oneWeekData, b1Week)
+          const twoWeekHistory = await getHistoryFromData(twoWeekData, b2Week)
 
           // console.log(`oneDayHistory`,oneDayHistory)
           // console.log(`twoDayHistory`,twoDayHistory)

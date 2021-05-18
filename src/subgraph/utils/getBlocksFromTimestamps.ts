@@ -9,7 +9,7 @@ import splitQuery from './splitQuery'
  * @param timestamp in seconds
  */
 export async function getBlockFromTimestamp(timestamp: number) {
-  let result = await blockClient.query({
+  const result = await blockClient.query({
     query: GET_BLOCK,
     variables: {
       timestampFrom: timestamp,
@@ -33,11 +33,11 @@ export default async function getBlocksFromTimestamps(timestamps: number[], skip
     return []
   }
 
-  let fetchedData: any = await splitQuery(GET_BLOCKS, blockClient, [], timestamps, skipCount)
+  const fetchedData: any = await splitQuery(GET_BLOCKS, blockClient, [], timestamps, skipCount)
 
-  let blocks = []
+  const blocks = []
   if (fetchedData) {
-    for (let t in fetchedData) {
+    for (const t in fetchedData) {
       if (fetchedData.hasOwnProperty(t) && fetchedData[t].length > 0) {
         blocks.push({
           timestamp: t.split('t')[1],
