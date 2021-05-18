@@ -43,20 +43,20 @@ const rotate360 = keyframes`
 `
 
 const Spinner = styled.div`
-  animation: ${rotate360} 1s cubic-bezier(0.83, 0, 0.17, 1) infinite;
+  animation: ${rotate360} 1.5s cubic-bezier(0.83, 0, 0.17, 1) infinite;
   transform: translateZ(0);
 
-  border-top: 1px solid transparent;
-  border-right: 1px solid transparent;
-  border-bottom: 1px solid transparent;
-  border-left: 2px solid ${({ theme }) => theme.green1};
+  border-top: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-left: 3px solid ${({ theme }) => theme.green1};
   background: transparent;
-  width: 23px;
-  height: 23px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   position: relative;
-  left: -2px;
-  top: -2px;
+  left: -4.75px;
+  top: -4.75px;
 `
 
 export default function Polling() {
@@ -86,7 +86,7 @@ export default function Polling() {
         <TYPE.black fontSize={'16px'} style={{ opacity: isMounted ? '0.2' : '0.6' }}>
           {blockNumber}
         </TYPE.black>
-        <StyledPollingDot>{!isMounted && <Spinner />}</StyledPollingDot>
+        <StyledPollingDot style={{ opacity: isMounted ? '0.5' : '1' }}>{!isMounted && <Spinner />}</StyledPollingDot>
       </StyledPolling>
     </ExternalLink>
   )
