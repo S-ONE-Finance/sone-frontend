@@ -245,7 +245,7 @@ export default function SettingsTab() {
             <Break />
             <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
               <Text fontWeight={500} fontSize={20}>
-                {t('expert-mode-warning-msg-desc')}
+                {t('expert_mode_warning_msg_desc')}
               </Text>
               <Text fontWeight={600} fontSize={20}>
                 {t('expert_mode_warning')}
@@ -261,7 +261,7 @@ export default function SettingsTab() {
                 }}
               >
                 <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
-                  {t('turn-on-expert-mode')}
+                  {t('turn_on_expert_mode')}
                 </Text>
               </ButtonError>
             </AutoColumn>
