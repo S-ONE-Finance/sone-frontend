@@ -31,7 +31,6 @@ import Manage from './Earn/Manage'
 import MigrateV1 from './MigrateV1'
 import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange'
 import RemoveV1Exchange from './MigrateV1/RemoveV1Exchange'
-import Pool from './Pool'
 import PoolFinder from './PoolFinder'
 import RemoveLiquidity from './RemoveLiquidity'
 import Swap from './Swap'
@@ -126,15 +125,7 @@ function OnlyShowSwapAndLiquidity({ children }: { children?: React.ReactNode }) 
 
   const { pathname } = location
 
-  return children &&
-    (pathname.startsWith('/swap') ||
-      pathname.startsWith('/pool') ||
-      pathname.startsWith('/add') ||
-      pathname.startsWith('/remove') ||
-      pathname.startsWith('/create') ||
-      pathname.startsWith('/find')) ? (
-    <>{children}</>
-  ) : null
+  return children && (pathname.startsWith('/swap') || pathname.startsWith('/add')) ? <>{children}</> : null
 }
 
 export default function App() {
@@ -162,16 +153,16 @@ export default function App() {
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
               <Route exact strict path="/find" component={PoolFinder} />
-              <Route exact strict path="/pool" component={Pool} />
+              {/*<Route exact strict path="/pool" component={Pool} />*/}
               <Route exact strict path="/uni" component={Earn} />
               <Route exact strict path="/vote" component={Vote} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
               <Route exact path="/add" component={AddLiquidity} />
               <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              <Route exact path="/create" component={AddLiquidity} />
-              <Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
-              <Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+              {/*<Route exact path="/create" component={AddLiquidity} />*/}
+              {/*<Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />*/}
+              {/*<Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />*/}
               <Route exact strict path="/remove/v1/:address" component={RemoveV1Exchange} />
               <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
               <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />

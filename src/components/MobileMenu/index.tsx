@@ -136,16 +136,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
       <Column>
         <StyledExternalLink href={'https://www.lipsum.com/'}>{t('s_one_wallet')}</StyledExternalLink>
         <StyledNavLink to={'/swap'}>{t('swap')}</StyledNavLink>
-        <StyledNavLink
-          to={'/pool'}
-          isActive={(match, { pathname }) =>
-            Boolean(match) ||
-            pathname.startsWith('/add') ||
-            pathname.startsWith('/remove') ||
-            pathname.startsWith('/create') ||
-            pathname.startsWith('/find')
-          }
-        >
+        <StyledNavLink to={'/pool'} isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
           {t('liquidity')}
         </StyledNavLink>
         <StyledNavLink to={'/uni'}>{t('staking')}</StyledNavLink>

@@ -458,13 +458,7 @@ export default function Header() {
                 <StyledNavLink
                   to={'/swap'}
                   isActive={(match, { pathname }) =>
-                    Boolean(match) ||
-                    pathname.startsWith('/swap') ||
-                    pathname.startsWith('/pool') ||
-                    pathname.startsWith('/add') ||
-                    pathname.startsWith('/remove') ||
-                    pathname.startsWith('/create') ||
-                    pathname.startsWith('/find')
+                    Boolean(match) || pathname.startsWith('/swap') || pathname.startsWith('/add')
                   }
                 >
                   {t('swap')}
@@ -491,9 +485,6 @@ export default function Header() {
                   <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>
                     {t('staking_stats')}
                   </SubMenuItemExternalLink>
-                  {/*<SubMenuItemExternalLink href={'https://www.lipsum.com/'}>*/}
-                  {/*  {t('lending_stats')}*/}
-                  {/*</SubMenuItemExternalLink>*/}
                 </SubMenu>
               </MenuItem>
               <MenuItem>

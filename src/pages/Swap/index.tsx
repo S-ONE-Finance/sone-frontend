@@ -10,7 +10,6 @@ import Card, { GreyCard } from '../../components/Card'
 import Column, { AutoColumn, ColumnCenter } from '../../components/Column'
 import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { SwapPoolTabs } from '../../components/NavigationTabs'
 import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
 import AdvancedSwapDetails from '../../components/swap/AdvancedSwapDetails'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
@@ -339,7 +338,6 @@ export default function Swap({ history }: RouteComponentProps) {
         onConfirm={handleConfirmTokenWarning}
         onDismiss={handleDismissTokenWarning}
       />
-      <SwapPoolTabs active={'swap'} />
       <AppBody>
         <SwapHeader />
         <Wrapper id="swap-page">
@@ -368,7 +366,6 @@ export default function Swap({ history }: RouteComponentProps) {
               onCurrencySelect={handleInputSelect}
               otherCurrency={currencies[Field.OUTPUT]}
               id="swap-currency-input"
-              showCommonBases={true}
             />
             <AutoColumn justify="space-between">
               <AutoRow justify={'center'}>

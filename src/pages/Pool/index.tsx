@@ -2,7 +2,6 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Pair, JSBI } from '@s-one-finance/sdk-core'
 import { Link } from 'react-router-dom'
-import { SwapPoolTabs } from '../../components/NavigationTabs'
 
 import FullPositionCard from '../../components/PositionCard'
 import { useUserHasLiquidityInAllTokens } from '../../data/V1'
@@ -127,7 +126,6 @@ export default function Pool() {
   return (
     <>
       <PageWrapper>
-        <SwapPoolTabs active={'pool'} />
         <VoteCard>
           <CardBGImage />
           <CardNoise />
