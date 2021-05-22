@@ -1,21 +1,23 @@
-import { INITIAL_ALLOWED_SLIPPAGE, DEFAULT_DEADLINE_FROM_NOW } from '../../constants'
+import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { createReducer } from '@reduxjs/toolkit'
 import { updateVersion } from '../global/actions'
 import {
+  AddLiquidityModeEnum,
   addSerializedPair,
   addSerializedToken,
   removeSerializedPair,
   removeSerializedToken,
   SerializedPair,
   SerializedToken,
+  toggleShowTransactionDetails,
+  toggleURLWarning,
+  updateAddLiquidityMode,
   updateMatchesDarkMode,
   updateUserDarkMode,
-  updateUserExpertMode,
-  updateUserSlippageTolerance,
   updateUserDeadline,
-  toggleURLWarning,
+  updateUserExpertMode,
   updateUserSingleHopOnly,
-  toggleShowTransactionDetails
+  updateUserSlippageTolerance
 } from './actions'
 
 const currentTimestamp = () => new Date().getTime()
@@ -53,6 +55,7 @@ export interface UserState {
   timestamp: number
   URLWarningVisible: boolean
   isShowTransactionDetails: boolean
+  addLiquidityMode: AddLiquidityModeEnum
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -70,7 +73,8 @@ export const initialState: UserState = {
   pairs: {},
   timestamp: currentTimestamp(),
   URLWarningVisible: true,
-  isShowTransactionDetails: false
+  isShowTransactionDetails: false,
+  addLiquidityMode: AddLiquidityModeEnum.TwoToken
 }
 
 export default createReducer(initialState, builder =>
@@ -153,5 +157,8 @@ export default createReducer(initialState, builder =>
     })
     .addCase(toggleShowTransactionDetails, state => {
       state.isShowTransactionDetails = !state.isShowTransactionDetails
+    })
+    .addCase(updateAddLiquidityMode, (state, { payload }) => {
+      state.addLiquidityMode = payload
     })
 )

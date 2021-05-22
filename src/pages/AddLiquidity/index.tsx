@@ -1,46 +1,58 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from '@s-one-finance/sdk-core'
-import React, { useCallback, useState } from 'react'
-import { Plus } from 'react-feather'
+import { Currency, ETHER, TokenAmount } from '@s-one-finance/sdk-core'
+import React, { useCallback, useMemo, useState } from 'react'
+import { ChevronDown, ChevronUp, Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
-import { ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
+import { ButtonError, ButtonPrimary } from '../../components/Button'
 import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import DoubleCurrencyLogo from '../../components/DoubleLogo'
-import { AddRemoveTabs } from '../../components/NavigationTabs'
-import { MinimalPositionCard } from '../../components/PositionCard'
-import Row, { RowBetween, RowFlat } from '../../components/Row'
+import Row, { AutoRow, RowBetween, RowFixed, RowFlat } from '../../components/Row'
 
-import { ROUTER_ADDRESS } from '../../constants'
+import { INITIAL_ALLOWED_SLIPPAGE, ONE_BIPS, ROUTER_ADDRESS } from '../../constants'
 import { PairState } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
-import { useWalletModalToggle } from '../../state/application/hooks'
+import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks'
+import { useIsExpertMode, useShowTransactionDetailsManager, useUserSlippageTolerance } from '../../state/user/hooks'
 import { TYPE } from '../../theme'
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { wrappedCurrency } from '../../utils/wrappedCurrency'
+import { unwrappedToken, wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
-import { Dots, Wrapper } from '../Pool/styleds'
+import { ClickableText, Dots, Wrapper } from '../Pool/styleds'
 import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
-import { PoolPriceBar } from './PoolPriceBar'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import UnsupportedCurrencyFooter from 'components/swap/UnsupportedCurrencyFooter'
 import { SummaryType } from '../../state/transactions/types'
 import useTheme from '../../hooks/useTheme'
+import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
+import { ArrowWrapper } from '../../components/swap/styleds'
+import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import styled from 'styled-components'
+import { QuestionHelper1416 } from '../../components/QuestionHelper'
+import TradePrice from '../../components/swap/TradePrice'
+import { InfoLink } from '../../components/swap/AdvancedSwapDetailsContent'
+import AddLiquidityMode from './AddLiquidityMode'
+
+const ButtonWrapper = styled.div<{ hasTrade?: boolean }>`
+  margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '35px 0 0 0')};
+
+  ${({ theme, hasTrade }) => theme.mediaWidth.upToExtraSmall`
+    margin: ${hasTrade ? '17.5px 0' : '20px 0 0 0'};
+  `}
+`
 
 export default function AddLiquidity({
   match: {
@@ -48,20 +60,24 @@ export default function AddLiquidity({
   },
   history
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
+  const isUpToExtraSmall = useIsUpToExtraSmall()
+  const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
+
+  // Show transaction details.
+  const [isShowTransactionDetails, toggleIsShowTransactionDetails] = useShowTransactionDetailsManager()
+
+  // Show price invert or not.
+  const [showInverted, setShowInverted] = useState<boolean>(false)
+
   const { account, chainId, library } = useActiveWeb3React()
   const theme = useTheme()
 
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
-  const oneCurrencyIsWETH = Boolean(
-    chainId &&
-      ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WETH[chainId])))
-  )
-
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
+  const toggleSettings = useToggleSettingsMenu()
   const expertMode = useIsExpertMode()
 
   // mint state
@@ -306,10 +322,16 @@ export default function AddLiquidity({
 
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
+  const isPairFilledAndValid = useMemo(
+    () => currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID,
+    [currencies, pairState]
+  )
+
   return (
     <>
       <AppBody>
-        <AddRemoveTabs adding={true} />
+        <AppBodyTitleDescriptionSettings type="add_liquidity" />
+        <AddLiquidityMode />
         <Wrapper>
           <TransactionConfirmationModal
             isOpen={showConfirm}
@@ -327,7 +349,7 @@ export default function AddLiquidity({
             pendingText={pendingText}
             currencyToAdd={pair?.liquidityToken}
           />
-          <AutoColumn gap="20px">
+          <AutoColumn gap={'md'}>
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}
@@ -340,9 +362,13 @@ export default function AddLiquidity({
               id="add-liquidity-input-tokena"
               showCommonBases
             />
-            <ColumnCenter>
-              <Plus size="16" color={theme.text2} />
-            </ColumnCenter>
+            <AutoColumn justify="space-between">
+              <AutoRow justify={'center'}>
+                <ArrowWrapper clickable>
+                  <Plus size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />
+                </ArrowWrapper>
+              </AutoRow>
+            </AutoColumn>
             <CurrencyInputPanel
               value={formattedAmounts[Field.CURRENCY_B]}
               onUserInput={onFieldBInput}
@@ -355,32 +381,14 @@ export default function AddLiquidity({
               id="add-liquidity-input-tokenb"
               showCommonBases
             />
-            {currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID && (
-              <>
-                <LightCard padding="0px" borderRadius={'20px'}>
-                  <RowBetween padding="1rem">
-                    <TYPE.subHeader fontWeight={500} fontSize={14}>
-                      {noLiquidity ? 'Initial prices' : 'Prices'} and pool share
-                    </TYPE.subHeader>
-                  </RowBetween>{' '}
-                  <LightCard padding="1rem" borderRadius={'20px'}>
-                    <PoolPriceBar
-                      currencies={currencies}
-                      poolTokenPercentage={poolTokenPercentage}
-                      noLiquidity={noLiquidity}
-                      price={price}
-                    />
-                  </LightCard>
-                </LightCard>
-              </>
-            )}
-
+          </AutoColumn>
+          <ButtonWrapper>
             {addIsUnsupported ? (
               <ButtonPrimary disabled={true}>
                 <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
               </ButtonPrimary>
             ) : !account ? (
-              <ButtonLight onClick={toggleWalletModal}>Connect Wallet</ButtonLight>
+              <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
             ) : (
               <AutoColumn gap={'md'}>
                 {(approvalA === ApprovalState.NOT_APPROVED ||
@@ -425,26 +433,126 @@ export default function AddLiquidity({
                   error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                 >
                   <Text fontSize={20} fontWeight={500}>
-                    {error ?? 'Supply'}
+                    {error ?? 'Add Liquidity'}
                   </Text>
                 </ButtonError>
               </AutoColumn>
             )}
-          </AutoColumn>
+          </ButtonWrapper>
+          {isPairFilledAndValid && !isShowTransactionDetails && (
+            <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '35px' }}>
+              <ClickableText
+                fontSize={mobile13Desktop16}
+                fontWeight={500}
+                color={theme.text5Sone}
+                onClick={toggleIsShowTransactionDetails}
+              >
+                Show more information <ChevronDown size={12} />
+              </ClickableText>
+            </ColumnCenter>
+          )}
+          {isPairFilledAndValid && isShowTransactionDetails ? (
+            <>
+              <AutoColumn
+                gap={'15px'}
+                style={{ width: '100%', padding: isUpToExtraSmall ? '25px 8px 0' : '35px 8px 0' }}
+              >
+                <RowBetween>
+                  <RowFixed>
+                    <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                      Price
+                    </Text>
+                    <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
+                  </RowFixed>
+                  <TradePrice price={price} showInverted={showInverted} setShowInverted={setShowInverted} />
+                </RowBetween>
+                {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
+                  <RowBetween align="center">
+                    <RowFixed>
+                      <ClickableText
+                        fontWeight={500}
+                        fontSize={mobile13Desktop16}
+                        color={theme.text4Sone}
+                        onClick={toggleSettings}
+                      >
+                        Slippage Tolerance
+                      </ClickableText>
+                      <QuestionHelper1416 text="Lorem ipsum" />
+                    </RowFixed>
+                    <ClickableText
+                      fontWeight={700}
+                      fontSize={mobile13Desktop16}
+                      color={theme.text6Sone}
+                      onClick={toggleSettings}
+                    >
+                      {allowedSlippage / 100}%
+                    </ClickableText>
+                  </RowBetween>
+                )}
+                <RowBetween>
+                  <RowFixed>
+                    <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                      Share of Pair
+                    </Text>
+                    <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
+                  </RowFixed>
+                  <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+                    {noLiquidity && price
+                      ? '100'
+                      : (poolTokenPercentage?.lessThan(ONE_BIPS) ? '<0.01' : poolTokenPercentage?.toFixed(2)) ?? '0'}
+                    %
+                  </Text>
+                </RowBetween>
+              </AutoColumn>
+              {pair?.liquidityToken.address && (
+                <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '35px' }}>
+                  <InfoLink href={'https://info.uniswap.org/pair/' + pair.liquidityToken.address} target="_blank">
+                    View {unwrappedToken(pair.token0).symbol} - {unwrappedToken(pair.token1).symbol} analytics
+                  </InfoLink>
+                </ColumnCenter>
+              )}
+            </>
+          ) : (
+            isShowTransactionDetails &&
+            allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
+              <RowBetween align="center" padding={isUpToExtraSmall ? '25px 8px 0' : '35px 8px 0'}>
+                <RowFixed>
+                  <ClickableText
+                    fontWeight={500}
+                    fontSize={mobile13Desktop16}
+                    color={theme.text4Sone}
+                    onClick={toggleSettings}
+                  >
+                    Slippage Tolerance
+                  </ClickableText>
+                  <QuestionHelper1416 text="Lorem ipsum" />
+                </RowFixed>
+                <ClickableText
+                  fontWeight={700}
+                  fontSize={mobile13Desktop16}
+                  color={theme.text6Sone}
+                  onClick={toggleSettings}
+                >
+                  {allowedSlippage / 100}%
+                </ClickableText>
+              </RowBetween>
+            )
+          )}
+          {isPairFilledAndValid && isShowTransactionDetails && (
+            <ColumnCenter>
+              <ClickableText
+                marginTop={isUpToExtraSmall ? '25px' : '35px'}
+                fontSize={mobile13Desktop16}
+                fontWeight={500}
+                color={theme.text5Sone}
+                onClick={toggleIsShowTransactionDetails}
+              >
+                Show less <ChevronUp size={12} />
+              </ClickableText>
+            </ColumnCenter>
+          )}
         </Wrapper>
       </AppBody>
-      {!addIsUnsupported ? (
-        pair && !noLiquidity && pairState !== PairState.INVALID ? (
-          <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
-            <MinimalPositionCard showUnwrapped={oneCurrencyIsWETH} pair={pair} />
-          </AutoColumn>
-        ) : null
-      ) : (
-        <UnsupportedCurrencyFooter
-          show={addIsUnsupported}
-          currencies={[currencies.CURRENCY_A, currencies.CURRENCY_B]}
-        />
-      )}
     </>
   )
 }

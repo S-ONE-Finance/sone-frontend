@@ -1,3 +1,8 @@
+/**
+ * Uniswap cho phép người dùng enable nhiều list `state.activeListUrls.push(url)`,
+ * Soneswap chỉ cho phép người dùng select một list.
+ * Không xoá logic này vì khả năng cao sau này sẽ enable lại nhiều list :D.
+ */
 import { DEFAULT_ACTIVE_LIST_URLS, UNSUPPORTED_LIST_URLS } from './../../constants/lists'
 import { createReducer } from '@reduxjs/toolkit'
 import { getVersionUpgrade, VersionUpgrade } from '@uniswap/token-lists'
@@ -74,11 +79,6 @@ export default createReducer(initialState, builder =>
           }
         }
       } else {
-        // activate if on default active
-        if (DEFAULT_ACTIVE_LIST_URLS.includes(url)) {
-          state.activeListUrls?.push(url)
-        }
-
         state.byUrl[url] = {
           ...state.byUrl[url],
           loadingRequestId: null,
@@ -120,8 +120,6 @@ export default createReducer(initialState, builder =>
       if (!state.byUrl[url]) {
         state.byUrl[url] = NEW_LIST_STATE
       }
-      // Uniswap cho phép người dùng enable nhiều list `state.activeListUrls.push(url)`,
-      // Soneswap chỉ cho phép người dùng select một list.
       state.activeListUrls = [url]
     })
     .addCase(disableList, (state, { payload: url }) => {

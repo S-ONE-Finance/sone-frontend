@@ -13,6 +13,11 @@ export interface SerializedPair {
   token1: SerializedToken
 }
 
+export enum AddLiquidityModeEnum {
+  OneToken,
+  TwoToken
+}
+
 export const updateMatchesDarkMode = createAction<{ matchesDarkMode: boolean }>('user/updateMatchesDarkMode')
 export const updateUserDarkMode = createAction<{ userDarkMode: boolean }>('user/updateUserDarkMode')
 export const updateUserExpertMode = createAction<{ userExpertMode: boolean }>('user/updateUserExpertMode')
@@ -29,3 +34,4 @@ export const removeSerializedPair = createAction<{ chainId: number; tokenAAddres
 )
 export const toggleURLWarning = createAction<void>('app/toggleURLWarning')
 export const toggleShowTransactionDetails = createAction<void>('user/toggleShowTransactionDetails')
+export const updateAddLiquidityMode = createAction<AddLiquidityModeEnum>('user/updateAddLiquidityMode')

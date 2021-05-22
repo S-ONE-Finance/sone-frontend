@@ -33,7 +33,8 @@ export function FindPoolTabs() {
           <StyledArrowLeft />
         </HistoryLink>
         <ActiveText>Import Pool</ActiveText>
-        <Settings />
+        {/* Type để tạm thôi, app mới ko có FindPoolTabs. */}
+        <Settings type={'swap'} />
       </RowBetween>
     </Tabs>
   )
@@ -55,7 +56,8 @@ export function AddRemoveTabs({ adding }: { adding: boolean }) {
           <StyledArrowLeft />
         </HistoryLink>
         <ActiveText>{adding ? 'Add Liquidity' : 'Remove Liquidity'}</ActiveText>
-        <Settings />
+        {/* Type để tạm thôi, app mới ko có FindPoolTabs. */}
+        <Settings type={'swap'} />
       </RowBetween>
     </Tabs>
   )

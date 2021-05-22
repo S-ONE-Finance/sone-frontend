@@ -15,7 +15,7 @@ import { darken } from 'polished'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import useTheme from '../../hooks/useTheme'
 
-const InfoLink = styled(ExternalLink)`
+export const InfoLink = styled(ExternalLink)`
   width: fit-content;
   font-size: 16px;
   padding: 10px 35px;

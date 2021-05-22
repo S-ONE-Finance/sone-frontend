@@ -6,7 +6,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { lighten } from 'polished'
-import { useTranslation } from 'react-i18next'
 import { useWeb3React } from '@web3-react/core'
 
 // Hooks and Utils.
@@ -83,7 +82,6 @@ const PaddingColumn = styled(Column)`
 
 export default function MyAccountPanel() {
   const { account } = useActiveWeb3React()
-  const { t } = useTranslation()
   const toggleWalletModal = useWalletModalToggle()
 
   const { active } = useWeb3React()
@@ -97,12 +95,12 @@ export default function MyAccountPanel() {
     <MyAccountPanelWrapper>
       <ColumnWrapper>
         <Column>
-          <TYPE.black fontSize={16}>{t('address')}:</TYPE.black>
+          <TYPE.black fontSize={16}>Address:</TYPE.black>
           <TYPE.subText marginTop={'0.25rem'}>{account && shortenAddress(account, 14)}</TYPE.subText>
-          <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change_account')}</TextBoxChangeAccount>
+          <TextBoxChangeAccount onClick={toggleWalletModal}>Change Account</TextBoxChangeAccount>
         </Column>
         <PaddingColumn>
-          <MyAccountButton>{t('my_account')}</MyAccountButton>
+          <MyAccountButton>My Account</MyAccountButton>
         </PaddingColumn>
         <RecentTransactions />
       </ColumnWrapper>

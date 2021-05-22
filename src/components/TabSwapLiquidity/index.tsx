@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import { useLocation } from 'react-router'
 import styled from 'styled-components'
-import { useTranslation } from 'react-i18next'
 import { darken } from 'polished'
 import { useHistory } from 'react-router-dom'
 
@@ -48,7 +47,6 @@ const TabItem = styled.div<{ isActive?: boolean }>`
 `
 
 function TabSwapLiquidity() {
-  const { t } = useTranslation()
   const location = useLocation()
   const history = useHistory()
 
@@ -57,10 +55,10 @@ function TabSwapLiquidity() {
   return (
     <TabContainer>
       <TabItem isActive={isSwap} onClick={() => history.push('/swap')}>
-        {t('swap')}
+        Swap
       </TabItem>
       <TabItem isActive={!isSwap} onClick={() => history.push('/add')}>
-        {t('liquidity')}
+        Liquidity
       </TabItem>
     </TabContainer>
   )

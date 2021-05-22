@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import { useWeeklyRanking } from '../../subgraph'
 import styled from 'styled-components'
-import { useTranslation } from 'react-i18next'
 import Row from '../Row'
 import QuestionHelper from '../QuestionHelper'
 import { useIsUpToExtraSmall, useIsUpToSmall } from '../../hooks/useWindowSize'
@@ -56,7 +55,6 @@ const Title = styled.div`
 
 // Ranking theo volume.
 function WeeklyRanking() {
-  const { t } = useTranslation()
   const ranking = useWeeklyRanking()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const isUpToSmall = useIsUpToSmall()
@@ -72,9 +70,9 @@ function WeeklyRanking() {
   return (
     <Container>
       <SpanFullColumns>
-        <Title>{t('weekly_ranking')}</Title>
+        <Title>Weekly Ranking</Title>
         <QuestionHelper
-          text={t('question_helper_weekly_ranking')}
+          text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, voluptates."
           size={isUpToExtraSmall ? 15 : isUpToSmall ? 19 : 23}
         />
       </SpanFullColumns>

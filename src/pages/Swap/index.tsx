@@ -18,7 +18,7 @@ import { ArrowWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
-import SwapHeader from '../../components/swap/SwapHeader'
+import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { getTradeVersion } from '../../data/V1'
@@ -55,10 +55,9 @@ import { useAllTokens, useCurrency } from '../../hooks/Tokens'
 import { useActiveWeb3React } from '../../hooks'
 import useENSAddress from '../../hooks/useENSAddress'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
-import { useTranslation } from 'react-i18next'
 import useTheme from '../../hooks/useTheme'
 
-const ResponsiveAutoColumn = styled(AutoColumn)`
+export const ResponsiveAutoColumn = styled(AutoColumn)`
   padding: 23px 14px 0;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -72,9 +71,6 @@ export default function Swap({ history }: RouteComponentProps) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
   const mobile16Desktop22 = isUpToExtraSmall ? 16 : 22
-
-  // For i18n.
-  const { t } = useTranslation()
 
   const loadedUrlParams = useDefaultsFromURLSearch()
 
@@ -113,8 +109,8 @@ export default function Swap({ history }: RouteComponentProps) {
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
 
-  // show swap details
-  const [isShowSwapDetails, toggleIsShowSwapDetails] = useShowTransactionDetailsManager()
+  // Show transaction details.
+  const [isShowTransactionDetails, toggleIsShowTransactionDetails] = useShowTransactionDetailsManager()
 
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
@@ -339,7 +335,7 @@ export default function Swap({ history }: RouteComponentProps) {
         onDismiss={handleDismissTokenWarning}
       />
       <AppBody>
-        <SwapHeader />
+        <AppBodyTitleDescriptionSettings type="swap" />
         <Wrapper id="swap-page">
           <ConfirmSwapModal
             isOpen={showConfirm}
@@ -406,7 +402,7 @@ export default function Swap({ history }: RouteComponentProps) {
               </>
             ) : null}
 
-            {showWrap ? null : (
+            {!showWrap && (Boolean(trade) || allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE) && (
               <Card padding={'0'} borderRadius={'20px'}>
                 <ResponsiveAutoColumn gap="15px">
                   {Boolean(trade) && (
@@ -433,7 +429,7 @@ export default function Swap({ history }: RouteComponentProps) {
                           color={theme.text4Sone}
                           onClick={toggleSettings}
                         >
-                          {t('slippage_tolerance')}
+                          Slippage Tolerance
                         </ClickableText>
                         <QuestionHelper1416 text="Lorem ipsum" />
                       </RowFixed>
@@ -457,7 +453,7 @@ export default function Swap({ history }: RouteComponentProps) {
                       </RowFixed>
                       <Text
                         fontWeight={700}
-                        fontSize={isUpToExtraSmall ? 13 : 16}
+                        fontSize={mobile13Desktop16}
                         color={theme.text6Sone}
                         style={{
                           justifyContent: 'center',
@@ -588,27 +584,27 @@ export default function Swap({ history }: RouteComponentProps) {
               <DefaultVersionLink />
             ) : null}
           </BottomGrouping>
-          {Boolean(trade) && !isShowSwapDetails && (
+          {Boolean(trade) && !isShowTransactionDetails && (
             <ColumnCenter>
               <ClickableText
                 fontSize={mobile13Desktop16}
                 fontWeight={500}
                 color={theme.text5Sone}
-                onClick={toggleIsShowSwapDetails}
+                onClick={toggleIsShowTransactionDetails}
               >
                 Show more information <ChevronDown size={12} />
               </ClickableText>
             </ColumnCenter>
           )}
-          {!swapIsUnsupported && isShowSwapDetails && <AdvancedSwapDetails trade={trade} />}
-          {Boolean(trade) && isShowSwapDetails && (
+          {!swapIsUnsupported && isShowTransactionDetails && <AdvancedSwapDetails trade={trade} />}
+          {Boolean(trade) && isShowTransactionDetails && (
             <ColumnCenter>
               <ClickableText
                 marginTop={'17.5px'}
                 fontSize={mobile13Desktop16}
                 fontWeight={500}
                 color={theme.text5Sone}
-                onClick={toggleIsShowSwapDetails}
+                onClick={toggleIsShowTransactionDetails}
               >
                 Show less <ChevronUp size={12} />
               </ClickableText>

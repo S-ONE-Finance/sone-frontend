@@ -4,12 +4,7 @@ import { Text } from 'rebass'
 import styled from 'styled-components'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleSettingsMenu } from '../../state/application/hooks'
-import {
-  useExpertModeManager,
-  useUserTransactionTTL,
-  useUserSlippageTolerance,
-  useIsDarkMode
-} from '../../state/user/hooks'
+import { useExpertModeManager, useUserTransactionTTL, useUserSlippageTolerance } from '../../state/user/hooks'
 import { CloseIcon } from '../../theme'
 import { ButtonError } from '../Button'
 import { AutoColumn } from '../Column'
@@ -18,13 +13,12 @@ import QuestionHelper from '../QuestionHelper'
 import { RowBetween, RowFixed } from '../Row'
 import Toggle from '../Toggle'
 import TransactionSettings from '../TransactionSettings'
-import SwapVectorLight from '../../assets/images/swap-vector-light.svg'
-import SwapVectorDark from '../../assets/images/swap-vector-dark.svg'
 import { ReactComponent as ExpertIcon } from '../../assets/svg/expert_icon.svg'
 import { ReactComponent as GlassesIcon } from '../../assets/svg/glasses_icon.svg'
-import { useTranslation } from 'react-i18next'
 import useTheme from '../../hooks/useTheme'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import { TransactionType } from '../AppBodyTitleDescriptionSettings'
+import AppVector from '../AppBodyTitleDescriptionSettings/AppVector'
 
 const StyledSettingsIcon = styled(Settings)`
   height: 24px;
@@ -185,7 +179,7 @@ export const SectionHeading = styled.div`
   `};
 `
 
-const SwapVector = styled.img`
+const AbsoluteVector = styled.div`
   position: absolute;
   bottom: 2rem;
   right: 2rem;
@@ -212,10 +206,8 @@ const StyledExpertIcon = styled(ExpertIcon)`
   `};
 `
 
-export default function SettingsTab() {
-  const { t } = useTranslation()
+export default function SettingsTab({ type }: { type: TransactionType }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-  const isDarkMode = useIsDarkMode()
   const open = useModalOpen(ApplicationModal.SETTINGS)
   const toggle = useToggleSettingsMenu()
   const theme = useTheme()
@@ -238,17 +230,18 @@ export default function SettingsTab() {
             <RowBetween style={{ padding: '0 2rem' }}>
               <div />
               <Text fontWeight={500} fontSize={20}>
-                {t('are_you_sure')}
+                Are you sure?
               </Text>
               <StyledCloseIcon onClick={() => setShowConfirmation(false)} />
             </RowBetween>
             <Break />
             <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
               <Text fontWeight={500} fontSize={20}>
-                {t('expert_mode_warning_msg_desc')}
+                Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result
+                in bad rates and lost funds.
               </Text>
               <Text fontWeight={600} fontSize={20}>
-                {t('expert_mode_warning')}
+                ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.
               </Text>
               <ButtonError
                 error={true}
@@ -261,7 +254,7 @@ export default function SettingsTab() {
                 }}
               >
                 <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
-                  {t('turn_on_expert_mode')}
+                  Turn on Expert Mode
                 </Text>
               </ButtonError>
             </AutoColumn>
@@ -281,10 +274,12 @@ export default function SettingsTab() {
       {open && (
         <Modal isOpen={open} onDismiss={toggle}>
           <MenuFlyout>
-            <SwapVector src={isDarkMode ? SwapVectorDark : SwapVectorLight} alt="swap-vector" />
+            <AbsoluteVector>
+              <AppVector type={type} size={'100%'} />
+            </AbsoluteVector>
             <TitleBodyMarginer>
               <RowBetween>
-                <Title>{t('settings')}</Title>
+                <Title>Settings</Title>
                 <CloseIcon onClick={toggle} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
               </RowBetween>
               <SectionWrapper>
@@ -297,8 +292,8 @@ export default function SettingsTab() {
                 <ResponsiveAutoColumn>
                   <RowFixed>
                     <StyledExpertIcon />
-                    <SectionHeading>{t('expert_mode')}</SectionHeading>
-                    <QuestionHelper text={t('question_helper_expert_mode')} />
+                    <SectionHeading>Expert Mode</SectionHeading>
+                    <QuestionHelper text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam, quibusdam?" />
                   </RowFixed>
                   <Toggle
                     id="toggle-expert-mode-button"
