@@ -17,7 +17,7 @@ const Container = styled.div`
   `}
 `
 
-const ToggleWrapper = styled(Row)`
+const ButtonGroup = styled(Row)`
   background: #f3f3f3;
   width: 350px;
   height: 53px;
@@ -30,7 +30,7 @@ const ToggleWrapper = styled(Row)`
   `}
 `
 
-const ToggleItem = styled(ColumnCenter)<{ active: boolean }>`
+const Item = styled(ColumnCenter)<{ active: boolean }>`
   justify-content: center;
   cursor: pointer;
   background: ${({ theme, active }) => (active ? theme.text5Sone : 'transparent')};
@@ -41,7 +41,7 @@ const ToggleItem = styled(ColumnCenter)<{ active: boolean }>`
   user-select: none;
 `
 
-const ToggleItemTitle = styled(Text)`
+const ItemTitle = styled(Text)`
   margin-top: -4px !important;
   font-size: 18px;
   color: inherit;
@@ -53,7 +53,7 @@ const ToggleItemTitle = styled(Text)`
   `}
 `
 
-const ToggleItemDescription = styled(Text)`
+const ItemDescription = styled(Text)`
   font-size: 13px;
   color: inherit;
   font-weight: 400;
@@ -68,10 +68,14 @@ export default function AddLiquidityMode() {
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
 
-  const toggleMode = useCallback(() => {
-    updateAddLiquidityMode(
-      addLiquidityMode === AddLiquidityModeEnum.OneToken ? AddLiquidityModeEnum.TwoToken : AddLiquidityModeEnum.OneToken
-    )
+  const setModeOneToken = useCallback(() => {
+    if (addLiquidityMode === AddLiquidityModeEnum.OneToken) return
+    updateAddLiquidityMode(AddLiquidityModeEnum.OneToken)
+  }, [addLiquidityMode, updateAddLiquidityMode])
+
+  const setModeTwoToken = useCallback(() => {
+    if (addLiquidityMode === AddLiquidityModeEnum.TwoToken) return
+    updateAddLiquidityMode(AddLiquidityModeEnum.TwoToken)
   }, [addLiquidityMode, updateAddLiquidityMode])
 
   return (
@@ -81,16 +85,16 @@ export default function AddLiquidityMode() {
           Mode
         </Text>
         <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
-        <ToggleWrapper onClick={toggleMode}>
-          <ToggleItem active={addLiquidityMode === AddLiquidityModeEnum.OneToken}>
-            <ToggleItemTitle>Simple</ToggleItemTitle>
-            <ToggleItemDescription>One token mode</ToggleItemDescription>
-          </ToggleItem>
-          <ToggleItem active={addLiquidityMode === AddLiquidityModeEnum.TwoToken}>
-            <ToggleItemTitle>Advanced</ToggleItemTitle>
-            <ToggleItemDescription>Two tokens mode</ToggleItemDescription>
-          </ToggleItem>
-        </ToggleWrapper>
+        <ButtonGroup>
+          <Item onClick={setModeOneToken} active={addLiquidityMode === AddLiquidityModeEnum.OneToken}>
+            <ItemTitle>Simple</ItemTitle>
+            <ItemDescription>One token mode</ItemDescription>
+          </Item>
+          <Item onClick={setModeTwoToken} active={addLiquidityMode === AddLiquidityModeEnum.TwoToken}>
+            <ItemTitle>Advanced</ItemTitle>
+            <ItemDescription>Two tokens mode</ItemDescription>
+          </Item>
+        </ButtonGroup>
       </Row>
     </Container>
   )
