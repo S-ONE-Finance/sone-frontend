@@ -18,7 +18,6 @@ export class Sushi {
     } else {
       realProvider = provider
     }
-
     this.web3 = new Web3(realProvider)
 
     if (testing) {
@@ -30,11 +29,12 @@ export class Sushi {
       this.web3.eth.defaultAccount = options.defaultAccount
     }
     this.contracts = new Contracts(realProvider, networkId, this.web3, options)
+    console.log('networkId', networkId);
     this.sushiAddress = contractAddresses.sushi[networkId]
     this.masterChefAddress = contractAddresses.masterChef[networkId]
     this.wethAddress = contractAddresses.weth[networkId]
-    this.xSushiAddress = contractAddresses.xSushi[networkId]
-    this.makerAddress = contractAddresses.maker[networkId]
+    // this.xSushiAddress = contractAddresses.xSushi[networkId]
+    // this.makerAddress = contractAddresses.maker[networkId]
   }
 
   async resetEVM() {

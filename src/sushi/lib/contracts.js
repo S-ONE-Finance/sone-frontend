@@ -70,14 +70,15 @@ export class Contracts {
 
     setProvider(this.sushi, contractAddresses.sushi[networkId])
     setProvider(this.masterChef, contractAddresses.masterChef[networkId])
-    setProvider(this.maker, contractAddresses.maker[networkId])
-    setProvider(this.xSushiStaking, contractAddresses.xSushi[networkId])
+    // setProvider(this.maker, contractAddresses.maker[networkId])
+    // setProvider(this.xSushiStaking, contractAddresses.xSushi[networkId])
     setProvider(this.weth, contractAddresses.weth[networkId])
-    this.pools.forEach(({ lpContract, lpAddress, tokenContract, token2Contract, token2Address, tokenAddress }) => {
-      setProvider(lpContract, lpAddress)
-      setProvider(tokenContract, tokenAddress)
-      setProvider(token2Contract, token2Address)
-    })
+    console.log('this.pools', this.pools)
+    // this.pools.forEach(({ lpContract, lpAddress, tokenContract, token2Contract, token2Address, tokenAddress }) => {
+    //   setProvider(lpContract, lpAddress)
+    //   setProvider(tokenContract, tokenAddress)
+    //   setProvider(token2Contract, token2Address)
+    // })
   }
 
   setDefaultAccount(account) {
