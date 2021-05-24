@@ -53,7 +53,7 @@ const PopoverContainer = styled.div<{ show: boolean }>`
   border: 1px solid ${({ theme }) => theme.bg3};
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.01), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
     0px 24px 32px rgba(0, 0, 0, 0.01);
-  color: ${({ theme }) => theme.text2};
+  color: ${({ theme }) => theme.text1Sone};
   border-radius: 0.5rem;
   padding: 1rem;
   display: grid;
@@ -113,6 +113,7 @@ function listUrlRowHTMLId(listUrl: string) {
 }
 
 const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
+  const theme = useTheme()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
   const dispatch = useDispatch<AppDispatch>()
@@ -222,13 +223,21 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
           <PopoverContainer show={true} ref={setPopperElement as any} style={styles.popper} {...attributes.popper}>
             <div>{list && listVersionLabel(list.version)}</div>
             <SeparatorDark />
-            <ExternalLink href={`https://tokenlists.org/token-list?url=${listUrl}`}>View list</ExternalLink>
-            <UnpaddedLinkStyledButton onClick={handleRemoveList} disabled={Object.keys(listsByUrl).length === 1}>
-              Remove list
-            </UnpaddedLinkStyledButton>
+            <ExternalLink style={{ color: theme.text10Sone }} href={`https://tokenlists.org/token-list?url=${listUrl}`}>
+              View
+            </ExternalLink>
             {pending && (
-              <UnpaddedLinkStyledButton onClick={handleAcceptListUpdate}>Update list</UnpaddedLinkStyledButton>
+              <UnpaddedLinkStyledButton style={{ color: theme.text10Sone }} onClick={handleAcceptListUpdate}>
+                Update
+              </UnpaddedLinkStyledButton>
             )}
+            <UnpaddedLinkStyledButton
+              style={{ color: theme.text10Sone }}
+              onClick={handleRemoveList}
+              disabled={Object.keys(listsByUrl).length === 1}
+            >
+              Remove
+            </UnpaddedLinkStyledButton>
           </PopoverContainer>
         )}
       </StyledMenu>

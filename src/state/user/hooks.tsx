@@ -19,7 +19,9 @@ import {
   updateUserSlippageTolerance,
   toggleURLWarning,
   updateUserSingleHopOnly,
-  toggleShowTransactionDetails
+  toggleShowTransactionDetails,
+  AddLiquidityModeEnum,
+  updateAddLiquidityMode
 } from './actions'
 
 function serializeToken(token: Token): SerializedToken {
@@ -94,6 +96,22 @@ export function useShowTransactionDetailsManager(): [boolean, () => void] {
   }, [dispatch])
 
   return [isShowTransactionDetails, toggleIsShowTransactionDetails]
+}
+
+export function useAddLiquidityModeManager(): [AddLiquidityModeEnum, (newMode: AddLiquidityModeEnum) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const addLiquidityMode = useSelector<AppState, AppState['user']['addLiquidityMode']>(
+    state => state.user.addLiquidityMode
+  )
+
+  const updateAddLiquidityModeCallback = useCallback(
+    newMode => {
+      dispatch(updateAddLiquidityMode(newMode))
+    },
+    [dispatch]
+  )
+
+  return [addLiquidityMode, updateAddLiquidityModeCallback]
 }
 
 export function useUserSingleHopOnly(): [boolean, (newSingleHopOnly: boolean) => void] {

@@ -17,7 +17,6 @@ import SwapVectorDark from '../../assets/images/swap-vector-dark.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
 import SpinnerImage from '../../assets/svg/spinner.svg'
 import { useHistory } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import useTheme from '../../hooks/useTheme'
 
 const Wrapper = styled.div`
@@ -122,7 +121,6 @@ function TransactionSubmittedContent({
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
   const history = useHistory()
-  const { t } = useTranslation()
 
   return (
     <Wrapper>
@@ -153,7 +151,7 @@ function TransactionSubmittedContent({
             style={{ margin: '10px 0 0 0' }}
           >
             <Text fontWeight={700} fontSize={20}>
-              {t('add_liquidity')}
+              Add Liquidity
             </Text>
           </ButtonPrimary>
         </AutoColumn>

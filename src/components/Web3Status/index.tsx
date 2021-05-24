@@ -4,7 +4,6 @@
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
 import React, { useMemo } from 'react'
 import { Activity } from 'react-feather'
-import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
@@ -67,7 +66,6 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 }
 
 function Web3StatusInner() {
-  const { t } = useTranslation()
   const { account, error } = useWeb3React()
   const toggleWalletModal = useWalletModalToggle()
   const history = useHistory()
@@ -85,7 +83,7 @@ function Web3StatusInner() {
           }
         }}
       >
-        {t('my_account')}
+        My Account
       </ButtonMainRed>
     )
   } else if (error) {
@@ -98,7 +96,7 @@ function Web3StatusInner() {
   } else {
     return (
       <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
-        {t('connect_wallet')}
+        Connect Wallet
       </ButtonMainRed>
     )
   }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Globe, Menu as MenuIcon, Moon, Sun } from 'react-feather'
 import { isMobile } from 'react-device-detect'
@@ -430,7 +429,6 @@ const ShowOnlyExtraSmall = styled.div`
 
 export default function Header() {
   const { account } = useActiveWeb3React()
-  const { t } = useTranslation()
   const [language, setLanguage] = useLanguage()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
   const availableClaim: boolean = useUserHasAvailableClaim(account)
@@ -452,7 +450,7 @@ export default function Header() {
             </Title>
             <HeaderMenu>
               <HideSmall>
-                <StyledExternalLink href={'https://www.lipsum.com/'}>{t('s_one_wallet')}</StyledExternalLink>
+                <StyledExternalLink href={'https://www.lipsum.com/'}>S-ONE Wallet</StyledExternalLink>
               </HideSmall>
               <MenuItem>
                 <StyledNavLink
@@ -461,30 +459,28 @@ export default function Header() {
                     Boolean(match) || pathname.startsWith('/swap') || pathname.startsWith('/add')
                   }
                 >
-                  {t('swap')}
+                  Swap
                 </StyledNavLink>
                 <SubMenu>
-                  <SubMenuItemNavLink to={'/swap'}>{t('swap')}</SubMenuItemNavLink>
+                  <SubMenuItemNavLink to={'/swap'}>Swap</SubMenuItemNavLink>
                   <SubMenuItemNavLink id={`pool-nav-link`} to={'/add'}>
-                    {t('liquidity')}
+                    Liquidity
                   </SubMenuItemNavLink>
                 </SubMenu>
               </MenuItem>
               <MenuItem>
-                <StyledNavLink to={'/uni'}>{t('staking')}</StyledNavLink>
+                <StyledNavLink to={'/uni'}>Staking</StyledNavLink>
               </MenuItem>
               <MenuItem>
                 <StyledExternalLink
                   href={isMobile ? '' : 'https://www.lipsum.com/'}
                   target={isMobile ? '_self' : '_blank'}
                 >
-                  {t('stats')}
+                  Stats
                 </StyledExternalLink>
                 <SubMenu>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('swap_stats')}</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>
-                    {t('staking_stats')}
-                  </SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>Swap Stats</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>Staking Stats</SubMenuItemExternalLink>
                 </SubMenu>
               </MenuItem>
               <MenuItem>
@@ -492,12 +488,12 @@ export default function Header() {
                   href={isMobile ? '' : 'https://docs.s-one.finance/'}
                   target={isMobile ? '_self' : '_blank'}
                 >
-                  {t('docs')}
+                  Docs
                 </StyledExternalLink>
                 <ResponsiveTopEndSubMenu>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('white_paper')}</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>{t('blog')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>White Paper</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>FAQ</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>Blog</SubMenuItemExternalLink>
                 </ResponsiveTopEndSubMenu>
               </MenuItem>
             </HeaderMenu>

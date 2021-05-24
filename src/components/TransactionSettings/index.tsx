@@ -1,12 +1,10 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
-
 import QuestionHelper from '../QuestionHelper'
 import Row, { RowBetween, RowFixed } from '../Row'
 import { SectionWrapper, SectionHeading, ResponsiveAutoColumn } from '../Settings'
 import { ReactComponent as SlippageIcon } from '../../assets/svg/slippage_icon.svg'
 import { ReactComponent as DeadlineIcon } from '../../assets/svg/deadline_icon.svg'
-import { useTranslation } from 'react-i18next'
 
 enum SlippageError {
   InvalidInput = 'InvalidInput',
@@ -122,8 +120,6 @@ export interface SlippageTabsProps {
 }
 
 export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, setDeadline }: SlippageTabsProps) {
-  const { t } = useTranslation()
-
   const inputRef = useRef<HTMLInputElement>()
 
   const [slippageInput, setSlippageInput] = useState('')
@@ -182,8 +178,8 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
       <ResponsiveAutoColumn>
         <RowFixed>
           <StyledSlippageIcon />
-          <SectionHeading>{t('slippage_tolerance')}</SectionHeading>
-          <QuestionHelper text={t('question_helper_slippage_tolerance')} />
+          <SectionHeading>Slippage Tolerance</SectionHeading>
+          <QuestionHelper text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, iste." />
         </RowFixed>
         <Row>
           <Option
@@ -239,10 +235,10 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             }}
           >
             {slippageError === SlippageError.InvalidInput
-              ? t('enter_a_valid_slippage_percentage')
+              ? 'Enter a valid slippage tolerance'
               : slippageError === SlippageError.RiskyLow
-              ? t('your_transaction_may_fail')
-              : t('your_transaction_may_be_frontrun')}
+              ? 'Your transaction may fail'
+              : 'Your transaction may be frontrun'}
           </RowBetween>
         )}
       </ResponsiveAutoColumn>
@@ -250,8 +246,8 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
       <ResponsiveAutoColumn>
         <RowFixed>
           <StyledDeadlineIcon />
-          <SectionHeading>{t('transaction_deadline')}</SectionHeading>
-          <QuestionHelper text={t('question_helper_transaction_deadline')} />
+          <SectionHeading>Transaction Deadline</SectionHeading>
+          <QuestionHelper text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, quia." />
         </RowFixed>
         <RowFixed>
           <OptionCustom tabIndex={-1}>
@@ -265,7 +261,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
                 value={deadlineInput}
                 onChange={e => parseCustomDeadline(e.target.value)}
               />
-              <MediumText>{t('minutes')}</MediumText>
+              <MediumText>minutes</MediumText>
             </RowBetween>
           </OptionCustom>
         </RowFixed>

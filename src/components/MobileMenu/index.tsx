@@ -7,7 +7,6 @@ import React, { useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { lighten } from 'polished'
-import { useTranslation } from 'react-i18next'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -112,7 +111,6 @@ interface MobileMenuProps {
 }
 
 export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
-  const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
@@ -126,25 +124,25 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         <CloseIcon>
           <CloseColor />
         </CloseIcon>
-        <TYPE.black fontSize={14}>{t('address')}:</TYPE.black>
+        <TYPE.black fontSize={14}>Address:</TYPE.black>
         <TYPE.subText marginTop={'0.25rem'}>{account && shortenAddress(account, 14)}</TYPE.subText>
         <RowBetween marginTop={'1rem'}>
           <SoneAmount isSmall={true} />
-          <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change_account')}</TextBoxChangeAccount>
+          <TextBoxChangeAccount onClick={toggleWalletModal}>Change Account</TextBoxChangeAccount>
         </RowBetween>
       </Column>
       <Column>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('s_one_wallet')}</StyledExternalLink>
-        <StyledNavLink to={'/swap'}>{t('swap')}</StyledNavLink>
+        <StyledExternalLink href={'https://www.lipsum.com/'}>S-ONE Wallet</StyledExternalLink>
+        <StyledNavLink to={'/swap'}>Swap</StyledNavLink>
         <StyledNavLink to={'/pool'} isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
-          {t('liquidity')}
+          Liquidity
         </StyledNavLink>
-        <StyledNavLink to={'/uni'}>{t('staking')}</StyledNavLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('swap_stats')}</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('staking_stats')}</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('white_paper')}</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('faq')}</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>{t('blog')}</StyledExternalLink>
+        <StyledNavLink to={'/uni'}>Staking</StyledNavLink>
+        <StyledExternalLink href={'https://www.lipsum.com/'}>Swap Stats</StyledExternalLink>
+        <StyledExternalLink href={'https://www.lipsum.com/'}>Staking Stats</StyledExternalLink>
+        <StyledExternalLink href={'https://www.lipsum.com/'}>White Paper</StyledExternalLink>
+        <StyledExternalLink href={'https://www.lipsum.com/'}>FAQ</StyledExternalLink>
+        <StyledExternalLink href={'https://www.lipsum.com/'}>Blog</StyledExternalLink>
       </Column>
       <RecentTransactions isSmall={true} />
     </ColumnWrapper>

@@ -19,7 +19,7 @@ function useSubgraphData() {
 
   // region Callback functions.
   const getData = useCallback(async () => {
-    let {
+    const {
       data: { pairs }
     } = await client.query({
       query: PAIRS_CURRENT,

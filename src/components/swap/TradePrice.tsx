@@ -21,22 +21,23 @@ export const RepeatIcon = () => {
 
 export default function TradePrice({ price, showInverted, setShowInverted }: TradePriceProps) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-
   const theme = useTheme()
 
   const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6)
+  const baseCurrencySymbol = price?.baseCurrency?.symbol === 'WETH' ? 'ETH' : price?.baseCurrency?.symbol
+  const quoteCurrencySymbol = price?.quoteCurrency?.symbol === 'WETH' ? 'ETH' : price?.quoteCurrency?.symbol
 
   const show = Boolean(price?.baseCurrency && price?.quoteCurrency)
 
   const componentPrice = showInverted ? (
     <Row align={'baseline'} style={{ whiteSpace: 'break-spaces' }}>
-      1 <Text fontSize={13}>{price?.baseCurrency?.symbol}</Text> = {formattedPrice ?? '-'}{' '}
-      <Text fontSize={13}>{price?.quoteCurrency?.symbol}</Text>
+      1 <Text fontSize={13}>{baseCurrencySymbol}</Text> = {formattedPrice ?? '-'}{' '}
+      <Text fontSize={13}>{quoteCurrencySymbol}</Text>
     </Row>
   ) : (
     <Row align={'baseline'} style={{ whiteSpace: 'break-spaces' }}>
-      1 <Text fontSize={13}>{price?.quoteCurrency?.symbol}</Text> = {formattedPrice ?? '-'}{' '}
-      <Text fontSize={13}>{price?.baseCurrency?.symbol}</Text>
+      1 <Text fontSize={13}>{quoteCurrencySymbol}</Text> = {formattedPrice ?? '-'}{' '}
+      <Text fontSize={13}>{baseCurrencySymbol}</Text>
     </Row>
   )
 

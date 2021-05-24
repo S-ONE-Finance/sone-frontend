@@ -133,7 +133,7 @@ export function colors(darkMode: boolean): Colors {
     tabTextActive: darkMode ? '#4F4F4F' : '#FFFFFF',
 
     // Others
-    f3f3f3: '#f3f3f3'
+    f3f3f3: '#F3F3F3'
   }
 }
 
@@ -244,88 +244,89 @@ export const TYPE = {
 }
 
 export const FixedGlobalStyle = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-html, input, textarea, button {
-  font-family: 'Roboto', sans-serif;
-}
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
+  html, input, textarea, button {
+    font-family: 'Roboto', sans-serif;
+  }
 
- a {
-   color: ${colors(false).blue1}; 
- }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
 
-* {
-  box-sizing: border-box;
-}
+  a {
+    color: ${colors(false).blue1};
+  }
 
-button {
-  user-select: none;
-}
+  * {
+    box-sizing: border-box;
+  }
 
-html {
-  font-size: 16px;
-  font-variant: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-feature-settings: 'ss01' on, 'ss02' on, 'cv01' on, 'cv03' on;
-}
+  button {
+    user-select: none;
+  }
+
+  html {
+    font-size: 16px;
+    font-variant: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    font-feature-settings: 'ss01' on, 'ss02' on, 'cv01' on, 'cv03' on;
+  }
 `
 
 export const ThemedGlobalStyle = createGlobalStyle`
-html {
-  color: ${({ theme }) => theme.text1};
-  background-color: ${({ theme }) => theme.bg2};
-}
+  html {
+    color: ${({ theme }) => theme.text1};
+    background-color: ${({ theme }) => theme.bg2};
+  }
 
-body {
-  min-height: 100vh;
-  min-width: 100vw; // Bỏ qua width của scrollbar.
-  overflow-x: hidden;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url(${({ theme }) => theme.bgImage});
-  background-size: cover;
+  body {
+    min-height: 100vh;
+    min-width: 100vw; // Bỏ qua width của scrollbar.
+    overflow-x: hidden;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url(${({ theme }) => theme.bgImage});
+    background-size: cover;
 
-  ${({ theme }) => theme.mediaWidth.upToLarge`
+    ${({ theme }) => theme.mediaWidth.upToLarge`
     background-image: url(${({ theme }) => theme.bgImageUpToLarge});
   `}
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
+    ${({ theme }) => theme.mediaWidth.upToSmall`
     background-image: url(${({ theme }) => theme.bgImageUpToSmall});
   `}
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     background-image: url(${({ theme }) => theme.bgImageUpToExtraSmall});
   `}
-}
+  }
 
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background-color: ${({ theme }) => theme.divider1Sone};
-  /* border-radius: 10px; */
-}
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background-color: ${({ theme }) => theme.divider1Sone};
+    /* border-radius: 10px; */
+  }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background-color: ${({ theme }) => theme.scrollbarThumb};
-  /* border-radius: 10px; */
-}
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.scrollbarThumb};
+    /* border-radius: 10px; */
+  }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background-color: ${({ theme }) => `${darken(0.05, theme.scrollbarThumb)}`};
-}
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: ${({ theme }) => `${darken(0.05, theme.scrollbarThumb)}`};
+  }
 `

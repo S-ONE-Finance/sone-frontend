@@ -163,7 +163,7 @@ export function useDerivedMintInfo(
   }
 
   if (pairState === PairState.INVALID) {
-    error = error ?? 'Invalid pair'
+    error = error ?? 'Invalid Pair'
   }
 
   if (!parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {

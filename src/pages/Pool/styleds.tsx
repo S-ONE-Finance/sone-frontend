@@ -4,7 +4,11 @@ import { darken } from 'polished'
 
 export const Wrapper = styled.div`
   position: relative;
-  padding: 1rem;
+  padding: 0 30px 35px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 0 10px 25px;
+  `}
 `
 
 export const ClickableText = styled(Text)<{ color?: string }>`
