@@ -34,7 +34,7 @@ export const RPC_URL: { [chainId in ChainId]: string } = {
 
 export const API_URL: { [chainId in ChainId]: string } = {
   1: 'https://wallet.tomochain.com/api/luaswap',
-  3: '',
+  3: 'http://localhost:8888/api/soneswap',
   4: '',
   5: '',
   42: ''

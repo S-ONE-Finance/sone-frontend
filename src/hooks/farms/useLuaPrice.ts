@@ -14,7 +14,7 @@ const useLuaPrice = () => {
   const sushi = useSushi()
 
   const fetchBalance = useCallback(async () => {
-    const { data } = await axios.get(`${API_URL[ID]}/price/LUA`)
+    const { data } = await axios.get(`${API_URL[ID]}/price/SONE`)
     const value = data.usdPrice
     setPrice(new BigNumber(value * 10 ** 8))
   }, [sushi, ID])
