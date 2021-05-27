@@ -45,6 +45,7 @@ const FarmCards: React.FC = () => {
         usdValue: (stakedValue[i] || {}).usdValue || new BigNumber(0),
         luaPrice
       }
+      console.log('farms', farmWithStakedValue)
       const newFarmRows = [...farmRows]
       if (newFarmRows[newFarmRows.length - 1].length === 3) {
         newFarmRows.push([farmWithStakedValue])
@@ -173,8 +174,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                   <span>APY</span>
                   <span style={{ fontWeight: 'bold', color: '#4caf50' }}>
                     {newReward && farm.poolWeight && farm.luaPrice && farm.usdValue
-                      ? `${parseFloat(
-                          farm.luaPrice
+                      ? `${parseFloat(farm.luaPrice
                             .times(NUMBER_BLOCKS_PER_YEAR[ID])
                             .times(newReward.div(10 ** 18))
                             .div(farm.usdValue)

@@ -235,12 +235,12 @@ export const checkPoolActive = async (pid, chainId) => {
 export const getNewRewardPerBlock = async (sushi, pid1 = 0, chainId) => {
   if (pid1 === 0) {
     const chef = getMasterChefContract(sushi)
-    return new BigNumber(await UnknownBlock(chef._address, 'getNewRewardPerBlock(uint256):(uint256)', [pid1], true, chainId))
+    return new BigNumber(await UnknownBlock(chef._address, 'getNewRewardPerBlock', [pid1], true, chainId))
   } else {
     if (await checkPoolActive(pid1 - 1, chainId)) {
       const chef = getMasterChefContract(sushi)
-      const reward = await UnknownBlock(chef._address, 'getNewRewardPerBlock(uint256):(uint256)', [pid1], true, chainId)
-      return new BigNumber(await UnknownBlock(chef._address, 'getNewRewardPerBlock(uint256):(uint256)', [pid1], true, chainId))
+      // const reward = await UnknownBlock(chef._address, 'getNewRewardPerBlock(uint256):(uint256)', [pid1], true, chainId)
+      return new BigNumber(await UnknownBlock(chef._address, 'getNewRewardPerBlock', [pid1], true, chainId))
     } else {
       return new BigNumber('0')
     }
