@@ -6,35 +6,48 @@ import { PortisConnector } from '@web3-react/portis-connector'
 
 import { FortmaticConnector } from './Fortmatic'
 import { NetworkConnector } from './NetworkConnector'
+import getLibrary from '../utils/getLibrary'
+
 import UNISWAP_LOGO_URL from '../assets/svg/logo.svg'
 
-const NETWORK_URL = process.env.REACT_APP_NETWORK_URL
+const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
 const FORMATIC_KEY = process.env.REACT_APP_FORTMATIC_KEY
 const PORTIS_ID = process.env.REACT_APP_PORTIS_ID
 const WALLETCONNECT_BRIDGE_URL = process.env.REACT_APP_WALLETCONNECT_BRIDGE_URL
 
-export const NETWORK_CHAIN_ID: number = parseInt(process.env.REACT_APP_CHAIN_ID ?? '1')
-
-if (typeof NETWORK_URL === 'undefined') {
-  throw new Error(`REACT_APP_NETWORK_URL must be a defined environment variable`)
+if (typeof INFURA_KEY === 'undefined') {
+  throw new Error(`REACT_APP_INFURA_KEY must be a defined environment variable`)
 }
 
+const NETWORK_URLS: {
+  [chainId: number]: string
+} = {
+  [1]: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
+  [4]: `https://rinkeby.infura.io/v3/${INFURA_KEY}`,
+  [3]: `https://ropsten.infura.io/v3/${INFURA_KEY}`,
+  [5]: `https://goerli.infura.io/v3/${INFURA_KEY}`,
+  [42]: `https://kovan.infura.io/v3/${INFURA_KEY}`
+}
+
+const SUPPORTED_CHAIN_IDS = [1, 4, 3, 42, 5]
+
 export const network = new NetworkConnector({
-  urls: { [NETWORK_CHAIN_ID]: NETWORK_URL }
+  urls: NETWORK_URLS,
+  defaultChainId: 1
 })
 
 let networkLibrary: Web3Provider | undefined
 export function getNetworkLibrary(): Web3Provider {
-  return (networkLibrary = networkLibrary ?? new Web3Provider(network.provider as any))
+  return (networkLibrary = networkLibrary ?? getLibrary(network.provider))
 }
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42]
+  supportedChainIds: SUPPORTED_CHAIN_IDS
 })
 
-// mainnet only
 export const walletconnect = new WalletConnectConnector({
-  rpc: { 1: NETWORK_URL },
+  supportedChainIds: SUPPORTED_CHAIN_IDS,
+  infuraId: INFURA_KEY, // obviously a hack
   bridge: WALLETCONNECT_BRIDGE_URL,
   qrcode: true,
   pollingInterval: 15000
@@ -54,7 +67,7 @@ export const portis = new PortisConnector({
 
 // mainnet only
 export const walletlink = new WalletLinkConnector({
-  url: NETWORK_URL,
+  url: NETWORK_URLS[1],
   appName: 'Uniswap',
   appLogoUrl: UNISWAP_LOGO_URL
 })
