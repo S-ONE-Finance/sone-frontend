@@ -4,8 +4,10 @@ export default {
   rpc: 'https://wallet.tomochain.com/api/luaswap/rpc',
   rpcTomochain: 'https://rpc.tomochain.com',
   chainId: 1,
-  apiETH: 'http://localhost:8888/api/soneswap',
-  apiTOMO: 'http://localhost:8888/api/soneswap'
+  // apiETH: 'http://localhost:8888/api/soneswap',
+  // apiTOMO: 'http://localhost:8888/api/soneswap'
+  apiETH: 'https://wallet.tomochain.com/api/luaswap',
+  apiTOMO: 'https://wallet.tomochain.com/api/luaswap/tomochain'
 }
 
 export const START_REWARD_AT_BLOCK: { [chainId in ChainId]: number } = {
@@ -26,7 +28,8 @@ export const NUMBER_BLOCKS_PER_YEAR: { [chainId in ChainId]: number } = {
 
 export const RPC_URL: { [chainId in ChainId]: string } = {
   1: 'https://wallet.tomochain.com/api/luaswap/rpc',
-  3: 'http://localhost:8888/api/soneswap',
+  // 3: 'http://localhost:8888/api/soneswap',
+  3: 'https://wallet.tomochain.com/api/luaswap/rpc',
   4: '',
   5: '',
   42: ''
@@ -34,7 +37,8 @@ export const RPC_URL: { [chainId in ChainId]: string } = {
 
 export const API_URL: { [chainId in ChainId]: string } = {
   1: 'https://wallet.tomochain.com/api/luaswap',
-  3: 'http://localhost:8888/api/soneswap',
+  // 3: 'http://localhost:8888/api/soneswap',
+  3: 'https://wallet.tomochain.com/api/luaswap',
   4: '',
   5: '',
   42: ''
