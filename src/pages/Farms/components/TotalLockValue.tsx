@@ -24,7 +24,8 @@ const TotalLockValue = memo(() => {
         transform: `scale(${scale})`,
         transformOrigin: 'right bottom',
         transition: 'transform 0.5s',
-        display: 'inline-block'
+        display: 'inline-block',
+        fontWeight: 'bold'
       }}
     >
       <CountUp

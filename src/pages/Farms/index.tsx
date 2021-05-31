@@ -6,25 +6,27 @@ import Balances from './components/Balances'
 import { START_REWARD_AT_BLOCK } from '../../config'
 import FarmCards from './components/FarmCards'
 import TotalLockValue from './components/TotalLockValue'
+import StakingHeader from './components/StakingHeader'
 
 export default function Farms() {
   const { chainId } = useActiveWeb3React()
+  console.log('chainId', chainId)
   const ID = chainId === 3 ? 3 : 1
   const isRopsten = IsRopsten(chainId)
+  console.log('isRopsten', isRopsten)
   const block = 99999999999
   const launchBlock = START_REWARD_AT_BLOCK[ID]
   return (
     <>
-      <div>
-        {!isRopsten ? (
-          <div style={{ fontWeight: 'bold', fontSize: 22, color: '#ffffff', textAlign: 'center' }}>
-            LuaSwap Currently Has{' '}
-            <span style={{ color: '#4caf50', fontSize: 30 }}>
-              $<TotalLockValue />
-            </span>{' '}
-            Of Total Locked Value
-          </div>) : ''
-        }
+      <StakingHeader/>
+      <div style={{marginTop: '60px'}}>
+        <div style={{ fontSize: 40, color: '#333333', textAlign: 'center' }}>
+          <span style={{fontWeight: 'bold'}}>S-ONE Finance</span> Currently Has{' '}
+          <span style={{ color: '#65BAC5', fontSize: 40 }}>
+            $<TotalLockValue />
+          </span>{' '}
+          Of Total Locked Value
+        </div>
         {block >= launchBlock && (
           <>
             <Balances />
@@ -32,8 +34,6 @@ export default function Farms() {
         )}
       </div>
       <Box className="mt-4">
-        <StyledHeading>SELECT YOUR FIELDS</StyledHeading>
-        <StyledParagraph>Earn LUA tokens by staking LUA-V1 LP token</StyledParagraph>
         <FarmCards />
       </Box>
     </>

@@ -36,11 +36,11 @@ const Value: React.FC<ValueProps> = ({ value, decimals }) => {
   )
 }
 
-const StyledValue = styled.div`
-  font-family: 'Nunito Sans', sans-serif;
-  color: ${props => props.theme.primary1};
-  font-size: 32px;
-  font-weight: 700;
+const StyledValue = styled.span`
+  font-family: Inter;
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: bold;
 `
 
 export default Value

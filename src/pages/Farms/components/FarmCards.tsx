@@ -118,7 +118,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
   const startTime = START_NEW_POOL_AT
   return (
     <StyledCardWrapper>
-      {farm.tokenSymbol === 'LUA' && <StyledCardAccent />}
+      {/* {farm.tokenSymbol === 'LUA' && <StyledCardAccent />} */}
       <CardWrap>
         <div>
           <StyledContent>
@@ -126,53 +126,30 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               {farm.isHot && <StyledHotIcon>NO REWARD</StyledHotIcon>}
               {farm.isNew && <StyledNewIcon>THIS WEEK</StyledNewIcon>}
             </StyledTopIcon>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', background: 'linear-gradient(180deg, #FFEFEF 48.7%, #F8F8F8 100%)' }}>
+              <StyledTitle>{farm.name}</StyledTitle>
               <div>
-                <img src={farm.icon} alt="" height="60" />
+                <img src={farm.icon} alt="" height="40" />
               </div>
               <span>&nbsp;&nbsp;</span>
               <div>
-                <img src={farm.icon2} alt="" height="60" />
+                <img src={farm.icon2} alt="" height="40" />
               </div>
             </div>
-            <StyledTitle>{farm.name}</StyledTitle>
-            <StyledDetails>
-              <StyledDetail>{farm.description}</StyledDetail>
-            </StyledDetails>
-            {/* <Button disabled={!(poolActive)} text={poolActive ? 'Select' : undefined} to={`/farming/${farm.id}`}> */}
-            <NavLink to={`/farming/${farm.id}`}>
-              {!poolActive && <Countdown date={new Date(startTime * 1000)} renderer={renderer} />}
-            </NavLink>
+           
             <br />
             {!isRopsten ? (
               <StyledInsight>
-                <span>Total Locked Value</span>
-                <span>
-                  {farm.usdValue && (
-                    <>
-                      <b>{parseFloat(farm.usdValue.toFixed(0)).toLocaleString('en-US')} USD</b>
-                    </>
-                  )}
-                </span>
+                <span>Earn</span>
+                <span><b>SONE</b></span>
               </StyledInsight>
               ): ''
             }
             {!farm.isHot && (
               <>
                 <StyledInsight>
-                  <span>Reward</span>
-                  <span>
-                    {newReward && (
-                      <>
-                        <b>{getBalanceNumber(newReward).toFixed(3)} LUA</b> / block
-                      </>
-                    )}
-                    {!newReward && '~'}
-                  </span>
-                </StyledInsight>
-                <StyledInsight>
                   <span>APY</span>
-                  <span style={{ fontWeight: 'bold', color: '#4caf50' }}>
+                  <span style={{ fontWeight: 'bold', color: '#3FAAB0' }}>
                     {newReward && farm.poolWeight && farm.luaPrice && farm.usdValue
                       ? `${parseFloat(farm.luaPrice
                             .times(NUMBER_BLOCKS_PER_YEAR[ID])
@@ -185,8 +162,33 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                       : '~'}
                   </span>
                 </StyledInsight>
+                <StyledInsight>
+                  <span>Total liquidity</span>
+                  <span>
+                    {farm.usdValue && (
+                      <>
+                        <b>${parseFloat(farm.usdValue.toFixed(2)).toLocaleString('en-US')}</b>
+                      </>
+                    )}
+                  </span>
+                </StyledInsight>
               </>
             )}
+            {/* <Button disabled={!(poolActive)} text={poolActive ? 'Select' : undefined} to={`/farming/${farm.id}`}> */}
+             <NavLink to={`/farming/${farm.id}`} style={{
+                background: 'linear-gradient(90deg, #F05359 27.06%, #F58287 111.99%)',
+                borderRadius: '52px',
+                color: 'white',
+                width: '230px',
+                height: '40px',
+                lineHeight: '40px',
+                textAlign: 'center',
+                textDecoration: 'none',
+                fontWeight: 'bold'
+             }}>
+              Select
+              {/* {!poolActive && <Countdown date={new Date(startTime * 1000)} renderer={renderer} />} */}
+            </NavLink>
           </StyledContent>
         </div>
       </CardWrap>
@@ -210,35 +212,9 @@ const RainbowLight = keyframes`
 	}
 `
 
-const StyledCardAccent = styled.div`
-  background: linear-gradient(
-    45deg,
-    rgba(255, 0, 0, 1) 0%,
-    rgba(255, 154, 0, 1) 10%,
-    rgba(208, 222, 33, 1) 20%,
-    rgba(79, 220, 74, 1) 30%,
-    rgba(63, 218, 216, 1) 40%,
-    rgba(47, 201, 226, 1) 50%,
-    rgba(28, 127, 238, 1) 60%,
-    rgba(95, 21, 242, 1) 70%,
-    rgba(186, 12, 248, 1) 80%,
-    rgba(251, 7, 217, 1) 90%,
-    rgba(255, 0, 0, 1) 100%
-  );
-  background-size: 300% 300%;
-  animation: ${RainbowLight} 2s linear infinite;
-  border-radius: 12px;
-  filter: blur(6px);
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  bottom: -2px;
-  left: -2px;
-  z-index: -1;
-`
 
 const StyledCards = styled.div`
-  width: 900px;
+  width: 1200px;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -264,16 +240,16 @@ const StyledRow = styled.div`
 
 const StyledCardWrapper = styled.div`
   display: flex;
-  width: calc((900px - 10px * 2) / 3);
+  width: calc((1200px - 10px * 2) / 3);
   position: relative;
   overflow: hidden;
   border-radius: 12px;
 `
 
 const StyledTitle = styled.h4`
-  color: ${props => props.theme.white};
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 26px;
+  line-height: 30px;
+  font-weight: bold;
   margin: 10px 0 0;
   padding: 0;
 `
@@ -319,23 +295,12 @@ const StyledSpacer = styled.div`
   width: 10px;
 `
 
-const StyledDetails = styled.div`
-  margin-top: 10px;
-  text-align: center;
-`
-
-const StyledDetail = styled.div`
-  color: ${props => props.theme.text2};
-  font-size: 14px;
-`
-
 const StyledInsight = styled.div`
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
   border-radius: 8px;
   background: transparent;
-  color: #9e9e9e;
   width: 100%;
   line-height: 25px;
   font-size: 13px;
