@@ -1,3 +1,5 @@
+// Remove this eslint-disable whenever have real NETWORK_URLS.
+/* eslint-disable no-useless-computed-key */
 import { Web3Provider } from '@ethersproject/providers'
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
