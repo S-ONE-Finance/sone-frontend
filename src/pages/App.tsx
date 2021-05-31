@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -40,6 +40,7 @@ import TabSwapLiquidity from '../components/TabSwapLiquidity'
 import { useLocation } from 'react-router'
 import WeeklyRanking from '../components/WeeklyRanking'
 import { ReactComponent as LogoForMobileResponsive } from '../assets/images/logo_for_mobile_responsive.svg'
+import { useTranslation } from 'react-i18next'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -129,8 +130,10 @@ function OnlyShowSwapAndLiquidity({ children }: { children?: React.ReactNode }) 
 }
 
 export default function App() {
+  // Trigger i18next in entire app.
+  useTranslation()
   return (
-    <Suspense fallback={null}>
+    <>
       <Route component={GoogleAnalyticsReporter} />
       <Route component={DarkModeQueryParamReader} />
       <AppWrapper>
@@ -180,6 +183,6 @@ export default function App() {
           <Footer />
         </FooterWrapper>
       </AppWrapper>
-    </Suspense>
+    </>
   )
 }

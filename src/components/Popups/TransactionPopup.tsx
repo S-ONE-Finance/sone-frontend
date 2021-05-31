@@ -1,5 +1,4 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { AlertCircle, CheckCircle } from 'react-feather'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
@@ -25,8 +24,6 @@ export default function TransactionPopup({
   success?: boolean
   summary?: string | TransactionSummary
 }) {
-  // NOTE: Để đây chỉ để cho thằng StyledSummary nó được render lại khi thay đổi ngôn ngữ.
-  useTranslation()
   const { chainId } = useActiveWeb3React()
 
   const theme = useTheme()
