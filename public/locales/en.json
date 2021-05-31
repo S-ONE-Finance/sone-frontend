@@ -1,0 +1,4 @@
+{
+  "summary_add": "Add <0>{{token0Amount}} </0><1>{{token0Symbol}}</1> and <2>{{token1Amount}} </2><1>{{token1Symbol}}</1>",
+  "summary_swap": "Swap <0>{{token0Amount}} </0><1>{{token0Symbol}}</1> for <2>{{token1Amount}} </2><1>{{token1Symbol}}</1>"
+}
