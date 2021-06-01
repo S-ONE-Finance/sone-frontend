@@ -7,6 +7,8 @@ import { START_REWARD_AT_BLOCK } from '../../config'
 import FarmCards from './components/FarmCards'
 import TotalLockValue from './components/TotalLockValue'
 import StakingHeader from './components/StakingHeader'
+import { Filter } from 'react-feather'
+
 
 export default function Farms() {
   const { chainId } = useActiveWeb3React()
@@ -32,6 +34,26 @@ export default function Farms() {
             <Balances />
           </>
         )}
+      </div>
+      <div>
+        <span>
+          <span>Sort by</span>
+          <select>
+            <option value="APY">APY</option>
+            <option value="Total liquidity">Total liquidity</option>
+            <option selected value="Bonus campaign">Bonus campaign</option>
+            <option value="LP Name">LP Name</option>
+          </select>
+        </span>
+        <span style={{marginLeft: '100px'}}>
+          <span> <Filter size={16}/> Filter</span>
+          <select>
+            <option value="Active pool">Active pool</option>
+            <option value="Inactive">Inactive</option>
+            <option selected value="My LP tokens">My LP tokens</option>
+            <option value="mango">Mango</option>
+          </select>
+        </span>
       </div>
       <Box className="mt-4">
         <FarmCards />

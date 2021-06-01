@@ -17,6 +17,9 @@ import { getNewRewardPerBlock } from '../../../sushi/utils'
 import { getBalanceNumber } from '../../../sushi/format/formatBalance'
 import { IsRopsten } from '../../../utils'
 import { NavLink } from 'react-router-dom'
+import IconAPY from '../../../assets/images/icon_apy.svg'
+import IconLP from '../../../assets/images/icon_lp.svg'
+
 
 interface FarmWithStakedValue extends Farm {
   tokenAmount: BigNumber
@@ -127,13 +130,12 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               {farm.isNew && <StyledNewIcon>THIS WEEK</StyledNewIcon>}
             </StyledTopIcon>
             <div style={{ display: 'flex', background: 'linear-gradient(180deg, #FFEFEF 48.7%, #F8F8F8 100%)' }}>
-              <StyledTitle>{farm.name}</StyledTitle>
               <div>
-                <img src={farm.icon} alt="" height="40" />
+                <StyledTitle>{farm.name}</StyledTitle>
+                <StyledMultiplier>40X</StyledMultiplier>
               </div>
-              <span>&nbsp;&nbsp;</span>
-              <div>
-                <img src={farm.icon2} alt="" height="40" />
+              <div style={{ marginLeft: '10px'}}>
+                <img src={IconLP} alt="" height="40" />
               </div>
             </div>
            
@@ -150,6 +152,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                 <StyledInsight>
                   <span>APY</span>
                   <span style={{ fontWeight: 'bold', color: '#3FAAB0' }}>
+                    <img src={IconAPY} alt="" height={12}/>
                     {newReward && farm.poolWeight && farm.luaPrice && farm.usdValue
                       ? `${parseFloat(farm.luaPrice
                             .times(NUMBER_BLOCKS_PER_YEAR[ID])
@@ -306,6 +309,14 @@ const StyledInsight = styled.div`
   font-size: 13px;
   border: 0px solid #e6dcd5;
   text-align: center;
+`
+
+const StyledMultiplier = styled.div`
+  border: 2px solid #3FAAB0;
+  border-radius: 19px;
+  display: inline;
+  color: #3FAAB0;
+  padding: 5px 14px;
 `
 
 export default FarmCards
