@@ -1,5 +1,5 @@
 import { ChainId, Currency } from '@s-one-finance/sdk-core'
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import Modal from '../Modal'
 import { ExternalLink } from '../../theme'
@@ -113,6 +113,7 @@ function TransactionSubmittedContent({
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
   const history = useHistory()
+  const showAddLiquidity = useMemo(() => history.location.pathname.includes('/swap'), [history.location.pathname])
 
   return (
     <Wrapper>
@@ -135,17 +136,19 @@ function TransactionSubmittedContent({
               </Text>
             </ExternalLink>
           )}
-          <ButtonPrimary
-            onClick={() => {
-              onDismiss()
-              history.push('/add')
-            }}
-            style={{ margin: '10px 0 0 0' }}
-          >
-            <Text fontWeight={700} fontSize={20}>
-              Add Liquidity
-            </Text>
-          </ButtonPrimary>
+          {showAddLiquidity && (
+            <ButtonPrimary
+              onClick={() => {
+                onDismiss()
+                history.push('/add')
+              }}
+              style={{ margin: '10px 0 0 0' }}
+            >
+              <Text fontWeight={700} fontSize={20}>
+                Add Liquidity
+              </Text>
+            </ButtonPrimary>
+          )}
         </AutoColumn>
       </Section>
     </Wrapper>
