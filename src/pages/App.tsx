@@ -38,6 +38,7 @@ import Vote from './Vote'
 import VotePage from './Vote/VotePage'
 import TabSwapLiquidity from '../components/TabSwapLiquidity'
 import Farms from './Farms'
+import Farm from './Farm'
 import { useLocation } from 'react-router'
 import WeeklyRanking from '../components/WeeklyRanking'
 import { ReactComponent as LogoForMobileResponsive } from '../assets/images/logo_for_mobile_responsive.svg'
@@ -156,6 +157,7 @@ export default function App() {
               <Route exact strict path="/find" component={PoolFinder} />
               {/*<Route exact strict path="/pool" component={Pool} />*/}
               <Route exact strict path="/farming" component={Farms} />
+              <Route exact strict path="/farming/:farmId" component={Farm} />
               <Route exact strict path="/uni" component={Earn} />
               <Route exact strict path="/vote" component={Vote} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />
