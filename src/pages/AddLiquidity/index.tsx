@@ -42,7 +42,7 @@ import styled from 'styled-components'
 import { QuestionHelper1416 } from '../../components/QuestionHelper'
 import TradePrice from '../../components/swap/TradePrice'
 import { InfoLink } from '../../components/swap/AdvancedSwapDetailsContent'
-import AddLiquidityMode from './AddLiquidityMode'
+import AddLiquidityModeToggle from './AddLiquidityModeToggle'
 import AddLiquidityConfirmationModalHeader from './AddLiquidityConfirmationModalHeader'
 
 const ButtonWrapper = styled.div<{ hasTrade?: boolean }>`
@@ -288,7 +288,7 @@ export default function AddLiquidity({
     <>
       <AppBody>
         <AppBodyTitleDescriptionSettings transactionType={TransactionType.ADD} />
-        <AddLiquidityMode />
+        <AddLiquidityModeToggle />
         <Wrapper>
           <TransactionConfirmationModal
             isOpen={showConfirm}
