@@ -8,6 +8,7 @@ import Settings from '../Settings'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from 'state'
 import { resetMintState } from 'state/mint/actions'
+import { TransactionType } from '../../state/transactions/types'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -34,7 +35,7 @@ export function FindPoolTabs() {
         </HistoryLink>
         <ActiveText>Import Pool</ActiveText>
         {/* Type để tạm thôi, app mới ko có FindPoolTabs. */}
-        <Settings type={'swap'} />
+        <Settings transactionType={TransactionType.SWAP} />
       </RowBetween>
     </Tabs>
   )
@@ -57,7 +58,7 @@ export function AddRemoveTabs({ adding }: { adding: boolean }) {
         </HistoryLink>
         <ActiveText>{adding ? 'Add Liquidity' : 'Remove Liquidity'}</ActiveText>
         {/* Type để tạm thôi, app mới ko có FindPoolTabs. */}
-        <Settings type={'swap'} />
+        <Settings transactionType={TransactionType.SWAP} />
       </RowBetween>
     </Tabs>
   )

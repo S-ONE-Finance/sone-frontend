@@ -7,7 +7,6 @@ import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
 import { ButtonError, ButtonPrimary } from '../../components/Button'
-import { LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -35,7 +34,7 @@ import { ClickableText, Dots, Wrapper } from '../Pool/styleds'
 import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
 import { currencyId } from '../../utils/currencyId'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { SummaryType } from '../../state/transactions/types'
+import { TransactionType } from '../../state/transactions/types'
 import useTheme from '../../hooks/useTheme'
 import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
 import { ArrowWrapper } from '../../components/swap/styleds'
@@ -200,7 +199,7 @@ export default function AddLiquidity({
 
           addTransaction(response, {
             summary: {
-              type: SummaryType.ADD,
+              type: TransactionType.ADD,
               token0Amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
               token0Symbol: currencies[Field.CURRENCY_A]?.symbol,
               token1Amount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
@@ -227,22 +226,7 @@ export default function AddLiquidity({
   }
 
   const modalHeader = () => {
-    return noLiquidity ? (
-      <AutoColumn gap="20px">
-        <LightCard mt="20px" borderRadius="20px">
-          <RowFlat>
-            <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
-              {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol}
-            </Text>
-            <DoubleCurrencyLogo
-              currency0={currencies[Field.CURRENCY_A]}
-              currency1={currencies[Field.CURRENCY_B]}
-              size={30}
-            />
-          </RowFlat>
-        </LightCard>
-      </AutoColumn>
-    ) : (
+    return (
       <AutoColumn gap="20px">
         <RowFlat style={{ marginTop: '20px' }}>
           <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
@@ -330,7 +314,7 @@ export default function AddLiquidity({
   return (
     <>
       <AppBody>
-        <AppBodyTitleDescriptionSettings type="add_liquidity" />
+        <AppBodyTitleDescriptionSettings transactionType={TransactionType.ADD} />
         <AddLiquidityMode />
         <Wrapper>
           <TransactionConfirmationModal
@@ -340,10 +324,11 @@ export default function AddLiquidity({
             hash={txHash}
             content={() => (
               <ConfirmationModalContent
-                title={noLiquidity ? 'You are creating a pool' : 'You will receive'}
+                title="Confirm Add Liquidity"
                 onDismiss={handleDismissConfirmation}
                 topContent={modalHeader}
                 bottomContent={modalBottom}
+                transactionType={TransactionType.ADD}
               />
             )}
             pendingText={pendingText}
@@ -440,7 +425,7 @@ export default function AddLiquidity({
             )}
           </ButtonWrapper>
           {isPairFilledAndValid && !isShowTransactionDetails && (
-            <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '35px' }}>
+            <ColumnCenter style={{ marginTop: '17.5px' }}>
               <ClickableText
                 fontSize={mobile13Desktop16}
                 fontWeight={500}
@@ -453,10 +438,7 @@ export default function AddLiquidity({
           )}
           {isPairFilledAndValid && isShowTransactionDetails ? (
             <>
-              <AutoColumn
-                gap={'15px'}
-                style={{ width: '100%', padding: isUpToExtraSmall ? '25px 8px 0' : '35px 8px 0' }}
-              >
+              <AutoColumn gap={'15px'} style={{ width: '100%', padding: '17.5px 8px 0' }}>
                 <RowBetween>
                   <RowFixed>
                     <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
@@ -515,7 +497,7 @@ export default function AddLiquidity({
           ) : (
             isShowTransactionDetails &&
             allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
-              <RowBetween align="center" padding={isUpToExtraSmall ? '25px 8px 0' : '35px 8px 0'}>
+              <RowBetween align="center" padding="17.5px 8px 0">
                 <RowFixed>
                   <ClickableText
                     fontWeight={500}
@@ -541,7 +523,7 @@ export default function AddLiquidity({
           {isPairFilledAndValid && isShowTransactionDetails && (
             <ColumnCenter>
               <ClickableText
-                marginTop={isUpToExtraSmall ? '25px' : '35px'}
+                marginTop="17.5px"
                 fontSize={mobile13Desktop16}
                 fontWeight={500}
                 color={theme.text5Sone}

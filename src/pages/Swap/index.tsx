@@ -56,6 +56,7 @@ import { useActiveWeb3React } from '../../hooks'
 import useENSAddress from '../../hooks/useENSAddress'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import useTheme from '../../hooks/useTheme'
+import { TransactionType } from '../../state/transactions/types'
 
 export const ResponsiveAutoColumn = styled(AutoColumn)`
   padding: 23px 14px 0;
@@ -335,7 +336,7 @@ export default function Swap({ history }: RouteComponentProps) {
         onDismiss={handleDismissTokenWarning}
       />
       <AppBody>
-        <AppBodyTitleDescriptionSettings type="swap" />
+        <AppBodyTitleDescriptionSettings transactionType={TransactionType.SWAP} />
         <Wrapper id="swap-page">
           <ConfirmSwapModal
             isOpen={showConfirm}

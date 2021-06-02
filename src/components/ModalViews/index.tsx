@@ -4,7 +4,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { AutoColumn, ColumnCenter } from '../Column'
 import styled from 'styled-components'
 import { RowBetween } from '../Row'
-import { TYPE, CloseIcon, CustomLightSpinner } from '../../theme'
+import { TYPE, StyledCloseIcon, CustomLightSpinner } from '../../theme'
 import { ArrowUpCircle } from 'react-feather'
 
 import Circle from '../../assets/images/blue-loader.svg'
@@ -22,12 +22,11 @@ const ConfirmedIcon = styled(ColumnCenter)`
 `
 
 export function LoadingView({ children, onDismiss }: { children: any; onDismiss: () => void }) {
-  const theme = useTheme()
   return (
     <ConfirmOrLoadingWrapper>
       <RowBetween>
         <div />
-        <CloseIcon onClick={onDismiss} color={theme.closeIcon} />
+        <StyledCloseIcon onClick={onDismiss} />
       </RowBetween>
       <ConfirmedIcon>
         <CustomLightSpinner src={Circle} alt="loader" size={'90px'} />
@@ -56,7 +55,7 @@ export function SubmittedView({
     <ConfirmOrLoadingWrapper>
       <RowBetween>
         <div />
-        <CloseIcon onClick={onDismiss} color={theme.closeIcon} />
+        <StyledCloseIcon onClick={onDismiss} />
       </RowBetween>
       <ConfirmedIcon>
         <ArrowUpCircle strokeWidth={0.5} size={90} color={theme.primary1} />

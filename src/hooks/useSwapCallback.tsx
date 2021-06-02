@@ -15,7 +15,7 @@ import { useV1ExchangeContract } from './useContract'
 import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './useENS'
 import { Version } from './useToggledVersion'
-import { SummaryType } from '../state/transactions/types'
+import { TransactionType } from '../state/transactions/types'
 
 // import { spawn } from 'child_process'
 
@@ -217,7 +217,7 @@ export function useSwapCallback(
 
             addTransaction(response, {
               summary: {
-                type: SummaryType.SWAP,
+                type: TransactionType.SWAP,
                 token0Amount: inputAmount,
                 token0Symbol: inputSymbol,
                 token1Amount: outputAmount,

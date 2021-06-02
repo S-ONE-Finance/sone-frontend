@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { Settings, X } from 'react-feather'
+import { Settings } from 'react-feather'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleSettingsMenu } from '../../state/application/hooks'
 import { useExpertModeManager, useUserTransactionTTL, useUserSlippageTolerance } from '../../state/user/hooks'
-import { CloseIcon } from '../../theme'
 import { ButtonError } from '../Button'
 import { AutoColumn } from '../Column'
 import Modal from '../Modal'
@@ -16,9 +15,9 @@ import TransactionSettings from '../TransactionSettings'
 import { ReactComponent as ExpertIcon } from '../../assets/svg/expert_icon.svg'
 import { ReactComponent as GlassesIcon } from '../../assets/svg/glasses_icon.svg'
 import useTheme from '../../hooks/useTheme'
-import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { TransactionType } from '../AppBodyTitleDescriptionSettings'
+import { StyledCloseIcon } from '../../theme'
 import AppVector from '../AppBodyTitleDescriptionSettings/AppVector'
+import { TransactionType } from '../../state/transactions/types'
 
 const StyledSettingsIcon = styled(Settings)`
   height: 24px;
@@ -43,19 +42,6 @@ const StyledGlassesIcon = styled(GlassesIcon)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     width: 14px;
   `};
-`
-
-const StyledCloseIcon = styled(X)`
-  height: 20px;
-  width: 20px;
-
-  :hover {
-    cursor: pointer;
-  }
-
-  > * {
-    stroke: ${({ theme }) => theme.text1};
-  }
 `
 
 const StyledMenuButton = styled.button`
@@ -206,8 +192,7 @@ const StyledExpertIcon = styled(ExpertIcon)`
   `};
 `
 
-export default function SettingsTab({ type }: { type: TransactionType }) {
-  const isUpToExtraSmall = useIsUpToExtraSmall()
+export default function SettingsTab({ transactionType }: { transactionType: TransactionType }) {
   const open = useModalOpen(ApplicationModal.SETTINGS)
   const toggle = useToggleSettingsMenu()
   const theme = useTheme()
@@ -275,12 +260,12 @@ export default function SettingsTab({ type }: { type: TransactionType }) {
         <Modal isOpen={open} onDismiss={toggle}>
           <MenuFlyout>
             <AbsoluteVector>
-              <AppVector type={type} size={'100%'} />
+              <AppVector transactionType={transactionType} size={'100%'} />
             </AbsoluteVector>
             <TitleBodyMarginer>
               <RowBetween>
                 <Title>Settings</Title>
-                <CloseIcon onClick={toggle} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
+                <StyledCloseIcon onClick={toggle} />
               </RowBetween>
               <SectionWrapper>
                 <TransactionSettings

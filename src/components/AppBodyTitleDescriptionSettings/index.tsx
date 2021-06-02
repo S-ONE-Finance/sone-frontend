@@ -4,6 +4,7 @@ import Settings from '../Settings'
 import { RowBetween } from '../Row'
 import Column from '../Column'
 import AppVector from './AppVector'
+import { TransactionType } from '../../state/transactions/types'
 
 const StyledHeader = styled.div`
   padding: 23px 30px 26px;
@@ -43,38 +44,29 @@ const TitleDescWrapper = styled(Column)`
   `};
 `
 
-export type TransactionType = 'swap' | 'add_liquidity'
-
-export default function AppBodyTitleDescriptionSettings({ type }: { type: TransactionType }) {
+export default function AppBodyTitleDescriptionSettings({ transactionType }: { transactionType: TransactionType }) {
   return (
     <StyledHeader>
       <RowBetween>
-        <AppVector type={type} />
+        <AppVector transactionType={transactionType} />
         <TitleDescWrapper>
-          <Title>{type === 'swap' ? 'Swap' : type === 'add_liquidity' ? 'Add Liquidity' : null}</Title>
+          <Title>
+            {transactionType === TransactionType.SWAP
+              ? 'Swap'
+              : transactionType === TransactionType.ADD
+              ? 'Add Liquidity'
+              : null}
+          </Title>
           <Description>
-            {type === 'swap'
+            {transactionType === TransactionType.SWAP
               ? 'Trade tokens in an instant'
-              : type === 'add_liquidity'
+              : transactionType === TransactionType.ADD
               ? 'Add liquidity to receive LP tokens'
               : null}
           </Description>
         </TitleDescWrapper>
-        <Settings type={type} />
+        <Settings transactionType={transactionType} />
       </RowBetween>
     </StyledHeader>
   )
-
-  // return (
-  //   <StyledSwapHeader>
-  //     <RowBetween>
-  //       <AppVector type={type} />
-  //       <TitleDescWrapper>
-  //         <Title>{t(`${type}`)}</Title>
-  //         <Description>{t(`${type}_description`)}</Description>
-  //       </TitleDescWrapper>
-  //       <Settings type={type} />
-  //     </RowBetween>
-  //   </StyledSwapHeader>
-  // )
 }

@@ -6,7 +6,7 @@ import { ExternalLink, TYPE } from '../../theme'
 import { getEtherscanLink } from '../../utils'
 import { AutoColumn } from '../Column'
 import Row, { AutoRow } from '../Row'
-import { SummaryType, TransactionSummary } from '../../state/transactions/types'
+import { TransactionType, TransactionSummary } from '../../state/transactions/types'
 import StyledSummary from '../StyledSummary'
 import { ButtonMainRed } from '../Web3Status'
 import useTheme from '../../hooks/useTheme'
@@ -45,7 +45,7 @@ export default function TransactionPopup({
         {chainId && (
           <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>View on Etherscan</ExternalLink>
         )}
-        {success && typeof summary !== 'string' && summary?.type === SummaryType.ADD && (
+        {success && typeof summary !== 'string' && summary?.type === TransactionType.ADD && (
           <Row justify={'flex-end'}>
             <ButtonMainRed>Stake now!</ButtonMainRed>
           </Row>

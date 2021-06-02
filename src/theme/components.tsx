@@ -3,7 +3,8 @@ import ReactGA from 'react-ga'
 import { Link } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
 import { darken } from 'polished'
-import { ArrowLeft, X, ExternalLink as LinkIconFeather, Trash } from 'react-feather'
+import { ArrowLeft, ExternalLink as LinkIconFeather, Trash } from 'react-feather'
+import { ReactComponent as Close } from '../assets/images/x.svg'
 
 export const ButtonText = styled.button`
   outline: none;
@@ -53,8 +54,22 @@ export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColo
   }
 `
 
-export const CloseIcon = styled(X)<{ onClick: () => void }>`
+export const StyledCloseIcon = styled(Close)<{ size?: string; sizeMobile?: string }>`
   cursor: pointer;
+  width: ${({ size }) => size || '21px'};
+  height: auto;
+
+  path {
+    stroke: ${({ theme }) => theme.closeIcon};
+  }
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
+    width: ${sizeMobile || '11px'};
+  `};
 `
 
 // for wrapper react feather icons
