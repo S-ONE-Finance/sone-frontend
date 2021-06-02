@@ -1,42 +1,36 @@
-import { BigNumber } from '@ethersproject/bignumber'
-import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, ETHER, TokenAmount } from '@s-one-finance/sdk-core'
 import React, { useCallback, useMemo, useState } from 'react'
-import { ChevronDown, ChevronUp, Plus } from 'react-feather'
-import ReactGA from 'react-ga'
+import { ChevronDown, ChevronUp } from 'react-feather'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
 import { ButtonError, ButtonPrimary } from '../../components/Button'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
+import { RowBetween, RowFixed } from '../../components/Row'
 
 import { INITIAL_ALLOWED_SLIPPAGE, ONE_BIPS, ROUTER_ADDRESS } from '../../constants'
 import { PairState } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
-import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
-import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
+import { useDerivedMintInfo, useMintActionHandlers } from '../../state/mint/hooks'
 
-import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useIsExpertMode, useShowTransactionDetailsManager, useUserSlippageTolerance } from '../../state/user/hooks'
+import {
+  useAddLiquidityModeManager,
+  useIsExpertMode,
+  useShowTransactionDetailsManager,
+  useUserSlippageTolerance
+} from '../../state/user/hooks'
 import { TYPE } from '../../theme'
-import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../../utils'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import { unwrappedToken, wrappedCurrency } from '../../utils/wrappedCurrency'
+import { unwrappedToken } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
 import { ClickableText, Dots, Wrapper } from '../Pool/styleds'
 import { AddLiquidityConfirmationModalFooter } from './AddLiquidityConfirmationModalFooter'
-import { currencyId } from '../../utils/currencyId'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { TransactionType } from '../../state/transactions/types'
 import useTheme from '../../hooks/useTheme'
 import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
-import { ArrowWrapper } from '../../components/swap/styleds'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import styled from 'styled-components'
 import { QuestionHelper1416 } from '../../components/QuestionHelper'
@@ -44,6 +38,10 @@ import TradePrice from '../../components/swap/TradePrice'
 import { InfoLink } from '../../components/swap/AdvancedSwapDetailsContent'
 import AddLiquidityModeToggle from './AddLiquidityModeToggle'
 import AddLiquidityConfirmationModalHeader from './AddLiquidityConfirmationModalHeader'
+import InputsOneTokenMode from './InputsOneTokenMode'
+import InputsTwoTokensMode from './InputsTwoTokensMode'
+import { AddLiquidityModeEnum } from '../../state/user/actions'
+import useAddLiquidityHandler from './useAddLiquidityHandler'
 
 const ButtonWrapper = styled.div<{ hasTrade?: boolean }>`
   margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '35px 0 0 0')};
@@ -56,11 +54,12 @@ const ButtonWrapper = styled.div<{ hasTrade?: boolean }>`
 export default function AddLiquidity({
   match: {
     params: { currencyIdA, currencyIdB }
-  },
-  history
+  }
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
+
+  const [addLiquidityMode] = useAddLiquidityModeManager()
 
   // Show transaction details.
   const [isShowTransactionDetails, toggleIsShowTransactionDetails] = useShowTransactionDetailsManager()
@@ -68,7 +67,7 @@ export default function AddLiquidity({
   // Show price invert or not.
   const [showInverted, setShowInverted] = useState<boolean>(false)
 
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const theme = useTheme()
 
   const currencyA = useCurrency(currencyIdA)
@@ -80,13 +79,11 @@ export default function AddLiquidity({
   const expertMode = useIsExpertMode()
 
   // mint state
-  const { independentField, typedValue, otherTypedValue } = useMintState()
   const {
-    dependentField,
     currencies,
     pair,
     pairState,
-    currencyBalances,
+
     parsedAmounts,
     price,
     noLiquidity,
@@ -94,7 +91,7 @@ export default function AddLiquidity({
     error
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
 
-  const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
+  const { onFieldAInput } = useMintActionHandlers(noLiquidity)
 
   const isValid = !error
 
@@ -103,126 +100,14 @@ export default function AddLiquidity({
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
   // txn values
-  const deadline = useTransactionDeadline() // custom from users settings
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
   const [txHash, setTxHash] = useState<string>('')
-
-  // get formatted amounts
-  const formattedAmounts = {
-    [independentField]: typedValue,
-    [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? ''
-  }
-
-  // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmountSpend(currencyBalances[field])
-      }
-    },
-    {}
-  )
-
-  const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0')
-      }
-    },
-    {}
-  )
 
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
   const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
 
-  const addTransaction = useTransactionAdder()
-
-  async function onAdd() {
-    if (!chainId || !library || !account) return
-    const router = getRouterContract(chainId, library, account)
-
-    const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
-    if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
-      return
-    }
-
-    const amountsMin = {
-      [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
-      [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0]
-    }
-
-    let estimate,
-      method: (...args: any) => Promise<TransactionResponse>,
-      args: Array<string | string[] | number>,
-      value: BigNumber | null
-    if (currencyA === ETHER || currencyB === ETHER) {
-      const tokenBIsETH = currencyB === ETHER
-      estimate = router.estimateGas.addLiquidityETH
-      method = router.addLiquidityETH
-      args = [
-        wrappedCurrency(tokenBIsETH ? currencyA : currencyB, chainId)?.address ?? '', // token
-        (tokenBIsETH ? parsedAmountA : parsedAmountB).raw.toString(), // token desired
-        amountsMin[tokenBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
-        amountsMin[tokenBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
-        account,
-        deadline.toHexString()
-      ]
-      value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).raw.toString())
-    } else {
-      estimate = router.estimateGas.addLiquidity
-      method = router.addLiquidity
-      args = [
-        wrappedCurrency(currencyA, chainId)?.address ?? '',
-        wrappedCurrency(currencyB, chainId)?.address ?? '',
-        parsedAmountA.raw.toString(),
-        parsedAmountB.raw.toString(),
-        amountsMin[Field.CURRENCY_A].toString(),
-        amountsMin[Field.CURRENCY_B].toString(),
-        account,
-        deadline.toHexString()
-      ]
-      value = null
-    }
-
-    setAttemptingTxn(true)
-    await estimate(...args, value ? { value } : {})
-      .then(estimatedGasLimit =>
-        method(...args, {
-          ...(value ? { value } : {}),
-          gasLimit: calculateGasMargin(estimatedGasLimit)
-        }).then(response => {
-          setAttemptingTxn(false)
-
-          addTransaction(response, {
-            summary: {
-              type: TransactionType.ADD,
-              token0Amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
-              token0Symbol: currencies[Field.CURRENCY_A]?.symbol,
-              token1Amount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
-              token1Symbol: currencies[Field.CURRENCY_B]?.symbol
-            }
-          })
-
-          setTxHash(response.hash)
-
-          ReactGA.event({
-            category: 'Liquidity',
-            action: 'Add',
-            label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/')
-          })
-        })
-      )
-      .catch(error => {
-        setAttemptingTxn(false)
-        // we only care if the error is something _other_ than the user rejected the tx
-        if (error?.code !== 4001) {
-          console.error(error)
-        }
-      })
-  }
+  const onAdd = useAddLiquidityHandler({ currencyIdA, currencyIdB, setAttemptingTxn, setTxHash })
 
   const modalBottom = () => {
     return (
@@ -240,33 +125,6 @@ export default function AddLiquidity({
   const pendingText = `Supplying ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
     currencies[Field.CURRENCY_A]?.symbol
   } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencies[Field.CURRENCY_B]?.symbol}`
-
-  const handleCurrencyASelect = useCallback(
-    (currencyA: Currency) => {
-      const newCurrencyIdA = currencyId(currencyA)
-      if (newCurrencyIdA === currencyIdB) {
-        history.push(`/add/${currencyIdB}/${currencyIdA}`)
-      } else {
-        history.push(`/add/${newCurrencyIdA}/${currencyIdB}`)
-      }
-    },
-    [currencyIdB, history, currencyIdA]
-  )
-  const handleCurrencyBSelect = useCallback(
-    (currencyB: Currency) => {
-      const newCurrencyIdB = currencyId(currencyB)
-      if (currencyIdA === newCurrencyIdB) {
-        if (currencyIdB) {
-          history.push(`/add/${currencyIdB}/${newCurrencyIdB}`)
-        } else {
-          history.push(`/add/${newCurrencyIdB}`)
-        }
-      } else {
-        history.push(`/add/${currencyIdA ? currencyIdA : 'ETH'}/${newCurrencyIdB}`)
-      }
-    },
-    [currencyIdA, history, currencyIdB]
-  )
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
@@ -307,39 +165,11 @@ export default function AddLiquidity({
             pendingText={pendingText}
             currencyToAdd={pair?.liquidityToken}
           />
-          <AutoColumn gap={'md'}>
-            <CurrencyInputPanel
-              value={formattedAmounts[Field.CURRENCY_A]}
-              onUserInput={onFieldAInput}
-              onMax={() => {
-                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-              }}
-              onCurrencySelect={handleCurrencyASelect}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-              currency={currencies[Field.CURRENCY_A]}
-              id="add-liquidity-input-tokena"
-              showCommonBases
-            />
-            <AutoColumn justify="space-between">
-              <AutoRow justify="center">
-                <ArrowWrapper clickable>
-                  <Plus size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />
-                </ArrowWrapper>
-              </AutoRow>
-            </AutoColumn>
-            <CurrencyInputPanel
-              value={formattedAmounts[Field.CURRENCY_B]}
-              onUserInput={onFieldBInput}
-              onCurrencySelect={handleCurrencyBSelect}
-              onMax={() => {
-                onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
-              }}
-              showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
-              currency={currencies[Field.CURRENCY_B]}
-              id="add-liquidity-input-tokenb"
-              showCommonBases
-            />
-          </AutoColumn>
+          {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
+            <InputsOneTokenMode />
+          ) : (
+            <InputsTwoTokensMode currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
+          )}
           <ButtonWrapper>
             {addIsUnsupported ? (
               <ButtonPrimary disabled={true}>
@@ -383,6 +213,7 @@ export default function AddLiquidity({
                       )}
                     </RowBetween>
                   )}
+
                 <ButtonError
                   onClick={() => {
                     expertMode ? onAdd() : setShowConfirm(true)

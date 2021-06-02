@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   `}
 `
 
-export const ArrowWrapper = styled.div<{ clickable: boolean }>`
+export const IconWrapper = styled.div<{ clickable: boolean }>`
   ${({ clickable }) =>
     clickable
       ? css`

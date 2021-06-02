@@ -14,7 +14,7 @@ import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
 import AdvancedSwapDetails from '../../components/swap/AdvancedSwapDetails'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
-import { ArrowWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
+import { IconWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
@@ -366,7 +366,7 @@ export default function Swap({ history }: RouteComponentProps) {
             />
             <AutoColumn justify="space-between">
               <AutoRow justify={'center'}>
-                <ArrowWrapper clickable>
+                <IconWrapper clickable>
                   <ArrowDown
                     size={isUpToExtraSmall ? '14' : '22'}
                     onClick={() => {
@@ -375,7 +375,7 @@ export default function Swap({ history }: RouteComponentProps) {
                     }}
                     color={theme.text1Sone}
                   />
-                </ArrowWrapper>
+                </IconWrapper>
               </AutoRow>
             </AutoColumn>
             <CurrencyInputPanel
@@ -392,9 +392,9 @@ export default function Swap({ history }: RouteComponentProps) {
             {recipient !== null && !showWrap ? (
               <>
                 <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
-                  <ArrowWrapper clickable={false}>
+                  <IconWrapper clickable={false}>
                     <ArrowDown size="16" color={theme.text2} />
-                  </ArrowWrapper>
+                  </IconWrapper>
                   <LinkStyledButton id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
                     - Remove send
                   </LinkStyledButton>
