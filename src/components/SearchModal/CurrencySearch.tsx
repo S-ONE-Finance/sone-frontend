@@ -5,7 +5,7 @@ import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import { useActiveWeb3React } from '../../hooks'
 import { useAllTokens, useToken, useIsUserAddedToken, useFoundOnInactiveList } from '../../hooks/Tokens'
-import { CloseIcon, TYPE, ButtonText } from '../../theme'
+import { TYPE, ButtonText } from '../../theme'
 import { isAddress } from '../../utils'
 import Column from '../Column'
 import Row, { RowBetween, RowFixed } from '../Row'
@@ -30,6 +30,7 @@ import ListLogo from '../ListLogo'
 import { useSelector } from 'react-redux'
 import { AppState } from '../../state'
 import { TokenList } from '@uniswap/token-lists/dist/types'
+import { StyledCloseIcon } from '../../theme/components'
 
 const SortDownIcon = styled(SortDownIconSvg)`
   cursor: pointer;
@@ -203,7 +204,8 @@ export function CurrencySearch({
             </Text>
             <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
           </RowFixed>
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
+          <StyledCloseIcon onClick={onDismiss} />
+          {/*<CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />*/}
         </RowBetween>
         <Row>
           <SearchInput

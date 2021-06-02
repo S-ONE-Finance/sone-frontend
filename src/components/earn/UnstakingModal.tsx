@@ -3,7 +3,7 @@ import Modal from '../Modal'
 import { AutoColumn } from '../Column'
 import styled from 'styled-components'
 import { RowBetween } from '../Row'
-import { TYPE, CloseIcon } from '../../theme'
+import { TYPE, StyledCloseIcon } from '../../theme'
 import { ButtonError } from '../Button'
 import { StakingInfo } from '../../state/stake/hooks'
 import { useStakingContract } from '../../hooks/useContract'
@@ -32,7 +32,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
   const [hash, setHash] = useState<string | undefined>()
   const [attempting, setAttempting] = useState(false)
 
-  function wrappedOndismiss() {
+  function wrappedOnDismiss() {
     setHash(undefined)
     setAttempting(false)
     onDismiss()
@@ -67,12 +67,12 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
   }
 
   return (
-    <Modal isOpen={isOpen} onDismiss={wrappedOndismiss} maxHeight={90}>
+    <Modal isOpen={isOpen} onDismiss={wrappedOnDismiss} maxHeight={90}>
       {!attempting && !hash && (
         <ContentWrapper gap="lg">
           <RowBetween>
             <TYPE.mediumHeader>Withdraw</TYPE.mediumHeader>
-            <CloseIcon onClick={wrappedOndismiss} />
+            <StyledCloseIcon onClick={wrappedOnDismiss} />
           </RowBetween>
           {stakingInfo?.stakedAmount && (
             <AutoColumn justify="center" gap="md">
@@ -99,7 +99,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
         </ContentWrapper>
       )}
       {attempting && !hash && (
-        <LoadingView onDismiss={wrappedOndismiss}>
+        <LoadingView onDismiss={wrappedOnDismiss}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.body fontSize={20}>Withdrawing {stakingInfo?.stakedAmount?.toSignificant(4)} UNI-V2</TYPE.body>
             <TYPE.body fontSize={20}>Claiming {stakingInfo?.earnedAmount?.toSignificant(4)} UNI</TYPE.body>
@@ -107,7 +107,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
         </LoadingView>
       )}
       {hash && (
-        <SubmittedView onDismiss={wrappedOndismiss} hash={hash}>
+        <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
             <TYPE.largeHeader>Transaction Submitted</TYPE.largeHeader>
             <TYPE.body fontSize={20}>Withdrew UNI-V2!</TYPE.body>

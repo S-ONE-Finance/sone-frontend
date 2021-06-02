@@ -5,7 +5,7 @@ import Modal from '../Modal'
 import { AutoColumn } from '../Column'
 import styled from 'styled-components'
 import { RowBetween } from '../Row'
-import { TYPE, CloseIcon } from '../../theme'
+import { TYPE, StyledCloseIcon } from '../../theme'
 import { ButtonConfirmed, ButtonError } from '../Button'
 import ProgressCircles from '../ProgressSteps'
 import CurrencyInputPanel from '../CurrencyInputPanel'
@@ -198,7 +198,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         <ContentWrapper gap="lg">
           <RowBetween>
             <TYPE.mediumHeader>Deposit</TYPE.mediumHeader>
-            <CloseIcon onClick={wrappedOnDismiss} />
+            <StyledCloseIcon onClick={wrappedOnDismiss} />
           </RowBetween>
           <CurrencyInputPanel
             value={typedValue}

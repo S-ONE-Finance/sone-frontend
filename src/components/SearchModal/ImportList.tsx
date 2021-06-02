@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import ReactGA from 'react-ga'
-import { TYPE, CloseIcon } from 'theme'
+import { TYPE, StyledCloseIcon } from 'theme'
 import Card from 'components/Card'
 import { AutoColumn } from 'components/Column'
 import { RowBetween, RowFixed, AutoRow } from 'components/Row'
@@ -81,7 +81,7 @@ export function ImportList({ listURL, list, setModalView, onDismiss }: ImportPro
         <RowBetween>
           <ArrowLeft style={{ cursor: 'pointer' }} onClick={() => setModalView(CurrencyModalView.manage)} />
           <TYPE.mediumHeader>Import List</TYPE.mediumHeader>
-          <CloseIcon onClick={onDismiss} color={theme.closeIcon} />
+          <StyledCloseIcon onClick={onDismiss} />
         </RowBetween>
       </PaddedColumn>
       <SectionBreak />

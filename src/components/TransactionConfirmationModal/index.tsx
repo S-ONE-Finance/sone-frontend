@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Modal from '../Modal'
 import { ExternalLink } from '../../theme'
 import { Text } from 'rebass'
-import { CloseIcon } from '../../theme'
+import { StyledCloseIcon } from '../../theme'
 import Row, { RowBetween } from '../Row'
 import { AlertTriangle, ArrowUpCircle } from 'react-feather'
 import { ButtonPrimary } from '../Button'
@@ -12,18 +12,17 @@ import { AutoColumn, ColumnCenter } from '../Column'
 import { getEtherscanLink } from '../../utils'
 import { useActiveWeb3React } from '../../hooks'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import SwapVectorLight from '../../assets/images/swap-vector-light.svg'
-import SwapVectorDark from '../../assets/images/swap-vector-dark.svg'
-import { useIsDarkMode } from '../../state/user/hooks'
 import SpinnerImage from '../../assets/svg/spinner.svg'
 import { useHistory } from 'react-router-dom'
 import useTheme from '../../hooks/useTheme'
+import { TransactionType } from '../../state/transactions/types'
+import AppVector from '../AppBodyTitleDescriptionSettings/AppVector'
 
 const Wrapper = styled.div`
   width: 100%;
 `
 const Section = styled(AutoColumn)`
-  padding: 32px 30px 25px;
+  padding: 30px 57px 25px;
   background-color: ${({ theme }) => theme.bg1Sone};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -56,15 +55,10 @@ const ModalTitle = styled.div`
   `}
 `
 
-const SwapVector = styled.img`
+const AbsoluteVector = styled.div`
   position: absolute;
   top: 0;
   right: 2rem;
-  width: 119.27px;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    width: 67.84px;
-  `}
 `
 
 const Spinner = styled.img`
@@ -76,14 +70,12 @@ const Spinner = styled.img`
 `
 
 function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () => void; pendingText: string }) {
-  const isUpToExtraSmall = useIsUpToExtraSmall()
-  const theme = useTheme()
   return (
     <Wrapper>
       <Section>
         <RowBetween>
           <div />
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
+          <StyledCloseIcon onClick={onDismiss} />
         </RowBetween>
         <ConfirmedIcon>
           <Spinner src={SpinnerImage} alt="spinner" />
@@ -127,7 +119,7 @@ function TransactionSubmittedContent({
       <Section>
         <RowBetween>
           <div />
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
+          <StyledCloseIcon onClick={onDismiss} />
         </RowBetween>
         <ConfirmedIcon>
           <ArrowUpCircle strokeWidth={1.5} size={90} color={theme.red1Sone} />
@@ -162,41 +154,42 @@ function TransactionSubmittedContent({
 
 export function ConfirmationModalContent({
   title,
-  bottomContent,
   onDismiss,
-  topContent
+  topContent,
+  bottomContent,
+  transactionType
 }: {
   title: string
   onDismiss: () => void
   topContent: () => React.ReactNode
   bottomContent: () => React.ReactNode
+  transactionType: TransactionType
 }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-  const isDarkMode = useIsDarkMode()
-  const theme = useTheme()
   return (
     <Wrapper>
       <Section>
         <RowBetween style={{ position: 'relative' }}>
-          <SwapVector src={isDarkMode ? SwapVectorDark : SwapVectorLight} alt="swap-vector" />
+          <AbsoluteVector>
+            <AppVector transactionType={transactionType} size="119.27px" sizeMobile="67.84px" />
+          </AbsoluteVector>
           <ModalTitle>{title}</ModalTitle>
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
+          <StyledCloseIcon onClick={onDismiss} />
         </RowBetween>
         {topContent()}
       </Section>
-      <BottomSection gap="12px">{bottomContent()}</BottomSection>
+      <BottomSection gap={isUpToExtraSmall ? '25px' : '35px'}>{bottomContent()}</BottomSection>
     </Wrapper>
   )
 }
 
 export function TransactionErrorContent({ message, onDismiss }: { message: string; onDismiss: () => void }) {
-  const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
   return (
     <Wrapper>
       <Section>
         <Row justify={'flex-end'}>
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
+          <StyledCloseIcon onClick={onDismiss} />
         </Row>
         <AutoColumn style={{ padding: '2rem 0' }} gap="24px" justify="center">
           <AlertTriangle color={theme.red1} style={{ strokeWidth: 1.5 }} size={64} />
@@ -233,7 +226,6 @@ export default function TransactionConfirmationModal({
 
   if (!chainId) return null
 
-  // confirmation screen
   return (
     // Nếu là modal pending hoặc submitted thì width là 462.
     <Modal isOpen={isOpen} onDismiss={onDismiss} maxHeight={90} maxWidth={attemptingTxn || hash ? 462 : undefined}>

@@ -7,7 +7,7 @@ import { ArrowDown, Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router'
 import { Text } from 'rebass'
-import { ButtonPrimary, ButtonLight, ButtonError, ButtonConfirmed } from '../../components/Button'
+import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import { BlueCard, LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
@@ -34,15 +34,15 @@ import useDebouncedChangeHandler from '../../utils/useDebouncedChangeHandler'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
 import { ClickableText, MaxButton, Wrapper } from '../Pool/styleds'
-import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { Dots } from '../../components/swap/styleds'
-import { useBurnActionHandlers } from '../../state/burn/hooks'
-import { useDerivedBurnInfo, useBurnState } from '../../state/burn/hooks'
+import { useBurnActionHandlers, useBurnState, useDerivedBurnInfo } from '../../state/burn/hooks'
 import { Field } from '../../state/burn/actions'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { BigNumber } from '@ethersproject/bignumber'
 import useTheme from '../../hooks/useTheme'
+import { TransactionType } from '../../state/transactions/types'
 
 export default function RemoveLiquidity({
   history,
@@ -482,11 +482,13 @@ export default function RemoveLiquidity({
             attemptingTxn={attemptingTxn}
             hash={txHash ? txHash : ''}
             content={() => (
+              // TODO: De TransactionType.SWAP tam thoi
               <ConfirmationModalContent
-                title={'You will receive'}
+                title="You will receive"
                 onDismiss={handleDismissConfirmation}
                 topContent={modalHeader}
                 bottomContent={modalBottom}
+                transactionType={TransactionType.SWAP}
               />
             )}
             pendingText={pendingText}

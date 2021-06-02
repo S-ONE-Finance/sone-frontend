@@ -17,7 +17,8 @@ import SoneAmount from '../SoneAmount'
 import RecentTransactions from '../RecentTransactions'
 import Column from '../Column'
 import { RowBetween } from '../Row'
-import { CloseColor, CloseIcon } from '../WalletModal'
+import { StyledCloseAbsolute } from '../WalletModal'
+import { StyledCloseIcon } from '../../theme/components'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
   padding-top: 1rem;
@@ -121,9 +122,9 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
   return (
     <ColumnWrapper onClick={closeModal}>
       <Column>
-        <CloseIcon>
-          <CloseColor />
-        </CloseIcon>
+        <StyledCloseAbsolute>
+          <StyledCloseIcon />
+        </StyledCloseAbsolute>
         <TYPE.black fontSize={14}>Address:</TYPE.black>
         <TYPE.subText marginTop={'0.25rem'}>{account && shortenAddress(account, 14)}</TYPE.subText>
         <RowBetween marginTop={'1rem'}>

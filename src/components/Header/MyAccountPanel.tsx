@@ -69,11 +69,6 @@ const MyAccountButton = styled(ButtonPrimary)`
   font-size: 18px;
   font-weight: 500;
   border-radius: 30px;
-
-  :hover,
-  :focus {
-    background-color: ${({ theme }) => theme.red1Sone};
-  }
 `
 
 const PaddingColumn = styled(Column)`

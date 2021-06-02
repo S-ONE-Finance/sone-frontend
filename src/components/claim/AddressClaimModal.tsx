@@ -4,7 +4,7 @@ import { AutoColumn, ColumnCenter } from '../Column'
 import styled from 'styled-components'
 import { DataCard, CardSection, Break } from '../earn/styled'
 import { RowBetween } from '../Row'
-import { TYPE, ExternalLink, CloseIcon, CustomLightSpinner, UniTokenAnimated } from '../../theme'
+import { TYPE, ExternalLink, CustomLightSpinner, UniTokenAnimated, StyledCloseIcon } from '../../theme'
 import { ButtonPrimary } from '../Button'
 import { useClaimCallback, useUserUnclaimedAmount, useUserHasAvailableClaim } from '../../state/claim/hooks'
 import tokenLogo from '../../assets/images/token-logo.png'
@@ -103,7 +103,7 @@ export default function AddressClaimModal({ isOpen, onDismiss }: { isOpen: boole
             <CardSection gap="md">
               <RowBetween>
                 <TYPE.white fontWeight={500}>Claim UNI Token</TYPE.white>
-                <CloseIcon onClick={wrappedOnDismiss} style={{ zIndex: 99 }} stroke="white" />
+                <StyledCloseIcon onClick={wrappedOnDismiss} style={{ zIndex: 99 }} />
               </RowBetween>
               <TYPE.white fontWeight={700} fontSize={36}>
                 {unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-')} UNI
@@ -139,7 +139,7 @@ export default function AddressClaimModal({ isOpen, onDismiss }: { isOpen: boole
           <CardBGImageSmaller desaturate />
           <RowBetween>
             <div />
-            <CloseIcon onClick={wrappedOnDismiss} style={{ zIndex: 99 }} stroke="black" />
+            <StyledCloseIcon onClick={wrappedOnDismiss} style={{ zIndex: 99 }} />
           </RowBetween>
           <ConfirmedIcon>
             {!claimConfirmed ? (

@@ -6,6 +6,7 @@ import TransactionConfirmationModal, {
 } from '../TransactionConfirmationModal'
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
+import { TransactionType } from '../../state/transactions/types'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
@@ -88,6 +89,7 @@ export default function ConfirmSwapModal({
         <TransactionErrorContent onDismiss={onDismiss} message={swapErrorMessage} />
       ) : (
         <ConfirmationModalContent
+          transactionType={TransactionType.SWAP}
           title={'Confirm Swap'}
           onDismiss={onDismiss}
           topContent={modalHeader}

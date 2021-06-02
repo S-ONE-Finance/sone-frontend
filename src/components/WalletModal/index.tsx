@@ -6,7 +6,6 @@ import { isMobile } from 'react-device-detect'
 import ReactGA from 'react-ga'
 import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
-import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { fortmatic, injected, portis } from '../../connectors'
 import { OVERLAY_READY } from '../../connectors/Fortmatic'
 import { SUPPORTED_WALLETS } from '../../constants'
@@ -15,30 +14,20 @@ import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ExternalLink } from '../../theme'
 import AccountDetails from '../AccountDetails'
+import { StyledCloseIcon } from '../../theme/components'
 
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
 
-export const CloseIcon = styled.div`
+export const StyledCloseAbsolute = styled.div`
   position: absolute;
   right: 2rem;
   top: 2.5rem;
 
-  &:hover {
-    cursor: pointer;
-    opacity: 0.6;
-  }
-
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     top: 1.75rem;
   `};
-`
-
-export const CloseColor = styled(Close)`
-  path {
-    stroke: ${({ theme }) => theme.closeIcon};
-  }
 `
 
 const Wrapper = styled.div`
@@ -314,9 +303,9 @@ export default function WalletModal({
     if (error) {
       return (
         <UpperSection>
-          <CloseIcon onClick={toggleWalletModal}>
-            <CloseColor />
-          </CloseIcon>
+          <StyledCloseAbsolute onClick={toggleWalletModal}>
+            <StyledCloseIcon />
+          </StyledCloseAbsolute>
           <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
@@ -341,9 +330,9 @@ export default function WalletModal({
     }
     return (
       <UpperSection>
-        <CloseIcon onClick={toggleWalletModal}>
-          <CloseColor />
-        </CloseIcon>
+        <StyledCloseAbsolute onClick={toggleWalletModal}>
+          <StyledCloseIcon />
+        </StyledCloseAbsolute>
         {/* {walletView !== WALLET_VIEWS.ACCOUNT ? (
           <HeaderRow color="blue">
             <HoverText

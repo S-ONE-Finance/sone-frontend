@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
 import useENSName from '../../hooks/useENSName'
-import { useWindowSize } from '../../hooks/useWindowSize'
+import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 
@@ -16,6 +16,7 @@ import { NetworkContextName } from '../../constants'
 import { TransactionDetails } from '../../state/transactions/reducer'
 
 import WalletModal from '../WalletModal'
+import { darken } from 'polished'
 
 const Text = styled.p`
   flex: 1 1 auto;
@@ -52,7 +53,7 @@ export const ButtonMainRed = styled.div<{ cursor?: string }>`
 
   :hover,
   :focus {
-    background-color: ${({ theme }) => theme.red1Sone};
+    background-color: ${({ theme }) => darken(0.05, theme.red1Sone)};
   }
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -68,8 +69,8 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 function Web3StatusInner() {
   const { account, error } = useWeb3React()
   const toggleWalletModal = useWalletModalToggle()
+  const isUpToExtraSmall = useIsUpToExtraSmall()
   const history = useHistory()
-  const size = useWindowSize()
 
   if (account) {
     return (
@@ -77,8 +78,8 @@ function Web3StatusInner() {
         id="web3-status-connected"
         cursor="normal"
         onClick={() => {
-          // Trên điện thoại và dưới 500px thì click vào sẽ ra my account.
-          if (size?.width && size?.width <= 500) {
+          // Trên small devices, click vào sẽ ra my account.
+          if (isUpToExtraSmall) {
             history.push('/my_account')
           }
         }}

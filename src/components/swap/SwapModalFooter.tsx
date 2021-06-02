@@ -11,7 +11,7 @@ import {
 } from '../../utils/prices'
 import { ButtonError } from '../Button'
 import { AutoColumn } from '../Column'
-import { AutoRow, RowBetween, RowFixed } from '../Row'
+import { RowBetween, RowFixed } from '../Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
@@ -102,22 +102,12 @@ export default function SwapModalFooter({
           </Text>
         </RowBetween>
       </AutoColumn>
-
-      <AutoRow>
-        <ButtonError
-          onClick={onConfirm}
-          disabled={disabledConfirm}
-          error={severity > 2}
-          style={{ margin: '10px 0 0 0' }}
-          id="confirm-swap-or-send"
-        >
-          <Text fontSize={20} fontWeight={700}>
-            {severity > 2 ? 'Swap Anyway' : 'Swap'}
-          </Text>
-        </ButtonError>
-
-        {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
-      </AutoRow>
+      <ButtonError onClick={onConfirm} disabled={disabledConfirm} error={severity > 2} id="confirm-swap-or-send">
+        <Text fontSize={20} fontWeight={700}>
+          {severity > 2 ? 'Swap Anyway' : 'Swap'}
+        </Text>
+      </ButtonError>
+      {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
     </>
   )
 }

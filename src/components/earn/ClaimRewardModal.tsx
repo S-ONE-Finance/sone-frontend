@@ -3,7 +3,7 @@ import Modal from '../Modal'
 import { AutoColumn } from '../Column'
 import styled from 'styled-components'
 import { RowBetween } from '../Row'
-import { TYPE, CloseIcon } from '../../theme'
+import { TYPE, StyledCloseIcon } from '../../theme'
 import { ButtonError } from '../Button'
 import { StakingInfo } from '../../state/stake/hooks'
 import { useStakingContract } from '../../hooks/useContract'
@@ -71,7 +71,7 @@ export default function ClaimRewardModal({ isOpen, onDismiss, stakingInfo }: Sta
         <ContentWrapper gap="lg">
           <RowBetween>
             <TYPE.mediumHeader>Claim</TYPE.mediumHeader>
-            <CloseIcon onClick={wrappedOnDismiss} />
+            <StyledCloseIcon onClick={wrappedOnDismiss} />
           </RowBetween>
           {stakingInfo?.earnedAmount && (
             <AutoColumn justify="center" gap="md">

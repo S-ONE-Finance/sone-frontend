@@ -1,10 +1,10 @@
-export enum SummaryType {
+export enum TransactionType {
   SWAP,
   ADD
 }
 
 export interface SummaryTwoToken {
-  type: SummaryType
+  type: TransactionType
   token0Amount?: string
   token0Symbol?: string
   token1Amount?: string

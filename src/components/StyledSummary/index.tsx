@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Trans } from 'react-i18next'
 
-import { isSummaryTwoToken, SummaryType, TransactionSummary } from '../../state/transactions/types'
+import { isSummaryTwoToken, TransactionType, TransactionSummary } from '../../state/transactions/types'
 
 const Bold = styled.span`
   font-weight: 700;
@@ -21,10 +21,10 @@ export default function StyledSummary({ summary }: { summary: TransactionSummary
     const { token0Amount, token0Symbol, token1Amount, token1Symbol } = summary
     let i18nKey
     switch (summary.type) {
-      case SummaryType.SWAP:
+      case TransactionType.SWAP:
         i18nKey = 'summary_swap'
         break
-      case SummaryType.ADD:
+      case TransactionType.ADD:
         i18nKey = 'summary_add'
         break
       default:
