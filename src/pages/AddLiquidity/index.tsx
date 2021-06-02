@@ -1,8 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, ETHER, TokenAmount } from '@s-one-finance/sdk-core'
+import { Currency, ETHER, TokenAmount, TradeType } from '@s-one-finance/sdk-core'
 import React, { useCallback, useMemo, useState } from 'react'
-import { ChevronDown, ChevronUp, Plus } from 'react-feather'
+import { ArrowDown, ChevronDown, ChevronUp, Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
@@ -37,13 +37,14 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { TransactionType } from '../../state/transactions/types'
 import useTheme from '../../hooks/useTheme'
 import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
-import { ArrowWrapper } from '../../components/swap/styleds'
+import { ArrowWrapper, TruncatedText } from '../../components/swap/styleds'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import styled from 'styled-components'
 import { QuestionHelper1416 } from '../../components/QuestionHelper'
 import TradePrice from '../../components/swap/TradePrice'
 import { InfoLink } from '../../components/swap/AdvancedSwapDetailsContent'
 import AddLiquidityMode from './AddLiquidityMode'
+import CurrencyLogo from '../../components/CurrencyLogo'
 
 const ButtonWrapper = styled.div<{ hasTrade?: boolean }>`
   margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '35px 0 0 0')};
@@ -225,31 +226,62 @@ export default function AddLiquidity({
       })
   }
 
-  const modalHeader = () => {
+  const modalHeader = useCallback(() => {
     return (
-      <AutoColumn gap="20px">
-        <RowFlat style={{ marginTop: '20px' }}>
-          <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
-            {liquidityMinted?.toSignificant(6)}
-          </Text>
-          <DoubleCurrencyLogo
-            currency0={currencies[Field.CURRENCY_A]}
-            currency1={currencies[Field.CURRENCY_B]}
-            size={30}
-          />
-        </RowFlat>
-        <Row>
-          <Text fontSize="24px">
-            {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol + ' Pool Tokens'}
-          </Text>
-        </Row>
-        <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
-          {`Output is estimated. If the price changes by more than ${allowedSlippage /
-            100}% your transaction will revert.`}
-        </TYPE.italic>
+      <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>
+        <RowBetween align="flex-end">
+          <RowFixed gap={'0px'}>
+            <TruncatedText fontSize={isUpToExtraSmall ? '20px' : '28px'} fontWeight={600}>
+              123,456,789
+            </TruncatedText>
+          </RowFixed>
+          {/* zIndex để hiển thị đè lên SwapVector. */}
+          <RowFixed gap={'0px'} style={{ height: '100%', zIndex: 1 }} align={'center'}>
+            <CurrencyLogo currency={currencies[Field.CURRENCY_A]} size={'24px'} style={{ marginRight: '5px' }} />
+            <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
+              {currencies[Field.CURRENCY_A]?.symbol}
+            </Text>
+          </RowFixed>
+        </RowBetween>
+        <RowFixed>
+          <Plus size="20" color={theme.text2} style={{ minWidth: '16px' }} />
+        </RowFixed>
+        <RowBetween align="flex-end">
+          <RowFixed gap={'0px'}>
+            <TruncatedText fontSize={isUpToExtraSmall ? '20px' : '28px'} fontWeight={600}>
+              987,654,321
+            </TruncatedText>
+          </RowFixed>
+          <RowFixed gap={'0px'} style={{ height: '100%' }} align={'center'}>
+            <CurrencyLogo currency={currencies[Field.CURRENCY_B]} size={'24px'} style={{ marginRight: '5px' }} />
+            <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
+              {currencies[Field.CURRENCY_B]?.symbol}
+            </Text>
+          </RowFixed>
+        </RowBetween>
+        {/*askdjlkdsajlksajlsadjlsajdlk */}
+        {/*<RowFlat>*/}
+        {/*  <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>*/}
+        {/*    {liquidityMinted?.toSignificant(6)}*/}
+        {/*  </Text>*/}
+        {/*  <DoubleCurrencyLogo*/}
+        {/*    currency0={currencies[Field.CURRENCY_A]}*/}
+        {/*    currency1={currencies[Field.CURRENCY_B]}*/}
+        {/*    size={30}*/}
+        {/*  />*/}
+        {/*</RowFlat>*/}
+        {/*<Row>*/}
+        {/*  <Text fontSize="24px">*/}
+        {/*    {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol + ' Pool Tokens'}*/}
+        {/*  </Text>*/}
+        {/*</Row>*/}
+        {/*<TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>*/}
+        {/*  {`Output is estimated. If the price changes by more than ${allowedSlippage /*/}
+        {/*    100}% your transaction will revert.`}*/}
+        {/*</TYPE.italic>*/}
       </AutoColumn>
     )
-  }
+  }, [currencies, theme, isUpToExtraSmall])
 
   const modalBottom = () => {
     return (
