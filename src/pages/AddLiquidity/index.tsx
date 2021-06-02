@@ -10,8 +10,7 @@ import { ButtonError, ButtonPrimary } from '../../components/Button'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import DoubleCurrencyLogo from '../../components/DoubleLogo'
-import Row, { AutoRow, RowBetween, RowFixed, RowFlat } from '../../components/Row'
+import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
 
 import { INITIAL_ALLOWED_SLIPPAGE, ONE_BIPS, ROUTER_ADDRESS } from '../../constants'
 import { PairState } from '../../data/Reserves'
@@ -31,7 +30,7 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { unwrappedToken, wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
 import { ClickableText, Dots, Wrapper } from '../Pool/styleds'
-import { ConfirmAddModalBottom } from './ConfirmAddModalBottom'
+import { AddLiquidityConfirmationModalFooter } from './AddLiquidityConfirmationModalFooter'
 import { currencyId } from '../../utils/currencyId'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { TransactionType } from '../../state/transactions/types'
@@ -44,6 +43,7 @@ import { QuestionHelper1416 } from '../../components/QuestionHelper'
 import TradePrice from '../../components/swap/TradePrice'
 import { InfoLink } from '../../components/swap/AdvancedSwapDetailsContent'
 import AddLiquidityMode from './AddLiquidityMode'
+import AddLiquidityConfirmationModalHeader from './AddLiquidityConfirmationModalHeader'
 
 const ButtonWrapper = styled.div<{ hasTrade?: boolean }>`
   margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '35px 0 0 0')};
@@ -90,7 +90,6 @@ export default function AddLiquidity({
     parsedAmounts,
     price,
     noLiquidity,
-    liquidityMinted,
     poolTokenPercentage,
     error
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
@@ -225,35 +224,9 @@ export default function AddLiquidity({
       })
   }
 
-  const modalHeader = () => {
-    return (
-      <AutoColumn gap="20px">
-        <RowFlat style={{ marginTop: '20px' }}>
-          <Text fontSize="48px" fontWeight={500} lineHeight="42px" marginRight={10}>
-            {liquidityMinted?.toSignificant(6)}
-          </Text>
-          <DoubleCurrencyLogo
-            currency0={currencies[Field.CURRENCY_A]}
-            currency1={currencies[Field.CURRENCY_B]}
-            size={30}
-          />
-        </RowFlat>
-        <Row>
-          <Text fontSize="24px">
-            {currencies[Field.CURRENCY_A]?.symbol + '/' + currencies[Field.CURRENCY_B]?.symbol + ' Pool Tokens'}
-          </Text>
-        </Row>
-        <TYPE.italic fontSize={12} textAlign="left" padding={'8px 0 0 0 '}>
-          {`Output is estimated. If the price changes by more than ${allowedSlippage /
-            100}% your transaction will revert.`}
-        </TYPE.italic>
-      </AutoColumn>
-    )
-  }
-
   const modalBottom = () => {
     return (
-      <ConfirmAddModalBottom
+      <AddLiquidityConfirmationModalFooter
         price={price}
         currencies={currencies}
         parsedAmounts={parsedAmounts}
@@ -326,7 +299,7 @@ export default function AddLiquidity({
               <ConfirmationModalContent
                 title="Confirm Add Liquidity"
                 onDismiss={handleDismissConfirmation}
-                topContent={modalHeader}
+                topContent={() => AddLiquidityConfirmationModalHeader({ parsedAmounts, currencies })}
                 bottomContent={modalBottom}
                 transactionType={TransactionType.ADD}
               />
@@ -348,7 +321,7 @@ export default function AddLiquidity({
               showCommonBases
             />
             <AutoColumn justify="space-between">
-              <AutoRow justify={'center'}>
+              <AutoRow justify="center">
                 <ArrowWrapper clickable>
                   <Plus size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />
                 </ArrowWrapper>
@@ -417,9 +390,7 @@ export default function AddLiquidity({
                   disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
                   error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                 >
-                  <Text fontSize={20} fontWeight={500}>
-                    {error ?? 'Add Liquidity'}
-                  </Text>
+                  {error ?? 'Add Liquidity'}
                 </ButtonError>
               </AutoColumn>
             )}
