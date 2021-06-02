@@ -6,7 +6,7 @@ import { Text } from 'rebass'
 import styled from 'styled-components'
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonConfirmed, ButtonError, ButtonPrimary } from '../../components/Button'
-import Card, { GreyCard } from '../../components/Card'
+import Card from '../../components/Card'
 import Column, { AutoColumn, ColumnCenter } from '../../components/Column'
 import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
@@ -492,12 +492,11 @@ export default function Swap({ history }: RouteComponentProps) {
                   (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
               </ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
-              <GreyCard style={{ textAlign: 'center' }} borderRadius={'40px'} padding={mobile16Desktop22 + 'px'}>
-                <Text fontSize={mobile16Desktop22} fontWeight={700} color={theme.text3}>
+              <ButtonError disabled>
+                <Text fontSize={mobile16Desktop22} fontWeight={700}>
                   Insufficient liquidity for this trade
                 </Text>
-                {singleHopOnly && <TYPE.main mb="4px">Try enabling multi-hop trades.</TYPE.main>}
-              </GreyCard>
+              </ButtonError>
             ) : showApproveFlow ? (
               <RowBetween>
                 <ButtonConfirmed

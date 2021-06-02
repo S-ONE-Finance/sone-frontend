@@ -390,9 +390,7 @@ export default function AddLiquidity({
                   disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
                   error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
                 >
-                  <Text fontSize={20} fontWeight={500}>
-                    {error ?? 'Add Liquidity'}
-                  </Text>
+                  {error ?? 'Add Liquidity'}
                 </ButtonError>
               </AutoColumn>
             )}
