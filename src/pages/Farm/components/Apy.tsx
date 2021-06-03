@@ -42,8 +42,12 @@ const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, symbolShort, tokenSymbol
     }
     if (sushi && lpContract) {
       fetchData()
-    }
+    } 
   }, [sushi, setTotalStake, lpContract])
+
+  console.log('newReward', newReward.toFixed(2))
+  console.log('stakedValue', stakedValue)
+  console.log('luaPrice', luaPrice.toFixed(2))
 
   return (
     <StyledApy>
@@ -67,21 +71,6 @@ const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, symbolShort, tokenSymbol
               ).toLocaleString('en-US')}%`
             : 'loading'}
         </StyledContent>
-      </StyledBox>
-      <StyledBox className="col-7">
-        <StyledLabel>Total Staked LP Token</StyledLabel>
-        <StyledContent>
-          {stakedValue && stakedValue.tokenAmount ? (stakedValue.tokenAmount as any).toLocaleString('en-US') : '~'}{' '}
-          <span style={{ fontSize: 10 }}>{tokenSymbol}</span>
-          &nbsp; + &nbsp;
-          {stakedValue && stakedValue.token2Amount
-            ? (stakedValue.token2Amount as any).toLocaleString('en-US')
-            : '~'}{' '}
-          <span style={{ fontSize: 10 }}>{token2Symbol}</span>
-        </StyledContent>
-        <StyledEquility>
-          {totalStake ? getBalanceNumber(totalStake) : '~'} <span style={{ fontSize: 10 }}>{symbolShort} LP</span>
-        </StyledEquility>
       </StyledBox>
       <StyledBox className="col-2">
         <StyledLabel>Reward per block</StyledLabel>
@@ -133,7 +122,7 @@ const StyledLabel = styled.span`
 `
 
 const StyledContent = styled.span`
-  color: ${props => props.theme.white};
+  color: black;
   font-weight: bold;
   display: block;
   padding: 10px 0;

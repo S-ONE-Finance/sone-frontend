@@ -10,6 +10,7 @@ import { getContract } from '../../sushi/format/erc20'
 import Apy from './components/Apy'
 import Harvest from './components/Harvest'
 import Stake from './components/Stake'
+import IconLP from '../../assets/images/icon_lp.svg'
 
 const Farm: React.FC = () => {
   const { farmId } = useParams() as any
@@ -65,14 +66,7 @@ const Farm: React.FC = () => {
   return (
     <>
       <PageHeader
-        icon={
-          <div style={{ display: 'flex' }}>
-            <img src={icon} height="80" />
-            &nbsp;
-            <img src={icon2} height="80" />
-          </div>
-        }
-        subtitle={description}
+        icon={IconLP}
         title={name}
       />
       <StyledFarm>
@@ -88,9 +82,6 @@ const Farm: React.FC = () => {
         <StyledHeading>Your staking</StyledHeading>
         {account && (
           <StyledCardsWrapper>
-            <StyledCardWrapper>
-              <Harvest pid={pid} />
-            </StyledCardWrapper>
             <StyledCardWrapper>
               <Stake
                 lpContract={lpContract}
@@ -125,37 +116,6 @@ const Farm: React.FC = () => {
             </div>
           </StyledCardsWrapper>
         )}
-        <StyledInfo style={{ color: '#ff9800' }}>
-          👉 Every time you stake and unstake LP tokens, the contract will 
-          <br />
-          automatically harvest LUA rewards for you!
-        </StyledInfo>
-        <StyledCardsWrapper>
-          <div>
-            <div style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 14, marginBottom: 10 }}>
-              MAYBE YOU DON'T KNOW
-            </div>
-            <StyledInfoLP>
-              <img src={iconProtocal} height="50" style={{ marginTop: 5 }} />
-              <div
-                style={{ width: 'calc(100% - 70px', color: '#ffffff', fontSize: 16, marginLeft: 20, marginRight: 20 }}
-              >
-                <div>
-                  Add liquidity to{' '}
-                  <a style={{ color: '#f6b944', textDecoration: 'none' }} href={pairLink} target="__blank">
-                    <b>{symbolShort} pair</b>
-                  </a>{' '}
-                  on {protocal} to get <span style={{ color: '#f6b944' }}>{lpToken}</span> tokens. Then deposit those LP
-                  tokens on LuaSwap to receive rewards
-                </div>
-                <a style={{ color: '#f6b944' }} target="__blank" href={addLiquidityLink}>
-                  <b>Add Liquidity on {protocal}</b>
-                </a>
-              </div>
-            </StyledInfoLP>
-          </div>
-        </StyledCardsWrapper>
-
       </StyledFarm>
     </>
   )

@@ -2,18 +2,16 @@ import React from 'react'
 import styled from 'styled-components'
 
 interface PageHeaderProps {
-  icon: React.ReactNode
-  subtitle?: string
+  icon: string
   title?: string
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ icon, subtitle, title }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({ icon, title }) => {
   return (
     <div>
       <StyledPageHeader>
-        <StyledIcon>{icon}</StyledIcon>
+        <StyledIcon><img src={icon} alt=""/></StyledIcon>
         <StyledTitle>{title}</StyledTitle>
-        <StyledSubtitle>{subtitle}</StyledSubtitle>
       </StyledPageHeader>
     </div>
   )
@@ -22,35 +20,24 @@ const PageHeader: React.FC<PageHeaderProps> = ({ icon, subtitle, title }) => {
 const StyledPageHeader = styled.div`
   align-items: center;
   box-sizing: border-box;
-  display: flex;
   flex-direction: column;
   padding-bottom: 10px;
   margin: 0 auto;
 `
 
-const StyledIcon = styled.div`
+const StyledIcon = styled.span`
   font-size: 120px;
   height: 120px;
   line-height: 120px;
   text-align: center;
 `
 
-const StyledTitle = styled.h1`
+const StyledTitle = styled.span`
   font-family: 'Kaushan Script', sans-serif;
-  color: ${props => props.theme.white};
+  color: black;
   font-size: 36px;
   font-weight: 700;
   margin: 0;
   padding: 0;
 `
-
-const StyledSubtitle = styled.h3`
-  color: ${props => props.theme.text2};
-  font-size: 18px;
-  font-weight: 400;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-`
-
 export default PageHeader

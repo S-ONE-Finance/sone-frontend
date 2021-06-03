@@ -38,6 +38,9 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
   const stakedBalance = useStakedBalance(pid)
   const poolActive = usePoolActive(pid)
 
+  console.log('poolActive', poolActive);
+  
+
   const [totalStake, setTotalStake] = useState<BigNumber>()
   const sushi = useSushi()
   const block = useBlock()
@@ -99,25 +102,8 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
               <br />
               <ValueStyled>{new BigNumber(getBalanceNumber(stakedBalance)).toFormat(6)}</ValueStyled>
               <br />
-              <StyledContent>
-                <div>
-                  {new BigNumber(totalToken).toFormat(6)}
-                  <span style={{ fontSize: 10 }}> {tokenSymbol}</span>
-                </div>
-                <div>
-                  {new BigNumber(totalToken2).toFormat(6)}
-                  <span style={{ fontSize: 10 }}> {token2Symbol}</span>
-                </div>
-              </StyledContent>
-            </StyledValue>
+              </StyledValue>
           </StyledCardHeader>
-          {totalStake && stakedBalance && (
-            <div style={{ marginTop: 10 }}>
-              <span style={{ color: '#4caf50' }}>
-                Share of Pool: <span style={{ fontSize: 18 }}>{(shareOfPool * 100).toFixed(5)}%</span>
-              </span>
-            </div>
-          )}
           <StyledCardActions>
             {!allowance.toNumber() ? (
               <button
@@ -133,7 +119,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
               // />
             ) : (
               <>
-                <button disabled={!poolActive} onClick={onPresentDeposit}>Stake</button>
+                <button disabled={!poolActive} onClick={()=>{onPresentDeposit()}}>Stake</button>
                 {/* <Button disabled={!poolActive} text={'Stake'} onClick={onPresentDeposit} /> */}
                 <StyledActionSpacer />
                 <StyleButtonWrap>
@@ -165,7 +151,7 @@ const StyledValue = styled.div`
 
 const ValueStyled = styled.div`
   font-family: 'Nunito Sans', sans-serif;
-  color: #ffffff;
+  color: black;
   font-size: 32px;
   font-weight: 700;
 `
