@@ -15,12 +15,9 @@ import useNewReward from '../../../hooks/farms/useNewReward'
 interface ApyProps {
   pid: number
   lpTokenAddress: string
-  symbolShort: string
-  tokenSymbol: string
-  token2Symbol: string
 }
 
-const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, symbolShort, tokenSymbol, token2Symbol }) => {
+const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress }) => {
   const sushi = useSushi()
   const { chainId, library: ethereum } = useWeb3React()
   const ID = chainId === 3 ? 3 : 1
@@ -45,15 +42,19 @@ const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, symbolShort, tokenSymbol
     } 
   }, [sushi, setTotalStake, lpContract])
 
-  console.log('newReward', newReward.toFixed(2))
-  console.log('stakedValue', stakedValue)
-  console.log('luaPrice', luaPrice.toFixed(2))
-
   return (
-    <StyledApy>
-      <StyledBox className="col-3">
-        <StyledLabel>APY</StyledLabel>
-        <StyledContent>
+    <div>
+      <div>
+        <span>Total staked value</span>
+        <span>-Get from SDK</span>
+      </div>
+      <div>
+        <span>Earned reward</span>
+        <span>-Get from SDK</span>
+      </div>
+      <div>
+        <span>APY</span>
+        <span>
           {newReward &&
           stakedValue &&
           luaPrice &&
@@ -70,74 +71,18 @@ const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, symbolShort, tokenSymbol
                   .toFixed(2)
               ).toLocaleString('en-US')}%`
             : 'loading'}
-        </StyledContent>
-      </StyledBox>
-      <StyledBox className="col-2">
-        <StyledLabel>Reward per block</StyledLabel>
-        <StyledContent>{newReward ? getBalanceNumber(newReward).toFixed(3) : '~'} LUA</StyledContent>
-        <StyledEquility>
-          ≈{' '}
-          {stakedValue &&
-            newReward &&
-            luaPrice &&
-            luaPrice
-              .times(newReward)
-              .div(10 ** 18)
-              .div(10 ** 8)
-              .toFixed(2)}{' '}
-          USD
-        </StyledEquility>
-      </StyledBox>
-    </StyledApy>
+        </span>
+      </div>
+      <div>
+        <span>Reward / block</span>
+        <span>{newReward ? getBalanceNumber(newReward).toFixed(3) : '~'} SONE</span>
+      </div>
+      <div>
+        <span>Total liquidity</span>
+        <span>${stakedValue?.usdValue}</span>
+      </div>
+    </div>
   )
 }
-const StyledApy = styled.div`
-  display: flex;
-  justify-content: space-between;
-  box-sizing: border-box;
-  padding: 10px;
-  border: 2px solid ${props => props.theme.bg1};
-  border-radius: 12px;
-  @media (max-width: 767px) {
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-  }
-`
-const StyledBox = styled.div`
-  &.col-2 {
-    width: 20%;
-  }
-  &.col-4 {
-    width: 40%;
-  }
-  &.col-8 {
-    width: 60%;
-  }
-`
-const StyledLabel = styled.span`
-  color: ${props => props.theme.primary1};
-  font-size: 14px;
-  display: block;
-`
-
-const StyledContent = styled.span`
-  color: black;
-  font-weight: bold;
-  display: block;
-  padding: 10px 0;
-  @media (max-width: 767px) {
-    font-size: 14px;
-  }
-`
-
-const StyledEquility = styled.span`
-  color: ${props => props.theme.text2};
-  font-size: 14px;
-  display: block;
-  @media (max-width: 767px) {
-    font-size: 13px;
-  }
-`
 
 export default Apy

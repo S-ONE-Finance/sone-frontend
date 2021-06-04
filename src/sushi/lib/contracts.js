@@ -47,16 +47,6 @@ export class Contracts {
         })
       )
     }
-    // this.pools = window.pools.map(pool =>
-    //   Object.assign(pool, {
-    //     lpAddress: pool.lpAddresses[networkId],
-    //     tokenAddress: pool.tokenAddresses[networkId],
-    //     token2Address: pool.token2Addresses[networkId],
-    //     lpContract: new this.web3.eth.Contract(UNIV2PairAbi),
-    //     tokenContract: new this.web3.eth.Contract(ERC20Abi),
-    //     token2Contract: new this.web3.eth.Contract(ERC20Abi)
-    //   })
-    // )
     this.setProvider(provider, networkId)
     this.setDefaultAccount(this.web3.eth.defaultAccount)
   } 

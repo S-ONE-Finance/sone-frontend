@@ -591,13 +591,13 @@ export const tomoSupportedPools = [
   {
     pid:1,
     lpAddresses:{
-      3:'0x347f551eaba062167779c9c336aa681526857b81'
+      3:'0x81f154163602dac421cd71bd36a17b0d8b1706b8'
     },
     tokenAddresses:{
-      3:'0x381B31409e4D220919B2cFF012ED94d70135A59e'
+      3:'0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'
     },
     token2Addresses:{
-      3:'0xB1f66997A5760428D3a87D68b90BfE0aE64121cC'
+      3:'0xaD6D458402F60fD3Bd25163575031ACDce07538D'
     },
     name:'USDT - TOMO',
     symbol:'USDT-TOMO LUA-V1 LP',

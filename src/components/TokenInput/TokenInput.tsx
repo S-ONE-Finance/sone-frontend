@@ -16,14 +16,13 @@ const TokenInput: React.FC<TokenInputProps> = ({ max, symbol, onChange, onSelect
         <StyleBox>
           <StyleLabel>Amount</StyleLabel>
           <StyledMaxText>
-            {max.toLocaleString('en-US')} {symbol}
+            {max.toLocaleString('en-US')}
           </StyledMaxText>
         </StyleBox>
         <BoxInput>
           <Input
             endAdornment={
               <StyledTokenAdornmentWrapper>
-                <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
                 <StyledSpacer />
                 <div>
                   <button onClick={onSelectMax} >Max</button>

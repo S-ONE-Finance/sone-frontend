@@ -8,9 +8,9 @@ import PageHeader from '../../components/PageHeader'
 import useFarm from '../../hooks/farms/useFarm'
 import { getContract } from '../../sushi/format/erc20'
 import Apy from './components/Apy'
-import Harvest from './components/Harvest'
 import Stake from './components/Stake'
 import IconLP from '../../assets/images/icon_lp.svg'
+import StakeBackground from '../../assets/images/stake_background.svg'
 
 const Farm: React.FC = () => {
   const { farmId } = useParams() as any
@@ -70,16 +70,11 @@ const Farm: React.FC = () => {
         title={name}
       />
       <StyledFarm>
-        <StyledApyWrap>
-          <Apy
-            pid={pid}
-            lpTokenAddress={lpTokenAddress}
-            symbolShort={symbolShort}
-            tokenSymbol={tokenSymbol}
-            token2Symbol={token2Symbol}
-          />
-        </StyledApyWrap>
-        <StyledHeading>Your staking</StyledHeading>
+        <img src={StakeBackground} alt=""/>
+        <span>
+          <StyledHeading>Stake</StyledHeading>
+          <div>Content here</div>
+        </span>
         {account && (
           <StyledCardsWrapper>
             <StyledCardWrapper>
@@ -116,6 +111,12 @@ const Farm: React.FC = () => {
             </div>
           </StyledCardsWrapper>
         )}
+        <StyledApyWrap>
+          <Apy
+            pid={pid}
+            lpTokenAddress={lpTokenAddress}
+          />
+        </StyledApyWrap>
       </StyledFarm>
     </>
   )
@@ -171,7 +172,7 @@ const StyledInfo = styled.h3`
 `
 
 const StyledHeading = styled.h2`
-  color: ${props => props.theme.white};
+  color: black;
   opacity: 0.5;
   text-transform: uppercase;
   text-align: center;
