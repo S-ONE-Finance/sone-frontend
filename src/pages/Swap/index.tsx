@@ -9,7 +9,7 @@ import { ButtonConfirmed, ButtonError, ButtonPrimary } from '../../components/Bu
 import Card from '../../components/Card'
 import Column, { AutoColumn, ColumnCenter } from '../../components/Column'
 import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
+import PanelCurrencyInput from '../../components/PanelCurrencyInput'
 import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
 import AdvancedSwapDetails from '../../components/swap/AdvancedSwapDetails'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
@@ -353,7 +353,7 @@ export default function Swap({ history }: RouteComponentProps) {
           />
 
           <AutoColumn gap={'md'}>
-            <CurrencyInputPanel
+            <PanelCurrencyInput
               label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
               value={formattedAmounts[Field.INPUT]}
               showMaxButton={!atMaxAmountInput}
@@ -378,7 +378,7 @@ export default function Swap({ history }: RouteComponentProps) {
                 </IconWrapper>
               </AutoRow>
             </AutoColumn>
-            <CurrencyInputPanel
+            <PanelCurrencyInput
               value={formattedAmounts[Field.OUTPUT]}
               onUserInput={handleTypeOutput}
               label={independentField === Field.INPUT && !showWrap && trade ? 'To (estimated)' : 'To'}

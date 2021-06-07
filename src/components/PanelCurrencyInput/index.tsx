@@ -161,7 +161,7 @@ const TextSmaller = styled(TextLabel)`
   `};
 `
 
-interface CurrencyInputPanelProps {
+interface PanelCurrencyInputProps {
   value: string
   onUserInput: (value: string) => void
   onMax?: () => void
@@ -178,7 +178,7 @@ interface CurrencyInputPanelProps {
   customBalanceText?: string
 }
 
-export default function CurrencyInputPanel({
+export default function PanelCurrencyInput({
   value,
   onUserInput,
   onMax,
@@ -193,7 +193,7 @@ export default function CurrencyInputPanel({
   id,
   showCommonBases,
   customBalanceText
-}: CurrencyInputPanelProps) {
+}: PanelCurrencyInputProps) {
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
