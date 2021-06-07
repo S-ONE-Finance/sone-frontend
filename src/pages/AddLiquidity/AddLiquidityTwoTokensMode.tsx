@@ -20,7 +20,7 @@ type InputsTwoTokensModeProps = {
   currencyIdB: string | undefined
 }
 
-export default function InputsTwoTokensMode({ currencyIdA, currencyIdB }: InputsTwoTokensModeProps) {
+export default function TwoTokensMode({ currencyIdA, currencyIdB }: InputsTwoTokensModeProps) {
   const history = useHistory()
 
   const isUpToExtraSmall = useIsUpToExtraSmall()

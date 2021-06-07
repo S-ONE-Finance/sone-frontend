@@ -38,8 +38,8 @@ import TradePrice from '../../components/swap/TradePrice'
 import { InfoLink } from '../../components/swap/AdvancedSwapDetailsContent'
 import AddLiquidityModeToggle from './AddLiquidityModeToggle'
 import AddLiquidityConfirmationModalHeader from './AddLiquidityConfirmationModalHeader'
-import InputsOneTokenMode from './InputsOneTokenMode'
-import InputsTwoTokensMode from './InputsTwoTokensMode'
+import AddLiquidityOneTokenMode from './AddLiquidityOneTokenMode'
+import AddLiquidityTwoTokensMode from './AddLiquidityTwoTokensMode'
 import { AddLiquidityModeEnum } from '../../state/user/actions'
 import useAddLiquidityHandler from './useAddLiquidityHandler'
 
@@ -166,9 +166,9 @@ export default function AddLiquidity({
             currencyToAdd={pair?.liquidityToken}
           />
           {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
-            <InputsOneTokenMode />
+            <AddLiquidityOneTokenMode />
           ) : (
-            <InputsTwoTokensMode currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
+            <AddLiquidityTwoTokensMode currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
           )}
           <ButtonWrapper>
             {addIsUnsupported ? (
