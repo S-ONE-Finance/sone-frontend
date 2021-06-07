@@ -10,6 +10,7 @@ import Row, { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'
 import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 import { useActiveWeb3React } from '../../hooks'
+import TextLabel from 'components/TextLabel'
 
 const InputRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -140,16 +141,6 @@ const StyledBalanceMax = styled.button`
 const RowBalance = styled(Row)`
   width: fit-content;
   cursor: pointer;
-`
-
-const TextLabel = styled.div`
-  color: ${({ theme }) => theme.text8Sone};
-  font-size: 16px;
-  font-weight: 500;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    font-size: 13px;
-  `};
 `
 
 const TextSmaller = styled(TextLabel)`
