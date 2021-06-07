@@ -89,7 +89,7 @@ const Container = styled.div`
   height: 120px;
   width: 100%;
   border-radius: 32px;
-  background-color: ${({ theme }) => theme.bgInputPanel};
+  background-color: ${({ theme }) => theme.bgPanels};
   border: ${({ theme }) => `1px solid ${theme.border2Sone}`};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
