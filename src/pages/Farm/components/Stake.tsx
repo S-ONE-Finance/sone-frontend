@@ -24,12 +24,13 @@ interface StakeProps {
   tokenName: string
   tokenSymbol: string
   token2Symbol: string
+  val: string
+  setVal: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, token2Symbol }) => {
+const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, token2Symbol, val, setVal }) => {
   const {chainId} = useWeb3React()
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const [successTx, setSuccessTx] = useState(false)
 

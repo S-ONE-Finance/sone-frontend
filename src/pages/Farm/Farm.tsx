@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
@@ -14,6 +14,7 @@ import StakeBackground from '../../assets/images/stake_background.svg'
 
 const Farm: React.FC = () => {
   const { farmId } = useParams() as any
+  const [val, setVal] = useState('')
   
   const {
     pid,
@@ -84,6 +85,8 @@ const Farm: React.FC = () => {
                 tokenName={lpToken.toUpperCase()}
                 tokenSymbol={tokenSymbol}
                 token2Symbol={token2Symbol}
+                val={val}
+                setVal={setVal}
               />
             </StyledCardWrapper>
           </StyledCardsWrapper>
@@ -115,6 +118,7 @@ const Farm: React.FC = () => {
           <Apy
             pid={pid}
             lpTokenAddress={lpTokenAddress}
+            val={val}
           />
         </StyledApyWrap>
       </StyledFarm>

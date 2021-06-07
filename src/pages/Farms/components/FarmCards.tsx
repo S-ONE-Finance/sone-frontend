@@ -47,7 +47,6 @@ const FarmCards: React.FC = () => {
         usdValue: (stakedValue[i] || {}).usdValue || new BigNumber(0),
         luaPrice
       }
-      console.log('farms', farmWithStakedValue)
       const newFarmRows = [...farmRows]
       if (newFarmRows[newFarmRows.length - 1].length === 3) {
         newFarmRows.push([farmWithStakedValue])

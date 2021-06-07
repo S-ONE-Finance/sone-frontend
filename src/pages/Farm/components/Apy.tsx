@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import useSushi from '../../../hooks/farms/useSushi'
 import { BigNumber } from '../../../sushi'
@@ -11,13 +10,23 @@ import useStakedValue from '../../../hooks/farms/useStakedValue'
 import { NUMBER_BLOCKS_PER_YEAR } from '../../../config'
 import useLuaPrice from '../../../hooks/farms/useLuaPrice'
 import useNewReward from '../../../hooks/farms/useNewReward'
+import { PoolInfo, UserInfo, JSBI } from '@s-one-finance/sdk-core'
 
 interface ApyProps {
   pid: number
   lpTokenAddress: string
+  val: string
 }
 
-const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress }) => {
+const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, val }) => {
+
+  React.useEffect(() => {
+    // const poolInfo = new PoolInfo(
+    //   JSBI.BigInt()
+    // )
+   console.log('val', val)
+  }, [val])
+
   const sushi = useSushi()
   const { chainId, library: ethereum } = useWeb3React()
   const ID = chainId === 3 ? 3 : 1
@@ -34,13 +43,16 @@ const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress }) => {
   const [totalStake, setTotalStake] = useState<BigNumber>()
   useEffect(() => {
     async function fetchData() {
-      const data = await getLPTokenStaked(sushi, lpContract, chainId)
+      // const data = await getLPTokenStaked(sushi, lpContract, chainId)
+      // fake data
+      const data = new BigNumber(2000000000000000000)
+      //
       setTotalStake(data)
     }
     if (sushi && lpContract) {
       fetchData()
     } 
-  }, [sushi, setTotalStake, lpContract])
+  }, [sushi, setTotalStake, lpContract, chainId])
 
   return (
     <div>
