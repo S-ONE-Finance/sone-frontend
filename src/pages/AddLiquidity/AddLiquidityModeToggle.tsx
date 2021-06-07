@@ -63,7 +63,7 @@ const ItemDescription = styled(Text)`
   `}
 `
 
-export default function AddLiquidityMode() {
+export default function AddLiquidityModeToggle() {
   const [addLiquidityMode, updateAddLiquidityMode] = useAddLiquidityModeManager()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()

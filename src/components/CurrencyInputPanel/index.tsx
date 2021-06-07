@@ -82,19 +82,19 @@ const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
 
 const InputPanel = styled.div``
 
-const Container = styled.div<{ hideInput: boolean }>`
+const Container = styled.div`
   ${({ theme }) => theme.flexColumnNoWrap}
   position: relative;
   z-index: 1;
   height: 120px;
   width: 100%;
-  border-radius: ${({ hideInput }) => (hideInput ? '8px' : '32px')};
+  border-radius: 32px;
   background-color: ${({ theme }) => theme.bgInputPanel};
   border: ${({ theme }) => `1px solid ${theme.border2Sone}`};
 
-  ${({ theme, hideInput }) => theme.mediaWidth.upToExtraSmall`
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     height: 95px;
-    border-radius: ${hideInput ? '8px' : '25px'};
+    border-radius: 25px;
   `};
 `
 
@@ -172,7 +172,6 @@ interface CurrencyInputPanelProps {
   disableCurrencySelect?: boolean
   hideBalance?: boolean
   pair?: Pair | null
-  hideInput?: boolean
   otherCurrency?: Currency | null
   id: string
   showCommonBases?: boolean
@@ -190,7 +189,6 @@ export default function CurrencyInputPanel({
   disableCurrencySelect = false,
   hideBalance = false,
   pair = null, // used for double token logo
-  hideInput = false,
   otherCurrency,
   id,
   showCommonBases,
@@ -206,39 +204,35 @@ export default function CurrencyInputPanel({
 
   return (
     <InputPanel id={id}>
-      <Container hideInput={hideInput}>
-        {!hideInput && (
-          <LabelRow>
-            <RowBetween align={'flex-end'}>
-              <TextLabel>{label}</TextLabel>
-              {account && (
-                <RowBalance onClick={onMax}>
-                  <TextLabel>
-                    {!hideBalance && !!currency && selectedCurrencyBalance
-                      ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
-                      : ''}
-                  </TextLabel>
-                  {!pair && currency && currency.symbol && <TextSmaller>&nbsp;{currency.symbol}</TextSmaller>}
-                </RowBalance>
-              )}
-            </RowBetween>
-          </LabelRow>
-        )}
-        <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}}>
-          {!hideInput && (
-            <>
-              <NumericalInput
-                className="token-amount-input"
-                value={value}
-                onUserInput={val => {
-                  onUserInput(val)
-                }}
-              />
-              {account && currency && showMaxButton && label !== 'To' && (
-                <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
-              )}
-            </>
-          )}
+      <Container>
+        <LabelRow>
+          <RowBetween align={'flex-end'}>
+            <TextLabel>{label}</TextLabel>
+            {account && (
+              <RowBalance onClick={onMax}>
+                <TextLabel>
+                  {!hideBalance && !!currency && selectedCurrencyBalance
+                    ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
+                    : ''}
+                </TextLabel>
+                {!pair && currency && currency.symbol && <TextSmaller>&nbsp;{currency.symbol}</TextSmaller>}
+              </RowBalance>
+            )}
+          </RowBetween>
+        </LabelRow>
+        <InputRow>
+          <>
+            <NumericalInput
+              className="token-amount-input"
+              value={value}
+              onUserInput={val => {
+                onUserInput(val)
+              }}
+            />
+            {account && currency && showMaxButton && label !== 'To' && (
+              <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
+            )}
+          </>
           <CurrencySelect
             selected={!!currency}
             className="open-currency-select-button"
@@ -251,7 +245,7 @@ export default function CurrencyInputPanel({
             <Aligner>
               {pair ? (
                 // TODO: Chưa responsive ở đây.
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={22} margin={true} />
+                <DoubleCurrencyLogo currency0={pair?.token0} currency1={pair?.token1} size={22} margin={true} />
               ) : currency ? (
                 <CurrencyLogo currency={currency} size={'22px'} sizeMobile={'15px'} />
               ) : null}
