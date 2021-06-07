@@ -21,6 +21,7 @@ import Column from '../Column'
 import { TYPE } from '../../theme'
 import { ButtonPrimary } from '../Button'
 import RecentTransactions from '../RecentTransactions'
+import { injected, walletlink } from 'connectors'
 
 const MyAccountPanelWrapper = styled.div`
   cursor: default;
@@ -29,11 +30,6 @@ const MyAccountPanelWrapper = styled.div`
   overflow: hidden;
 
   border-radius: inherit;
-
-  // No need to use "media" here anymore because "MyAccountPanel" is no longer used for mobile version. 
-  // ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  //   width: calc(100vw - 2rem);
-  // `}
 `
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
@@ -76,7 +72,7 @@ const PaddingColumn = styled(Column)`
 `
 
 export default function MyAccountPanel() {
-  const { account } = useActiveWeb3React()
+  const { account, connector } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
   const { active } = useWeb3React()
@@ -93,6 +89,15 @@ export default function MyAccountPanel() {
           <TYPE.black fontSize={16}>Address:</TYPE.black>
           <TYPE.subText marginTop={'0.25rem'}>{account && shortenAddress(account, 14)}</TYPE.subText>
           <TextBoxChangeAccount onClick={toggleWalletModal}>Change Account</TextBoxChangeAccount>
+          {connector !== injected && connector !== walletlink && (
+            <TextBoxChangeAccount
+              onClick={() => {
+                ;(connector as any).close()
+              }}
+            >
+              Disconnect
+            </TextBoxChangeAccount>
+          )}
         </Column>
         <PaddingColumn>
           <MyAccountButton>My Account</MyAccountButton>

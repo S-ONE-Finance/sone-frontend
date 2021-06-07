@@ -121,11 +121,9 @@ function TopLevelModals() {
   return <AddressClaimModal isOpen={open} onDismiss={toggle} />
 }
 
-function OnlyShowSwapAndLiquidity({ children }: { children?: React.ReactNode }) {
+function OnlyShowAtSwapAndAddLiquidityPages({ children }: { children?: React.ReactNode }) {
   const location = useLocation()
-
   const { pathname } = location
-
   return children && (pathname.startsWith('/swap') || pathname.startsWith('/add')) ? <>{children}</> : null
 }
 
@@ -146,9 +144,9 @@ export default function App() {
           <Polling />
           <TopLevelModals />
           <LogoResponsive />
-          <OnlyShowSwapAndLiquidity>
+          <OnlyShowAtSwapAndAddLiquidityPages>
             <TabSwapLiquidity />
-          </OnlyShowSwapAndLiquidity>
+          </OnlyShowAtSwapAndAddLiquidityPages>
           <Web3ReactManager>
             <Switch>
               <Route exact strict path="/swap" component={Swap} />
@@ -176,7 +174,9 @@ export default function App() {
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
-          <WeeklyRanking />
+          <OnlyShowAtSwapAndAddLiquidityPages>
+            <WeeklyRanking />
+          </OnlyShowAtSwapAndAddLiquidityPages>
         </BodyWrapper>
         <Marginer />
         <FooterWrapper>
