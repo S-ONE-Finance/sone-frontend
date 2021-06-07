@@ -8,9 +8,8 @@ import CurrencyLogo from '../CurrencyLogo'
 import DoubleCurrencyLogo from '../DoubleLogo'
 import Row, { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'
-import { ReactComponent as DropDown } from '../../assets/images/dropdown.svg'
 import { useActiveWeb3React } from '../../hooks'
-import TextLabel from 'components/TextLabel'
+import { TextPanelLabel, CurrencySelect, StyledTokenName, StyledDropDown } from 'theme'
 
 const InputRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -19,32 +18,6 @@ const InputRow = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     padding: 15px 15px 0;
-  `};
-`
-
-const CurrencySelect = styled.button<{ selected: boolean }>`
-  align-items: center;
-  height: 40px;
-  font-size: 20px;
-  font-weight: 500;
-  background-color: ${({ theme }) => theme.white};
-  color: ${({ theme }) => theme.textBlack};
-  border-radius: 51px;
-  box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
-  outline: none;
-  cursor: pointer;
-  user-select: none;
-  border: none;
-  padding: 0 12px;
-
-  :hover {
-    background-color: ${({ theme }) => darken(0.2, theme.white)};
-  }
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    height: 23px;
-    font-size: 13px;
-    padding: 0 10px;
   `};
 `
 
@@ -72,15 +45,6 @@ const Aligner = styled.span`
   justify-content: space-between;
 `
 
-const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
-  height: 35%;
-
-  path {
-    stroke: ${({ theme }) => theme.textBlack};
-    stroke-width: 1.5px;
-  }
-`
-
 const InputPanel = styled.div``
 
 const Container = styled.div`
@@ -96,17 +60,6 @@ const Container = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     height: 95px;
     border-radius: 25px;
-  `};
-`
-
-const StyledTokenName = styled.span<{ active?: boolean }>`
-  ${({ active }) => (active ? 'margin: 0 0.5rem 0 0.5rem;' : 'margin: 0 0.5rem 0 0;')}
-  font-size: 16px;
-  font-weight: 500;
-
-  ${({ theme, active }) => theme.mediaWidth.upToExtraSmall`
-    font-size: 13px;
-    ${active ? 'margin: 0 0.25rem 0 0.25rem;' : 'margin: 0 0.25rem 0 0;'}
   `};
 `
 
@@ -143,7 +96,7 @@ const RowBalance = styled(Row)`
   cursor: pointer;
 `
 
-const TextSmaller = styled(TextLabel)`
+const TextSmaller = styled(TextPanelLabel)`
   line-height: normal;
   font-size: 13px;
 
@@ -198,14 +151,14 @@ export default function PanelCurrencyInput({
       <Container>
         <LabelRow>
           <RowBetween align={'flex-end'}>
-            <TextLabel>{label}</TextLabel>
+            <TextPanelLabel>{label}</TextPanelLabel>
             {account && (
               <RowBalance onClick={onMax}>
-                <TextLabel>
+                <TextPanelLabel>
                   {!hideBalance && !!currency && selectedCurrencyBalance
                     ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
                     : ''}
-                </TextLabel>
+                </TextPanelLabel>
                 {!pair && currency && currency.symbol && <TextSmaller>&nbsp;{currency.symbol}</TextSmaller>}
               </RowBalance>
             )}

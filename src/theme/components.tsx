@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
 import { darken } from 'polished'
 import { ArrowLeft, ExternalLink as LinkIconFeather, Trash } from 'react-feather'
+import { ReactComponent as DropDown } from 'assets/images/dropdown.svg'
 import { ReactComponent as Close } from '../assets/images/x.svg'
 
 export const ButtonText = styled.button`
@@ -319,4 +320,61 @@ export const ExtraSmallOnly = styled.span`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: block;
   `};
+`
+
+export const TextPanelLabel = styled.div`
+  color: ${({ theme }) => theme.text8Sone};
+  font-size: 16px;
+  font-weight: 500;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `};
+`
+
+export const CurrencySelect = styled.button<{ selected: boolean }>`
+  align-items: center;
+  height: 40px;
+  font-size: 20px;
+  font-weight: 500;
+  background-color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.textBlack};
+  border-radius: 51px;
+  box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  padding: 0 12px;
+
+  :hover {
+    background-color: ${({ theme }) => darken(0.2, theme.white)};
+  }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    height: 23px;
+    font-size: 13px;
+    padding: 0 10px;
+  `};
+`
+export const PairSelect = styled(CurrencySelect)``
+
+export const StyledTokenName = styled.span<{ active?: boolean }>`
+  ${({ active }) => (active ? 'margin: 0 0.5rem 0 0.5rem;' : 'margin: 0 0.5rem 0 0;')}
+  font-size: 16px;
+  font-weight: 500;
+
+  ${({ theme, active }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+    ${active ? 'margin: 0 0.25rem 0 0.25rem;' : 'margin: 0 0.25rem 0 0;'}
+  `};
+`
+
+export const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
+  height: 35%;
+
+  path {
+    stroke: ${({ theme }) => theme.textBlack};
+    stroke-width: 1.5px;
+  }
 `
