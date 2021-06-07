@@ -16,7 +16,7 @@ import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 
 type UseAddLiquidityHandlerProps = {
-  // Không dùng `?:` để bắt buộc phải truyền currencyIdA và currencyIdB as prop.
+  // Dùng `string | undefined` để bắt buộc phải truyền currencyIdA và currencyIdB as prop.
   currencyIdA: string | undefined
   currencyIdB: string | undefined
   setAttemptingTxn: React.Dispatch<React.SetStateAction<boolean>>
@@ -34,12 +34,10 @@ export default function useAddLiquidityHandler({
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
-  // mint state
   const { currencies, parsedAmounts, noLiquidity } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
 
-  // txn values
-  const deadline = useTransactionDeadline() // custom from users settings
-  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
+  const deadline = useTransactionDeadline()
+  const [allowedSlippage] = useUserSlippageTolerance()
 
   const addTransaction = useTransactionAdder()
 

@@ -44,7 +44,8 @@ export default function InputsTwoTokensMode({ currencyIdA, currencyIdB }: Inputs
     [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? ''
   }
 
-  // get the max amounts user can add
+  // Get the max amounts user can add: bản chất chính là balance của đồng đó,
+  // trong trường hợp đồng đó là ETH thì phải để lại 1 ít, ko đc dùng hết.
   const maxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
     (accumulator, field) => {
       return {
