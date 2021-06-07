@@ -13,7 +13,6 @@ import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ExternalLink } from '../../theme'
-import AccountDetails from '../AccountDetails'
 import { StyledCloseIcon } from '../../theme/components'
 
 import Modal from '../Modal'
@@ -160,7 +159,8 @@ export default function WalletModal({
   useEffect(() => {
     if (walletModalOpen) {
       setPendingError(false)
-      // setWalletView(WALLET_VIEWS.ACCOUNT) // Không cần WALLET_VIEWS.ACCOUNT nữa vì đã có MyAccountPanel
+      // Không cần WALLET_VIEWS.ACCOUNT nữa vì đã có MyAccountPanel.
+      // setWalletView(WALLET_VIEWS.ACCOUNT)
       setWalletView(WALLET_VIEWS.OPTIONS)
     }
   }, [walletModalOpen])
@@ -317,38 +317,12 @@ export default function WalletModal({
         </UpperSection>
       )
     }
-    if (account && walletView === WALLET_VIEWS.ACCOUNT) {
-      return (
-        <AccountDetails
-          toggleWalletModal={toggleWalletModal}
-          pendingTransactions={pendingTransactions}
-          confirmedTransactions={confirmedTransactions}
-          ENSName={ENSName}
-          openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-        />
-      )
-    }
+
     return (
       <UpperSection>
         <StyledCloseAbsolute onClick={toggleWalletModal}>
           <StyledCloseIcon />
         </StyledCloseAbsolute>
-        {/* {walletView !== WALLET_VIEWS.ACCOUNT ? (
-          <HeaderRow color="blue">
-            <HoverText
-              onClick={() => {
-                setPendingError(false)
-                setWalletView(WALLET_VIEWS.ACCOUNT)
-              }}
-            >
-              Back
-            </HoverText>
-          </HeaderRow>
-        ) : (
-          <HeaderRow>
-            <Title>Connect to a wallet</Title>
-          </HeaderRow>
-        )} */}
         {walletView !== WALLET_VIEWS.OPTIONS ? (
           <HeaderRow>
             <HoverText
@@ -389,7 +363,6 @@ export default function WalletModal({
 
   return (
     <Modal isOpen={walletModalOpen} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}>
-      {/* <Modal isOpen={true} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}> */}
       <Wrapper>{getModalContent()}</Wrapper>
     </Modal>
   )
