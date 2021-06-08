@@ -441,7 +441,7 @@ export default function Header() {
         <MobileMenu setIsShowMobileMenu={setIsShowMobileMenu} />
       </Modal>
       <HeaderFrame>
-        {/* NOTE: Cái này là modal thông báo claim uni, sau này cho thành clame sone modal, giờ chưa cần sử dụng. */}
+        {/* Cái này là modal thông báo claim uni, sau này cho thành clame sone modal, giờ chưa cần sử dụng. */}
         <ClaimModal />
         <HideExtraSmall>
           <HeaderRow>

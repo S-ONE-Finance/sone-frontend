@@ -1,4 +1,4 @@
-// NOTE: Không cần query ethPrice nữa.
+// Không cần query ethPrice nữa.
 
 import gql from 'graphql-tag'
 
