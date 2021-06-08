@@ -1,8 +1,13 @@
-import { RowBetween } from 'components/Row'
-import { PairSelect, TextPanelLabel, StyledTokenName, StyledDropDown } from 'theme'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import DoubleCurrencyLogo from '../DoubleLogo'
+import { Currency, Pair } from '@s-one-finance/sdk-core'
+
+import { PairSelect, TextPanelLabel, StyledTokenName, StyledDropDown } from '../../theme'
+import { RowBetween } from '../Row'
+import CurrencyLogoDouble from '../CurrencyLogoDouble'
+import ModalSearchPair from '../ModalSearchPair'
+import { useTopPairsFromSubgraph } from 'subgraph'
+import { unwrappedToken } from 'utils/wrappedCurrency'
 
 const Panel = styled(RowBetween)`
   width: 100%;
@@ -19,20 +24,51 @@ const Panel = styled(RowBetween)`
   `};
 `
 
-export default function PanelSelectPair({ pair }: any) {
-  const pairName = pair ? `${pair?.token0.symbol || '?'} - ${pair?.token1.symbol || '?'}` : 'Select Pair'
+type PanelSelectPairProps = {
+  selectedPair?: Pair | null
+  onPairSelect: (pair: Pair) => void
+}
+
+export default function PanelSelectPair({ selectedPair, onPairSelect }: PanelSelectPairProps) {
+  const [modalOpen, setModalOpen] = useState(false)
+
+  const handleDismissSearch = () => {
+    setModalOpen(false)
+  }
+
+  const allPairs = useTopPairsFromSubgraph()
+
+  const currency0: Currency | null = selectedPair?.token0 ? unwrappedToken(selectedPair.token0) : null
+  const currency1: Currency | null = selectedPair?.token1 ? unwrappedToken(selectedPair.token1) : null
 
   return (
     <Panel>
       <TextPanelLabel>Pair</TextPanelLabel>
-      <PairSelect selected={false}>
+      <PairSelect
+        selected={Boolean(selectedPair)}
+        onClick={() => {
+          if (modalOpen === false) {
+            setModalOpen(true)
+          }
+        }}
+      >
         <RowBetween>
-          {/* TODO: Chưa responsive ở đây. */}
-          <DoubleCurrencyLogo currency0={pair?.token0} currency1={pair?.token1} size={22} margin={true} />
-          <StyledTokenName>{pairName}</StyledTokenName>
-          <StyledDropDown selected={!!pair} />
+          {Boolean(selectedPair) && (
+            <CurrencyLogoDouble currency0={currency0} currency1={currency1} size={22} margin={true} />
+          )}
+          <StyledTokenName active={Boolean(selectedPair)}>
+            {selectedPair ? `${currency0?.symbol || '?'} - ${currency1?.symbol || '?'}` : 'Select Pair'}
+          </StyledTokenName>
+          <StyledDropDown selected={Boolean(selectedPair)} />
         </RowBetween>
       </PairSelect>
+      <ModalSearchPair
+        isOpen={modalOpen}
+        onDismiss={handleDismissSearch}
+        allPairs={allPairs}
+        onPairSelect={onPairSelect}
+        selectedPair={selectedPair}
+      />
     </Panel>
   )
 }

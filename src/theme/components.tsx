@@ -6,6 +6,9 @@ import { darken } from 'polished'
 import { ArrowLeft, ExternalLink as LinkIconFeather, Trash } from 'react-feather'
 import { ReactComponent as DropDown } from 'assets/images/dropdown.svg'
 import { ReactComponent as Close } from '../assets/images/x.svg'
+import Column from 'components/Column'
+import { ReactComponent as SortDownIconSvg } from 'assets/svg/sort_down_icon.svg'
+import { ReactComponent as SortUpIconSvg } from 'assets/svg/sort_up_icon.svg'
 
 export const ButtonText = styled.button`
   outline: none;
@@ -377,4 +380,19 @@ export const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
     stroke: ${({ theme }) => theme.textBlack};
     stroke-width: 1.5px;
   }
+`
+
+export const SortDownIcon = styled(SortDownIconSvg)`
+  cursor: pointer;
+`
+
+export const SortUpIcon = styled(SortUpIconSvg)`
+  cursor: pointer;
+`
+
+export const PanelSearchContentWrapper = styled(Column)`
+  width: 100%;
+  flex: 1 1;
+  position: relative;
+  background-color: ${({ theme }) => theme.bg1Sone};
 `

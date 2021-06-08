@@ -11,10 +11,10 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 const PAIR_INTERFACE = new Interface(IUniswapV2PairABI)
 
 export enum PairState {
-  LOADING,
-  NOT_EXISTS,
-  EXISTS,
-  INVALID
+  LOADING = 'LOADING',
+  NOT_EXISTS = 'NOT_EXISTS',
+  EXISTS = 'EXISTS',
+  INVALID = 'INVALID'
 }
 
 export function usePairs(currencies: [Currency | undefined, Currency | undefined][]): [PairState, Pair | null][] {
@@ -37,7 +37,11 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
     [tokens]
   )
 
+  console.log('pairAddresses', pairAddresses)
+
   const results = useMultipleContractSingleData(pairAddresses, PAIR_INTERFACE, 'getReserves')
+
+  console.log('results', results)
 
   return useMemo(() => {
     return results.map((result, i) => {

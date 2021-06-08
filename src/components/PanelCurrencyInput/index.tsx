@@ -5,7 +5,7 @@ import { darken } from 'polished'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import CurrencyLogo from '../CurrencyLogo'
-import DoubleCurrencyLogo from '../DoubleLogo'
+import CurrencyLogoDouble from '../CurrencyLogoDouble'
 import Row, { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../hooks'
@@ -189,7 +189,7 @@ export default function PanelCurrencyInput({
             <Aligner>
               {pair ? (
                 // TODO: Chưa responsive ở đây.
-                <DoubleCurrencyLogo currency0={pair?.token0} currency1={pair?.token1} size={22} margin={true} />
+                <CurrencyLogoDouble currency0={pair?.token0} currency1={pair?.token1} size={22} margin={true} />
               ) : currency ? (
                 <CurrencyLogo currency={currency} size={'22px'} sizeMobile={'15px'} />
               ) : null}

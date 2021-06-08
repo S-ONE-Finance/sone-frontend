@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { isAddress } from '../../utils'
-import { Token } from '@s-one-finance/sdk-core'
+import { Pair, Token } from '@s-one-finance/sdk-core'
 
 export function filterTokens(tokens: Token[], search: string): Token[] {
   if (search.length === 0) return tokens
@@ -67,4 +67,9 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
 
     return [...exactMatches, ...symbolSubtrings, ...rest]
   }, [tokens, searchQuery])
+}
+
+// TODO: Implement this.
+export function filterPairs(pairs: Pair[], search: string): Pair[] {
+  return []
 }

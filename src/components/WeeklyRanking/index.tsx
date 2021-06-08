@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useWeeklyRanking } from '../../subgraph'
+import { useWeeklyRankingData } from '../../subgraph'
 import styled from 'styled-components'
 import Row from '../Row'
 import QuestionHelper from '../QuestionHelper'
@@ -55,7 +55,7 @@ const Title = styled.div`
 
 // Ranking theo volume.
 function WeeklyRanking() {
-  const ranking = useWeeklyRanking()
+  const ranking = useWeeklyRankingData()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const isUpToSmall = useIsUpToSmall()
 

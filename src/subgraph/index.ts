@@ -1,5 +1,4 @@
 // TODO: Chuyển mọi hooks sang sử dụng sdk của @s-one-finance.
-
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { client } from './apollo/client'
@@ -9,34 +8,35 @@ import getBulkPairData from './utils/getBulkPairData'
 import { useActiveWeb3React } from '../hooks'
 import getCaseSensitiveAddress from './utils/getCaseSensitiveAddress'
 import { useIsUpToExtraSmall } from '../hooks/useWindowSize'
+import { Pair, Token } from '@s-one-finance/sdk-core'
+import { usePair, usePairs } from 'data/Reserves'
+import { useToken } from 'hooks/Tokens'
+
+async function getPairIds() {
+  const {
+    data: { pairs }
+  } = await client.query({
+    query: PAIRS_CURRENT,
+    fetchPolicy: 'cache-first'
+  })
+
+  return pairs.map((pair: { id: string }) => pair.id)
+}
 
 /**
  * Use Subgraph to query data for pairs.
  */
-function useSubgraphData() {
+export function useSubgraphData() {
   const [subgraphData, setSubgraphData] = useState<any>({})
   const { library } = useActiveWeb3React()
 
-  // region Callback functions.
   const getData = useCallback(async () => {
-    const {
-      data: { pairs }
-    } = await client.query({
-      query: PAIRS_CURRENT,
-      fetchPolicy: 'cache-first'
-    })
-
-    // Format as array of addresses.
-    const pairIds = pairs.map((pair: { id: string }) => pair.id)
+    const pairIds = await getPairIds()
 
     // Get data for every pair in list.
     const data = await getBulkPairData(pairIds)
     if (data?.length > 0) {
       setSubgraphData(data)
-    }
-
-    // Log out to track query results.
-    if (data?.length > 0) {
       console.log('Array trả về có ' + data.length + ' items.')
     } else {
       console.error('Array trả về lỗi', data)
@@ -49,9 +49,7 @@ function useSubgraphData() {
       getData()
     }, 5000)
   }, [getData])
-  // endregion
 
-  // region Effects.
   // Query data the first time.
   useEffect(() => {
     getData()
@@ -66,9 +64,35 @@ function useSubgraphData() {
       library.removeListener('block', getDataAfter5Seconds)
     }
   }, [library, getDataAfter5Seconds])
-  // endregion
 
   return subgraphData
+}
+
+// TODO: Implement this.
+export function useTopPairsFromSubgraph(): { [address: string]: Pair } {
+  const [rawPairs, setRawPairs] = useState<any>({})
+  const [tokenPairs, setTokenPairs] = useState<[Token, Token][]>([])
+
+  // FIXME: chưa xử lý trường hợp vào page lần đầu và fetch pair info bị lỗi. Như vậy pairs sẽ empty mãi.
+  useEffect(() => {
+    async function getData() {
+      const pairIds = await getPairIds()
+      // Get data for every pair in list.
+      const data = await getBulkPairData(pairIds)
+
+      if (data?.length > 0) {
+        setRawPairs(data)
+        
+        console.log('useTopPairsFromSubgraph, Array trả về có ' + data.length + ' items.')
+      } else {
+        console.error('useTopPairsFromSubgraph, Array trả về lỗi', data)
+      }
+    }
+
+    getData()
+  }, [])
+
+  return {}
 }
 
 /**
@@ -79,7 +103,7 @@ function useSubgraphData() {
  * PS: Chỗ này tại sao ko phải là "token0Price và token0PriceChange"?? do data trong subgraph là như thế, maybe
  * bug do token1 bị swap với token0, source: uniswap-info).
  */
-export function useOneDayPairPriceChange() {
+export function useOneDayPairPriceChangeData() {
   const data = useSubgraphData()
 
   return useMemo(
@@ -98,7 +122,7 @@ export function useOneDayPairPriceChange() {
   )
 }
 
-export function useWeeklyRanking() {
+export function useWeeklyRankingData() {
   const data = useSubgraphData()
 
   // Màn hình dưới extra small chỉ show 4 items.

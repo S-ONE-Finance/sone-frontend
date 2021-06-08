@@ -3,7 +3,7 @@ import { AutoColumn } from '../Column'
 import { RowBetween } from '../Row'
 import styled from 'styled-components'
 import { TYPE, StyledInternalLink } from '../../theme'
-import DoubleCurrencyLogo from '../DoubleLogo'
+import CurrencyLogoDouble from '../CurrencyLogoDouble'
 import { ETHER, JSBI, TokenAmount } from '@s-one-finance/sdk-core'
 import { ButtonPrimary } from '../Button'
 import { StakingInfo } from '../../state/stake/hooks'
@@ -112,7 +112,7 @@ export default function PoolCard({ stakingInfo }: { stakingInfo: StakingInfo }) 
       <CardNoise />
 
       <TopSection>
-        <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={24} />
+        <CurrencyLogoDouble currency0={currency0} currency1={currency1} size={24} />
         <TYPE.white fontWeight={600} fontSize={24} style={{ marginLeft: '8px' }}>
           {currency0.symbol}-{currency1.symbol}
         </TYPE.white>

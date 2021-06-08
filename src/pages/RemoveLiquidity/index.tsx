@@ -12,7 +12,7 @@ import { BlueCard, LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import PanelCurrencyInput from '../../components/PanelCurrencyInput'
-import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import CurrencyLogoDouble from '../../components/CurrencyLogoDouble'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { RowBetween, RowFixed } from '../../components/Row'
@@ -384,7 +384,7 @@ export default function RemoveLiquidity({
             {'UNI ' + currencyA?.symbol + '/' + currencyB?.symbol} Burned
           </Text>
           <RowFixed>
-            <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} />
+            <CurrencyLogoDouble currency0={currencyA} currency1={currencyB} margin={true} />
             <Text fontWeight={500} fontSize={16}>
               {parsedAmounts[Field.LIQUIDITY]?.toSignificant(6)}
             </Text>

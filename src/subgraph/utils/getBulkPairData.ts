@@ -27,8 +27,6 @@ export default async function getBulkPairData(pairList: string[]) {
       fetchPolicy: 'network-only'
     })
 
-    // console.log(`current`, current?.data?.pairs)
-
     // Lấy data quá khứ.
     const [oneDayResult, twoDayResult, oneWeekResult, twoWeekResult] = await Promise.all(
       [b1Day, b2Day, b1Week, b2Week].map(async block => {
@@ -38,8 +36,6 @@ export default async function getBulkPairData(pairList: string[]) {
         })
       })
     )
-
-    // console.log(`oneDayResult`, oneDayResult?.data?.pairs)
 
     // Làm đẹp data quá khứ.
     const oneDayData = oneDayResult?.data?.pairs.reduce((obj: any, cur: any) => {
@@ -79,11 +75,6 @@ export default async function getBulkPairData(pairList: string[]) {
           const twoDayHistory = await getHistoryFromData(twoDayData, b2Day)
           const oneWeekHistory = await getHistoryFromData(oneWeekData, b1Week)
           const twoWeekHistory = await getHistoryFromData(twoWeekData, b2Week)
-
-          // console.log(`oneDayHistory`,oneDayHistory)
-          // console.log(`twoDayHistory`,twoDayHistory)
-          // console.log(`oneWeekHistory`,oneWeekHistory)
-          // console.log(`twoWeekHistory`,twoWeekHistory)
 
           // Nếu không có data quá khứ thì trả về null.
           if (oneDayHistory && twoDayHistory && oneWeekHistory && twoWeekHistory) {

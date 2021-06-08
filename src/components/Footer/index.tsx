@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 
-import { useOneDayPairPriceChange } from '../../subgraph'
+import { useOneDayPairPriceChangeData } from '../../subgraph'
 
 import { RowFixed } from '../Row'
 import PairInfo from './PairInfo'
@@ -137,7 +137,7 @@ const Marquee = styled.div<{ pairSize: number; pauseAnimation: boolean }>`
 export default function Footer() {
   const [pauseAnimation, setPauseAnimation] = useState(false)
 
-  const data = useOneDayPairPriceChange()
+  const data = useOneDayPairPriceChangeData()
 
   const toggleAnimation = useCallback(() => {
     setPauseAnimation(prev => !prev)

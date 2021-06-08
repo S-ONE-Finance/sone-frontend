@@ -14,13 +14,12 @@ import { useHistory } from 'react-router-dom'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import useTheme from '../../hooks/useTheme'
 
-type InputsTwoTokensModeProps = {
-  // Không dùng `?:` để bắt buộc phải truyền currencyIdA và currencyIdB as prop.
+type AddLiquidityTwoTokensModeProps = {
   currencyIdA: string | undefined
   currencyIdB: string | undefined
 }
 
-export default function TwoTokensMode({ currencyIdA, currencyIdB }: InputsTwoTokensModeProps) {
+export default function AddLiquidityTwoTokensMode({ currencyIdA, currencyIdB }: AddLiquidityTwoTokensModeProps) {
   const history = useHistory()
 
   const isUpToExtraSmall = useIsUpToExtraSmall()
