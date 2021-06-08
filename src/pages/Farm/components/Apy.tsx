@@ -4,13 +4,13 @@ import useSushi from '../../../hooks/farms/useSushi'
 import { BigNumber } from '../../../sushi'
 import { getLPTokenStaked } from '../../../sushi/utils'
 import { getContract } from '../../../sushi/format/erc20'
-import { provider } from 'web3-core'
+import  provider  from 'web3'
 import { getBalanceNumber } from '../../../sushi/format/formatBalance'
 import useStakedValue from '../../../hooks/farms/useStakedValue'
 import { NUMBER_BLOCKS_PER_YEAR } from '../../../config'
 import useLuaPrice from '../../../hooks/farms/useLuaPrice'
 import useNewReward from '../../../hooks/farms/useNewReward'
-import { PoolInfo, UserInfo, JSBI } from '@s-one-finance/sdk-core'
+// import { PoolInfo, UserInfo, JSBI } from '@s-one-finance/sdk-core'
 
 interface ApyProps {
   pid: number

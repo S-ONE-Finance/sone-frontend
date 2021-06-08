@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { provider } from 'web3-core'
+import provider from 'web3'
 import { getBalance } from '../../sushi/format/erc20'
 import useBlock from './useBlock'
 

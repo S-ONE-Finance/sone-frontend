@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import { provider } from 'web3-core'
+import provider from 'web3'
 import { Contract } from 'web3-eth-contract'
 // @ts-ignore
 import { AbiItem } from 'web3-utils'
