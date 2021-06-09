@@ -21,6 +21,7 @@ interface ApyProps {
 const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, val }) => {
 
   const [totalStakedAfterStake, setTotalStakedAfterStake] = useState(new BigNumber(0))
+  const [earnedRewardAfterStake, setEarnedRewardAfterStake] = useState(new BigNumber(0))
 
   React.useEffect(() => {
     const poolInfo = new PoolInfo(
@@ -36,7 +37,13 @@ const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, val }) => {
       const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
         JSBI.BigInt(new BigNumber(val).times(new BigNumber(10).pow(18)).toNumber())
       )
+      const newEarnedReward = userInfo.getEarnedRewardAfterStake(
+        JSBI.BigInt(20),
+        JSBI.BigInt(newReward.toNumber()),
+        JSBI.BigInt(new BigNumber(val).times(new BigNumber(10).pow(18)).toNumber())
+      )
       setTotalStakedAfterStake(new BigNumber(newTotalStaked.toString()))
+      setEarnedRewardAfterStake(new BigNumber(newEarnedReward.toString()))
     }
   }, [val])
 
@@ -79,7 +86,7 @@ const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, val }) => {
       </div>
       <div>
         <span>Earned reward</span>
-        <span>-Get from SDK</span>
+        <span>- {getBalanceNumber(earnedRewardAfterStake)}</span>
       </div>
       <div>
         <span>APY</span>
