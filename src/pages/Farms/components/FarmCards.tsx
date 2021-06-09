@@ -1,8 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import { CountdownRenderProps } from 'react-countdown'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 import Loader from '../../../components/Loader'
 import { Farm } from '../../../contexts/Farms'
@@ -11,7 +10,6 @@ import useFarms from '../../../hooks/farms/useFarms'
 import useLuaPrice from '../../../hooks/farms/useLuaPrice'
 import usePoolActive from '../../../hooks/farms/usePoolActive'
 import useSushi from '../../../hooks/farms/useSushi'
-import { START_NEW_POOL_AT } from '../../../sushi/lib/constants'
 import { NUMBER_BLOCKS_PER_YEAR } from '../../../config'
 import { getNewRewardPerBlock } from '../../../sushi/utils'
 import { IsRopsten } from '../../../utils'
@@ -91,7 +89,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
   const poolActive = usePoolActive(farm.pid)
 
   const sushi = useSushi()
-  // const block = useBlockNumber()
   const [newReward, setNewRewad] = useState<BigNumber>()
   useEffect(() => {
     async function fetchData() {
@@ -103,30 +100,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
     }
   }, [sushi, setNewRewad, poolActive, chainId, farm.pid])
 
-  const renderer = (countdownProps: CountdownRenderProps) => {
-    let { days, hours, minutes, seconds } = countdownProps
-    const paddedSeconds = seconds < 10 ? `0${seconds}` : seconds
-    const paddedMinutes = minutes < 10 ? `0${minutes}` : minutes
-    hours = days * 24 + hours
-    const paddedHours = hours < 10 ? `0${hours}` : hours
-    return (
-      <span style={{ width: '100%' }}>
-        {paddedHours}:{paddedMinutes}:{paddedSeconds}
-      </span>
-    )
-  }
-
-  const startTime = START_NEW_POOL_AT
   return (
     <StyledCardWrapper>
-      {/* {farm.tokenSymbol === 'LUA' && <StyledCardAccent />} */}
       <CardWrap>
         <div>
           <StyledContent>
-            <StyledTopIcon>
-              {farm.isHot && <StyledHotIcon>NO REWARD</StyledHotIcon>}
-              {farm.isNew && <StyledNewIcon>THIS WEEK</StyledNewIcon>}
-            </StyledTopIcon>
             <div style={{ display: 'flex', background: 'linear-gradient(180deg, #FFEFEF 48.7%, #F8F8F8 100%)' }}>
               <div>
                 <StyledTitle>{farm.name}</StyledTitle>
@@ -200,19 +178,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
 const CardWrap = styled.div`
   background-color: ${props => props.theme.bg1};
 `
-const RainbowLight = keyframes`
-  
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-`
-
 
 const StyledCards = styled.div`
   width: 1200px;
@@ -259,36 +224,6 @@ const StyledContent = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-`
-const StyledTopIcon = styled.div`
-  // position: relative;
-`
-
-const StyledHotIcon = styled.div`
-  position: absolute;
-  background-color: gray;
-  padding: 8px 40px 8px;
-  top: 12px;
-  left: -40px;
-  font-weight: bold;
-  -webkit-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  color: #fff;
-  font-size: 9px;
-`
-const StyledNewIcon = styled.div`
-  position: absolute;
-  padding: 8px 40px 8px;
-  top: 12px;
-  left: -40px;
-  background-color: ${props => props.theme.primary1};
-  font-weight: bold;
-  -webkit-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-  color: #fff;
-  font-size: 9px;
 `
 
 const StyledSpacer = styled.div`
