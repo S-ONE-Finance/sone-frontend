@@ -10,7 +10,7 @@ import useStakedValue from '../../../hooks/farms/useStakedValue'
 import { NUMBER_BLOCKS_PER_YEAR } from '../../../config'
 import useLuaPrice from '../../../hooks/farms/useLuaPrice'
 import useNewReward from '../../../hooks/farms/useNewReward'
-// import { PoolInfo, UserInfo, JSBI } from '@s-one-finance/sdk-core'
+import { PoolInfo, UserInfo, JSBI } from '@s-one-finance/sdk-core/'
 
 interface ApyProps {
   pid: number
@@ -20,11 +20,24 @@ interface ApyProps {
 
 const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, val }) => {
 
+  const [totalStakedAfterStake, setTotalStakedAfterStake] = useState(new BigNumber(0))
+
   React.useEffect(() => {
-    // const poolInfo = new PoolInfo(
-    //   JSBI.BigInt()
-    // )
-   console.log('val', val)
+    const poolInfo = new PoolInfo(
+      JSBI.BigInt(totalStake.toNumber()),
+      JSBI.BigInt(newReward.toNumber()),
+      JSBI.BigInt(20)
+    )
+    const userInfo = new UserInfo(
+      poolInfo,
+      JSBI.BigInt(8000000000000000000)
+    )
+    if(val){
+      const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
+        JSBI.BigInt(new BigNumber(val).times(new BigNumber(10).pow(18)).toNumber())
+      )
+      setTotalStakedAfterStake(new BigNumber(newTotalStaked.toString()))
+    }
   }, [val])
 
   const sushi = useSushi()
@@ -38,14 +51,18 @@ const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, val }) => {
     const e_provider = ethereum && ethereum.provider ? ethereum.provider : null
     return getContract(e_provider as provider, lpTokenAddress)
   }, [ethereum, lpTokenAddress])
-  const newReward = useNewReward(pid + 1)
 
-  const [totalStake, setTotalStake] = useState<BigNumber>()
+  // const newReward = useNewReward(pid + 1)
+  // fake data
+  const newReward = new BigNumber(5000000000000000000) // 5 SONE per block
+  //
+
+  const [totalStake, setTotalStake] = useState<BigNumber>(new BigNumber(0))
   useEffect(() => {
     async function fetchData() {
       // const data = await getLPTokenStaked(sushi, lpContract, chainId)
       // fake data
-      const data = new BigNumber(2000000000000000000)
+      const data = new BigNumber(20000000000000000000) // 20 LP token
       //
       setTotalStake(data)
     }
@@ -58,7 +75,7 @@ const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, val }) => {
     <div>
       <div>
         <span>Total staked value</span>
-        <span>-Get from SDK</span>
+        <span>- {getBalanceNumber(totalStakedAfterStake)}</span>
       </div>
       <div>
         <span>Earned reward</span>

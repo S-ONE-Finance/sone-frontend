@@ -11,6 +11,7 @@ import Apy from './components/Apy'
 import Stake from './components/Stake'
 import IconLP from '../../assets/images/icon_lp.svg'
 import StakeBackground from '../../assets/images/stake_background.svg'
+import { useActiveWeb3React } from 'hooks'
 
 const Farm: React.FC = () => {
   const { farmId } = useParams() as any
@@ -20,19 +21,9 @@ const Farm: React.FC = () => {
     pid,
     lpToken,
     lpTokenAddress,
-    // tokenAddress,
     tokenSymbol,
     token2Symbol,
-    // earnToken,
-    name,
-    icon,
-    icon2,
-    description,
-    symbolShort,
-    protocal,
-    iconProtocal,
-    pairLink,
-    addLiquidityLink
+    name
   } = useFarm(farmId) 
   || {
     pid: 0,
@@ -41,24 +32,15 @@ const Farm: React.FC = () => {
     symbolShort: '',
     tokenSymbol: '',
     token2Symbol: '',
-    tokenAddress: '',
-    earnToken: '',
-    name: '',
-    icon: '',
-    symbol: '',
-    protocal: '',
-    iconProtocal: '',
-    pairLink: '',
-    addLiquidityLink: ''
+    name: ''
   }
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
   const toggleWalletModal = useWalletModalToggle()
-
-  const { account, library: ethereum } = useWeb3React()
-  // const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />)
+  const { account } = useActiveWeb3React()
+  const { library: ethereum } = useWeb3React()
   const lpContract = useMemo(() => {
     const e_provider = ethereum && ethereum.provider ? ethereum.provider : null
     return getContract(e_provider as provider, lpTokenAddress)
@@ -102,15 +84,10 @@ const Farm: React.FC = () => {
               }}
             >
               <button
-                onClick={toggleWalletModal} // onPresentWalletProviderModal
+                onClick={toggleWalletModal}
               >
                 🔓 Unlock Wallet To Continue
               </button>
-              {/* <Button
-                variant="secondary"
-                onClick={toggleWalletModal} // onPresentWalletProviderModal
-                text="🔓 Unlock Wallet To Continue"
-              /> */}
             </div>
           </StyledCardsWrapper>
         )}
