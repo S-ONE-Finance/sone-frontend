@@ -76,7 +76,7 @@ export default function AddLiquidityTwoTokensMode({ currencyIdA, currencyIdB }: 
     },
     [currencyIdB, history, currencyIdA]
   )
-  
+
   const handleCurrencyBSelect = useCallback(
     (currencyB: Currency) => {
       const newCurrencyIdB = currencyId(currencyB)

@@ -71,10 +71,7 @@ function WeeklyRanking() {
     <Container>
       <SpanFullColumns>
         <Title>Weekly Ranking</Title>
-        <QuestionHelper
-          text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio, voluptates."
-          size={isUpToExtraSmall ? 15 : isUpToSmall ? 19 : 23}
-        />
+        <QuestionHelper text="Sort theo oneWeekVolumeUSD" size={isUpToExtraSmall ? 15 : isUpToSmall ? 19 : 23} />
       </SpanFullColumns>
       {(ranking?.length >= 1 ? ranking : rankingPlaceholder).map((item: any) => (
         <WeeklyRankingItem

@@ -82,8 +82,8 @@ export function filterPairs(pairs: Pair[], rawQuery: string): Pair[] {
     const { token0, token1 } = pair
     const { symbol: symbol0, name: name0 } = token0
     const { symbol: symbol1, name: name1 } = token1
-    const symbolName0 = symbol0?.toLowerCase() ?? '' + ' - ' + name0?.toLowerCase() ?? ''
-    const symbolName1 = symbol1?.toLowerCase() ?? '' + ' - ' + name1?.toLowerCase() ?? ''
+    const symbolName0 = `${symbol0?.toLowerCase() ?? ''}  - ${name0?.toLowerCase() ?? ''}`
+    const symbolName1 = `${symbol1?.toLowerCase() ?? ''}  - ${name1?.toLowerCase() ?? ''}`
     const symbolNameAll = symbolName0 + ' ' + symbolName1
 
     return q1 === undefined

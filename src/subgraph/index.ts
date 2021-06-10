@@ -69,7 +69,6 @@ export function useSubgraphData() {
   return subgraphData
 }
 
-// TODO: Implement this.
 export function useTopPairsFromSubgraph(): Pair[] {
   const { chainId } = useActiveWeb3React()
 
