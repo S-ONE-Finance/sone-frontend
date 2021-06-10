@@ -1,5 +1,5 @@
 /**
- * MyAccountPanel is used only in Header component.
+ * PanelMyAccount is used only in Header component.
  */
 
 // Libraries.
@@ -23,7 +23,7 @@ import { ButtonPrimary } from '../Button'
 import RecentTransactions from '../RecentTransactions'
 import { injected, walletlink } from 'connectors'
 
-const MyAccountPanelWrapper = styled.div`
+const PanelMyAccountWrapper = styled.div`
   cursor: default;
   display: block;
   width: 350px;
@@ -71,7 +71,7 @@ const PaddingColumn = styled(Column)`
   padding: 1.5rem 1rem;
 `
 
-export default function MyAccountPanel() {
+export default function PanelMyAccount() {
   const { account, connector } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
@@ -83,7 +83,7 @@ export default function MyAccountPanel() {
   }
 
   return (
-    <MyAccountPanelWrapper>
+    <PanelMyAccountWrapper>
       <ColumnWrapper>
         <Column>
           <TYPE.black fontSize={16}>Address:</TYPE.black>
@@ -104,6 +104,6 @@ export default function MyAccountPanel() {
         </PaddingColumn>
         <RecentTransactions />
       </ColumnWrapper>
-    </MyAccountPanelWrapper>
+    </PanelMyAccountWrapper>
   )
 }

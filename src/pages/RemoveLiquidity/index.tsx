@@ -11,8 +11,8 @@ import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../
 import { BlueCard, LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import PanelCurrencyInput from '../../components/PanelCurrencyInput'
+import CurrencyLogoDouble from '../../components/CurrencyLogoDouble'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { RowBetween, RowFixed } from '../../components/Row'
@@ -384,7 +384,7 @@ export default function RemoveLiquidity({
             {'UNI ' + currencyA?.symbol + '/' + currencyB?.symbol} Burned
           </Text>
           <RowFixed>
-            <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} />
+            <CurrencyLogoDouble currency0={currencyA} currency1={currencyB} margin={true} />
             <Text fontWeight={500} fontSize={16}>
               {parsedAmounts[Field.LIQUIDITY]?.toSignificant(6)}
             </Text>
@@ -598,7 +598,7 @@ export default function RemoveLiquidity({
 
             {showDetailed && (
               <>
-                <CurrencyInputPanel
+                <PanelCurrencyInput
                   value={formattedAmounts[Field.LIQUIDITY]}
                   onUserInput={onLiquidityInput}
                   onMax={() => {
@@ -613,7 +613,7 @@ export default function RemoveLiquidity({
                 <ColumnCenter>
                   <ArrowDown size="16" color={theme.text2} />
                 </ColumnCenter>
-                <CurrencyInputPanel
+                <PanelCurrencyInput
                   hideBalance={true}
                   value={formattedAmounts[Field.CURRENCY_A]}
                   onUserInput={onCurrencyAInput}
@@ -627,7 +627,7 @@ export default function RemoveLiquidity({
                 <ColumnCenter>
                   <Plus size="16" color={theme.text2} />
                 </ColumnCenter>
-                <CurrencyInputPanel
+                <PanelCurrencyInput
                   hideBalance={true}
                   value={formattedAmounts[Field.CURRENCY_B]}
                   onUserInput={onCurrencyBInput}

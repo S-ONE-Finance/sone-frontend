@@ -41,6 +41,7 @@ import { useLocation } from 'react-router'
 import WeeklyRanking from '../components/WeeklyRanking'
 import { ReactComponent as LogoForMobileResponsive } from '../assets/images/logo_for_mobile_responsive.svg'
 import { useTranslation } from 'react-i18next'
+import Pool from './Pool'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -154,7 +155,7 @@ export default function App() {
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
               <Route exact strict path="/find" component={PoolFinder} />
-              {/*<Route exact strict path="/pool" component={Pool} />*/}
+              <Route exact strict path="/pool" component={Pool} />
               <Route exact strict path="/uni" component={Earn} />
               <Route exact strict path="/vote" component={Vote} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />

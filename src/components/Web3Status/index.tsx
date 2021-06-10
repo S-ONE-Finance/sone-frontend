@@ -1,4 +1,4 @@
-// TODO: Sau khi chuyển hết logic sang bên MyAccountPanel (desktop) và màn Modal khi click
+// TODO: Sau khi chuyển hết logic sang bên PanelMyAccount (desktop) và màn Modal khi click
 // vào hamburger icon trên mobile thì sẽ xoá hết logic của file này đi. Chỉ để lại
 // Button Text My Account or Connect Wallet or Error
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'

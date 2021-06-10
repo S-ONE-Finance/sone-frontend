@@ -83,7 +83,6 @@ export default function AddLiquidity({
     currencies,
     pair,
     pairState,
-
     parsedAmounts,
     price,
     noLiquidity,
@@ -166,7 +165,7 @@ export default function AddLiquidity({
             currencyToAdd={pair?.liquidityToken}
           />
           {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
-            <AddLiquidityOneTokenMode />
+            <AddLiquidityOneTokenMode currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
           ) : (
             <AddLiquidityTwoTokensMode currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
           )}

@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 
-import { useOneDayPairPriceChange } from '../../subgraph'
+import { useOneDayPairPriceChangeData } from '../../subgraph'
 
 import { RowFixed } from '../Row'
 import PairInfo from './PairInfo'
 
-// NOTE: This is a practice using javascript for horizontal scroll infinite, it has the downside that the list will be jerky.
+// This is a practice using javascript for horizontal scroll infinite, it has the downside that the list will be jerky.
 // export default function Footer() {
 //   // BUG: Remove useTranslation() here makes list1Ref.current.clientWidth always equal to 0.
 //   useTranslation()
@@ -89,7 +89,7 @@ import PairInfo from './PairInfo'
 //   )
 // }
 
-// NOTE: This is a practice using only CSS, it has the downside that the list cannot be contiguous.
+// This is a practice using only CSS, it has the downside that the list cannot be contiguous.
 const Marquee = styled.div<{ pairSize: number; pauseAnimation: boolean }>`
   width: 100%;
   height: 100%;
@@ -137,7 +137,7 @@ const Marquee = styled.div<{ pairSize: number; pauseAnimation: boolean }>`
 export default function Footer() {
   const [pauseAnimation, setPauseAnimation] = useState(false)
 
-  const data = useOneDayPairPriceChange()
+  const data = useOneDayPairPriceChangeData()
 
   const toggleAnimation = useCallback(() => {
     setPauseAnimation(prev => !prev)

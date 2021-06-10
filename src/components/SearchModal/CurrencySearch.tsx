@@ -14,6 +14,7 @@ import CurrencyList from './CurrencyList'
 import { filterTokens, useSortedTokensByQuery } from './filtering'
 import { useTokenComparator } from './sorting'
 import { PaddedColumn, SearchInput, SeparatorDark } from './styleds'
+import { PanelSearchContentWrapper, SortDownIcon, SortUpIcon } from 'theme'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import styled from 'styled-components'
 import useToggle from 'hooks/useToggle'
@@ -23,29 +24,12 @@ import ImportRow from './ImportRow'
 import useDebounce from 'hooks/useDebounce'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { QuestionHelper1416 } from '../QuestionHelper'
-import { ReactComponent as SortDownIconSvg } from '../../assets/svg/sort_down_icon.svg'
-import { ReactComponent as SortUpIconSvg } from '../../assets/svg/sort_up_icon.svg'
 import { useActiveListUrls } from '../../state/lists/hooks'
 import ListLogo from '../ListLogo'
 import { useSelector } from 'react-redux'
 import { AppState } from '../../state'
 import { TokenList } from '@uniswap/token-lists/dist/types'
 import { StyledCloseIcon } from '../../theme/components'
-
-const SortDownIcon = styled(SortDownIconSvg)`
-  cursor: pointer;
-`
-
-const SortUpIcon = styled(SortUpIconSvg)`
-  cursor: pointer;
-`
-
-const ContentWrapper = styled(Column)`
-  width: 100%;
-  flex: 1 1;
-  position: relative;
-  background-color: ${({ theme }) => theme.bg1Sone};
-`
 
 const Footer = styled.div`
   width: 100%;
@@ -195,7 +179,7 @@ export function CurrencySearch({
   }, [])
 
   return (
-    <ContentWrapper>
+    <PanelSearchContentWrapper>
       <PaddedColumn gap="16px" style={{ padding: isUpToExtraSmall ? '2em 1em 0 1em' : '2.5em 2em 0 2em' }}>
         <RowBetween>
           <RowFixed>
@@ -205,7 +189,6 @@ export function CurrencySearch({
             <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
           </RowFixed>
           <StyledCloseIcon onClick={onDismiss} />
-          {/*<CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />*/}
         </RowBetween>
         <Row>
           <SearchInput
@@ -287,6 +270,6 @@ export function CurrencySearch({
           </ButtonText>
         </RowBetween>
       </Footer>
-    </ContentWrapper>
+    </PanelSearchContentWrapper>
   )
 }

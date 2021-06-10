@@ -159,7 +159,7 @@ export default function WalletModal({
   useEffect(() => {
     if (walletModalOpen) {
       setPendingError(false)
-      // Không cần WALLET_VIEWS.ACCOUNT nữa vì đã có MyAccountPanel.
+      // Không cần WALLET_VIEWS.ACCOUNT nữa vì đã có PanelMyAccount.
       // setWalletView(WALLET_VIEWS.ACCOUNT)
       setWalletView(WALLET_VIEWS.OPTIONS)
     }

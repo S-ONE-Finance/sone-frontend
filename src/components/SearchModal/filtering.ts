@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { isAddress } from '../../utils'
-import { Token } from '@s-one-finance/sdk-core'
+import { Pair, Token } from '@s-one-finance/sdk-core'
 
 export function filterTokens(tokens: Token[], search: string): Token[] {
   if (search.length === 0) return tokens
@@ -67,4 +67,22 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
 
     return [...exactMatches, ...symbolSubtrings, ...rest]
   }, [tokens, searchQuery])
+}
+
+export function filterPairs(pairs: Pair[], rawQuery: string): Pair[] {
+  const query = rawQuery.trim().toLowerCase()
+
+  const res = pairs.filter(pair => {
+    const { token0, token1 } = pair
+    const { symbol: symbol0, name: name0 } = token0
+    const { symbol: symbol1, name: name1 } = token1
+    return (
+      (symbol0 && symbol0.toLowerCase().includes(query)) ||
+      (name0 && name0.toLowerCase().includes(query)) ||
+      (symbol1 && symbol1.toLowerCase().includes(query)) ||
+      (name1 && name1.toLowerCase().includes(query))
+    )
+  })
+
+  return res
 }

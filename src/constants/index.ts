@@ -153,7 +153,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     mobile: true
   }
   // S-One doén't need below options.
-  /* 
+  /*
     WALLET_LINK: {
     connector: walletlink,
     name: 'Coinbase Wallet',

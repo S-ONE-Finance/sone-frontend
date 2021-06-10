@@ -8,7 +8,7 @@ import { RowBetween } from '../Row'
 import { TYPE, StyledCloseIcon } from '../../theme'
 import { ButtonConfirmed, ButtonError } from '../Button'
 import ProgressCircles from '../ProgressSteps'
-import CurrencyInputPanel from '../CurrencyInputPanel'
+import PanelCurrencyInput from '../PanelCurrencyInput'
 import { TokenAmount, Pair } from '@s-one-finance/sdk-core'
 import { useActiveWeb3React } from '../../hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -200,7 +200,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
             <TYPE.mediumHeader>Deposit</TYPE.mediumHeader>
             <StyledCloseIcon onClick={wrappedOnDismiss} />
           </RowBetween>
-          <CurrencyInputPanel
+          <PanelCurrencyInput
             value={typedValue}
             onUserInput={onUserInput}
             onMax={handleMax}

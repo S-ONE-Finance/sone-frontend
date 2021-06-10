@@ -1,4 +1,4 @@
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
+import PanelCurrencyInput from '../../components/PanelCurrencyInput'
 import { Field } from '../../state/mint/actions'
 import { AutoColumn } from '../../components/Column'
 import { AutoRow } from '../../components/Row'
@@ -14,13 +14,12 @@ import { useHistory } from 'react-router-dom'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import useTheme from '../../hooks/useTheme'
 
-type InputsTwoTokensModeProps = {
-  // Không dùng `?:` để bắt buộc phải truyền currencyIdA và currencyIdB as prop.
+type AddLiquidityTwoTokensModeProps = {
   currencyIdA: string | undefined
   currencyIdB: string | undefined
 }
 
-export default function TwoTokensMode({ currencyIdA, currencyIdB }: InputsTwoTokensModeProps) {
+export default function AddLiquidityTwoTokensMode({ currencyIdA, currencyIdB }: AddLiquidityTwoTokensModeProps) {
   const history = useHistory()
 
   const isUpToExtraSmall = useIsUpToExtraSmall()
@@ -77,6 +76,7 @@ export default function TwoTokensMode({ currencyIdA, currencyIdB }: InputsTwoTok
     },
     [currencyIdB, history, currencyIdA]
   )
+  
   const handleCurrencyBSelect = useCallback(
     (currencyB: Currency) => {
       const newCurrencyIdB = currencyId(currencyB)
@@ -95,7 +95,7 @@ export default function TwoTokensMode({ currencyIdA, currencyIdB }: InputsTwoTok
 
   return (
     <AutoColumn gap={'md'}>
-      <CurrencyInputPanel
+      <PanelCurrencyInput
         value={formattedAmounts[Field.CURRENCY_A]}
         onUserInput={onFieldAInput}
         onMax={() => {
@@ -114,7 +114,7 @@ export default function TwoTokensMode({ currencyIdA, currencyIdB }: InputsTwoTok
           </IconWrapper>
         </AutoRow>
       </AutoColumn>
-      <CurrencyInputPanel
+      <PanelCurrencyInput
         value={formattedAmounts[Field.CURRENCY_B]}
         onUserInput={onFieldBInput}
         onCurrencySelect={handleCurrencyBSelect}
