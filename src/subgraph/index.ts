@@ -1,7 +1,7 @@
 // TODO: Chuyển mọi hooks sang sử dụng sdk của @s-one-finance.
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { client } from './apollo/client'
+import { clients } from './apollo/client'
 import { PAIRS_CURRENT } from './apollo/queries'
 
 import getBulkPairData from './utils/getBulkPairData'
@@ -11,10 +11,12 @@ import { useIsUpToExtraSmall } from '../hooks/useWindowSize'
 import { Pair, Token } from '@s-one-finance/sdk-core'
 import { PairState, usePairs } from 'data/Reserves'
 
-async function getPairIds() {
+async function getPairIds(chainId?: number) {
+  if (chainId === undefined) return []
+
   const {
     data: { pairs }
-  } = await client.query({
+  } = await clients[chainId].query({
     query: PAIRS_CURRENT,
     fetchPolicy: 'cache-first'
   })
@@ -27,13 +29,13 @@ async function getPairIds() {
  */
 export function useSubgraphData() {
   const [subgraphData, setSubgraphData] = useState<any>({})
-  const { library } = useActiveWeb3React()
+  const { chainId, library } = useActiveWeb3React()
 
-  const getData = useCallback(async () => {
-    const pairIds = await getPairIds()
+  const getData = useCallback(async chainId => {
+    const pairIds = await getPairIds(chainId)
 
     // Get data for every pair in list.
-    const data = await getBulkPairData(pairIds)
+    const data = await getBulkPairData(chainId, pairIds)
     if (data?.length > 0) {
       setSubgraphData(data)
       console.log('Array trả về có ' + data.length + ' items.')
@@ -45,14 +47,14 @@ export function useSubgraphData() {
   // Wait 5s for TheGraph mapping data.
   const getDataAfter5Seconds = useCallback(() => {
     setTimeout(() => {
-      getData()
+      getData(chainId)
     }, 5000)
-  }, [getData])
+  }, [chainId, getData])
 
   // Query data the first time.
   useEffect(() => {
-    getData()
-  }, [getData])
+    getData(chainId)
+  }, [chainId, getData])
 
   // When new block created, run the getDataAfter5Seconds callback function.
   useEffect(() => {
@@ -77,9 +79,13 @@ export function useTopPairsFromSubgraph(): Pair[] {
     ;(async () => {
       if (chainId === undefined) return
 
-      const pairIds = await getPairIds()
-      const rawPairs = await getBulkPairData(pairIds)
-      const sortedRawPairs = rawPairs.slice().sort((a: any, b: any) => b.oneWeekVolumeUSD - a.oneWeekVolumeUSD)
+      const pairIds = await getPairIds(chainId)
+      const rawPairs = await getBulkPairData(chainId, pairIds)
+      const sortedRawPairs = rawPairs
+        .slice()
+        .sort(
+          (a: any, b: any) => a?.token0?.symbol && b?.token0?.symbol && a.token0.symbol.localeCompare(b.token0.symbol)
+        )
       const newPairTokens = sortedRawPairs
         .map((item: any) => {
           const { token0: t0, token1: t1 } = item
@@ -102,8 +108,6 @@ export function useTopPairsFromSubgraph(): Pair[] {
   }, [chainId])
 
   const topPairs = usePairs(pairTokens)
-
-  console.log('topPairs', topPairs)
 
   // Only take pairs that EXISTS and NOT NULL.
   // BUG: ở đây CÓ THỂ (chưa test) bị vấn đề performance nếu topPairs lớn.

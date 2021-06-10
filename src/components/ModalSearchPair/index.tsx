@@ -116,7 +116,7 @@ export default function ModalSearchPair({
           <>
             <RowBetween style={{ padding: isUpToExtraSmall ? '20px 1.25rem 0' : '20px 2rem 0' }}>
               <Text fontWeight={500} fontSize={16}>
-                Token Name
+                Pair Name
               </Text>
               {invertSearchOrder === false ? (
                 <SortDownIcon onClick={handleSort} />
