@@ -1,6 +1,5 @@
 import React, { memo } from 'react'
 import styled from 'styled-components'
-import Value from '../../../components/Value'
 
 const Balances = memo(() => {
   const fakeData = {
@@ -15,9 +14,9 @@ const Balances = memo(() => {
               <div>
                   <div>
                     <StyledCirculating>CRS Circulating Supply</StyledCirculating>
-                    <Value value={fakeData.circulatingSupply} />
+                    <span>{fakeData.circulatingSupply}</span>
                     <StyledCirculating style={{ borderLeft: '1px solid black' }}>Total Supply</StyledCirculating>
-                    <Value value={fakeData.totalSupply} />
+                    <span>{fakeData.totalSupply}</span>
                   </div>
               </div>
             </div>
