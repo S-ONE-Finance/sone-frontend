@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import  provider  from 'web3'
 import PageHeader from '../../components/PageHeader'
 import useFarm from '../../hooks/farms/useFarm'
 import { getContract } from '../../sushi/format/erc20'
@@ -24,7 +23,7 @@ const Farm: React.FC = () => {
     tokenSymbol,
     token2Symbol,
     name
-  } = useFarm(farmId) 
+  } = useFarm(+farmId)
   || {
     pid: 0,
     lpToken: '',
@@ -43,7 +42,7 @@ const Farm: React.FC = () => {
   const { library: ethereum } = useWeb3React()
   const lpContract = useMemo(() => {
     const e_provider = ethereum && ethereum.provider ? ethereum.provider : null
-    return getContract(e_provider as provider, lpTokenAddress)
+    return getContract(e_provider as any, lpTokenAddress)
   }, [ethereum, lpTokenAddress])
 
   return (
@@ -86,7 +85,7 @@ const Farm: React.FC = () => {
               <button
                 onClick={toggleWalletModal}
               >
-                🔓 Unlock Wallet To Continue
+                Unlock Wallet To Continue
               </button>
             </div>
           </StyledCardsWrapper>
@@ -137,34 +136,12 @@ const StyledCardWrapper = styled.div`
   }
 `
 
-const StyledInfo = styled.h3`
-  color: ${props => props.theme.text2};
-  font-size: 16px;
-  font-weight: 400;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  @media (max-width: 767px) {
-    text-align: left;
-    br {
-      display: none;
-    }
-  }
-`
-
 const StyledHeading = styled.h2`
   color: black;
   opacity: 0.5;
   text-transform: uppercase;
   text-align: center;
   margin-bottom: 20px;
-`
-
-const StyledInfoLP = styled.div`
-  display: flex;
-  padding: 15px 10px;
-  background: #00ff5d0f;
-  border-radius: 12px;
 `
 
 export default Farm

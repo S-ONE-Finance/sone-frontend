@@ -14,8 +14,6 @@ export interface Farm {
   icon: string
   icon2: string
   description: string
-  isHot: boolean
-  isNew: boolean
   id: string
   tokenSymbol: string
   token2Symbol: string

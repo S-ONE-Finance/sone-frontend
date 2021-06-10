@@ -1,12 +1,10 @@
 // import BigNumber from 'bignumber.js/bignumber'
 import ERC20Abi from './abi/erc20.json'
 import MasterChefAbi from './abi/masterchef.json'
-import XSushiAbi from './abi/xsushi.json'
 import SushiAbi from './abi/sushi.json'
 import UNIV2PairAbi from './abi/uni_v2_lp.json'
 import WETHAbi from './abi/weth.json'
-import makerAbi from './abi/maker.json'
-import { contractAddresses, supportedPools,tomoSupportedPools } from './constants.js'
+import { contractAddresses, supportedPools,ropstenSupportedPools } from './constants.js'
 import * as Types from './types.js'
 
 export class Contracts {
@@ -20,12 +18,9 @@ export class Contracts {
 
     this.sushi = new this.web3.eth.Contract(SushiAbi)
     this.masterChef = new this.web3.eth.Contract(MasterChefAbi)
-    this.xSushiStaking = new this.web3.eth.Contract(XSushiAbi)
     this.weth = new this.web3.eth.Contract(WETHAbi)
-    this.maker = new this.web3.eth.Contract(makerAbi)
-    // window.pools <=> supportedPools
     if(networkId === 3){
-      this.pools = tomoSupportedPools.map(pool =>
+      this.pools = ropstenSupportedPools.map(pool =>
         Object.assign(pool, {
           lpAddress: pool.lpAddresses[networkId],
           tokenAddress: pool.tokenAddresses[networkId],
@@ -60,10 +55,7 @@ export class Contracts {
 
     setProvider(this.sushi, contractAddresses.sushi[networkId])
     setProvider(this.masterChef, contractAddresses.masterChef[networkId])
-    // setProvider(this.maker, contractAddresses.maker[networkId])
-    // setProvider(this.xSushiStaking, contractAddresses.xSushi[networkId])
     setProvider(this.weth, contractAddresses.weth[networkId])
-    console.log('this.pools', this.pools)
     this.pools.forEach(({ lpContract, lpAddress, tokenContract, token2Contract, token2Address, tokenAddress }) => {
       setProvider(lpContract, lpAddress)
       setProvider(tokenContract, tokenAddress)

@@ -1,20 +1,11 @@
-import BigNumber from 'bignumber.js'
-import React, { useCallback, useEffect, useState, useMemo } from 'react'
-import { useWeb3React } from '@web3-react/core'
+import React, { useCallback, useState, useMemo } from 'react'
 import styled from 'styled-components'
 import useAllowance from '../../../hooks/farms/useAllowance'
 import useApprove from '../../../hooks/farms/useApprove'
 import useStake from '../../../hooks/farms/useStake'
-import useStakedBalance from '../../../hooks/farms/useStakedBalance'
 import useTokenBalance from '../../../hooks/farms/useTokenBalance'
-import { getLPTokenStaked } from '../../../sushi/utils'
-import useSushi from '../../../hooks/farms/useSushi'
-import useBlock from '../../../hooks/farms/useBlock'
-import useStakedValue from '../../../hooks/farms/useStakedValue'
-import usePoolActive from '../../../hooks/farms/usePoolActive'
 import TokenInput from '../../../components/TokenInput'
 import { getFullDisplayBalance } from '../../../sushi/format/formatBalance'
-
 interface StakeProps {
   lpContract: any
   pid: number
@@ -26,7 +17,6 @@ interface StakeProps {
 }
 
 const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, token2Symbol, val, setVal }) => {
-  const {chainId} = useWeb3React()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [requestedApprovalSuccess, setRequestedApprovalSuccess] = useState(false)
   const [pendingStakeTx, setPendingStakeTx] = useState(false)
@@ -36,23 +26,6 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
   const { onApprove } = useApprove(lpContract)
 
   const tokenBalance = useTokenBalance(lpContract.options.address)
-  const stakedBalance = useStakedBalance(pid)
-  const poolActive = usePoolActive(pid)
-
-  const [totalStake, setTotalStake] = useState<BigNumber>()
-  const sushi = useSushi()
-  const block = useBlock()
-  const stakedValue = useStakedValue(pid)
-
-  useEffect(() => {
-    async function fetchData() {
-      const data = await getLPTokenStaked(sushi, lpContract, chainId)
-      setTotalStake(data)
-    }
-    if (sushi && lpContract) {
-      fetchData()
-    }
-  }, [sushi, setTotalStake, lpContract, block])
 
   const { onStake } = useStake(pid)
 
@@ -82,6 +55,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
+       console.log('111', 111)
       setVal(e.currentTarget.value)
     },
     [setVal]

@@ -1,23 +1,15 @@
-import BigNumber from 'bignumber.js'
-import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
-import styled from 'styled-components'
-
-import Loader from '../../../components/Loader'
-import { Farm } from '../../../contexts/Farms'
-import useAllStakedValue from '../../../hooks/farms/useAllStakedValue'
-import useFarms from '../../../hooks/farms/useFarms'
-import useLuaPrice from '../../../hooks/farms/useLuaPrice'
-import usePoolActive from '../../../hooks/farms/usePoolActive'
-import useSushi from '../../../hooks/farms/useSushi'
-import { NUMBER_BLOCKS_PER_YEAR } from '../../../config'
-import { getNewRewardPerBlock } from '../../../sushi/utils'
-import { IsRopsten } from '../../../utils'
+import BigNumber from 'bignumber.js'
+import React from 'react'
 import { NavLink } from 'react-router-dom'
+import styled from 'styled-components'
 import IconAPY from '../../../assets/images/icon_apy.svg'
 import IconLP from '../../../assets/images/icon_lp.svg'
-
-
+import Loader from '../../../components/Loader'
+import { NUMBER_BLOCKS_PER_YEAR } from '../../../config'
+import { Farm } from '../../../contexts/Farms'
+import useFarms from '../../../hooks/farms/useFarms'
+import { IsRopsten } from '../../../utils'
 interface FarmWithStakedValue extends Farm {
   tokenAmount: BigNumber
   token2Amount: BigNumber
@@ -30,19 +22,20 @@ interface FarmWithStakedValue extends Farm {
 
 const FarmCards: React.FC = () => {
   const [farms] = useFarms()
-  const stakedValue = useAllStakedValue()
-  const luaPrice = useLuaPrice()
+  // fake data
+  const luaPrice = new BigNumber(10)
 
   const rows = farms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
+      // fake data
       const farmWithStakedValue: FarmWithStakedValue = {
         ...farm,
-        tokenAmount: (stakedValue[i] || {}).tokenAmount || new BigNumber(0),
-        token2Amount: (stakedValue[i] || {}).token2Amount || new BigNumber(0),
-        totalToken2Value: (stakedValue[i] || {}).totalToken2Value || new BigNumber(0),
-        tokenPriceInToken2: (stakedValue[i] || {}).tokenPriceInToken2 || new BigNumber(0),
-        poolWeight: (stakedValue[i] || {}).poolWeight || new BigNumber(0),
-        usdValue: (stakedValue[i] || {}).usdValue || new BigNumber(0),
+        tokenAmount:  new BigNumber(0),
+        token2Amount: new BigNumber(0),
+        totalToken2Value:  new BigNumber(0),
+        tokenPriceInToken2:  new BigNumber(0),
+        poolWeight:  new BigNumber(0),
+        usdValue: new BigNumber(0),
         luaPrice
       }
       const newFarmRows = [...farmRows]
@@ -83,22 +76,19 @@ interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
+
+  const fakeData = {
+    id: 1,
+    newReward:  new BigNumber(1231321212131),
+    poolWeight:  new BigNumber(20),
+    luaPrice:  new BigNumber(1231321212131),
+    usdValue:  new BigNumber(1231321212131),
+    multiplier: 40
+  }
+
   const { chainId } = useWeb3React()
   const isRopsten = IsRopsten(chainId)
   const ID = isRopsten ? 3 : 1
-  const poolActive = usePoolActive(farm.pid)
-
-  const sushi = useSushi()
-  const [newReward, setNewRewad] = useState<BigNumber>()
-  useEffect(() => {
-    async function fetchData() {
-      const supply = await getNewRewardPerBlock(sushi, farm.pid + 1, chainId)
-      setNewRewad(supply)
-    }
-    if (sushi && poolActive) {
-      fetchData()
-    }
-  }, [sushi, setNewRewad, poolActive, chainId, farm.pid])
 
   return (
     <StyledCardWrapper>
@@ -108,53 +98,44 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             <div style={{ display: 'flex', background: 'linear-gradient(180deg, #FFEFEF 48.7%, #F8F8F8 100%)' }}>
               <div>
                 <StyledTitle>{farm.name}</StyledTitle>
-                <StyledMultiplier>40X</StyledMultiplier>
+                <StyledMultiplier> {fakeData.multiplier}X</StyledMultiplier>
               </div>
               <div style={{ marginLeft: '10px'}}>
                 <img src={IconLP} alt="" height="40" />
               </div>
             </div>
-           
             <br />
-            {!isRopsten ? (
-              <StyledInsight>
-                <span>Earn</span>
-                <span><b>SONE</b></span>
-              </StyledInsight>
-              ): ''
-            }
-            {!farm.isHot && (
-              <>
-                <StyledInsight>
-                  <span>APY</span>
-                  <span style={{ fontWeight: 'bold', color: '#3FAAB0' }}>
-                    <img src={IconAPY} alt="" height={12}/>
-                    {newReward && farm.poolWeight && farm.luaPrice && farm.usdValue
-                      ? `${parseFloat(farm.luaPrice
-                            .times(NUMBER_BLOCKS_PER_YEAR[ID])
-                            .times(newReward.div(10 ** 18))
-                            .div(farm.usdValue)
-                            .div(10 ** 8)
-                            .times(100)
-                            .toFixed(2)
-                        ).toLocaleString('en-US')}%`
-                      : '~'}
-                  </span>
-                </StyledInsight>
-                <StyledInsight>
-                  <span>Total liquidity</span>
-                  <span>
-                    {farm.usdValue && (
-                      <>
-                        <b>${parseFloat(farm.usdValue.toFixed(2)).toLocaleString('en-US')}</b>
-                      </>
-                    )}
-                  </span>
-                </StyledInsight>
-              </>
-            )}
-            {/* <Button disabled={!(poolActive)} text={poolActive ? 'Select' : undefined} to={`/farming/${farm.id}`}> */}
-             <NavLink to={`/farming/${farm.id}`} style={{
+            <StyledInsight>
+              <span>Earn</span>
+              <span><b>SONE</b></span>
+            </StyledInsight>
+            <StyledInsight>
+              <span>APY</span>
+              <span style={{ fontWeight: 'bold', color: '#3FAAB0' }}>
+                <img src={IconAPY} alt="" height={12}/>
+                {fakeData.newReward && fakeData.poolWeight && fakeData.luaPrice && fakeData.usdValue
+                  ? `${parseFloat(fakeData.luaPrice
+                        .times(NUMBER_BLOCKS_PER_YEAR[ID])
+                        .times(fakeData.newReward.div(10 ** 18))
+                        .div(fakeData.usdValue)
+                        .div(10 ** 8)
+                        .times(100)
+                        .toFixed(2)
+                    ).toLocaleString('en-US')}%`
+                  : '~'}
+              </span>
+            </StyledInsight>
+            <StyledInsight>
+              <span>Total liquidity</span>
+              <span>
+                {fakeData.usdValue && (
+                  <>
+                    <b>${parseFloat(fakeData.usdValue.toFixed(2)).toLocaleString('en-US')}</b>
+                  </>
+                )}
+              </span>
+            </StyledInsight>
+             <NavLink to={`/farming/${fakeData.id}`} style={{
                 background: 'linear-gradient(90deg, #F05359 27.06%, #F58287 111.99%)',
                 borderRadius: '52px',
                 color: 'white',
@@ -166,7 +147,6 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                 fontWeight: 'bold'
              }}>
               Select
-              {/* {!poolActive && <Countdown date={new Date(startTime * 1000)} renderer={renderer} />} */}
             </NavLink>
           </StyledContent>
         </div>

@@ -21,9 +21,6 @@ import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
 import FarmsProvider from './contexts/Farms'
 import SushiProvider from './contexts/SushiProvider'
-import ModalsProvider from './contexts/Modals'
-
-
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -79,9 +76,7 @@ ReactDOM.render(
               <SushiProvider>
                 <FarmsProvider>
                   <HashRouter>
-                    <ModalsProvider>
                      <App />
-                    </ModalsProvider>
                   </HashRouter>
                 </FarmsProvider>
               </SushiProvider>

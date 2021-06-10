@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core'
 
 import { getEarned, getMasterChefContract } from '../../sushi/utils'
 import useSushi from './useSushi'
-import useBlock from './useBlock'
+import { useBlockNumber } from 'state/application/hooks'
 
 const useEarnings = (pid: number) => {
   const [balance, setBalance] = useState(new BigNumber(0))
@@ -13,7 +13,7 @@ const useEarnings = (pid: number) => {
   const { account } = useWeb3React()
   const sushi = useSushi()
   const masterChefContract = getMasterChefContract(sushi)
-  const block = useBlock()
+  const block = useBlockNumber()
   const fetchBalance = useCallback(async () => {
     const balance = await getEarned(masterChefContract, pid, account)
     setBalance(new BigNumber(balance))

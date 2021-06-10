@@ -25,7 +25,7 @@ const useStake = (pid: number) => {
         return ''
       }
     },
-    [account, pid, sushi, addTransaction]
+    [account, pid, sushi, addTransaction, chainId]
   )
 
   return { onStake: handleStake }

@@ -1,11 +1,8 @@
-import { useCallback, useEffect, useState } from 'react'
-import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@web3-react/core'
-import { getEarned, getMasterChefContract, getFarms, checkPoolActive } from '../../sushi/utils'
-// import { getContract } from '../../utils/erc20'
+import BigNumber from 'bignumber.js'
+import { useCallback, useEffect, useState } from 'react'
+import { getEarned, getFarms, getMasterChefContract } from '../../sushi/utils'
 import useSushi from './useSushi'
-
-// import axios from 'axios'
 
 const useAllEarnings = () => {
   const [balances, setBalance] = useState([] as Array<BigNumber>)
@@ -16,21 +13,11 @@ const useAllEarnings = () => {
   const block = 0 //useBlock()
 
   const fetchAllBalances = useCallback(async () => {
-    // const balances: Array<BigNumber> = await Promise.all(
-    //   farms.map(({ pid }: { pid: number }) =>
-    //     getEarned(masterChefContract, pid, account),
-    //   ),
-    // )
-    // setBalance(balances)
     const data: Array<BigNumber> = await Promise.all(
       farms.map(
         ({ pid }: any) =>
           new Promise(async resolve => {
-            if (await checkPoolActive(pid, chainId)) {
-              resolve(await getEarned(masterChefContract, pid, account))
-            } else {
-              resolve('0')
-            }
+            resolve(await getEarned(masterChefContract, pid, account))
           })
       )
     )

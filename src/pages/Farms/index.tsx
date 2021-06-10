@@ -40,7 +40,7 @@ export default function Farms() {
             <option value="Active pool">Active pool</option>
             <option value="Inactive">Inactive</option>
             <option selected value="My LP tokens">My LP tokens</option>
-            <option value="mango">Mango</option>
+            <option value="Staked">Staked</option>
           </select>
         </span>
       </div>
