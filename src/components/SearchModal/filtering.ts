@@ -71,5 +71,5 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
 
 // TODO: Implement this.
 export function filterPairs(pairs: Pair[], search: string): Pair[] {
-  return []
+  return pairs
 }

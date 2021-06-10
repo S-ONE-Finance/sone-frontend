@@ -9,8 +9,7 @@ import { useActiveWeb3React } from '../hooks'
 import getCaseSensitiveAddress from './utils/getCaseSensitiveAddress'
 import { useIsUpToExtraSmall } from '../hooks/useWindowSize'
 import { Pair, Token } from '@s-one-finance/sdk-core'
-import { usePair, usePairs } from 'data/Reserves'
-import { useToken } from 'hooks/Tokens'
+import { PairState, usePairs } from 'data/Reserves'
 
 async function getPairIds() {
   const {
@@ -69,34 +68,61 @@ export function useSubgraphData() {
 }
 
 // TODO: Implement this.
-export function useTopPairsFromSubgraph(): { [address: string]: Pair } {
-  const [rawPairs, setRawPairs] = useState<any>({})
-  const [tokenPairs, setTokenPairs] = useState<[Token, Token][]>([])
+export function useTopPairsFromSubgraph(): Pair[] {
+  const { chainId } = useActiveWeb3React()
 
-  // FIXME: chưa xử lý trường hợp vào page lần đầu và fetch pair info bị lỗi. Như vậy pairs sẽ empty mãi.
+  const [pairTokens, setPairTokens] = useState<[Token, Token][]>([])
+
   useEffect(() => {
-    async function getData() {
+    ;(async () => {
+      if (chainId === undefined) return
+
       const pairIds = await getPairIds()
-      // Get data for every pair in list.
-      const data = await getBulkPairData(pairIds)
+      const rawPairs = await getBulkPairData(pairIds)
+      const sortedRawPairs = rawPairs.slice().sort((a: any, b: any) => b.oneWeekVolumeUSD - a.oneWeekVolumeUSD)
+      const newPairTokens = sortedRawPairs
+        .map((item: any) => {
+          const { token0: t0, token1: t1 } = item
+          // decimals: "18"
+          // derivedETH: "0"
+          // id: "0xad6d458402f60fd3bd25163575031acdce07538d"
+          // name: "DAI"
+          // symbol: "DAI"
+          // totalLiquidity: "333.949213729739959878"
+          if (t0 && t1) {
+            const token0 = new Token(chainId, t0.id, t0.decimals, t0?.symbol ?? undefined, t0?.name ?? undefined)
+            const token1 = new Token(chainId, t1.id, t1.decimals, t1?.symbol ?? undefined, t1?.name ?? undefined)
+            return [token0, token1]
+          }
+          return undefined
+        })
+        .filter((item): item is [Token, Token] => item !== undefined)
+      setPairTokens(newPairTokens)
+    })()
+  }, [chainId])
 
-      if (data?.length > 0) {
-        setRawPairs(data)
-        
-        console.log('useTopPairsFromSubgraph, Array trả về có ' + data.length + ' items.')
-      } else {
-        console.error('useTopPairsFromSubgraph, Array trả về lỗi', data)
-      }
-    }
+  const topPairs = usePairs(pairTokens)
 
-    getData()
-  }, [])
+  console.log('topPairs', topPairs)
 
-  return {}
+  // Only take pairs that EXISTS and NOT NULL.
+  // BUG: ở đây CÓ THỂ (chưa test) bị vấn đề performance nếu topPairs lớn.
+  const existedTopPairs: Pair[] = useMemo(
+    () =>
+      topPairs
+        .filter(
+          (entry: [PairState, Pair | null]): entry is [PairState, Pair] =>
+            entry[0] === PairState.EXISTS && entry[1] !== null
+        )
+        .map(entry => entry[1]),
+    [topPairs]
+  )
+
+  return existedTopPairs
 }
 
 /**
- * Lấy ra giá token0 so với token1 ở thời điểm hiện tại = (số lượng token1) / (số lượng token0),
+ * Lấy ra giá token1 so với token1 ở thời điểm hiện tại = (số lượng token1) / (số lượng token0),
  * và so sánh giá trị này với chính nó ở thời điểm 24h trước.
  * Ta có 2 kết quả: "token1Price và token1PriceChange"
  *

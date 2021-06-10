@@ -20,7 +20,7 @@ import PairList from './PairList'
 type ModalSearchPairProps = {
   isOpen: boolean
   onDismiss: () => void
-  allPairs: { [address: string]: Pair }
+  allPairs: Pair[]
   selectedPair?: Pair | null
   onPairSelect: (pair: Pair) => void
 }
@@ -44,7 +44,7 @@ export default function ModalSearchPair({
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
 
   const filteredPairs: Pair[] = useMemo(() => {
-    return filterPairs(Object.values(allPairs), debouncedQuery)
+    return filterPairs(allPairs, debouncedQuery)
   }, [allPairs, debouncedQuery])
 
   const sortedPairs: Pair[] = useMemo(() => {
