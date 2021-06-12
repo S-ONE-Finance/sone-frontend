@@ -188,7 +188,6 @@ export default function PanelCurrencyInput({
           >
             <Aligner>
               {pair ? (
-                // TODO: Chưa responsive ở đây.
                 <CurrencyLogoDouble currency0={pair?.token0} currency1={pair?.token1} size={22} margin={true} />
               ) : currency ? (
                 <CurrencyLogo currency={currency} size={'22px'} sizeMobile={'15px'} />

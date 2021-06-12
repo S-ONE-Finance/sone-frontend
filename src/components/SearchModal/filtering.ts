@@ -70,18 +70,25 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
 }
 
 export function filterPairs(pairs: Pair[], rawQuery: string): Pair[] {
-  const query = rawQuery.trim().toLowerCase()
+  const queries = rawQuery
+    .trim()
+    .toLowerCase()
+    .split(' ')
+  if (queries.length > 2) return []
+
+  const [q0, q1] = queries
 
   const res = pairs.filter(pair => {
     const { token0, token1 } = pair
     const { symbol: symbol0, name: name0 } = token0
     const { symbol: symbol1, name: name1 } = token1
-    return (
-      (symbol0 && symbol0.toLowerCase().includes(query)) ||
-      (name0 && name0.toLowerCase().includes(query)) ||
-      (symbol1 && symbol1.toLowerCase().includes(query)) ||
-      (name1 && name1.toLowerCase().includes(query))
-    )
+    const symbolName0 = `${symbol0?.toLowerCase() ?? ''}  - ${name0?.toLowerCase() ?? ''}`
+    const symbolName1 = `${symbol1?.toLowerCase() ?? ''}  - ${name1?.toLowerCase() ?? ''}`
+    const symbolNameAll = symbolName0 + ' ' + symbolName1
+
+    return q1 === undefined
+      ? symbolNameAll.includes(q0)
+      : (symbolName0.includes(q0) && symbolName1.includes(q1)) || (symbolName0.includes(q1) && symbolName1.includes(q0))
   })
 
   return res

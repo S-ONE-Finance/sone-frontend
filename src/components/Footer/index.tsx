@@ -147,7 +147,7 @@ export default function Footer() {
     <Marquee pairSize={data.length} pauseAnimation={pauseAnimation} onClick={toggleAnimation}>
       <div>
         <RowFixed height={'100%'}>
-          {data.slice(0).map(pair => (
+          {data.slice(0).map((pair: any) => (
             <PairInfo
               key={pair.id}
               pairName={pair.token0Symbol + '-' + pair.token1Symbol}

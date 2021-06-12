@@ -482,7 +482,7 @@ export default function RemoveLiquidity({
             attemptingTxn={attemptingTxn}
             hash={txHash ? txHash : ''}
             content={() => (
-              // TODO: De TransactionType.SWAP tam thoi
+              // TODO: Để transactionType là SWAP (tạm thời)
               <ConfirmationModalContent
                 title="You will receive"
                 onDismiss={handleDismissConfirmation}

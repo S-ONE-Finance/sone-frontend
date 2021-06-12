@@ -85,7 +85,7 @@ export default function ConfirmSwapModal({
   const confirmationContent = useCallback(
     () =>
       swapErrorMessage ? (
-        // FIXME: Width của modal error vẫn là 602px, chưa sửa (do chưa có design, chưa thống nhất với khách).
+        // TODO: Width của modal error vẫn là 602px, chưa sửa (do chưa có design, chưa thống nhất với khách).
         <TransactionErrorContent onDismiss={onDismiss} message={swapErrorMessage} />
       ) : (
         <ConfirmationModalContent

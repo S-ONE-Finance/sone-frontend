@@ -58,11 +58,13 @@
     "eslint-plugin-react-hooks": "^4.0.0",
     "ethers": "^5.0.7",
     "graphql-tag": "^2.10.1",
+    "husky": ">=6",
     "i18next": "^15.0.9",
     "i18next-browser-languagedetector": "^3.0.1",
     "i18next-xhr-backend": "^2.0.1",
     "inter-ui": "^3.13.1",
     "jazzicon": "^1.5.0",
+    "lint-staged": ">=10",
     "lodash.flatmap": "^4.5.0",
     "luxon": "^1.25.0",
     "multicodec": "^2.0.0",
@@ -112,7 +114,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress run'"
+    "integration-test": "start-server-and-test 'serve build -l 3000' http://localhost:3000 'cypress run'",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -135,5 +138,10 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@uniswap/default-token-list": "^2.0.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,html,css,scss,md}": [
+      "prettier --write"
+    ]
   }
 }
