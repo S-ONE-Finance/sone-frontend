@@ -8,7 +8,6 @@ const PairFields = `
       id
       symbol
       name
-      totalLiquidity
       derivedETH
       decimals
     }
@@ -16,7 +15,6 @@ const PairFields = `
       id
       symbol
       name
-      totalLiquidity
       derivedETH
       decimals
     }
@@ -30,7 +28,6 @@ const PairFields = `
     untrackedVolumeUSD
     token0Price
     token1Price
-    createdAtTimestamp
   }
 `
 
