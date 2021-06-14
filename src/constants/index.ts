@@ -152,7 +152,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#2F73BD',
     mobile: true
   }
-  // S-One doén't need below options.
+  // S-ONE doesn't need below options.
   /*
     WALLET_LINK: {
     connector: walletlink,
