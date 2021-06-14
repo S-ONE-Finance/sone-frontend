@@ -105,15 +105,21 @@ const TextSmaller = styled(TextPanelLabel)`
   `};
 `
 
+export enum SelectOrToggle {
+  SELECT = 'SELECT',
+  TOGGLE = 'TOGGLE'
+}
 interface PanelCurrencyInputProps {
   value: string
   onUserInput: (value: string) => void
   onMax?: () => void
   showMaxButton: boolean
   label?: string
+  isCurrencySelectOrToggle?: SelectOrToggle
   onCurrencySelect?: (currency: Currency) => void
+  onCurrencyToggle?: () => void
   currency?: Currency | null
-  disableCurrencySelect?: boolean
+  disableCurrencyChange?: boolean
   hideBalance?: boolean
   pair?: Pair | null
   otherCurrency?: Currency | null
@@ -128,9 +134,11 @@ export default function PanelCurrencyInput({
   onMax,
   showMaxButton,
   label = 'Input',
+  isCurrencySelectOrToggle = SelectOrToggle.SELECT,
   onCurrencySelect,
+  onCurrencyToggle,
   currency,
-  disableCurrencySelect = false,
+  disableCurrencyChange = false,
   hideBalance = false,
   pair = null, // used for double token logo
   otherCurrency,
@@ -181,8 +189,12 @@ export default function PanelCurrencyInput({
             selected={!!currency}
             className="open-currency-select-button"
             onClick={() => {
-              if (!disableCurrencySelect) {
-                setModalOpen(true)
+              if (!disableCurrencyChange) {
+                if (isCurrencySelectOrToggle === SelectOrToggle.SELECT) {
+                  setModalOpen(true)
+                } else if (isCurrencySelectOrToggle === SelectOrToggle.TOGGLE && onCurrencyToggle !== undefined) {
+                  onCurrencyToggle()
+                }
               }
             }}
           >
@@ -205,12 +217,12 @@ export default function PanelCurrencyInput({
                     : currency?.symbol) || 'Select Token'}
                 </StyledTokenName>
               )}
-              {!disableCurrencySelect && <StyledDropDown selected={!!currency} />}
+              {!disableCurrencyChange && <StyledDropDown selected={!!currency} />}
             </Aligner>
           </CurrencySelect>
         </InputRow>
       </Container>
-      {!disableCurrencySelect && onCurrencySelect && (
+      {!disableCurrencyChange && onCurrencySelect && (
         <CurrencySearchModal
           isOpen={modalOpen}
           onDismiss={handleDismissSearch}
