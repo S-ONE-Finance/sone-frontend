@@ -12,7 +12,7 @@ export const clients: { [chainId: number]: ApolloClient<NormalizedCacheObject> }
   }),
   [ChainId.ROPSTEN]: new ApolloClient({
     link: new HttpLink({
-      uri: 'https://api.thegraph.com/subgraphs/name/tungpham2020/bhswap'
+      uri: 'https://api.thegraph.com/subgraphs/name/danielpham765/soneswap'
     }),
     cache: new InMemoryCache()
   })
