@@ -59,7 +59,7 @@ export default function AddLiquidityOneTokenMode({ currencyIdA, currencyIdB }: A
 
   const { onFieldInput } = useMintSimpleActionHandlers()
 
-  const { maxAmount } = useDerivedMintSimpleInfo(selectedPair, selectedCurrency)
+  const { maxAmount } = useDerivedMintSimpleInfo(selectedPairState, selectedPair, selectedCurrency)
 
   return (
     <AutoColumn gap="20px">

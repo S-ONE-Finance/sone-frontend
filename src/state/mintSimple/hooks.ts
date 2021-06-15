@@ -41,11 +41,12 @@ export function useMintSimpleActionHandlers(): {
 // error?: string
 
 export function useDerivedMintSimpleInfo(
-  pair: Pair | null,
   pairState: PairState,
+  pair: Pair | null,
   currency?: Currency | null
 ): {
   maxAmount?: CurrencyAmount
+  error?: string
 } {
   const { account, chainId } = useActiveWeb3React()
 
