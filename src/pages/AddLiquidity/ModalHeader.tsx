@@ -11,7 +11,7 @@ import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { Currency, CurrencyAmount } from '@s-one-finance/sdk-core'
 
-export default function AddLiquidityConfirmationModalHeader({
+export default function ModalHeader({
   parsedAmounts,
   currencies
 }: {

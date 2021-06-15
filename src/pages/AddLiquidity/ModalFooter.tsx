@@ -11,7 +11,7 @@ import { RepeatIcon } from '../../components/swap/TradePrice'
 import useTheme from '../../hooks/useTheme'
 import { formatExecutionPriceWithCurrencies } from '../../utils/prices'
 
-export function AddLiquidityConfirmationModalFooter({
+export default function ModalFooter({
   noLiquidity,
   price,
   currencies,
@@ -73,30 +73,3 @@ export function AddLiquidityConfirmationModalFooter({
     </>
   )
 }
-
-// <>
-//   <RowBetween>
-//     <TYPE.body>Rates</TYPE.body>
-//     <TYPE.body>
-//       {`1 ${currencies[Field.CURRENCY_A]?.symbol} = ${price?.toSignificant(4)} ${
-//         currencies[Field.CURRENCY_B]?.symbol
-//       }`}
-//     </TYPE.body>
-//   </RowBetween>
-//   <RowBetween style={{ justifyContent: 'flex-end' }}>
-//     <TYPE.body>
-//       {`1 ${currencies[Field.CURRENCY_B]?.symbol} = ${price?.invert().toSignificant(4)} ${
-//         currencies[Field.CURRENCY_A]?.symbol
-//       }`}
-//     </TYPE.body>
-//   </RowBetween>
-//   <RowBetween>
-//     <TYPE.body>Share of Pool:</TYPE.body>
-//     <TYPE.body>{noLiquidity ? '100' : poolTokenPercentage?.toSignificant(4)}%</TYPE.body>
-//   </RowBetween>
-//   <ButtonPrimary style={{ margin: '20px 0 0 0' }} onClick={onAdd}>
-//     <Text fontWeight={500} fontSize={20}>
-//       {noLiquidity ? 'Create Pool & Supply' : 'Confirm Supply'}
-//     </Text>
-//   </ButtonPrimary>
-// </>

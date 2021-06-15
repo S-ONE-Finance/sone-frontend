@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { tryParseAmount } from 'state/swap/hooks'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { wrappedCurrency as wrapCurrency } from 'utils/wrappedCurrency'
+import { wrappedCurrency as wrapCurrency, wrappedCurrencyAmount } from 'utils/wrappedCurrency'
 
 import { AppDispatch, AppState } from '../index'
 import { typeInput } from './actions'
@@ -46,6 +46,8 @@ export function useDerivedMintSimpleInfo(
   currency?: Currency | null
 ): {
   maxAmount?: CurrencyAmount
+  token0MintAmount?: TokenAmount
+  token1MintAmount?: TokenAmount
   error?: string
 } {
   const { account, chainId } = useActiveWeb3React()
@@ -58,9 +60,12 @@ export function useDerivedMintSimpleInfo(
 
   const maxAmount = maxAmountSpend(currencyBalance)
 
-  // Ở đây gọi lấy ra lượng ETH - DAI sau khi swap và mint.
+  // Ở đây gọi lấy ra lượng CurrencyA - CurrencyB sau khi chia đôi ra để swap.
   const parsedAmount = tryParseAmount(typedValue, currency ?? undefined)
+  const wrappedParsedAmount = wrappedCurrencyAmount(parsedAmount, chainId)
+  const tokenMintAmounts = (pair && wrappedParsedAmount && pair.getAmountsAddOneToken(wrappedParsedAmount)) ?? undefined
 
+  // Error section.
   let error: string | undefined
 
   if (!account) {
@@ -77,6 +82,8 @@ export function useDerivedMintSimpleInfo(
 
   return {
     maxAmount,
+    token0MintAmount: tokenMintAmounts && tokenMintAmounts[0],
+    token1MintAmount: tokenMintAmounts && tokenMintAmounts[1],
     error
   }
 }
