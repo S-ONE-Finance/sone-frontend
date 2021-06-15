@@ -2,20 +2,29 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { RouteComponentProps } from 'react-router-dom'
 import { Text } from 'rebass'
+import styled from 'styled-components'
+
+import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
 import { ButtonError, ButtonPrimary } from '../../components/Button'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
-import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
+import { QuestionHelper1416 } from '../../components/QuestionHelper'
 import { RowBetween, RowFixed } from '../../components/Row'
-
+import { InfoLink } from '../../components/swap/AdvancedSwapDetailsContent'
+import TradePrice from '../../components/swap/TradePrice'
+import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import { INITIAL_ALLOWED_SLIPPAGE, ONE_BIPS, ROUTER_ADDRESS } from '../../constants'
 import { PairState } from '../../data/Reserves'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
+import { useIsTransactionUnsupported } from '../../hooks/Trades'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
+import useTheme from '../../hooks/useTheme'
+import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers } from '../../state/mint/hooks'
-
+import { TransactionType } from '../../state/transactions/types'
+import { AddLiquidityModeEnum } from '../../state/user/actions'
 import {
   useAddLiquidityModeManager,
   useIsExpertMode,
@@ -26,21 +35,11 @@ import { TYPE } from '../../theme'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
 import { ClickableText, Dots, Wrapper } from '../Pool/styleds'
-import { AddLiquidityConfirmationModalFooter } from './AddLiquidityConfirmationModalFooter'
-import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { TransactionType } from '../../state/transactions/types'
-import useTheme from '../../hooks/useTheme'
-import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
-import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import styled from 'styled-components'
-import { QuestionHelper1416 } from '../../components/QuestionHelper'
-import TradePrice from '../../components/swap/TradePrice'
-import { InfoLink } from '../../components/swap/AdvancedSwapDetailsContent'
-import AddLiquidityModeToggle from './AddLiquidityModeToggle'
-import AddLiquidityConfirmationModalHeader from './AddLiquidityConfirmationModalHeader'
-import AddLiquidityOneTokenMode from './AddLiquidityOneTokenMode'
-import AddLiquidityTwoTokensMode from './AddLiquidityTwoTokensMode'
-import { AddLiquidityModeEnum } from '../../state/user/actions'
+import ModeToggle from './ModeToggle'
+import ModeOneToken from './ModeOneToken'
+import ModeTwoTokens from './ModeTwoTokens'
+import ModalFooter from './ModalFooter'
+import ModalHeader from './ModalHeader'
 import useAddLiquidityHandler from './useAddLiquidityHandler'
 
 const ButtonWrapper = styled.div<{ hasTrade?: boolean }>`
@@ -110,7 +109,7 @@ export default function AddLiquidity({
 
   const modalBottom = () => {
     return (
-      <AddLiquidityConfirmationModalFooter
+      <ModalFooter
         price={price}
         currencies={currencies}
         parsedAmounts={parsedAmounts}
@@ -145,7 +144,7 @@ export default function AddLiquidity({
     <>
       <AppBody>
         <AppBodyTitleDescriptionSettings transactionType={TransactionType.ADD} />
-        <AddLiquidityModeToggle />
+        <ModeToggle />
         <Wrapper>
           <TransactionConfirmationModal
             isOpen={showConfirm}
@@ -156,7 +155,7 @@ export default function AddLiquidity({
               <ConfirmationModalContent
                 title="Confirm Add Liquidity"
                 onDismiss={handleDismissConfirmation}
-                topContent={() => AddLiquidityConfirmationModalHeader({ parsedAmounts, currencies })}
+                topContent={() => ModalHeader({ parsedAmounts, currencies })}
                 bottomContent={modalBottom}
                 transactionType={TransactionType.ADD}
               />
@@ -165,9 +164,9 @@ export default function AddLiquidity({
             currencyToAdd={pair?.liquidityToken}
           />
           {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
-            <AddLiquidityOneTokenMode currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
+            <ModeOneToken currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
           ) : (
-            <AddLiquidityTwoTokensMode currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
+            <ModeTwoTokens currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
           )}
           <ButtonWrapper>
             {addIsUnsupported ? (

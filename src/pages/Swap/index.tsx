@@ -62,7 +62,7 @@ export const ResponsiveAutoColumn = styled(AutoColumn)`
   padding: 23px 14px 0;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 12.5px 8px 0;   
+    padding: 12.5px 8px 0;
     grid-row-gap: 10px;
   `}
 `
@@ -364,20 +364,18 @@ export default function Swap({ history }: RouteComponentProps) {
               otherCurrency={currencies[Field.OUTPUT]}
               id="swap-currency-input"
             />
-            <AutoColumn justify="space-between">
-              <AutoRow justify={'center'}>
-                <IconWrapper clickable>
-                  <ArrowDown
-                    size={isUpToExtraSmall ? '14' : '22'}
-                    onClick={() => {
-                      setApprovalSubmitted(false) // reset 2 step UI for approvals
-                      onSwitchTokens()
-                    }}
-                    color={theme.text1Sone}
-                  />
-                </IconWrapper>
-              </AutoRow>
-            </AutoColumn>
+            <AutoRow justify="center">
+              <IconWrapper clickable>
+                <ArrowDown
+                  size={isUpToExtraSmall ? '14' : '22'}
+                  onClick={() => {
+                    setApprovalSubmitted(false) // reset 2 step UI for approvals
+                    onSwitchTokens()
+                  }}
+                  color={theme.text1Sone}
+                />
+              </IconWrapper>
+            </AutoRow>
             <PanelCurrencyInput
               value={formattedAmounts[Field.OUTPUT]}
               onUserInput={handleTypeOutput}

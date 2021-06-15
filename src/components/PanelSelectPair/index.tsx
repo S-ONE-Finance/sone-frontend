@@ -9,7 +9,7 @@ import ModalSearchPair from '../ModalSearchPair'
 import { useTopPairsFromSubgraph } from 'subgraph'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 
-const Panel = styled(RowBetween)`
+const PanelWrapper = styled(RowBetween)`
   width: 100%;
   height: 86px;
   border-radius: 32px;
@@ -42,7 +42,7 @@ export default function PanelSelectPair({ selectedPair, onPairSelect }: PanelSel
   const currency1: Currency | null = selectedPair?.token1 ? unwrappedToken(selectedPair.token1) : null
 
   return (
-    <Panel>
+    <PanelWrapper>
       <TextPanelLabel>Pair</TextPanelLabel>
       <PairSelect
         selected={Boolean(selectedPair)}
@@ -69,6 +69,6 @@ export default function PanelSelectPair({ selectedPair, onPairSelect }: PanelSel
         onPairSelect={onPairSelect}
         selectedPair={selectedPair}
       />
-    </Panel>
+    </PanelWrapper>
   )
 }
