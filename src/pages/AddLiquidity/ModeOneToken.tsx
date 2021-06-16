@@ -27,17 +27,21 @@ type ModeOneTokenProps = {
 export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenProps) {
   const theme = useTheme()
   const isUpToExtraSmall = useIsUpToExtraSmall()
+
   const { chainId } = useActiveWeb3React()
+
   const history = useHistory()
 
+  const { typedValue } = useMintSimpleState()
+  const { onFieldInput } = useMintSimpleActionHandlers()
+
+  useEffect(() => {
+    if (currencyIdA === undefined || currencyIdB === undefined) {
+      onFieldInput('')
+    }
+  }, [onFieldInput, currencyIdA, currencyIdB])
+
   // TODO: Chưa xử lý selectedPairState là NOT_EXISTS hoặc INVALID.
-  // useEffect(() => {
-  //   if (selectedPairState === PairState.NOT_EXISTS) {
-  //     throw new Error('Pair not exist')
-  //   } else if (selectedPairState === PairState.INVALID) {
-  //     throw new Error('Pair invalid')
-  //   }
-  // }, [selectedPairState])
 
   // Đang chọn WETH mà switch sang one token mode thì đổi url thành eth.
   useEffect(() => {
@@ -66,10 +70,6 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
     const currencyId1 = currencyId(currency1)
     history.push(`/add/${currencyId0}/${currencyId1}`)
   }
-
-  const { typedValue } = useMintSimpleState()
-
-  const { onFieldInput } = useMintSimpleActionHandlers()
 
   const { maxAmount, token0MintAmount, token1MintAmount } = useDerivedMintSimpleInfo(
     selectedPairState,

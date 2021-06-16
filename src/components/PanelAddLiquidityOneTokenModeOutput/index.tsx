@@ -90,8 +90,8 @@ export default function PanelAddLiquidityOneTokenModeOutput({
   const currency0 = token0MintAmount?.token && unwrappedToken(token0MintAmount.token)
   const currency1 = token1MintAmount?.token && unwrappedToken(token1MintAmount.token)
 
-  const amount0 = token0MintAmount?.toSignificant(6)
-  const amount1 = token1MintAmount?.toSignificant(6)
+  const amount0 = token0MintAmount?.toSignificant(6) ?? ''
+  const amount1 = token1MintAmount?.toSignificant(6) ?? ''
 
   return (
     <PanelWrapper>
