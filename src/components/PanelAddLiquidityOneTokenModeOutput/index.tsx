@@ -73,22 +73,22 @@ function OutputCurrency({ currency, amount }: { currency?: Currency; amount?: st
 }
 
 type PanelAddLiquidityOneTokenModeOutputProps = {
-  token0MintAmount?: TokenAmount
-  token1MintAmount?: TokenAmount
+  token0ParsedAmount?: TokenAmount
+  token1ParsedAmount?: TokenAmount
 }
 
 export default function PanelAddLiquidityOneTokenModeOutput({
-  token0MintAmount,
-  token1MintAmount
+  token0ParsedAmount,
+  token1ParsedAmount
 }: PanelAddLiquidityOneTokenModeOutputProps) {
   const theme = useTheme()
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
-  const currency0 = token0MintAmount?.token && unwrappedToken(token0MintAmount.token)
-  const currency1 = token1MintAmount?.token && unwrappedToken(token1MintAmount.token)
+  const currency0 = token0ParsedAmount?.token && unwrappedToken(token0ParsedAmount.token)
+  const currency1 = token1ParsedAmount?.token && unwrappedToken(token1ParsedAmount.token)
 
-  const amount0 = token0MintAmount?.toSignificant(6) ?? ''
-  const amount1 = token1MintAmount?.toSignificant(6) ?? ''
+  const amount0 = token0ParsedAmount?.toSignificant(6) ?? ''
+  const amount1 = token1ParsedAmount?.toSignificant(6) ?? ''
 
   return (
     <PanelWrapper>
