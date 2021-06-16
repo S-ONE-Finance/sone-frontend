@@ -3,38 +3,33 @@ import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '
 import { Field } from '../state/mint/actions'
 import { TransactionResponse } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
-import { ETHER } from '@s-one-finance/sdk-core'
+import { Currency, ETHER } from '@s-one-finance/sdk-core'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { TransactionType } from '../state/transactions/types'
 import ReactGA from 'react-ga'
 import { useCallback } from 'react'
 import { useActiveWeb3React } from '.'
 import { useUserSlippageTolerance } from '../state/user/hooks'
-import { useCurrency } from './Tokens'
 import { useDerivedMintInfo } from '../state/mint/hooks'
 import useTransactionDeadline from './useTransactionDeadline'
 import { useTransactionAdder } from '../state/transactions/hooks'
 
 type UseAddLiquidityTwoTokensHandlerProps = {
-  // Dùng `string | undefined` để bắt buộc phải truyền currencyIdA và currencyIdB as prop.
-  currencyIdA: string | undefined
-  currencyIdB: string | undefined
+  currencyA: Currency | undefined
+  currencyB: Currency | undefined
   setAttemptingTxn: React.Dispatch<React.SetStateAction<boolean>>
   setTxHash: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function useAddLiquidityTwoTokensHandler({
-  currencyIdA,
-  currencyIdB,
+  currencyA,
+  currencyB,
   setAttemptingTxn,
   setTxHash
 }: UseAddLiquidityTwoTokensHandlerProps) {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const currencyA = useCurrency(currencyIdA)
-  const currencyB = useCurrency(currencyIdB)
-
-  const { currencies, parsedAmounts, noLiquidity } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
+  const { currencies, parsedAmounts, noLiquidity } = useDerivedMintInfo(currencyA, currencyB)
 
   const deadline = useTransactionDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()

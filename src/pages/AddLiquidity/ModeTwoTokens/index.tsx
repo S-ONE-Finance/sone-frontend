@@ -1,39 +1,34 @@
 import { Currency, TokenAmount } from '@s-one-finance/sdk-core'
-import { ButtonError, ButtonPrimary } from 'components/Button'
 import { QuestionHelper1416 } from 'components/QuestionHelper'
 import { InfoLink } from 'components/swap/AdvancedSwapDetailsContent'
 import TradePrice from 'components/swap/TradePrice'
 import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
 import { PairState } from 'data/Reserves'
-import { useActiveWeb3React } from 'hooks'
-import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { ClickableText } from 'pages/Pool/styleds'
 import React, { useCallback, useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp, Plus } from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import { Text } from 'rebass'
-import { useToggleSettingsMenu, useWalletModalToggle } from 'state/application/hooks'
+import { useToggleSettingsMenu } from 'state/application/hooks'
 import { TransactionType } from 'state/transactions/types'
-import { useIsExpertMode, useShowTransactionDetailsManager, useUserSlippageTolerance } from 'state/user/hooks'
-import { TYPE } from 'theme'
+import { useShowTransactionDetailsManager, useUserSlippageTolerance } from 'state/user/hooks'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import { ButtonWrapper } from '.'
-import { AutoColumn, ColumnCenter } from '../../components/Column'
-import PanelCurrencyInput from '../../components/PanelCurrencyInput'
-import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
-import { Dots, IconWrapper } from '../../components/swap/styleds'
-import { INITIAL_ALLOWED_SLIPPAGE, ONE_BIPS, ROUTER_ADDRESS } from '../../constants'
-import { useCurrency } from '../../hooks/Tokens'
-import useTheme from '../../hooks/useTheme'
-import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { Field } from '../../state/mint/actions'
-import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
-import { currencyId } from '../../utils/currencyId'
-import { maxAmountSpend } from '../../utils/maxAmountSpend'
-import ModalFooter from './ModalFooter'
-import ModalHeader from './ModalHeader'
-import useAddLiquidityTwoTokensHandler from '../../hooks/useAddLiquidityTwoTokensHandler'
+import { AutoColumn, ColumnCenter } from '../../../components/Column'
+import PanelCurrencyInput from '../../../components/PanelCurrencyInput'
+import { AutoRow, RowBetween, RowFixed } from '../../../components/Row'
+import { IconWrapper } from '../../../components/swap/styleds'
+import { INITIAL_ALLOWED_SLIPPAGE, ONE_BIPS } from '../../../constants'
+import { useCurrency } from '../../../hooks/Tokens'
+import useAddLiquidityTwoTokensHandler from '../../../hooks/useAddLiquidityTwoTokensHandler'
+import useTheme from '../../../hooks/useTheme'
+import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
+import { Field } from '../../../state/mint/actions'
+import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
+import { currencyId } from '../../../utils/currencyId'
+import { maxAmountSpend } from '../../../utils/maxAmountSpend'
+import ModalFooter from '../ModalFooter'
+import ModalHeader from '../ModalHeader'
+import ButtonGrouping from './ButtonGrouping'
 
 type ModeTwoTokensProps = {
   currencyIdA: string | undefined
@@ -124,20 +119,13 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
   // Show price invert or not.
   const [showInverted, setShowInverted] = useState<boolean>(false)
 
-  const { account } = useActiveWeb3React()
-
-  const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
-
   const toggleSettings = useToggleSettingsMenu()
-  const expertMode = useIsExpertMode()
 
   // mint state
-  const { pair, pairState, price, poolTokenPercentage, error } = useDerivedMintInfo(
+  const { pair, pairState, price, poolTokenPercentage } = useDerivedMintInfo(
     currencyA ?? undefined,
     currencyB ?? undefined
   )
-
-  const isValid = !error
 
   // modal and loading
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
@@ -147,11 +135,12 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
   const [txHash, setTxHash] = useState<string>('')
 
-  // check whether the user has approved the router on the tokens
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
-  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
-
-  const onAdd = useAddLiquidityTwoTokensHandler({ currencyIdA, currencyIdB, setAttemptingTxn, setTxHash })
+  const onAdd = useAddLiquidityTwoTokensHandler({
+    currencyA: currencies[Field.CURRENCY_A],
+    currencyB: currencies[Field.CURRENCY_B],
+    setAttemptingTxn,
+    setTxHash
+  })
 
   const pendingText = `Supplying ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
     currencies[Field.CURRENCY_A]?.symbol
@@ -166,14 +155,10 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
     setTxHash('')
   }, [onFieldAInput, txHash])
 
-  const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
-
   const isPairFilledAndValid = useMemo(
     () => currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID,
     [currencies, pairState]
   )
-
-  //
 
   return (
     <>
@@ -236,66 +221,13 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
           showCommonBases
         />
       </AutoColumn>
-      <ButtonWrapper>
-        {addIsUnsupported ? (
-          <ButtonPrimary disabled={true}>
-            <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
-          </ButtonPrimary>
-        ) : !account ? (
-          <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
-        ) : (
-          <AutoColumn gap={'md'}>
-            {(approvalA === ApprovalState.NOT_APPROVED ||
-              approvalA === ApprovalState.PENDING ||
-              approvalB === ApprovalState.NOT_APPROVED ||
-              approvalB === ApprovalState.PENDING) &&
-              isValid && (
-                <RowBetween>
-                  {approvalA !== ApprovalState.APPROVED && (
-                    <ButtonPrimary
-                      onClick={approveACallback}
-                      disabled={approvalA === ApprovalState.PENDING}
-                      width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
-                    >
-                      {approvalA === ApprovalState.PENDING ? (
-                        <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
-                      ) : (
-                        'Approve ' + currencies[Field.CURRENCY_A]?.symbol
-                      )}
-                    </ButtonPrimary>
-                  )}
-                  {approvalB !== ApprovalState.APPROVED && (
-                    <ButtonPrimary
-                      onClick={approveBCallback}
-                      disabled={approvalB === ApprovalState.PENDING}
-                      width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
-                    >
-                      {approvalB === ApprovalState.PENDING ? (
-                        <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
-                      ) : (
-                        'Approve ' + currencies[Field.CURRENCY_B]?.symbol
-                      )}
-                    </ButtonPrimary>
-                  )}
-                </RowBetween>
-              )}
-
-            <ButtonError
-              onClick={() => {
-                expertMode ? onAdd() : setShowConfirm(true)
-              }}
-              disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
-              error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
-            >
-              {error ?? 'Add Liquidity'}
-            </ButtonError>
-          </AutoColumn>
-        )}
-      </ButtonWrapper>
-      {/*  */}
-      {/*  */}
-      {/*  */}
-      {/*  */}
+      <ButtonGrouping
+        currencyA={currencies[Field.CURRENCY_A]}
+        currencyB={currencies[Field.CURRENCY_B]}
+        setAttemptingTxn={setAttemptingTxn}
+        setTxHash={setTxHash}
+        setShowConfirm={setShowConfirm}
+      />
       {isPairFilledAndValid && !isShowTransactionDetails && (
         <ColumnCenter style={{ marginTop: '17.5px' }}>
           <ClickableText
