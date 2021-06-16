@@ -31,7 +31,7 @@ export default function ButtonGroupping({
   setTxHash,
   setShowConfirm
 }: ButtonGroupingProps) {
-  const { currencies, parsedAmounts, error } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
+  const { currencies, parsedAmounts, error } = useDerivedMintInfo(currencyA, currencyB)
 
   const isValid = !error
 
