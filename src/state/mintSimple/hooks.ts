@@ -1,14 +1,13 @@
-import { Currency, CurrencyAmount, Pair, Percent, Price, TokenAmount } from '@s-one-finance/sdk-core'
+import { Currency, CurrencyAmount, Pair, TokenAmount } from '@s-one-finance/sdk-core'
 import { PairState } from 'data/Reserves'
 import { useTotalSupply } from 'data/TotalSupply'
 import { useActiveWeb3React } from 'hooks'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { tryParseAmount } from 'state/swap/hooks'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { wrappedCurrency as wrapCurrency, wrappedCurrencyAmount } from 'utils/wrappedCurrency'
-
+import { wrappedCurrencyAmount } from 'utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { typeInput } from './actions'
 

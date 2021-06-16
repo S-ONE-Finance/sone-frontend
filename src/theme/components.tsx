@@ -9,7 +9,6 @@ import { ReactComponent as Close } from '../assets/images/x.svg'
 import Column from 'components/Column'
 import { ReactComponent as SortDownIconSvg } from 'assets/svg/sort_down_icon.svg'
 import { ReactComponent as SortUpIconSvg } from 'assets/svg/sort_up_icon.svg'
-import { RowBetween } from 'components/Row'
 
 export const ButtonText = styled.button`
   outline: none;
