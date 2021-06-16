@@ -40,7 +40,7 @@ import ModeOneToken from './ModeOneToken'
 import ModeTwoTokens from './ModeTwoTokens'
 import ModalFooter from './ModalFooter'
 import ModalHeader from './ModalHeader'
-import useAddLiquidityHandler from './useAddLiquidityHandler'
+import useAddLiquidityHandler from './useAddLiquidityTwoTokensHandler'
 
 const ButtonWrapper = styled.div<{ hasTrade?: boolean }>`
   margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '35px 0 0 0')};

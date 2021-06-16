@@ -15,7 +15,7 @@ import { useDerivedMintInfo } from '../../state/mint/hooks'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 
-type UseAddLiquidityHandlerProps = {
+type UseAddLiquidityTwoTokensHandlerProps = {
   // Dùng `string | undefined` để bắt buộc phải truyền currencyIdA và currencyIdB as prop.
   currencyIdA: string | undefined
   currencyIdB: string | undefined
@@ -23,12 +23,12 @@ type UseAddLiquidityHandlerProps = {
   setTxHash: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function useAddLiquidityHandler({
+export default function useAddLiquidityTwoTokensHandler({
   currencyIdA,
   currencyIdB,
   setAttemptingTxn,
   setTxHash
-}: UseAddLiquidityHandlerProps) {
+}: UseAddLiquidityTwoTokensHandlerProps) {
   const { account, chainId, library } = useActiveWeb3React()
 
   const currencyA = useCurrency(currencyIdA)

@@ -6,7 +6,6 @@ import { PairSelect, TextPanelLabel, StyledTokenName, StyledDropDown } from '../
 import { RowBetween } from '../Row'
 import CurrencyLogoDouble from '../CurrencyLogoDouble'
 import ModalSearchPair from '../ModalSearchPair'
-import { useGetPairFromSubgraphAndParse } from 'subgraph'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 
 const PanelWrapper = styled(RowBetween)`
