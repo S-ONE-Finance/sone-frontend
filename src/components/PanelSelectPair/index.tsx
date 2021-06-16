@@ -6,7 +6,7 @@ import { PairSelect, TextPanelLabel, StyledTokenName, StyledDropDown } from '../
 import { RowBetween } from '../Row'
 import CurrencyLogoDouble from '../CurrencyLogoDouble'
 import ModalSearchPair from '../ModalSearchPair'
-import { useTopPairsFromSubgraph } from 'subgraph'
+import { useGetPairFromSubgraphAndParse } from 'subgraph'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 
 const PanelWrapper = styled(RowBetween)`
@@ -36,8 +36,6 @@ export default function PanelSelectPair({ selectedPair, onPairSelect }: PanelSel
     setModalOpen(false)
   }
 
-  const allPairs = useTopPairsFromSubgraph()
-
   const currency0: Currency | null = selectedPair?.token0 ? unwrappedToken(selectedPair.token0) : null
   const currency1: Currency | null = selectedPair?.token1 ? unwrappedToken(selectedPair.token1) : null
 
@@ -65,7 +63,6 @@ export default function PanelSelectPair({ selectedPair, onPairSelect }: PanelSel
       <ModalSearchPair
         isOpen={modalOpen}
         onDismiss={handleDismissSearch}
-        allPairs={allPairs}
         onPairSelect={onPairSelect}
         selectedPair={selectedPair}
       />

@@ -5,6 +5,7 @@ import { clients } from './apollo/client'
 import { PAIRS_CURRENT } from './apollo/queries'
 
 import getBulkPairData from './utils/getBulkPairData'
+import getPairData from './utils/getPairData'
 import { useActiveWeb3React } from '../hooks'
 import getCaseSensitiveAddress from './utils/getCaseSensitiveAddress'
 import { useIsUpToExtraSmall } from '../hooks/useWindowSize'
@@ -25,9 +26,10 @@ async function getPairIds(chainId?: number) {
 }
 
 /**
- * Use Subgraph to query data for pairs.
+ * Use Subgraph to query bulk data for pairs.
+ * Interval every 15s after new block created
  */
-export function useSubgraphData() {
+export function useBulkPairDataInterval() {
   const [subgraphData, setSubgraphData] = useState<any>({})
   const { chainId, library } = useActiveWeb3React()
 
@@ -44,11 +46,11 @@ export function useSubgraphData() {
     }
   }, [])
 
-  // Wait 5s for TheGraph mapping data.
+  // Wait 15s for TheGraph mapping data.
   const getDataAfter5Seconds = useCallback(() => {
     setTimeout(() => {
       getData(chainId)
-    }, 5000)
+    }, 15000)
   }, [chainId, getData])
 
   // Query data the first time.
@@ -69,7 +71,7 @@ export function useSubgraphData() {
   return subgraphData
 }
 
-export function useTopPairsFromSubgraph(): Pair[] {
+export function useGetPairFromSubgraphAndParse(): Pair[] {
   const { chainId } = useActiveWeb3React()
 
   const [pairTokens, setPairTokens] = useState<[Token, Token][]>([])
@@ -79,7 +81,7 @@ export function useTopPairsFromSubgraph(): Pair[] {
       if (chainId === undefined) return
 
       const pairIds = await getPairIds(chainId)
-      const rawPairs = await getBulkPairData(chainId, pairIds)
+      const rawPairs = await getPairData(chainId, pairIds)
       const sortedRawPairs = rawPairs
         .slice()
         .sort(
@@ -88,11 +90,6 @@ export function useTopPairsFromSubgraph(): Pair[] {
       const newPairTokens = sortedRawPairs
         .map((item: any) => {
           const { token0: t0, token1: t1 } = item
-          // decimals: "18"
-          // derivedETH: "0"
-          // id: "0xad6d458402f60fd3bd25163575031acdce07538d"
-          // name: "DAI"
-          // symbol: "DAI"
           if (t0 && t1) {
             const token0 = new Token(chainId, t0.id, t0.decimals, t0?.symbol ?? undefined, t0?.name ?? undefined)
             const token1 = new Token(chainId, t1.id, t1.decimals, t1?.symbol ?? undefined, t1?.name ?? undefined)
@@ -101,7 +98,6 @@ export function useTopPairsFromSubgraph(): Pair[] {
           return undefined
         })
         .filter((item): item is [Token, Token] => item !== undefined)
-
       setPairTokens(newPairTokens)
     })()
   }, [chainId])
@@ -132,7 +128,7 @@ export function useTopPairsFromSubgraph(): Pair[] {
  * bug do token1 bị swap với token0, source: uniswap-info).
  */
 export function useOneDayPairPriceChangeData() {
-  const data = useSubgraphData()
+  const data = useBulkPairDataInterval()
 
   return useMemo(
     () =>
@@ -151,7 +147,7 @@ export function useOneDayPairPriceChangeData() {
 }
 
 export function useWeeklyRankingData() {
-  const data = useSubgraphData()
+  const data = useBulkPairDataInterval()
 
   // Màn hình dưới extra small chỉ show 4 items.
   const isUpToExtraSmall = useIsUpToExtraSmall()
