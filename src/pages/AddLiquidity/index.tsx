@@ -34,7 +34,7 @@ import {
 import { TYPE } from '../../theme'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
-import { ClickableText, Dots, Wrapper } from '../Pool/styleds'
+import { ClickableText, Dots, StyledPadding } from '../Pool/styleds'
 import ModeToggle from './ModeToggle'
 import ModeOneToken from './ModeOneToken'
 import ModeTwoTokens from './ModeTwoTokens'
@@ -107,19 +107,6 @@ export default function AddLiquidity({
 
   const onAdd = useAddLiquidityHandler({ currencyIdA, currencyIdB, setAttemptingTxn, setTxHash })
 
-  const modalBottom = () => {
-    return (
-      <ModalFooter
-        price={price}
-        currencies={currencies}
-        parsedAmounts={parsedAmounts}
-        noLiquidity={noLiquidity}
-        onAdd={onAdd}
-        poolTokenPercentage={poolTokenPercentage}
-      />
-    )
-  }
-
   const pendingText = `Supplying ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
     currencies[Field.CURRENCY_A]?.symbol
   } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencies[Field.CURRENCY_B]?.symbol}`
@@ -145,7 +132,7 @@ export default function AddLiquidity({
       <AppBody>
         <AppBodyTitleDescriptionSettings transactionType={TransactionType.ADD} />
         <ModeToggle />
-        <Wrapper>
+        <StyledPadding>
           <TransactionConfirmationModal
             isOpen={showConfirm}
             onDismiss={handleDismissConfirmation}
@@ -156,7 +143,18 @@ export default function AddLiquidity({
                 title="Confirm Add Liquidity"
                 onDismiss={handleDismissConfirmation}
                 topContent={() => ModalHeader({ parsedAmounts, currencies })}
-                bottomContent={modalBottom}
+                bottomContent={() => {
+                  return (
+                    <ModalFooter
+                      price={price}
+                      currencies={currencies}
+                      parsedAmounts={parsedAmounts}
+                      noLiquidity={noLiquidity}
+                      onAdd={onAdd}
+                      poolTokenPercentage={poolTokenPercentage}
+                    />
+                  )
+                }}
                 transactionType={TransactionType.ADD}
               />
             )}
@@ -333,7 +331,7 @@ export default function AddLiquidity({
               </ClickableText>
             </ColumnCenter>
           )}
-        </Wrapper>
+        </StyledPadding>
       </AppBody>
     </>
   )

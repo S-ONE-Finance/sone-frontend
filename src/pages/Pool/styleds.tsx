@@ -2,7 +2,7 @@ import { Text } from 'rebass'
 import styled from 'styled-components'
 import { darken } from 'polished'
 
-export const Wrapper = styled.div`
+export const StyledPadding = styled.div`
   position: relative;
   padding: 0 30px 35px;
 
