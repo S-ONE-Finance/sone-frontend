@@ -7,7 +7,7 @@ import { AddLiquidityModeEnum } from '../../state/user/actions'
 import { useAddLiquidityModeManager } from '../../state/user/hooks'
 import AppBody from '../AppBody'
 import { StyledPadding } from '../Pool/styleds'
-import ModeOneToken from './ModeOneToken'
+import ModeOneToken from './ModeOneTokens'
 import ModeToggle from './ModeToggle'
 import ModeTwoTokens from './ModeTwoTokens'
 
