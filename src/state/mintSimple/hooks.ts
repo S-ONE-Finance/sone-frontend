@@ -42,25 +42,28 @@ export function useMintSimpleActionHandlers(): {
 export function useDerivedMintSimpleInfo(
   pairState: PairState,
   pair: Pair | null,
-  currency?: Currency | null
+  selectedCurrency?: Currency | null
 ): {
   maxAmount?: CurrencyAmount
-  token0MintAmount?: TokenAmount
-  token1MintAmount?: TokenAmount
+  parsedAmount?: CurrencyAmount
+  token0ParsedAmount?: TokenAmount
+  token1ParsedAmount?: TokenAmount
   error?: string
 } {
   const { account, chainId } = useActiveWeb3React()
 
   const { typedValue } = useMintSimpleState()
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
-  const currencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  const currencyBalance = useCurrencyBalance(account ?? undefined, selectedCurrency ?? undefined)
 
   const maxAmount = maxAmountSpend(currencyBalance)
 
   // Ở đây gọi lấy ra lượng CurrencyA - CurrencyB sau khi chia đôi ra để swap.
-  const parsedAmount = tryParseAmount(typedValue, currency ?? undefined)
+  const parsedAmount = tryParseAmount(typedValue, selectedCurrency ?? undefined)
+
   const wrappedParsedAmount = wrappedCurrencyAmount(parsedAmount, chainId)
   const tokenMintAmounts = (pair && wrappedParsedAmount && pair.getAmountsAddOneToken(wrappedParsedAmount)) ?? undefined
 
@@ -76,13 +79,14 @@ export function useDerivedMintSimpleInfo(
   }
 
   if (parsedAmount && currencyBalance?.lessThan(parsedAmount)) {
-    error = 'Insufficient' + currency?.symbol + ' balance'
+    error = 'Insufficient' + selectedCurrency?.symbol + ' balance'
   }
 
   return {
     maxAmount,
-    token0MintAmount: tokenMintAmounts && tokenMintAmounts[0],
-    token1MintAmount: tokenMintAmounts && tokenMintAmounts[1],
+    parsedAmount,
+    token0ParsedAmount: tokenMintAmounts && tokenMintAmounts[0],
+    token1ParsedAmount: tokenMintAmounts && tokenMintAmounts[1],
     error
   }
 }

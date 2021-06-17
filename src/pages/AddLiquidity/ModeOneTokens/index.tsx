@@ -11,12 +11,13 @@ import { useCurrency } from 'hooks/Tokens'
 import useTheme from 'hooks/useTheme'
 import useToggle from 'hooks/useToggle'
 import { useIsUpToExtraSmall } from 'hooks/useWindowSize'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import { useDerivedMintSimpleInfo, useMintSimpleActionHandlers, useMintSimpleState } from 'state/mintSimple/hooks'
 import { currencyId } from 'utils/currencyId'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import ButtonGroupping from './ButtonGrouping'
 
 type ModeOneTokenProps = {
   currencyIdA: string | undefined
@@ -30,6 +31,13 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
   const { chainId } = useActiveWeb3React()
 
   const history = useHistory()
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [showConfirm, setShowConfirm] = useState<boolean>(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // Clicked confirm.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [txHash, setTxHash] = useState<string>('')
 
   const { typedValue } = useMintSimpleState()
   const { onFieldInput } = useMintSimpleActionHandlers()
@@ -70,49 +78,59 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
     history.push(`/add/${currencyId0}/${currencyId1}`)
   }
 
-  const { maxAmount, token0MintAmount, token1MintAmount } = useDerivedMintSimpleInfo(
+  const { maxAmount, token0ParsedAmount, token1ParsedAmount } = useDerivedMintSimpleInfo(
     selectedPairState,
     selectedPair,
-    selectedCurrency
+    selectedCurrency ?? undefined
   )
 
-  console.log('token0MintAmount', token0MintAmount?.currency.symbol, token0MintAmount?.toExact())
-  console.log('token1MintAmount', token1MintAmount?.currency.symbol, token1MintAmount?.toExact())
+  console.log('token0ParsedAmount', token0ParsedAmount?.currency.symbol, token0ParsedAmount?.toExact())
+  console.log('token1ParsedAmount', token1ParsedAmount?.currency.symbol, token1ParsedAmount?.toExact())
 
   return (
-    <AutoColumn gap="20px">
-      <PanelSelectPair selectedPair={selectedPair} onPairSelect={handlePairSelect} />
-      {isPairExistAndNotNull && (
-        <>
-          <PanelCurrencyInput
-            id="add-liquidity-simple-input-tokena"
-            label="From"
-            value={typedValue}
-            onUserInput={onFieldInput}
-            showMaxButton
-            onMax={() => {
-              onFieldInput(maxAmount?.toExact() ?? '')
-            }}
-            currency={selectedCurrency}
-            isCurrencySelectOrToggle={SelectOrToggle.TOGGLE}
-            onCurrencyToggle={onCurrencyToggle}
-          />
+    <>
+      <AutoColumn gap="20px">
+        <PanelSelectPair selectedPair={selectedPair} onPairSelect={handlePairSelect} />
+        {isPairExistAndNotNull && (
+          <>
+            <PanelCurrencyInput
+              id="add-liquidity-simple-input-tokena"
+              label="From"
+              value={typedValue}
+              onUserInput={onFieldInput}
+              showMaxButton
+              onMax={() => {
+                onFieldInput(maxAmount?.toExact() ?? '')
+              }}
+              currency={selectedCurrency}
+              isCurrencySelectOrToggle={SelectOrToggle.TOGGLE}
+              onCurrencyToggle={onCurrencyToggle}
+            />
 
-          {token0MintAmount && token1MintAmount && (
-            <>
-              <AutoRow justify="center">
-                <IconWrapper clickable={false}>
-                  <ArrowDown size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />
-                </IconWrapper>
-              </AutoRow>
-              <PanelAddLiquidityOneTokenModeOutput
-                token0MintAmount={token0MintAmount}
-                token1MintAmount={token1MintAmount}
-              />
-            </>
-          )}
-        </>
-      )}
-    </AutoColumn>
+            {token0ParsedAmount && token1ParsedAmount && (
+              <>
+                <AutoRow justify="center">
+                  <IconWrapper clickable={false}>
+                    <ArrowDown size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />
+                  </IconWrapper>
+                </AutoRow>
+                <PanelAddLiquidityOneTokenModeOutput
+                  token0ParsedAmount={token0ParsedAmount}
+                  token1ParsedAmount={token1ParsedAmount}
+                />
+              </>
+            )}
+          </>
+        )}
+      </AutoColumn>
+      <ButtonGroupping
+        selectedPairState={selectedPairState}
+        selectedPair={selectedPair}
+        selectedCurrency={selectedCurrency ?? undefined}
+        setAttemptingTxn={setAttemptingTxn}
+        setTxHash={setTxHash}
+        setShowConfirm={setShowConfirm}
+      />
+    </>
   )
 }

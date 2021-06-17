@@ -155,7 +155,7 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
         pendingText={pendingText}
         currencyToAdd={pair?.liquidityToken}
       />
-      <AutoColumn gap={'md'}>
+      <AutoColumn gap="md">
         <PanelCurrencyInput
           value={formattedAmounts[Field.CURRENCY_A]}
           onUserInput={onFieldAInput}

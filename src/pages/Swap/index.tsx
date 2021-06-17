@@ -62,7 +62,7 @@ export const ResponsiveAutoColumn = styled(AutoColumn)`
   padding: 23px 14px 0;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 12.5px 8px 0;
+    padding: 5.5px 8px 0;
     grid-row-gap: 10px;
   `}
 `
@@ -352,7 +352,7 @@ export default function Swap({ history }: RouteComponentProps) {
             onDismiss={handleConfirmDismiss}
           />
 
-          <AutoColumn gap={'md'}>
+          <AutoColumn gap="md">
             <PanelCurrencyInput
               label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
               value={formattedAmounts[Field.INPUT]}

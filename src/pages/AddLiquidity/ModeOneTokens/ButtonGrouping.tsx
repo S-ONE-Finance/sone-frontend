@@ -1,10 +1,11 @@
-import { Currency } from '@s-one-finance/sdk-core'
+import { Currency, Pair } from '@s-one-finance/sdk-core'
 import { ButtonError, ButtonPrimary } from 'components/Button'
 import { AutoColumn } from 'components/Column'
 import { RowBetween } from 'components/Row'
+import { PairState } from 'data/Reserves'
 import { useActiveWeb3React } from 'hooks'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import useAddLiquidityTwoTokensHandler from 'hooks/useAddLiquidityTwoTokensHandler'
+import useAddLiquidityOneTokenHandler from 'hooks/useAddLiquidityOneTokenHandler'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { Dots } from 'pages/Pool/styleds'
 import React from 'react'
@@ -14,11 +15,11 @@ import { useIsExpertMode } from 'state/user/hooks'
 import { TYPE } from 'theme'
 import { ButtonWrapper } from '..'
 import { ROUTER_ADDRESS } from '../../../constants'
-import { Field } from '../../../state/mint/actions'
 
 type ButtonGroupingProps = {
-  currencyA?: Currency
-  currencyB?: Currency
+  selectedPairState: PairState
+  selectedPair: Pair | null
+  selectedCurrency?: Currency
   setAttemptingTxn: React.Dispatch<React.SetStateAction<boolean>>
   setTxHash: React.Dispatch<React.SetStateAction<string>>
   setShowConfirm: React.Dispatch<React.SetStateAction<boolean>>
@@ -32,23 +33,34 @@ export default function ButtonGroupping({
   setTxHash,
   setShowConfirm
 }: ButtonGroupingProps) {
-  const { parsedAmount, error } = useDerivedMintSimpleInfo(selectedPairState, selectedPair, selectedCurrency)
+  const { token0, token1 } = selectedPair ?? {}
+  const { error, token0ParsedAmount, token1ParsedAmount } = useDerivedMintSimpleInfo(
+    selectedPairState,
+    selectedPair,
+    selectedCurrency
+  )
 
   const isValid = !error
 
-  const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
+  const addIsUnsupported = useIsTransactionUnsupported(selectedPair?.token0, selectedPair?.token1)
 
   const { account } = useActiveWeb3React()
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
-  // check whether the user has approved the router on the tokens
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS)
-  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS)
+  // check whether the user has approved the router on the token
+  const [approvalT0, approvalT0Callback] = useApproveCallback(token0ParsedAmount, ROUTER_ADDRESS)
+  const [approvalT1, approvalT1Callback] = useApproveCallback(token1ParsedAmount, ROUTER_ADDRESS)
 
   const expertMode = useIsExpertMode()
 
-  const onAdd = useAddLiquidityTwoTokensHandler({ currencyA, currencyB, setAttemptingTxn, setTxHash })
+  const onAdd = useAddLiquidityOneTokenHandler({
+    selectedPairState,
+    selectedPair,
+    selectedCurrency,
+    setAttemptingTxn,
+    setTxHash
+  })
 
   return (
     <ButtonWrapper>
@@ -60,35 +72,36 @@ export default function ButtonGroupping({
         <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
       ) : (
         <AutoColumn gap={'md'}>
-          {(approvalA === ApprovalState.NOT_APPROVED ||
-            approvalA === ApprovalState.PENDING ||
-            approvalB === ApprovalState.NOT_APPROVED ||
-            approvalB === ApprovalState.PENDING) &&
+          {/* FIXME: Co the se co bug o day do click nhieu lan vao button approve */}
+          {(approvalT0 === ApprovalState.NOT_APPROVED ||
+            approvalT0 === ApprovalState.PENDING ||
+            approvalT1 === ApprovalState.NOT_APPROVED ||
+            approvalT1 === ApprovalState.PENDING) &&
             isValid && (
               <RowBetween>
-                {approvalA !== ApprovalState.APPROVED && (
+                {approvalT0 !== ApprovalState.APPROVED && (
                   <ButtonPrimary
-                    onClick={approveACallback}
-                    disabled={approvalA === ApprovalState.PENDING}
-                    width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
+                    onClick={approvalT0Callback}
+                    disabled={approvalT0 === ApprovalState.PENDING}
+                    width={approvalT1 !== ApprovalState.APPROVED ? '48%' : '100%'}
                   >
-                    {approvalA === ApprovalState.PENDING ? (
-                      <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
+                    {approvalT0 === ApprovalState.PENDING ? (
+                      <Dots>Approving {token0?.symbol}</Dots>
                     ) : (
-                      'Approve ' + currencies[Field.CURRENCY_A]?.symbol
+                      'Approve ' + token0?.symbol
                     )}
                   </ButtonPrimary>
                 )}
-                {approvalB !== ApprovalState.APPROVED && (
+                {approvalT1 !== ApprovalState.APPROVED && (
                   <ButtonPrimary
-                    onClick={approveBCallback}
-                    disabled={approvalB === ApprovalState.PENDING}
-                    width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
+                    onClick={approvalT1Callback}
+                    disabled={approvalT1 === ApprovalState.PENDING}
+                    width={approvalT0 !== ApprovalState.APPROVED ? '48%' : '100%'}
                   >
-                    {approvalB === ApprovalState.PENDING ? (
-                      <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
+                    {approvalT1 === ApprovalState.PENDING ? (
+                      <Dots>Approving {token1?.symbol}</Dots>
                     ) : (
-                      'Approve ' + currencies[Field.CURRENCY_B]?.symbol
+                      'Approve ' + token1?.symbol
                     )}
                   </ButtonPrimary>
                 )}
@@ -99,8 +112,8 @@ export default function ButtonGroupping({
             onClick={() => {
               expertMode ? onAdd() : setShowConfirm(true)
             }}
-            disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
-            error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
+            disabled={!isValid || approvalT0 !== ApprovalState.APPROVED || approvalT1 !== ApprovalState.APPROVED}
+            error={!isValid && !!token0ParsedAmount && !!token1ParsedAmount}
           >
             {error ?? 'Add Liquidity'}
           </ButtonError>
