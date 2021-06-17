@@ -73,7 +73,6 @@ export default function ButtonGroupping({
       ) : (
         <AutoColumn gap={'md'}>
           {/* FIXME: Có thể sẽ bug user auto click ở đây. */}
-          {/* FIXME: Có thể sẽ bug user auto click ở đây. */}
           {(approvalT0 === ApprovalState.NOT_APPROVED ||
             approvalT0 === ApprovalState.PENDING ||
             approvalT1 === ApprovalState.NOT_APPROVED ||
