@@ -72,7 +72,7 @@ export default function ButtonGroupping({
         <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
       ) : (
         <AutoColumn gap={'md'}>
-          {/* FIXME: Co the se co bug o day do click nhieu lan vao button approve */}
+          {/* FIXME: Có thể sẽ bug user auto click ở đây. */}
           {(approvalT0 === ApprovalState.NOT_APPROVED ||
             approvalT0 === ApprovalState.PENDING ||
             approvalT1 === ApprovalState.NOT_APPROVED ||

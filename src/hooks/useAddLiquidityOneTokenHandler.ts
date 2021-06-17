@@ -108,7 +108,7 @@ export default function useAddLiquidityOneTokenHandler({
 
           setTxHash(response.hash)
 
-          // TODO: Remove this sau khi confirm voi team la bo Google Analytics
+          // TODO: Xoá bỏ bọn ReactGA này sau khi confirm với team và khách.
           // ReactGA.event({
           //   category: 'Liquidity',
           //   action: 'Add',
