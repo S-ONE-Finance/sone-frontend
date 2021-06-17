@@ -16,8 +16,8 @@ import { Field } from '../../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
 import { currencyId } from '../../../utils/currencyId'
 import { maxAmountSpend } from '../../../utils/maxAmountSpend'
-import ModalFooter from '../ModalFooter'
-import ModalHeader from '../ModalHeader'
+import ModalFooter from './ModalFooter'
+import ModalHeader from './ModalHeader'
 import ButtonGrouping from './ButtonGrouping'
 import TransactionDetails from './TransactionDetails'
 
@@ -143,7 +143,6 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
               <ModalFooter
                 price={price}
                 currencies={currencies}
-                parsedAmounts={parsedAmounts}
                 noLiquidity={noLiquidity}
                 onAdd={onAdd}
                 poolTokenPercentage={poolTokenPercentage}

@@ -5,19 +5,25 @@ import PanelCurrencyInput, { SelectOrToggle } from 'components/PanelCurrencyInpu
 import PanelSelectPair from 'components/PanelSelectPair'
 import { AutoRow } from 'components/Row'
 import { IconWrapper } from 'components/swap/styleds'
+import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
 import { PairState, usePair } from 'data/Reserves'
 import { useActiveWeb3React } from 'hooks'
 import { useCurrency } from 'hooks/Tokens'
+import useAddLiquidityOneTokenHandler from 'hooks/useAddLiquidityOneTokenHandler'
 import useTheme from 'hooks/useTheme'
 import useToggle from 'hooks/useToggle'
 import { useIsUpToExtraSmall } from 'hooks/useWindowSize'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ArrowDown } from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import { useDerivedMintSimpleInfo, useMintSimpleActionHandlers, useMintSimpleState } from 'state/mintSimple/hooks'
+import { TransactionType } from 'state/transactions/types'
 import { currencyId } from 'utils/currencyId'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import ButtonGroupping from './ButtonGrouping'
+import ButtonGrouping from './ButtonGrouping'
+import ModalFooter from './ModalFooter'
+import ModalHeader from './ModalHeader'
+import TransactionDetails from './TransactionDetails'
 
 type ModeOneTokenProps = {
   currencyIdA: string | undefined
@@ -32,11 +38,8 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
 
   const history = useHistory()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showConfirm, setShowConfirm] = useState<boolean>(false)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // Clicked confirm.
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [txHash, setTxHash] = useState<string>('')
 
   const { typedValue } = useMintSimpleState()
@@ -78,17 +81,76 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
     history.push(`/add/${currencyId0}/${currencyId1}`)
   }
 
-  const { maxAmount, token0ParsedAmount, token1ParsedAmount } = useDerivedMintSimpleInfo(
-    selectedPairState,
-    selectedPair,
-    selectedCurrency ?? undefined
-  )
+  const {
+    maxAmount,
+    token0ParsedAmount,
+    token1ParsedAmount,
+    noLiquidity,
+    price,
+    poolTokenPercentage
+  } = useDerivedMintSimpleInfo(selectedPairState, selectedPair, selectedCurrency ?? undefined)
+
+  const pendingText = `Supplying ${token0ParsedAmount?.toSignificant(6)} ${
+    selectedPair?.token0?.symbol
+  } and ${token1ParsedAmount?.toSignificant(6)} ${selectedPair?.token0?.symbol}`
+
+  const handleDismissConfirmation = useCallback(() => {
+    setShowConfirm(false)
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      onFieldInput('')
+    }
+    setTxHash('')
+  }, [onFieldInput, txHash])
 
   console.log('token0ParsedAmount', token0ParsedAmount?.currency.symbol, token0ParsedAmount?.toExact())
   console.log('token1ParsedAmount', token1ParsedAmount?.currency.symbol, token1ParsedAmount?.toExact())
 
+  const onAdd = useAddLiquidityOneTokenHandler({
+    selectedPairState,
+    selectedPair,
+    selectedCurrency: selectedCurrency ?? undefined,
+    setAttemptingTxn,
+    setTxHash
+  })
+
   return (
     <>
+      <TransactionConfirmationModal
+        isOpen={showConfirm}
+        onDismiss={handleDismissConfirmation}
+        attemptingTxn={attemptingTxn}
+        hash={txHash}
+        content={() => (
+          <ConfirmationModalContent
+            title="Confirm Add Liquidity"
+            onDismiss={handleDismissConfirmation}
+            topContent={() =>
+              ModalHeader({
+                token0ParsedAmount,
+                token1ParsedAmount,
+                token0: selectedPair?.token0,
+                token1: selectedPair?.token1
+              })
+            }
+            bottomContent={() => (
+              <ModalFooter
+                price={price}
+                token0={selectedPair?.token0}
+                token1={selectedPair?.token1}
+                noLiquidity={noLiquidity}
+                token0ParsedAmount={token0ParsedAmount}
+                token1ParsedAmount={token1ParsedAmount}
+                onAdd={onAdd}
+                poolTokenPercentage={poolTokenPercentage}
+              />
+            )}
+            transactionType={TransactionType.ADD}
+          />
+        )}
+        pendingText={pendingText}
+        currencyToAdd={selectedPair?.liquidityToken}
+      />
       <AutoColumn gap="20px">
         <PanelSelectPair selectedPair={selectedPair} onPairSelect={handlePairSelect} />
         {isPairExistAndNotNull && (
@@ -123,13 +185,18 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
           </>
         )}
       </AutoColumn>
-      <ButtonGroupping
+      <ButtonGrouping
         selectedPairState={selectedPairState}
         selectedPair={selectedPair}
         selectedCurrency={selectedCurrency ?? undefined}
         setAttemptingTxn={setAttemptingTxn}
         setTxHash={setTxHash}
         setShowConfirm={setShowConfirm}
+      />
+      <TransactionDetails
+        selectedPairState={selectedPairState}
+        selectedPair={selectedPair}
+        selectedCurrency={selectedCurrency ?? undefined}
       />
     </>
   )

@@ -1,35 +1,44 @@
-import { Currency, CurrencyAmount, Fraction, Percent } from '@s-one-finance/sdk-core'
+import { Fraction, Percent, Token, TokenAmount } from '@s-one-finance/sdk-core'
 import React, { useMemo, useState } from 'react'
 import { Text } from 'rebass'
-import { ButtonPrimary } from '../../components/Button'
-import { RowBetween, RowFixed } from '../../components/Row'
-import { Field } from '../../state/mint/actions'
-import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { AutoColumn } from '../../components/Column'
-import { StyledBalanceMaxMini } from '../../components/swap/styleds'
-import { RepeatIcon } from '../../components/swap/TradePrice'
-import useTheme from '../../hooks/useTheme'
-import { formatExecutionPriceWithCurrencies } from '../../utils/prices'
+import { unwrappedToken } from 'utils/wrappedCurrency'
+import { ButtonPrimary } from '../../../components/Button'
+import { AutoColumn } from '../../../components/Column'
+import { RowBetween, RowFixed } from '../../../components/Row'
+import { StyledBalanceMaxMini } from '../../../components/swap/styleds'
+import { RepeatIcon } from '../../../components/swap/TradePrice'
+import useTheme from '../../../hooks/useTheme'
+import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
+import { formatExecutionPriceWithCurrencies2 } from '../../../utils/prices'
 
 export default function ModalFooter({
-  noLiquidity,
   price,
-  currencies,
-  parsedAmounts,
+  token0,
+  token1,
+  noLiquidity,
+  token0ParsedAmount,
+  token1ParsedAmount,
   poolTokenPercentage,
   onAdd
 }: {
-  noLiquidity?: boolean
   price?: Fraction
-  currencies: { [field in Field]?: Currency }
-  parsedAmounts: { [field in Field]?: CurrencyAmount }
+  token0?: Token
+  token1?: Token
+  noLiquidity: boolean
+  token0ParsedAmount?: TokenAmount
+  token1ParsedAmount?: TokenAmount
   poolTokenPercentage?: Percent
   onAdd: () => void
 }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = useMemo(() => (isUpToExtraSmall ? 13 : 16), [isUpToExtraSmall])
-  const [showInverted, setShowInverted] = useState<boolean>(false)
   const theme = useTheme()
+
+  const [showInverted, setShowInverted] = useState<boolean>(false)
+
+  const currency0 = token0 && unwrappedToken(token0)
+  const currency1 = token1 && unwrappedToken(token1)
+
   return (
     <>
       <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'}>
@@ -45,7 +54,7 @@ export default function ModalFooter({
           >
             <>
               {/*{showInverted ? price?.invert().toSignificant(4) : price?.toSignificant(4)}*/}
-              {formatExecutionPriceWithCurrencies(currencies, price, showInverted)}
+              {formatExecutionPriceWithCurrencies2(currency0, currency1, price, showInverted)}
               <StyledBalanceMaxMini onClick={() => setShowInverted(prev => !prev)} style={{ margin: '0 0 0 0.5rem' }}>
                 <RepeatIcon />
               </StyledBalanceMaxMini>

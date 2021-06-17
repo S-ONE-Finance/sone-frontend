@@ -28,7 +28,10 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
 
-  const { currencies, noLiquidity } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
+  const { currencies, noLiquidity, pair, pairState, price, poolTokenPercentage } = useDerivedMintInfo(
+    currencyA,
+    currencyB
+  )
 
   // Show transaction details.
   const [isShowTransactionDetails, toggleIsShowTransactionDetails] = useShowTransactionDetailsManager()
@@ -37,9 +40,6 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
   const [showInverted, setShowInverted] = useState<boolean>(false)
 
   const toggleSettings = useToggleSettingsMenu()
-
-  // mint state
-  const { pair, pairState, price, poolTokenPercentage } = useDerivedMintInfo(currencyA, currencyB)
 
   // txn values
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
