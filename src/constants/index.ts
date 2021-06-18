@@ -4,7 +4,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
 
-export const ROUTER_ADDRESS = '0xFa09c1fc9B94d17Deb44e6B492A5E8C3945109F5'
+export const ROUTER_ADDRESS = '0xd42bC27f9927FE4EDB95f881D335d2F6A951488F'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -152,7 +152,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#2F73BD',
     mobile: true
   }
-  // S-One doén't need below options.
+  // S-ONE doesn't need below options.
   /*
     WALLET_LINK: {
     connector: walletlink,

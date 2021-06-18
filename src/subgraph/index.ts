@@ -93,7 +93,6 @@ export function useTopPairsFromSubgraph(): Pair[] {
           // id: "0xad6d458402f60fd3bd25163575031acdce07538d"
           // name: "DAI"
           // symbol: "DAI"
-          // totalLiquidity: "333.949213729739959878"
           if (t0 && t1) {
             const token0 = new Token(chainId, t0.id, t0.decimals, t0?.symbol ?? undefined, t0?.name ?? undefined)
             const token1 = new Token(chainId, t1.id, t1.decimals, t1?.symbol ?? undefined, t1?.name ?? undefined)
@@ -102,6 +101,7 @@ export function useTopPairsFromSubgraph(): Pair[] {
           return undefined
         })
         .filter((item): item is [Token, Token] => item !== undefined)
+
       setPairTokens(newPairTokens)
     })()
   }, [chainId])
@@ -109,7 +109,6 @@ export function useTopPairsFromSubgraph(): Pair[] {
   const topPairs = usePairs(pairTokens)
 
   // Only take pairs that EXISTS and NOT NULL.
-  // BUG: ở đây CÓ THỂ (chưa test) bị vấn đề performance nếu topPairs lớn.
   const existedTopPairs: Pair[] = useMemo(
     () =>
       topPairs
