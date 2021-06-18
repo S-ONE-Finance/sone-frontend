@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { tryParseAmount } from 'state/swap/hooks'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { wrappedCurrencyAmount } from 'utils/wrappedCurrency'
+import { wrappedCurrency, wrappedCurrencyAmount } from 'utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { typeInput } from './actions'
 
@@ -56,12 +56,22 @@ export function useDerivedMintSimpleInfo(
 
   const maxAmount = maxAmountSpend(currencyBalance)
 
-  // Ở đây gọi lấy ra lượng CurrencyA - CurrencyB sau khi chia đôi ra để swap.
+  // Lượng amount người dùng nhập vào.
   const parsedAmount = tryParseAmount(typedValue, selectedCurrency ?? undefined)
-
   const wrappedParsedAmount = wrappedCurrencyAmount(parsedAmount, chainId)
-  const [token0ParsedAmount, token1ParsedAmount] =
+  const [selectedTokenParsedAmount, theOtherTokenParsedAmount] =
     (pair && wrappedParsedAmount && pair.getAmountsAddOneToken(wrappedParsedAmount)) ?? []
+
+  // token0 định nghĩa theo pair, selectedToken định nghĩa theo token người dùng chọn để nhập vào.
+  // Ở đây muốn return ra token0ParsedAmount và token1ParsedAmount nên phải kiểm tra kỹ, nếu ngược thì swap lại.
+  const selectedToken = wrappedCurrency(selectedCurrency, chainId)
+  const token0IsSelected = selectedToken && pair?.token0 && pair?.token0.equals(selectedToken)
+  let token0ParsedAmount: TokenAmount | undefined = undefined
+  let token1ParsedAmount: TokenAmount | undefined = undefined
+  if (token0IsSelected !== undefined) {
+    token0ParsedAmount = token0IsSelected ? selectedTokenParsedAmount : theOtherTokenParsedAmount
+    token1ParsedAmount = token0IsSelected ? theOtherTokenParsedAmount : selectedTokenParsedAmount
+  }
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 

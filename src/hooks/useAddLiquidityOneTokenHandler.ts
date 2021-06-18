@@ -31,7 +31,7 @@ export default function useAddLiquidityOneTokenHandler({
 }: UseAddLiquidityOneTokenHandlerProps) {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const { token0ParsedAmount, token1ParsedAmount } = useDerivedMintSimpleInfo(
+  const { parsedAmount, token0ParsedAmount, token1ParsedAmount } = useDerivedMintSimpleInfo(
     selectedPairState,
     selectedPair,
     selectedCurrency
@@ -59,7 +59,7 @@ export default function useAddLiquidityOneTokenHandler({
   // 1. Kiểm tra xem giá trị anh Thanh trả về và giá trị swap ở hệ thống này trả về có giống nhau không.
   // 2. Nếu giống nhau chính xác thì bỏ param (cả code sone-front-end và smart-contract), nếu lệch nhau một chút thì phải bàn với team.
   const trade = useTradeExactIn(
-    token0IsSelected ? token0ParsedAmount : token1ParsedAmount,
+    parsedAmount,
     token0IsSelected ? token1 && unwrappedToken(token1) : token0 && unwrappedToken(token0)
   )
 
@@ -95,7 +95,9 @@ export default function useAddLiquidityOneTokenHandler({
     }
 
     const token0MinAmount = calculateSlippageAmount(token0ParsedAmount, allowedSlippage)[0]
+    const _token0MinAmount = token0MinAmount.toString()
     const token1MinAmount = calculateSlippageAmount(token1ParsedAmount, allowedSlippage)[0]
+    const _token1MinAmount = token1MinAmount.toString()
 
     let estimate,
       method: (...args: any) => Promise<TransactionResponse>,
@@ -108,6 +110,8 @@ export default function useAddLiquidityOneTokenHandler({
       method = router.addLiquidityOneTokenETHExactETH
       // amountTokenMin, amountETHMin, amountOutTokenMin, path, to, deadline
       args = [
+        // 0,
+        // 0,
         token0IsSelected ? token1MinAmount.toString() : token0MinAmount.toString(),
         token0IsSelected ? token0MinAmount.toString() : token1MinAmount.toString(),
         amountOut,
@@ -126,6 +130,9 @@ export default function useAddLiquidityOneTokenHandler({
         token0IsSelected ? token0MinAmount.toString() : token1MinAmount.toString(),
         token0IsSelected ? token1MinAmount.toString() : token0MinAmount.toString(),
         amountOut,
+        // 0,
+        // 0,
+        // 0,
         [token0IsSelected ? token0.address : token1.address, token0IsSelected ? token1.address : token0.address],
         account,
         deadline.toHexString()
