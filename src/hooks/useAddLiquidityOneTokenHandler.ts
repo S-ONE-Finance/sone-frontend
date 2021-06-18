@@ -4,6 +4,7 @@ import { Currency, ETHER, JSBI, Pair, Percent } from '@s-one-finance/sdk-core'
 import { PairState } from 'data/Reserves'
 import React, { useCallback } from 'react'
 import { useDerivedMintSimpleInfo } from 'state/mintSimple/hooks'
+import { TransactionType } from 'state/transactions/types'
 import { useActiveWeb3React } from '.'
 import { BIPS_BASE } from '../constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -40,7 +41,6 @@ export default function useAddLiquidityOneTokenHandler({
   const deadline = useTransactionDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const addTransaction = useTransactionAdder()
 
   // Lấy data bên swap.
@@ -134,16 +134,15 @@ export default function useAddLiquidityOneTokenHandler({
         }).then(response => {
           setAttemptingTxn(false)
 
-          // TODO: addTransaction với type add one mode
-          // addTransaction(response, {
-          //   summary: {
-          //     type: TransactionType.ADD,
-          //     token0Amount: selectedTokenMinAmount.toSignificant(3),
-          //     token0Symbol: selectedTokenParsedAmount.token.symbol,
-          //     token1Amount: token1ParsedAmount?.toSignificant(3),
-          //     token1Symbol: token1?.symbol
-          //   }
-          // })
+          addTransaction(response, {
+            summary: {
+              type: TransactionType.ADD_TWO_TOKENS,
+              token0Amount: selectedTokenParsedAmount.toSignificant(3),
+              token0Symbol: selectedTokenParsedAmount.token.symbol,
+              token1Amount: theOtherTokenParsedAmount.toSignificant(3),
+              token1Symbol: theOtherTokenParsedAmount.token.symbol
+            }
+          })
 
           setTxHash(response.hash)
 
@@ -164,6 +163,7 @@ export default function useAddLiquidityOneTokenHandler({
       })
   }, [
     account,
+    addTransaction,
     allowedSlippage,
     amountIn,
     amountOut,
