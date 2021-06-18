@@ -1,14 +1,17 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, Pair, WETH } from '@s-one-finance/sdk-core'
+import { Currency, JSBI, Pair, Percent, WETH } from '@s-one-finance/sdk-core'
+import { BIPS_BASE } from '../constants'
 import { PairState } from 'data/Reserves'
 import React, { useCallback } from 'react'
 import { useDerivedMintSimpleInfo } from 'state/mintSimple/hooks'
+import { unwrappedToken, wrappedCurrency } from 'utils/wrappedCurrency'
 import { useActiveWeb3React } from '.'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { TransactionType } from '../state/transactions/types'
 import { useUserSlippageTolerance } from '../state/user/hooks'
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../utils'
+import { useTradeExactIn } from './Trades'
 import useTransactionDeadline from './useTransactionDeadline'
 
 type UseAddLiquidityOneTokenHandlerProps = {
@@ -39,15 +42,58 @@ export default function useAddLiquidityOneTokenHandler({
 
   const addTransaction = useTransactionAdder()
 
+  const { token0, token1 } = selectedPair || {}
+  const wrappedSelectedCurrency = wrappedCurrency(selectedCurrency, chainId)
+
+  // if (wrappedSelectedCurrency === undefined) {
+  //   throw new Error(`Cannot wrap currency ${selectedCurrency}; chainId = ${chainId}`)
+  // }
+
+  const token0IsSelected = wrappedSelectedCurrency && token0 && wrappedSelectedCurrency.equals(token0) ? true : false
+  const selectedToken = token0IsSelected ? token0 : token1
+  const theOtherToken = token0IsSelected ? token1 : token0
+
+  // Lấy data bên swap.
+  // TODO: Các biến truyền lên smart contract add liquidity one token có các biến của smart contract swap,
+  // tuy nhiên anh Thanh đã tính cho mình giá trị sau khi swap rồi thì liệu có cần phải truyền lại lên nữa ko?
+  // 1. Kiểm tra xem giá trị anh Thanh trả về và giá trị swap ở hệ thống này trả về có giống nhau không.
+  // 2. Nếu giống nhau chính xác thì bỏ param (cả code sone-front-end và smart-contract), nếu lệch nhau một chút thì phải bàn với team.
+  const trade = useTradeExactIn(
+    token0IsSelected ? token0ParsedAmount : token1ParsedAmount,
+    token0IsSelected ? token1 && unwrappedToken(token1) : token0 && unwrappedToken(token0)
+  )
+
+  // if (trade === null) {
+  //   throw new Error("Can't parse trade")
+  // }
+
+  const allowedSlippagePercent = new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE)
+  // FIXME: Bên swap sdk thì parse bằng toHex còn bên addliquiditytwotokenhandlers thì dùng .raw.toString() ????
+  const amountIn: string | undefined = trade ? trade.maximumAmountIn(allowedSlippagePercent).raw.toString() : undefined
+  const amountOut: string | undefined = trade
+    ? trade.minimumAmountOut(allowedSlippagePercent).raw.toString()
+    : undefined
+
   const handler = useCallback(async () => {
     if (!chainId || !library || !account) return
     const router = getRouterContract(chainId, library, account)
 
-    if (!token0ParsedAmount || !token1ParsedAmount || !selectedCurrency || !selectedPair || !deadline) {
+    if (
+      !token0ParsedAmount ||
+      !token1ParsedAmount ||
+      !selectedCurrency ||
+      !selectedPair ||
+      !deadline ||
+      !selectedToken ||
+      !theOtherToken ||
+      !token0 ||
+      !token1 ||
+      !amountIn ||
+      !amountOut
+    ) {
       return
     }
 
-    // Code Smart Contract uses abbre AB instead of 01
     const token0MinAmount = calculateSlippageAmount(token0ParsedAmount, allowedSlippage)[0]
     const token1MinAmount = calculateSlippageAmount(token1ParsedAmount, allowedSlippage)[0]
 
@@ -56,31 +102,46 @@ export default function useAddLiquidityOneTokenHandler({
       args: Array<string | string[] | number>,
       value: BigNumber | null
 
-    const { token0, token1 } = selectedPair
-
-    if (WETH[chainId].equals(token0) || WETH[chainId].equals(token1)) {
-      const token0IsWETH = WETH[chainId].equals(token0)
-      estimate = router.estimateGas.addLiquidityETH // TODO: addLiquidityETH2token
-      method = router.addLiquidityETH // TODO: addLiquidityETH2token
+    if (WETH[chainId].equals(selectedToken)) {
+      // If user select ETHER.
+      estimate = router.estimateGas.addLiquidityOneTokenETHExactETH
+      method = router.addLiquidityOneTokenETHExactETH
+      // amountTokenMin, amountETHMin, amountOutTokenMin, path, to, deadline
       args = [
-        token0IsWETH ? token1.address : token0.address, // token
-        (token0IsWETH ? token1ParsedAmount : token0ParsedAmount).raw.toString(), // token desired
-        (token0IsWETH ? token1MinAmount : token0MinAmount).toString(), // token min
-        (token0IsWETH ? token0MinAmount : token1MinAmount).toString(), // eth min
+        token0IsSelected ? token1MinAmount.toString() : token0MinAmount.toString(),
+        token0IsSelected ? token0MinAmount.toString() : token1MinAmount.toString(),
+        amountOut,
+        [token0IsSelected ? token0.address : token1.address, token0IsSelected ? token1.address : token0.address],
         account,
         deadline.toHexString()
       ]
-      value = BigNumber.from((token0IsWETH ? token0ParsedAmount : token1ParsedAmount).raw.toString())
-    } else {
-      estimate = router.estimateGas.addLiquidity
-      method = router.addLiquidity
+      value = BigNumber.from((token0IsSelected ? token0ParsedAmount : token1ParsedAmount).raw.toString())
+    } else if (WETH[chainId].equals(theOtherToken)) {
+      // If user select a token, and the other currency is ETHER.
+      estimate = router.estimateGas.addLiquidityOneTokenETHExactToken
+      method = router.addLiquidityOneTokenETHExactToken
+      // amountIn, amountTokenMin, amountETHMin, amountOutETHMin, path, to, deadline
       args = [
-        token0.address,
-        token1.address,
-        token0ParsedAmount.raw.toString(),
-        token1ParsedAmount.raw.toString(),
-        token0MinAmount.toString(),
-        token1MinAmount.toString(),
+        amountIn,
+        token0IsSelected ? token0MinAmount.toString() : token1MinAmount.toString(),
+        token0IsSelected ? token1MinAmount.toString() : token0MinAmount.toString(),
+        amountOut,
+        [token0IsSelected ? token0.address : token1.address, token0IsSelected ? token1.address : token0.address],
+        account,
+        deadline.toHexString()
+      ]
+      value = null
+    } else {
+      // If pair no contains ETHER, which means user select one of two tokens.
+      estimate = router.estimateGas.addLiquidityOneToken
+      method = router.addLiquidityOneToken
+      // amountIn, amountAMin, amountBMin, amountOutMin, path, to, deadline
+      args = [
+        amountIn,
+        token0IsSelected ? token0MinAmount.toString() : token1MinAmount.toString(),
+        token0IsSelected ? token1MinAmount.toString() : token0MinAmount.toString(),
+        amountOut,
+        [token0IsSelected ? token0.address : token1.address, token0IsSelected ? token1.address : token0.address],
         account,
         deadline.toHexString()
       ]
@@ -98,6 +159,7 @@ export default function useAddLiquidityOneTokenHandler({
 
           addTransaction(response, {
             summary: {
+              // FIXME: giá trị phải là token0MinAmount token1MinAmount và phải đúng thứ tự.
               type: TransactionType.ADD,
               token0Amount: token0ParsedAmount?.toSignificant(3),
               token0Symbol: token0?.symbol,
@@ -127,14 +189,21 @@ export default function useAddLiquidityOneTokenHandler({
     account,
     addTransaction,
     allowedSlippage,
+    amountIn,
+    amountOut,
     chainId,
     deadline,
     library,
     selectedCurrency,
     selectedPair,
+    selectedToken,
     setAttemptingTxn,
     setTxHash,
+    theOtherToken,
+    token0,
+    token0IsSelected,
     token0ParsedAmount,
+    token1,
     token1ParsedAmount
   ])
 

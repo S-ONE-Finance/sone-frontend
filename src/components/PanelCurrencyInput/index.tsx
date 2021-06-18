@@ -163,6 +163,7 @@ export default function PanelCurrencyInput({
             {account && (
               <RowBalance onClick={onMax}>
                 <TextPanelLabel>
+                  {/* BUG: https://gitlab.vnext.vn/bhswap/bhswap-front-end/sone-front-end/issues/16 */}
                   {!hideBalance && !!currency && selectedCurrencyBalance
                     ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
                     : ''}
