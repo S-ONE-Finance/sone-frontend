@@ -95,7 +95,7 @@ export default function useAddLiquidityTwoTokensHandler({
 
           addTransaction(response, {
             summary: {
-              type: TransactionType.ADD,
+              type: TransactionType.ADD_TWO_TOKENS,
               token0Amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
               token0Symbol: currencies[Field.CURRENCY_A]?.symbol,
               token1Amount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),

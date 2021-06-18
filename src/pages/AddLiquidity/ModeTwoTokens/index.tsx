@@ -148,7 +148,7 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
                 poolTokenPercentage={poolTokenPercentage}
               />
             )}
-            transactionType={TransactionType.ADD}
+            transactionType={TransactionType.ADD_TWO_TOKENS}
           />
         )}
         pendingText={pendingText}

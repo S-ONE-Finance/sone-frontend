@@ -24,8 +24,11 @@ export default function StyledSummary({ summary }: { summary: TransactionSummary
       case TransactionType.SWAP:
         i18nKey = 'summary_swap'
         break
-      case TransactionType.ADD:
-        i18nKey = 'summary_add'
+      case TransactionType.ADD_TWO_TOKENS:
+        i18nKey = 'summary_add_two_tokens'
+        break
+      case TransactionType.ADD_ONE_TOKEN:
+        i18nKey = 'summary_add_one_token'
         break
       default:
         console.error('This type of summary does not exist. Summary:', summary)

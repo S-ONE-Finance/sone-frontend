@@ -1,4 +1,4 @@
 {
   "summary_swap": "交換<0>{{token0Amount}}</0><1>{{token0Symbol}}</1>以獲得<2>{{token1Amount}}</2><1>{{token1Symbol}}</1>",
-  "summary_add": "添加<0>{{token0Amount}}</0><1>{{token0Symbol}}</1>和<2>{{token1Amount}}</2><1>{{token1Symbol}}</1>"
+  "summary_add_two_tokens": "添加<0>{{token0Amount}}</0><1>{{token0Symbol}}</1>和<2>{{token1Amount}}</2><1>{{token1Symbol}}</1>"
 }

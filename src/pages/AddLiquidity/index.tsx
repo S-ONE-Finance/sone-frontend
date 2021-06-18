@@ -29,7 +29,8 @@ export default function AddLiquidity({
   return (
     <>
       <AppBody>
-        <AppBodyTitleDescriptionSettings transactionType={TransactionType.ADD} />
+        {/* transactionType chỗ này chỉ để lấy ra vector, để ADD_ONE_TOKEN hay ADD_TWO_TOKENS đều giống nhau. */}
+        <AppBodyTitleDescriptionSettings transactionType={TransactionType.ADD_ONE_TOKEN} />
         <ModeToggle />
         <StyledPadding>
           {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
