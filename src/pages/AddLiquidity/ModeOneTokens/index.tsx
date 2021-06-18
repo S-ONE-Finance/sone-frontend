@@ -103,9 +103,6 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
     setTxHash('')
   }, [onFieldInput, txHash])
 
-  console.log('token0ParsedAmount', token0ParsedAmount?.currency.symbol, token0ParsedAmount?.toExact())
-  console.log('token1ParsedAmount', token1ParsedAmount?.currency.symbol, token1ParsedAmount?.toExact())
-
   const onAdd = useAddLiquidityOneTokenHandler({
     selectedPairState,
     selectedPair,

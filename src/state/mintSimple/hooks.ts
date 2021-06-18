@@ -34,13 +34,6 @@ export function useMintSimpleActionHandlers(): {
   }
 }
 
-// currencyBalance?: CurrencyAmount
-// maxAmount?: CurrencyAmount
-// price?: Price
-// liquidityMinted?: TokenAmount
-// poolTokenPercentage?: Percent
-// error?: string
-
 export function useDerivedMintSimpleInfo(
   pairState: PairState,
   pair: Pair | null,
