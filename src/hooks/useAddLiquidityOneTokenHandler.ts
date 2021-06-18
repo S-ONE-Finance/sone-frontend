@@ -45,31 +45,19 @@ export default function useAddLiquidityOneTokenHandler({
   const { token0, token1 } = selectedPair || {}
   const wrappedSelectedCurrency = wrappedCurrency(selectedCurrency, chainId)
 
-  // if (wrappedSelectedCurrency === undefined) {
-  //   throw new Error(`Cannot wrap currency ${selectedCurrency}; chainId = ${chainId}`)
-  // }
-
   const token0IsSelected = wrappedSelectedCurrency && token0 && wrappedSelectedCurrency.equals(token0) ? true : false
   const selectedToken = token0IsSelected ? token0 : token1
   const theOtherToken = token0IsSelected ? token1 : token0
 
   // Lấy data bên swap.
-  // TODO: Các biến truyền lên smart contract add liquidity one token có các biến của smart contract swap,
-  // tuy nhiên anh Thanh đã tính cho mình giá trị sau khi swap rồi thì liệu có cần phải truyền lại lên nữa ko?
-  // 1. Kiểm tra xem giá trị anh Thanh trả về và giá trị swap ở hệ thống này trả về có giống nhau không.
-  // 2. Nếu giống nhau chính xác thì bỏ param (cả code sone-front-end và smart-contract), nếu lệch nhau một chút thì phải bàn với team.
   const trade = useTradeExactIn(
-    parsedAmount,
+    token0IsSelected ? token0ParsedAmount : token1ParsedAmount,
     token0IsSelected ? token1 && unwrappedToken(token1) : token0 && unwrappedToken(token0)
   )
 
-  // if (trade === null) {
-  //   throw new Error("Can't parse trade")
-  // }
-
   const allowedSlippagePercent = new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE)
-  // FIXME: Bên swap sdk thì parse bằng toHex còn bên addliquiditytwotokenhandlers thì dùng .raw.toString() ????
-  const amountIn: string | undefined = trade ? trade.maximumAmountIn(allowedSlippagePercent).raw.toString() : undefined
+  // amountIn = lượng currency người dùng nhập, để dạng raw string.
+  const amountIn = parsedAmount?.raw.toString()
   const amountOut: string | undefined = trade
     ? trade.minimumAmountOut(allowedSlippagePercent).raw.toString()
     : undefined
@@ -95,9 +83,7 @@ export default function useAddLiquidityOneTokenHandler({
     }
 
     const token0MinAmount = calculateSlippageAmount(token0ParsedAmount, allowedSlippage)[0]
-    const _token0MinAmount = token0MinAmount.toString()
     const token1MinAmount = calculateSlippageAmount(token1ParsedAmount, allowedSlippage)[0]
-    const _token1MinAmount = token1MinAmount.toString()
 
     let estimate,
       method: (...args: any) => Promise<TransactionResponse>,
@@ -110,8 +96,6 @@ export default function useAddLiquidityOneTokenHandler({
       method = router.addLiquidityOneTokenETHExactETH
       // amountTokenMin, amountETHMin, amountOutTokenMin, path, to, deadline
       args = [
-        // 0,
-        // 0,
         token0IsSelected ? token1MinAmount.toString() : token0MinAmount.toString(),
         token0IsSelected ? token0MinAmount.toString() : token1MinAmount.toString(),
         amountOut,
@@ -119,7 +103,7 @@ export default function useAddLiquidityOneTokenHandler({
         account,
         deadline.toHexString()
       ]
-      value = BigNumber.from((token0IsSelected ? token0ParsedAmount : token1ParsedAmount).raw.toString())
+      value = BigNumber.from(amountIn)
     } else if (WETH[chainId].equals(theOtherToken)) {
       // If user select a token, and the other currency is ETHER.
       estimate = router.estimateGas.addLiquidityOneTokenETHExactToken
@@ -130,9 +114,6 @@ export default function useAddLiquidityOneTokenHandler({
         token0IsSelected ? token0MinAmount.toString() : token1MinAmount.toString(),
         token0IsSelected ? token1MinAmount.toString() : token0MinAmount.toString(),
         amountOut,
-        // 0,
-        // 0,
-        // 0,
         [token0IsSelected ? token0.address : token1.address, token0IsSelected ? token1.address : token0.address],
         account,
         deadline.toHexString()
@@ -143,15 +124,25 @@ export default function useAddLiquidityOneTokenHandler({
       estimate = router.estimateGas.addLiquidityOneToken
       method = router.addLiquidityOneToken
       // amountIn, amountAMin, amountBMin, amountOutMin, path, to, deadline
+      // FIXME: vẫn đang bị oẳng ở đây.
       args = [
         amountIn,
-        token0IsSelected ? token0MinAmount.toString() : token1MinAmount.toString(),
-        token0IsSelected ? token1MinAmount.toString() : token0MinAmount.toString(),
+        token0MinAmount.toString(),
+        token1MinAmount.toString(),
+        // token0IsSelected ? token0MinAmount.toString() : token1MinAmount.toString(),
+        // token0IsSelected ? token1MinAmount.toString() : token0MinAmount.toString(),
+        // AB ở đây sort theo address.
+        // token0.address.localeCompare(token1.address) < 0 ? token0MinAmount.toString() : token1MinAmount.toString(),
+        // token0.address.localeCompare(token1.address) < 0 ? token1MinAmount.toString() : token0MinAmount.toString(),
+        // token0IsSelected ? token1MinAmount.toString() : token0MinAmount.toString(),
+        // token0IsSelected ? token0MinAmount.toString() : token1MinAmount.toString(),
         amountOut,
-        [token0IsSelected ? token0.address : token1.address, token0IsSelected ? token1.address : token0.address],
+        // [token0IsSelected ? token0.address : token1.address, token0IsSelected ? token1.address : token0.address],
+        [token1.address, token0.address],
         account,
         deadline.toHexString()
       ]
+      console.log('args', args)
       value = null
     }
 

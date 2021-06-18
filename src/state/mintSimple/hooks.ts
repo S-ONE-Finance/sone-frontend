@@ -56,14 +56,17 @@ export function useDerivedMintSimpleInfo(
 
   const maxAmount = maxAmountSpend(currencyBalance)
 
-  // Lượng amount người dùng nhập vào.
+  // parsedAmount = lượng currency mà người dùng nhập vào.
+  // selectedTokenParsedAmount = lượng selected currency sau khi chia 2.
+  // theOtherTokenParsedAmount = lượng currency sau khi lấy selectedTokenParsedAmount ra để swap.
+  // token0IsSelected = true nếu currency mà người dùng chọn là pair.token0
+  // token0ParsedAmount = số lượng pair.token0
+  // token1ParsedAmount = số lượng pair.token1
+  // TODO: refactor chỗ này từ token0ParsedAmount, token1ParsedAmount -> selectedTokenParsedAmount, theOtherTokenParsedAmount.
   const parsedAmount = tryParseAmount(typedValue, selectedCurrency ?? undefined)
   const wrappedParsedAmount = wrappedCurrencyAmount(parsedAmount, chainId)
   const [selectedTokenParsedAmount, theOtherTokenParsedAmount] =
     (pair && wrappedParsedAmount && pair.getAmountsAddOneToken(wrappedParsedAmount)) ?? []
-
-  // token0 định nghĩa theo pair, selectedToken định nghĩa theo token người dùng chọn để nhập vào.
-  // Ở đây muốn return ra token0ParsedAmount và token1ParsedAmount nên phải kiểm tra kỹ, nếu ngược thì swap lại.
   const selectedToken = wrappedCurrency(selectedCurrency, chainId)
   const token0IsSelected = selectedToken && pair?.token0 && pair?.token0.equals(selectedToken)
   let token0ParsedAmount: TokenAmount | undefined = undefined
@@ -72,6 +75,9 @@ export function useDerivedMintSimpleInfo(
     token0ParsedAmount = token0IsSelected ? selectedTokenParsedAmount : theOtherTokenParsedAmount
     token1ParsedAmount = token0IsSelected ? theOtherTokenParsedAmount : selectedTokenParsedAmount
   }
+
+  // const [token0ParsedAmount, token1ParsedAmount] =
+  //   (pair && wrappedParsedAmount && pair.getAmountsAddOneToken(wrappedParsedAmount)) ?? []
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
