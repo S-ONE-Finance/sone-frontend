@@ -1,4 +1,4 @@
-import { Fraction, Percent, Token, TokenAmount } from '@s-one-finance/sdk-core'
+import { Fraction, Percent, Token } from '@s-one-finance/sdk-core'
 import React, { useMemo, useState } from 'react'
 import { Text } from 'rebass'
 import { unwrappedToken } from 'utils/wrappedCurrency'
@@ -13,20 +13,16 @@ import { formatExecutionPriceWithCurrencies2 } from '../../../utils/prices'
 
 export default function ModalFooter({
   price,
-  token0,
-  token1,
+  selectedToken,
+  theOtherToken,
   noLiquidity,
-  token0ParsedAmount,
-  token1ParsedAmount,
   poolTokenPercentage,
   onAdd
 }: {
   price?: Fraction
-  token0?: Token
-  token1?: Token
+  selectedToken?: Token
+  theOtherToken?: Token
   noLiquidity: boolean
-  token0ParsedAmount?: TokenAmount
-  token1ParsedAmount?: TokenAmount
   poolTokenPercentage?: Percent
   onAdd: () => void
 }) {
@@ -36,8 +32,8 @@ export default function ModalFooter({
 
   const [showInverted, setShowInverted] = useState<boolean>(false)
 
-  const currency0 = token0 && unwrappedToken(token0)
-  const currency1 = token1 && unwrappedToken(token1)
+  const selectedCurrency = selectedToken && unwrappedToken(selectedToken)
+  const theOtherCurrency = theOtherToken && unwrappedToken(theOtherToken)
 
   return (
     <>
@@ -54,7 +50,7 @@ export default function ModalFooter({
           >
             <>
               {/*{showInverted ? price?.invert().toSignificant(4) : price?.toSignificant(4)}*/}
-              {formatExecutionPriceWithCurrencies2(currency0, currency1, price, showInverted)}
+              {formatExecutionPriceWithCurrencies2(selectedCurrency, theOtherCurrency, price, showInverted)}
               <StyledBalanceMaxMini onClick={() => setShowInverted(prev => !prev)} style={{ margin: '0 0 0 0.5rem' }}>
                 <RepeatIcon />
               </StyledBalanceMaxMini>

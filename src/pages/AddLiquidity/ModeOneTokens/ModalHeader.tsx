@@ -12,36 +12,36 @@ import { useUserSlippageTolerance } from '../../../state/user/hooks'
 import { TYPE } from '../../../theme'
 
 export default function ModalHeader({
-  token0ParsedAmount,
-  token1ParsedAmount,
-  token0,
-  token1
+  selectedTokenParsedAmount,
+  theOtherTokenParsedAmount,
+  selectedToken,
+  theOtherToken
 }: {
-  token0ParsedAmount?: TokenAmount
-  token1ParsedAmount?: TokenAmount
-  token0?: Token
-  token1?: Token
+  selectedTokenParsedAmount?: TokenAmount
+  theOtherTokenParsedAmount?: TokenAmount
+  selectedToken?: Token
+  theOtherToken?: Token
 }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
 
-  const currency0 = token0 && unwrappedToken(token0)
-  const currency1 = token1 && unwrappedToken(token1)
+  const selectedCurrency = selectedToken && unwrappedToken(selectedToken)
+  const theOtherCurrency = theOtherToken && unwrappedToken(theOtherToken)
 
   return (
     <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>
       <RowBetween align="flex-end">
         <RowFixed gap="0">
           <TruncatedText fontSize={isUpToExtraSmall ? '20px' : '28px'} fontWeight={600}>
-            {token0ParsedAmount?.toSignificant(6)}
+            {selectedTokenParsedAmount?.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
         {/* zIndex để hiển thị đè lên SwapVector. */}
         <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align="center">
-          <CurrencyLogo currency={currency0} size="24px" style={{ marginRight: '5px' }} />
+          <CurrencyLogo currency={selectedCurrency} size="24px" style={{ marginRight: '5px' }} />
           <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
-            {currency0?.symbol}
+            {selectedCurrency?.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -51,13 +51,13 @@ export default function ModalHeader({
       <RowBetween align="flex-end">
         <RowFixed gap="0">
           <TruncatedText fontSize={isUpToExtraSmall ? '20px' : '28px'} fontWeight={600}>
-            {token1ParsedAmount?.toSignificant(6)}
+            {theOtherTokenParsedAmount?.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap="0" style={{ height: '100%' }} align="center">
-          <CurrencyLogo currency={currency1} size="24px" style={{ marginRight: '5px' }} />
+          <CurrencyLogo currency={theOtherCurrency} size="24px" style={{ marginRight: '5px' }} />
           <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
-            {currency1?.symbol}
+            {theOtherCurrency?.symbol}
           </Text>
         </RowFixed>
       </RowBetween>

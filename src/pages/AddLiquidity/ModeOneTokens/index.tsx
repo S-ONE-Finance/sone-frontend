@@ -70,6 +70,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
 
   const [isSelectCurrencyA, onCurrencyToggle] = useToggle()
   const selectedCurrency = isSelectCurrencyA ? currencyA : currencyB
+  const theOtherCurrency = isSelectCurrencyA ? currencyB : currencyA
 
   // Chỉ select được ETH, ko cho select WETH
   const handlePairSelect = (pair: Pair) => {
@@ -83,16 +84,16 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
 
   const {
     maxAmount,
-    token0ParsedAmount,
-    token1ParsedAmount,
+    selectedTokenParsedAmount,
+    theOtherTokenParsedAmount,
     noLiquidity,
     price,
     poolTokenPercentage
   } = useDerivedMintSimpleInfo(selectedPairState, selectedPair, selectedCurrency ?? undefined)
 
-  const pendingText = `Supplying ${token0ParsedAmount?.toSignificant(6)} ${
+  const pendingText = `Supplying ${selectedTokenParsedAmount?.toSignificant(6)} ${
     selectedPair?.token0?.symbol
-  } and ${token1ParsedAmount?.toSignificant(6)} ${selectedPair?.token0?.symbol}`
+  } and ${theOtherTokenParsedAmount?.toSignificant(6)} ${selectedPair?.token0?.symbol}`
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
@@ -107,6 +108,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
     selectedPairState,
     selectedPair,
     selectedCurrency: selectedCurrency ?? undefined,
+    theOtherCurrency: theOtherCurrency ?? undefined,
     setAttemptingTxn,
     setTxHash
   })
@@ -124,20 +126,18 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
             onDismiss={handleDismissConfirmation}
             topContent={() =>
               ModalHeader({
-                token0ParsedAmount,
-                token1ParsedAmount,
-                token0: selectedPair?.token0,
-                token1: selectedPair?.token1
+                selectedTokenParsedAmount,
+                theOtherTokenParsedAmount,
+                selectedToken: selectedTokenParsedAmount?.token,
+                theOtherToken: theOtherTokenParsedAmount?.token
               })
             }
             bottomContent={() => (
               <ModalFooter
                 price={price}
-                token0={selectedPair?.token0}
-                token1={selectedPair?.token1}
+                selectedToken={selectedTokenParsedAmount?.token}
+                theOtherToken={theOtherTokenParsedAmount?.token}
                 noLiquidity={noLiquidity}
-                token0ParsedAmount={token0ParsedAmount}
-                token1ParsedAmount={token1ParsedAmount}
                 onAdd={onAdd}
                 poolTokenPercentage={poolTokenPercentage}
               />
@@ -166,7 +166,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
               onCurrencyToggle={onCurrencyToggle}
             />
 
-            {token0ParsedAmount && token1ParsedAmount && (
+            {selectedTokenParsedAmount && theOtherTokenParsedAmount && (
               <>
                 <AutoRow justify="center">
                   <IconWrapper clickable={false}>
@@ -174,8 +174,8 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
                   </IconWrapper>
                 </AutoRow>
                 <PanelAddLiquidityOneTokenModeOutput
-                  token0ParsedAmount={token0ParsedAmount}
-                  token1ParsedAmount={token1ParsedAmount}
+                  selectedTokenParsedAmount={selectedTokenParsedAmount}
+                  theOtherTokenParsedAmount={theOtherTokenParsedAmount}
                 />
               </>
             )}
@@ -186,6 +186,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
         selectedPairState={selectedPairState}
         selectedPair={selectedPair}
         selectedCurrency={selectedCurrency ?? undefined}
+        theOtherCurrency={theOtherCurrency ?? undefined}
         setAttemptingTxn={setAttemptingTxn}
         setTxHash={setTxHash}
         setShowConfirm={setShowConfirm}

@@ -19,7 +19,8 @@ import { ROUTER_ADDRESS } from '../../../constants'
 type ButtonGroupingProps = {
   selectedPairState: PairState
   selectedPair: Pair | null
-  selectedCurrency?: Currency
+  selectedCurrency: Currency | undefined
+  theOtherCurrency: Currency | undefined
   setAttemptingTxn: React.Dispatch<React.SetStateAction<boolean>>
   setTxHash: React.Dispatch<React.SetStateAction<string>>
   setShowConfirm: React.Dispatch<React.SetStateAction<boolean>>
@@ -29,12 +30,13 @@ export default function ButtonGroupping({
   selectedPairState,
   selectedPair,
   selectedCurrency,
+  theOtherCurrency,
   setAttemptingTxn,
   setTxHash,
   setShowConfirm
 }: ButtonGroupingProps) {
   const { token0, token1 } = selectedPair ?? {}
-  const { error, token0ParsedAmount, token1ParsedAmount } = useDerivedMintSimpleInfo(
+  const { error, selectedTokenParsedAmount, theOtherTokenParsedAmount } = useDerivedMintSimpleInfo(
     selectedPairState,
     selectedPair,
     selectedCurrency
@@ -49,8 +51,14 @@ export default function ButtonGroupping({
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
   // check whether the user has approved the router on the token
-  const [approvalT0, approvalT0Callback] = useApproveCallback(token0ParsedAmount, ROUTER_ADDRESS)
-  const [approvalT1, approvalT1Callback] = useApproveCallback(token1ParsedAmount, ROUTER_ADDRESS)
+  const [approvalSelectedToken, approvalSelectedTokenCallback] = useApproveCallback(
+    selectedTokenParsedAmount,
+    ROUTER_ADDRESS
+  )
+  const [approvalTheOtherToken, approvalTheOtherTokenCallback] = useApproveCallback(
+    theOtherTokenParsedAmount,
+    ROUTER_ADDRESS
+  )
 
   const expertMode = useIsExpertMode()
 
@@ -58,6 +66,7 @@ export default function ButtonGroupping({
     selectedPairState,
     selectedPair,
     selectedCurrency,
+    theOtherCurrency,
     setAttemptingTxn,
     setTxHash
   })
@@ -73,32 +82,32 @@ export default function ButtonGroupping({
       ) : (
         <AutoColumn gap={'md'}>
           {/* FIXME: Có thể sẽ bug user auto click ở đây. */}
-          {(approvalT0 === ApprovalState.NOT_APPROVED ||
-            approvalT0 === ApprovalState.PENDING ||
-            approvalT1 === ApprovalState.NOT_APPROVED ||
-            approvalT1 === ApprovalState.PENDING) &&
+          {(approvalSelectedToken === ApprovalState.NOT_APPROVED ||
+            approvalSelectedToken === ApprovalState.PENDING ||
+            approvalTheOtherToken === ApprovalState.NOT_APPROVED ||
+            approvalTheOtherToken === ApprovalState.PENDING) &&
             isValid && (
               <RowBetween>
-                {approvalT0 !== ApprovalState.APPROVED && (
+                {approvalSelectedToken !== ApprovalState.APPROVED && (
                   <ButtonPrimary
-                    onClick={approvalT0Callback}
-                    disabled={approvalT0 === ApprovalState.PENDING}
-                    width={approvalT1 !== ApprovalState.APPROVED ? '48%' : '100%'}
+                    onClick={approvalSelectedTokenCallback}
+                    disabled={approvalSelectedToken === ApprovalState.PENDING}
+                    width={approvalTheOtherToken !== ApprovalState.APPROVED ? '48%' : '100%'}
                   >
-                    {approvalT0 === ApprovalState.PENDING ? (
+                    {approvalSelectedToken === ApprovalState.PENDING ? (
                       <Dots>Approving {token0?.symbol}</Dots>
                     ) : (
                       'Approve ' + token0?.symbol
                     )}
                   </ButtonPrimary>
                 )}
-                {approvalT1 !== ApprovalState.APPROVED && (
+                {approvalTheOtherToken !== ApprovalState.APPROVED && (
                   <ButtonPrimary
-                    onClick={approvalT1Callback}
-                    disabled={approvalT1 === ApprovalState.PENDING}
-                    width={approvalT0 !== ApprovalState.APPROVED ? '48%' : '100%'}
+                    onClick={approvalTheOtherTokenCallback}
+                    disabled={approvalTheOtherToken === ApprovalState.PENDING}
+                    width={approvalSelectedToken !== ApprovalState.APPROVED ? '48%' : '100%'}
                   >
-                    {approvalT1 === ApprovalState.PENDING ? (
+                    {approvalTheOtherToken === ApprovalState.PENDING ? (
                       <Dots>Approving {token1?.symbol}</Dots>
                     ) : (
                       'Approve ' + token1?.symbol
@@ -112,8 +121,12 @@ export default function ButtonGroupping({
             onClick={() => {
               expertMode ? onAdd() : setShowConfirm(true)
             }}
-            disabled={!isValid || approvalT0 !== ApprovalState.APPROVED || approvalT1 !== ApprovalState.APPROVED}
-            error={!isValid && !!token0ParsedAmount && !!token1ParsedAmount}
+            disabled={
+              !isValid ||
+              approvalSelectedToken !== ApprovalState.APPROVED ||
+              approvalTheOtherToken !== ApprovalState.APPROVED
+            }
+            error={!isValid && !!selectedTokenParsedAmount && !!theOtherTokenParsedAmount}
           >
             {error ?? 'Add Liquidity'}
           </ButtonError>

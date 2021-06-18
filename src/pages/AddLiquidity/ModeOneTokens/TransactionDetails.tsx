@@ -33,9 +33,9 @@ export default function TransactionDetails({
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
 
   const {
-    parsedAmount,
-    token0ParsedAmount,
-    token1ParsedAmount,
+    userInputParsedAmount,
+    selectedTokenParsedAmount,
+    theOtherTokenParsedAmount,
     noLiquidity,
     price,
     poolTokenPercentage
@@ -52,11 +52,10 @@ export default function TransactionDetails({
   // txn values
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
 
-  const parseSuccessfully = useMemo(() => !!(parsedAmount && token0ParsedAmount && token1ParsedAmount), [
-    parsedAmount,
-    token0ParsedAmount,
-    token1ParsedAmount
-  ])
+  const parseSuccessfully = useMemo(
+    () => !!(userInputParsedAmount && selectedTokenParsedAmount && theOtherTokenParsedAmount),
+    [userInputParsedAmount, selectedTokenParsedAmount, theOtherTokenParsedAmount]
+  )
 
   return (
     <>

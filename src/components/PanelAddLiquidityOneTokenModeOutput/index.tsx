@@ -73,31 +73,31 @@ function OutputCurrency({ currency, amount }: { currency?: Currency; amount?: st
 }
 
 type PanelAddLiquidityOneTokenModeOutputProps = {
-  token0ParsedAmount?: TokenAmount
-  token1ParsedAmount?: TokenAmount
+  selectedTokenParsedAmount?: TokenAmount
+  theOtherTokenParsedAmount?: TokenAmount
 }
 
 export default function PanelAddLiquidityOneTokenModeOutput({
-  token0ParsedAmount,
-  token1ParsedAmount
+  selectedTokenParsedAmount,
+  theOtherTokenParsedAmount
 }: PanelAddLiquidityOneTokenModeOutputProps) {
   const theme = useTheme()
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
-  const currency0 = token0ParsedAmount?.token && unwrappedToken(token0ParsedAmount.token)
-  const currency1 = token1ParsedAmount?.token && unwrappedToken(token1ParsedAmount.token)
+  const selectedCurrency = selectedTokenParsedAmount?.token && unwrappedToken(selectedTokenParsedAmount.token)
+  const theOtherCurrency = theOtherTokenParsedAmount?.token && unwrappedToken(theOtherTokenParsedAmount.token)
 
-  const amount0 = token0ParsedAmount?.toSignificant(6) ?? ''
-  const amount1 = token1ParsedAmount?.toSignificant(6) ?? ''
+  const _selectedTokenParsedAmount = selectedTokenParsedAmount?.toSignificant(6) ?? ''
+  const _theOtherTokenParsedAmount = theOtherTokenParsedAmount?.toSignificant(6) ?? ''
 
   return (
     <PanelWrapper>
       <TextPanelLabel>To</TextPanelLabel>
-      <OutputCurrency currency={currency0} amount={amount0} />
+      <OutputCurrency currency={selectedCurrency} amount={_selectedTokenParsedAmount} />
       <IconWrapper clickable={false}>
         <Plus size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />
       </IconWrapper>
-      <OutputCurrency currency={currency1} amount={amount1} />
+      <OutputCurrency currency={theOtherCurrency} amount={_theOtherTokenParsedAmount} />
     </PanelWrapper>
   )
 }
