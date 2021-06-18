@@ -2932,7 +2932,7 @@
     truffle "^5.1.44"
     truffle-hdwallet-provider "^1.0.17"
 
-"@s-one-finance/sdk-core@^1.0.7":
+"@s-one-finance/sdk-core@^1.0.8":
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/@s-one-finance/sdk-core/-/sdk-core-1.0.8.tgz#be75b054fb0af78a8be604853db26e9f12c63d76"
   integrity sha512-SIRt3tJRgONoiuIaJg1e/o/qijT2YTA0W8Y2sAqWNohQoZEAnE3Aj4jis4ifzUVFXDDNVcZH/l8IHH/Lzps3Ig==
