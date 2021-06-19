@@ -216,10 +216,10 @@ export function useSwapCallback(
             addTransaction(response, {
               summary: {
                 type: TransactionType.SWAP,
-                token0Amount: inputAmount,
-                token0Symbol: inputSymbol,
-                token1Amount: outputAmount,
-                token1Symbol: outputSymbol
+                inputAmount,
+                inputSymbol,
+                outputAmount,
+                outputSymbol
               }
             })
 

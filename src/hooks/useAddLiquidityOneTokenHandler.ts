@@ -136,11 +136,9 @@ export default function useAddLiquidityOneTokenHandler({
 
           addTransaction(response, {
             summary: {
-              type: TransactionType.ADD_TWO_TOKENS,
-              token0Amount: selectedTokenParsedAmount.toSignificant(3),
-              token0Symbol: selectedTokenParsedAmount.token.symbol,
-              token1Amount: theOtherTokenParsedAmount.toSignificant(3),
-              token1Symbol: theOtherTokenParsedAmount.token.symbol
+              type: TransactionType.ADD_ONE_TOKEN,
+              userInputAmount: userInputParsedAmount?.toSignificant(3),
+              userInputSymbol: userInputParsedAmount?.currency.symbol
             }
           })
 
@@ -176,7 +174,8 @@ export default function useAddLiquidityOneTokenHandler({
     setAttemptingTxn,
     setTxHash,
     theOtherCurrency,
-    theOtherTokenParsedAmount
+    theOtherTokenParsedAmount,
+    userInputParsedAmount
   ])
 
   return handler
