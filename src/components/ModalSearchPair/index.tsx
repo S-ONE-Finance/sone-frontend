@@ -16,22 +16,16 @@ import { filterPairs } from '../SearchModal/filtering'
 import { PaddedColumn, SearchInput } from '../SearchModal/styleds'
 import { PanelSearchContentWrapper, SortDownIcon, SortUpIcon } from 'theme'
 import PairList from './PairList'
+import { useGetPairFromSubgraphAndParse } from 'subgraph'
 
 type ModalSearchPairProps = {
   isOpen: boolean
   onDismiss: () => void
-  allPairs: Pair[]
   selectedPair?: Pair | null
   onPairSelect: (pair: Pair) => void
 }
 
-export default function ModalSearchPair({
-  isOpen,
-  onDismiss,
-  allPairs,
-  selectedPair,
-  onPairSelect
-}: ModalSearchPairProps) {
+export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPairSelect }: ModalSearchPairProps) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
 
@@ -42,6 +36,8 @@ export default function ModalSearchPair({
   const debouncedQuery = useDebounce(searchQuery, 200)
 
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
+
+  const allPairs = useGetPairFromSubgraphAndParse()
 
   const filteredPairs: Pair[] = useMemo(() => {
     return filterPairs(allPairs, debouncedQuery)

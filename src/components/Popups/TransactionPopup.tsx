@@ -45,11 +45,13 @@ export default function TransactionPopup({
         {chainId && (
           <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>View on Etherscan</ExternalLink>
         )}
-        {success && typeof summary !== 'string' && summary?.type === TransactionType.ADD && (
-          <Row justify={'flex-end'}>
-            <ButtonMainRed>Stake now!</ButtonMainRed>
-          </Row>
-        )}
+        {success &&
+          typeof summary !== 'string' &&
+          (summary?.type === TransactionType.ADD_TWO_TOKENS || summary?.type === TransactionType.ADD_ONE_TOKEN) && (
+            <Row justify={'flex-end'}>
+              <ButtonMainRed>Stake now!</ButtonMainRed>
+            </Row>
+          )}
       </AutoColumn>
     </RowNoFlex>
   )

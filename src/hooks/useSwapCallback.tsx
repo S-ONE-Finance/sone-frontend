@@ -116,8 +116,6 @@ export function useSwapCallback(
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  // const { t } = useTranslation()
-
   const { account, chainId, library } = useActiveWeb3React()
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipientAddressOrName)
@@ -218,10 +216,10 @@ export function useSwapCallback(
             addTransaction(response, {
               summary: {
                 type: TransactionType.SWAP,
-                token0Amount: inputAmount,
-                token0Symbol: inputSymbol,
-                token1Amount: outputAmount,
-                token1Symbol: outputSymbol
+                inputAmount,
+                inputSymbol,
+                outputAmount,
+                outputSymbol
               }
             })
 

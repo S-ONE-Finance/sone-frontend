@@ -31,7 +31,7 @@ export default function AppVector({
       ? isDarkMode
         ? SwapVectorDark
         : SwapVectorLight
-      : TransactionType.ADD
+      : TransactionType.ADD_TWO_TOKENS || TransactionType.ADD_ONE_TOKEN
       ? isDarkMode
         ? AddLiquidityVectorDark
         : AddLiquidityVectorLight

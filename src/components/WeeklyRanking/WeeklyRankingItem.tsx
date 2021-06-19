@@ -20,6 +20,10 @@ const TextChange = styled.div`
 const CurrencyLogoContainer = styled(Row)`
   width: fit-content;
   margin-bottom: 11px;
+
+  > *:first-child {
+    margin-right: 3px;
+  }
 `
 
 const StyledExternalLink = styled(ExternalLink)`
@@ -64,8 +68,8 @@ export default function WeeklyRankingItem({
       >
         <ColumnCenter>
           <CurrencyLogoContainer>
-            <CurrencyLogo address={address0} style={{ marginRight: '3px' }} />
-            <CurrencyLogo address={address1} />
+            <CurrencyLogo size="24px" sizeMobile="24px" address={address0} />
+            <CurrencyLogo size="24px" sizeMobile="24px" address={address1} />
           </CurrencyLogoContainer>
           <TextChange>{getFormatNumber(volume || 0, 3)}</TextChange>
         </ColumnCenter>
