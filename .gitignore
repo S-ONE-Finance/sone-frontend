@@ -18,15 +18,12 @@
 .env.production.local
 
 /.netlify
+.idea/
+.vscode/
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-notes.txt
-.idea/
-
-.vscode/
 
 cypress/videos
 cypress/screenshots

@@ -8,9 +8,9 @@ import getTimestampsForChanges from './getTimestampsForChanges'
 /**
  * Get một đống data trong "hiện tại", "1 day ago", "2 days ago",
  * "1 week ago", "2 week ago" để parse ra data mà UI cần.
- * @param pairList
+ * @param pairIds
  */
-export default async function getBulkPairData(chainId: number | undefined, pairList: string[]) {
+export default async function getBulkPairData(chainId: number | undefined, pairIds: string[]) {
   if (chainId === undefined) return []
 
   const [t1Day, t2Day, t1Week, t2Week] = getTimestampsForChanges()
@@ -24,7 +24,7 @@ export default async function getBulkPairData(chainId: number | undefined, pairL
     const current = await clients[chainId].query({
       query: PAIRS_BULK,
       variables: {
-        allPairs: pairList
+        allPairs: pairIds
       },
       fetchPolicy: 'network-only'
     })
@@ -33,7 +33,7 @@ export default async function getBulkPairData(chainId: number | undefined, pairL
     const [oneDayResult, twoDayResult, oneWeekResult, twoWeekResult] = await Promise.all(
       [b1Day, b2Day, b1Week, b2Week].map(async block => {
         return clients[chainId].query({
-          query: PAIRS_HISTORICAL_BULK(block, pairList),
+          query: PAIRS_HISTORICAL_BULK(block, pairIds),
           fetchPolicy: 'network-only'
         })
       })

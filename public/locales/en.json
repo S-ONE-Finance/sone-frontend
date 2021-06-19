@@ -1,4 +1,5 @@
 {
-  "summary_add": "Add <0>{{token0Amount}} </0><1>{{token0Symbol}}</1> and <2>{{token1Amount}} </2><1>{{token1Symbol}}</1>",
-  "summary_swap": "Swap <0>{{token0Amount}} </0><1>{{token0Symbol}}</1> for <2>{{token1Amount}} </2><1>{{token1Symbol}}</1>"
+  "summary_add_one_token": "Add <0>{{userInputAmount}} </0><1>{{userInputSymbol}}</1> (edit this later)",
+  "summary_add_two_tokens": "Add <0>{{currencyAAmount}} </0><1>{{currencyASymbol}}</1> and <0>{{currencyBAmount}} </0><1>{{currencyBSymbol}}</1>",
+  "summary_swap": "Swap <0>{{inputAmount}} </0><1>{{inputSymbol}}</1> for <2>{{outputAmount}} </2><1>{{outputSymbol}}</1>"
 }

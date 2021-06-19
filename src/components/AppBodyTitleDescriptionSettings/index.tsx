@@ -53,14 +53,14 @@ export default function AppBodyTitleDescriptionSettings({ transactionType }: { t
           <Title>
             {transactionType === TransactionType.SWAP
               ? 'Swap'
-              : transactionType === TransactionType.ADD
+              : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
               ? 'Add Liquidity'
               : null}
           </Title>
           <Description>
             {transactionType === TransactionType.SWAP
               ? 'Trade tokens in an instant'
-              : transactionType === TransactionType.ADD
+              : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
               ? 'Add liquidity to receive LP tokens'
               : null}
           </Description>

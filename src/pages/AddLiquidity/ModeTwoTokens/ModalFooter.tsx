@@ -1,28 +1,26 @@
-import { Currency, CurrencyAmount, Fraction, Percent } from '@s-one-finance/sdk-core'
+import { Currency, Fraction, Percent } from '@s-one-finance/sdk-core'
 import React, { useMemo, useState } from 'react'
 import { Text } from 'rebass'
-import { ButtonPrimary } from '../../components/Button'
-import { RowBetween, RowFixed } from '../../components/Row'
-import { Field } from '../../state/mint/actions'
-import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { AutoColumn } from '../../components/Column'
-import { StyledBalanceMaxMini } from '../../components/swap/styleds'
-import { RepeatIcon } from '../../components/swap/TradePrice'
-import useTheme from '../../hooks/useTheme'
-import { formatExecutionPriceWithCurrencies } from '../../utils/prices'
+import { ButtonPrimary } from '../../../components/Button'
+import { RowBetween, RowFixed } from '../../../components/Row'
+import { Field } from '../../../state/mint/actions'
+import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
+import { AutoColumn } from '../../../components/Column'
+import { StyledBalanceMaxMini } from '../../../components/swap/styleds'
+import { RepeatIcon } from '../../../components/swap/TradePrice'
+import useTheme from '../../../hooks/useTheme'
+import { formatExecutionPriceWithCurrencies } from '../../../utils/prices'
 
-export function AddLiquidityConfirmationModalFooter({
+export default function ModalFooter({
   noLiquidity,
   price,
   currencies,
-  parsedAmounts,
   poolTokenPercentage,
   onAdd
 }: {
   noLiquidity?: boolean
   price?: Fraction
   currencies: { [field in Field]?: Currency }
-  parsedAmounts: { [field in Field]?: CurrencyAmount }
   poolTokenPercentage?: Percent
   onAdd: () => void
 }) {
@@ -73,30 +71,3 @@ export function AddLiquidityConfirmationModalFooter({
     </>
   )
 }
-
-// <>
-//   <RowBetween>
-//     <TYPE.body>Rates</TYPE.body>
-//     <TYPE.body>
-//       {`1 ${currencies[Field.CURRENCY_A]?.symbol} = ${price?.toSignificant(4)} ${
-//         currencies[Field.CURRENCY_B]?.symbol
-//       }`}
-//     </TYPE.body>
-//   </RowBetween>
-//   <RowBetween style={{ justifyContent: 'flex-end' }}>
-//     <TYPE.body>
-//       {`1 ${currencies[Field.CURRENCY_B]?.symbol} = ${price?.invert().toSignificant(4)} ${
-//         currencies[Field.CURRENCY_A]?.symbol
-//       }`}
-//     </TYPE.body>
-//   </RowBetween>
-//   <RowBetween>
-//     <TYPE.body>Share of Pool:</TYPE.body>
-//     <TYPE.body>{noLiquidity ? '100' : poolTokenPercentage?.toSignificant(4)}%</TYPE.body>
-//   </RowBetween>
-//   <ButtonPrimary style={{ margin: '20px 0 0 0' }} onClick={onAdd}>
-//     <Text fontWeight={500} fontSize={20}>
-//       {noLiquidity ? 'Create Pool & Supply' : 'Confirm Supply'}
-//     </Text>
-//   </ButtonPrimary>
-// </>

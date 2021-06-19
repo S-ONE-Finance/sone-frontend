@@ -16,8 +16,6 @@ interface PairInfoProps {
 const PairInfoWrapper = styled(RowFixed)`
   align-items: center;
   height: 100%;
-  //width: max-content; // May cause a stalled interface error when updating the data.
-  //padding: 0 45px;
   width: 350px;
   padding: 0 2rem;
   display: flex;

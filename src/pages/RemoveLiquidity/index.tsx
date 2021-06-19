@@ -33,7 +33,7 @@ import { currencyId } from '../../utils/currencyId'
 import useDebouncedChangeHandler from '../../utils/useDebouncedChangeHandler'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
-import { ClickableText, MaxButton, Wrapper } from '../Pool/styleds'
+import { ClickableText, MaxButton, StyledPadding } from '../Pool/styleds'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { Dots } from '../../components/swap/styleds'
 import { useBurnActionHandlers, useBurnState, useDerivedBurnInfo } from '../../state/burn/hooks'
@@ -475,7 +475,7 @@ export default function RemoveLiquidity({
     <>
       <AppBody>
         <AddRemoveTabs adding={false} />
-        <Wrapper>
+        <StyledPadding>
           <TransactionConfirmationModal
             isOpen={showConfirm}
             onDismiss={handleDismissConfirmation}
@@ -605,7 +605,7 @@ export default function RemoveLiquidity({
                     onUserInput(Field.LIQUIDITY_PERCENT, '100')
                   }}
                   showMaxButton={!atMaxAmount}
-                  disableCurrencySelect
+                  disableCurrencyChange
                   currency={pair?.liquidityToken}
                   pair={pair}
                   id="liquidity-amount"
@@ -692,7 +692,7 @@ export default function RemoveLiquidity({
               )}
             </div>
           </AutoColumn>
-        </Wrapper>
+        </StyledPadding>
       </AppBody>
 
       {pair ? (

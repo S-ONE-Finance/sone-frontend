@@ -20,21 +20,23 @@ interface CurrencyLogoDoubleProps {
   currency0?: Currency | null
   currency1?: Currency | null
   size?: number
+  sizeMobile?: number
   margin?: boolean
 }
 
 export default function CurrencyLogoDouble({
   currency0,
   currency1,
-  size = 16,
+  size = 24,
+  sizeMobile = 16,
   margin = false
 }: CurrencyLogoDoubleProps) {
   return (
     <Wrapper sizeraw={size} margin={margin}>
-      {currency0 && <CurrencyLogo currency={currency0} size={size.toString() + 'px'} />}
+      {currency0 && <CurrencyLogo currency={currency0} size={size + 'px'} sizeMobile={sizeMobile + 'px'} />}
       {currency1 && (
         <HigherLogoWrapper sizeraw={size}>
-          <CurrencyLogo currency={currency1} size={size.toString() + 'px'} />
+          <CurrencyLogo currency={currency1} size={size + 'px'} sizeMobile={sizeMobile + 'px'} />
         </HigherLogoWrapper>
       )}
     </Wrapper>

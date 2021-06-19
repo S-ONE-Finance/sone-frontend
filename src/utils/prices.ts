@@ -93,3 +93,20 @@ export function formatExecutionPriceWithCurrencies(
         currencies[FieldMint.CURRENCY_B]?.symbol
       }`
 }
+
+// Không nghĩ ra tên hay hơn.
+// TODO: Need refactor cái đống currencies và tokens bên add liquidity one token mode thành kiểu FIELD.CURRENCY_A và FIELD.CURRENCY_B hết nhé.
+export function formatExecutionPriceWithCurrencies2(
+  currency0?: Currency,
+  currency1?: Currency,
+  price?: Fraction,
+  inverted?: boolean
+): string {
+  if (!price) {
+    return ''
+  }
+
+  return inverted
+    ? `1 ${currency1?.symbol} = ${price?.invert().toSignificant(6)} ${currency0?.symbol}`
+    : `1 ${currency0?.symbol} = ${price?.toSignificant(6)} ${currency1?.symbol}`
+}

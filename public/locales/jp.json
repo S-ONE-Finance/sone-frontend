@@ -1,4 +1,1 @@
-{
-  "summary_add": "Add <0>{{token0Amount}} </0><1>{{token0Symbol}}</1> and <2>{{token1Amount}} </2><1>{{token1Symbol}}</1>",
-  "summary_swap": "<0>{{token0Amount}}</0><1>{{token0Symbol}}</1>と<2>{{token1Amount}}</2><1>{{token1Symbol}}</1>を追加"
-}
+{}
