@@ -80,7 +80,7 @@ function Web3StatusInner() {
         onClick={() => {
           // Trên small devices, click vào sẽ ra my account.
           if (isUpToExtraSmall) {
-            history.push('/my_account')
+            history.push('/my-account')
           }
         }}
       >

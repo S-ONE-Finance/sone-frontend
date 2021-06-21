@@ -36,6 +36,8 @@ import RemoveLiquidity from './RemoveLiquidity'
 import Swap from './Swap'
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
+import MyAccountPage from './MyAccount'
+
 import TabSwapLiquidity from '../components/TabSwapLiquidity'
 import { useLocation } from 'react-router'
 import WeeklyRanking from '../components/WeeklyRanking'
@@ -131,6 +133,7 @@ function OnlyShowAtSwapAndAddLiquidityPages({ children }: { children?: React.Rea
 export default function App() {
   // Trigger i18next in entire app.
   useTranslation()
+
   return (
     <>
       <Route component={GoogleAnalyticsReporter} />
@@ -144,8 +147,8 @@ export default function App() {
           <Popups />
           <Polling />
           <TopLevelModals />
-          <LogoResponsive />
           <OnlyShowAtSwapAndAddLiquidityPages>
+            <LogoResponsive />
             <TabSwapLiquidity />
           </OnlyShowAtSwapAndAddLiquidityPages>
           <Web3ReactManager>
@@ -172,6 +175,7 @@ export default function App() {
               <Route exact strict path="/migrate/v1/:address" component={MigrateV1Exchange} />
               <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} />
               <Route exact strict path="/vote/:id" component={VotePage} />
+              <Route exact strict path="/my-account" component={MyAccountPage} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>

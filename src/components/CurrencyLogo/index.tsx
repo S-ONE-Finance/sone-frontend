@@ -6,6 +6,7 @@ import EthereumLogo from '../../assets/images/ethereum-logo.png'
 import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
+import { ReactComponent as SoneLogoSvg } from '../../assets/images/logo_token_sone.svg'
 
 export const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`
@@ -34,6 +35,20 @@ const StyledLogo = styled(Logo)<{ size: string; sizeMobile: string }>`
     height: ${sizeMobile};
   `};
 `
+
+const SoneLogo = styled(SoneLogoSvg)<{ size: string; sizeMobile: string }>`
+  width: ${({ size }) => size};
+  height: ${({ size }) => size};
+  border-radius: ${({ size }) => size};
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
+  background: transparent;
+
+  ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
+    width: ${sizeMobile};
+    height: ${sizeMobile};
+  `};
+`
+
 export default function CurrencyLogo({
   currency,
   size = '24px',
@@ -60,6 +75,11 @@ export default function CurrencyLogo({
     }
     return []
   }, [currency, uriLocations])
+
+  // SONE.
+  if (address === 'SONE') {
+    return <SoneLogo size={size} sizeMobile={sizeMobile} style={style} />
+  }
 
   // Nếu truyền vào address thì đơn giản return luôn.
   if (address) {
