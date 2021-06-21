@@ -7,6 +7,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { lighten } from 'polished'
 import { useWeb3React } from '@web3-react/core'
+import { useHistory } from 'react-router-dom'
 
 // Hooks and Utils.
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -72,6 +73,7 @@ const PaddingColumn = styled(Column)`
 `
 
 export default function PanelMyAccount() {
+  const history = useHistory()
   const { account, connector } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
@@ -100,7 +102,7 @@ export default function PanelMyAccount() {
           )}
         </Column>
         <PaddingColumn>
-          <MyAccountButton>My Account</MyAccountButton>
+          <MyAccountButton onClick={() => history.push('/my-account')}>My Account</MyAccountButton>
         </PaddingColumn>
         <RecentTransactions />
       </ColumnWrapper>
