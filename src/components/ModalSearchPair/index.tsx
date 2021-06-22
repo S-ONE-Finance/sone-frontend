@@ -37,7 +37,7 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
 
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
 
-  const allPairs = useGetPairFromSubgraphAndParse()
+  const [isLoading, allPairs] = useGetPairFromSubgraphAndParse()
 
   const filteredPairs: Pair[] = useMemo(() => {
     return filterPairs(allPairs, debouncedQuery)
@@ -108,7 +108,13 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
             />
           </Row>
         </PaddedColumn>
-        {sortedPairs?.length > 0 ? (
+        {isLoading ? (
+          <Column width="unset" style={{ margin: '20px', height: '100%' }}>
+            <TYPE.main color={theme.text3} textAlign="center" mb="20px">
+              Loading...
+            </TYPE.main>
+          </Column>
+        ) : sortedPairs?.length > 0 ? (
           <>
             <RowBetween style={{ padding: isUpToExtraSmall ? '20px 1.25rem 0' : '20px 2rem 0' }}>
               <Text fontWeight={500} fontSize={16}>

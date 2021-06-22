@@ -36,12 +36,13 @@ const NetworkIcon = styled(Activity)`
   height: 16px;
 `
 
-export const ButtonMainRed = styled.div<{ cursor?: string }>`
+export const ButtonMainRed = styled.div<{ cursor?: string; padding?: string }>`
   background-color: ${({ theme }) => theme.red1Sone};
   color: #ffffff;
   min-width: 154px;
-  padding: 0.5rem;
-  height: 35px;
+  padding: ${({ padding }) => (padding ? padding : '0.5rem')};
+  // Nếu truyền vào padding thì không set height nữa.
+  height: ${({ padding }) => (padding ? 'unset' : '35px')};
   border-radius: 31px;
   display: flex;
   justify-content: center;

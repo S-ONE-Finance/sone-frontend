@@ -4,7 +4,7 @@ import { TYPE } from '../../theme'
 import { CountUp } from 'use-count-up'
 import styled from 'styled-components'
 import { TokenAmount } from '@s-one-finance/sdk-core'
-import { useAggregateUniBalance } from '../../state/wallet/hooks'
+import { useAggregateSoneBalance } from '../../state/wallet/hooks'
 import usePrevious from '../../hooks/usePrevious'
 
 const Wrapper = styled.div`
@@ -17,9 +17,10 @@ const Wrapper = styled.div`
 `
 
 export default function SoneAmount({ isSmall = false }: { isSmall?: boolean }) {
-  const aggregateBalance: TokenAmount | undefined = useAggregateUniBalance()
-  const countUpValue = aggregateBalance?.toFixed(0) ?? '0'
+  const aggregateBalance: TokenAmount | undefined = useAggregateSoneBalance()
+  const countUpValue = aggregateBalance?.toFixed(2) ?? '0'
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
+
   return (
     <Wrapper style={{ pointerEvents: 'auto' }}>
       <img width={isSmall ? '18px' : '21px'} src={LogoToken} alt="logo" />

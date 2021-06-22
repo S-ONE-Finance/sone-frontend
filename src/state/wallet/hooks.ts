@@ -134,8 +134,8 @@ export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | u
   return balances ?? {}
 }
 
-// get the total owned, unclaimed, and unharvested UNI for account
-export function useAggregateUniBalance(): TokenAmount | undefined {
+// get the total owned, unclaimed, and unharvested SONE for account
+export function useAggregateSoneBalance(): TokenAmount | undefined {
   const { account, chainId } = useActiveWeb3React()
 
   const sone = chainId ? SONE[chainId] : undefined
