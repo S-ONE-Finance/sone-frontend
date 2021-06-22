@@ -76,10 +76,12 @@ const TextBalanceSymbol = styled.div`
 
 const SoneBigImage = styled(SoneBigImageSvg)`
   width: 136.62px;
+  min-width: 136.62px;
   height: auto;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     width: 71px;
+    min-width: 71px;
   `}
 `
 
@@ -92,6 +94,7 @@ export default function MyBalance() {
     (isUpToExtraSmall ? getFormatNumber(soneBalance ? +soneBalance : 0, 2) : soneBalance) ?? '--'
 
   const ethBalance = useCurrencyBalance(account ?? undefined, Currency.ETHER)?.toFixed(6)
+  const formattedEthBalance = ethBalance === undefined ? '--' : +ethBalance === 0 ? 0 : ethBalance
 
   return (
     <AutoColumn gap={isUpToExtraSmall ? '10px' : '2rem'} justify="center">
@@ -111,7 +114,7 @@ export default function MyBalance() {
             <Row align="baseline">
               <CurrencyLogo currency={Currency.ETHER} size="45px" sizeMobile="29px" style={{ alignSelf: 'center' }} />
               <MouseoverTooltip text={ethBalance ?? '--'}>
-                <TextBalanceAmount>{ethBalance}</TextBalanceAmount>
+                <TextBalanceAmount>{formattedEthBalance}</TextBalanceAmount>
               </MouseoverTooltip>
               <TextBalanceSymbol>ETH</TextBalanceSymbol>
             </Row>

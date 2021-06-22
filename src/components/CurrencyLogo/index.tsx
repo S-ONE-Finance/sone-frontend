@@ -38,14 +38,15 @@ const StyledLogo = styled(Logo)<{ size: string; sizeMobile: string }>`
 
 const SoneLogo = styled(SoneLogoSvg)<{ size: string; sizeMobile: string }>`
   width: ${({ size }) => size};
-  height: ${({ size }) => size};
+  min-width: ${({ size }) => size};
+  height: auto;
   border-radius: ${({ size }) => size};
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
   background: transparent;
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
     width: ${sizeMobile};
-    height: ${sizeMobile};
+    min-width: ${sizeMobile};
   `};
 `
 
