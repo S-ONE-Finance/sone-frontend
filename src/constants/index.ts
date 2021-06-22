@@ -4,7 +4,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
 
-export const ROUTER_ADDRESS = '0xd42bC27f9927FE4EDB95f881D335d2F6A951488F'
+export const ROUTER_ADDRESS = '0x824291E4Fd77345D18cF7fe4DF0b2b113F7fA61A'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -41,17 +41,13 @@ export const UNI: { [chainId in ChainId]: Token } = {
 }
 
 const TEMP = '0x0000000000000000000000000000000000000000'
+const SONE_ADDRESS = '0x57bb30bdb0d449bf687ed648acf2467f045c8e74'
 
+// TODO: Need fill address of sone in all 5 networks.
 export const SONE: { [chainId in ChainId]: Token } = {
   [ChainId.MAINNET]: new Token(ChainId.MAINNET, TEMP, 18, 'SONE', 'S-ONE Finance'),
   [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, TEMP, 18, 'SONE', 'S-ONE Finance'),
-  [ChainId.ROPSTEN]: new Token(
-    ChainId.ROPSTEN,
-    '0x57bb30bdb0d449bf687ed648acf2467f045c8e74',
-    18,
-    'SONE',
-    'S-ONE Finance'
-  ),
+  [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, SONE_ADDRESS, 18, 'SONE', 'S-ONE Finance'),
   [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, TEMP, 18, 'SONE', 'S-ONE Finance'),
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, TEMP, 18, 'SONE', 'S-ONE Finance')
 }

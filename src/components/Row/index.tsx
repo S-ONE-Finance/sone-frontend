@@ -43,4 +43,17 @@ export const RowFixed = styled(Row)<{ gap?: string; justify?: string }>`
   margin: ${({ gap }) => gap && `-${gap}`};
 `
 
+export const RowFixedGapChildren = styled(Row)<{ gap?: string; justify?: string }>`
+  width: fit-content;
+
+  ${({ gap }) =>
+    gap
+      ? `
+    > * + * {
+      margin-left: ${gap} !important;
+    }
+  `
+      : ''};
+`
+
 export default Row
