@@ -11,7 +11,7 @@ const QuestionWrapper = styled.div`
   padding: 0.2rem;
   border: none;
   outline: none;
-  cursor: default;
+  cursor: pointer;
   border-radius: 36px;
   background-color: ${({ theme }) => theme.bg2};
   color: ${({ theme }) => theme.text3Sone};
@@ -46,7 +46,7 @@ const QuestionMark = styled.span`
   font-size: 1rem;
 `
 
-export default function QuestionHelper({ text, size = 16 }: { text: string; size?: number }) {
+export default function QuestionHelper({ text, size = 16, color }: { text: string; size?: number; color?: string }) {
   const [show, setShow] = useState<boolean>(false)
 
   const open = useCallback(() => setShow(true), [setShow])
@@ -56,7 +56,7 @@ export default function QuestionHelper({ text, size = 16 }: { text: string; size
     <span style={{ marginLeft: 4 }}>
       <Tooltip text={text} show={show}>
         <QuestionWrapper onClick={open} onMouseEnter={open} onMouseLeave={close}>
-          <Question size={size} />
+          <Question size={size} color={color} />
         </QuestionWrapper>
       </Tooltip>
     </span>
@@ -81,7 +81,7 @@ export function LightQuestionHelper({ text }: { text: string }) {
 }
 
 // Responsive QuestionHelper: 14px for small devices, 16px for larger devices.
-export function QuestionHelper1416({ text }: { text: string }) {
+export function QuestionHelper1416({ text, color }: { text: string; color?: string }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-  return <QuestionHelper text={text} size={isUpToExtraSmall ? 14 : 16} />
+  return <QuestionHelper text={text} size={isUpToExtraSmall ? 14 : 16} color={color} />
 }

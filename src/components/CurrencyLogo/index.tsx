@@ -1,5 +1,5 @@
 import { Currency, ETHER, Token } from '@s-one-finance/sdk-core'
-import React, { useMemo } from 'react'
+import React, { CSSProperties, useMemo } from 'react'
 import styled from 'styled-components'
 
 import EthereumLogo from '../../assets/images/ethereum-logo.png'
@@ -62,7 +62,7 @@ export default function CurrencyLogo({
   currency?: Currency
   size?: string
   sizeMobile?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
   address?: string
 }) {
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)

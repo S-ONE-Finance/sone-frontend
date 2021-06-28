@@ -8,6 +8,7 @@ const Wrapper = styled.div<{ margin: boolean; sizeraw: number }>`
   display: flex;
   flex-direction: row;
   margin-right: ${({ sizeraw, margin }) => margin && (sizeraw / 3 + 1.5).toString() + 'px'};
+  user-select: none;
 `
 
 const HigherLogoWrapper = styled.div<{ sizeraw: number }>`
