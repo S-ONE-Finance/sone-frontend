@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 
-const Column = styled.div<{ width?: string }>`
+const Column = styled.div<{ width?: string; justify?: string; align?: string }>`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: ${({ justify }) => justify ?? 'flex-start'};
+  align-items: ${({ align }) => align};
   width: ${({ width }) => width ?? '100%'};
 `
 

@@ -8,6 +8,7 @@ const Row = styled(Box)<{
   padding?: string
   border?: string
   borderRadius?: string
+  gap?: string
 }>`
   width: ${({ width }) => width ?? '100%'};
   display: flex;
@@ -17,6 +18,15 @@ const Row = styled(Box)<{
   padding: ${({ padding }) => padding};
   border: ${({ border }) => border};
   border-radius: ${({ borderRadius }) => borderRadius};
+
+  ${({ gap }) =>
+    gap
+      ? `
+    > * + * {
+      margin-left: ${gap} !important;
+    }
+  `
+      : ''};
 `
 
 export const RowBetween = styled(Row)`
@@ -43,17 +53,8 @@ export const RowFixed = styled(Row)<{ gap?: string; justify?: string }>`
   margin: ${({ gap }) => gap && `-${gap}`};
 `
 
-export const RowFixedGapChildren = styled(Row)<{ gap?: string; justify?: string }>`
+export const RowFitContent = styled(Row)`
   width: fit-content;
-
-  ${({ gap }) =>
-    gap
-      ? `
-    > * + * {
-      margin-left: ${gap} !important;
-    }
-  `
-      : ''};
 `
 
 export default Row

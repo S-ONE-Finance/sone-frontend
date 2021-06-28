@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 import { useOneDayPairPriceChangeData } from '../../subgraph'
@@ -97,6 +97,8 @@ const Marquee = styled.div<{ pairSize: number; pauseAnimation: boolean }>`
   overflow: hidden;
   box-sizing: border-box;
   display: flex;
+  background: ${({ theme }) => theme.bg4Sone};
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
 
   > * {
     display: inline-block;
@@ -139,12 +141,14 @@ export default function Footer() {
 
   const data = useOneDayPairPriceChangeData()
 
-  const toggleAnimation = useCallback(() => {
-    setPauseAnimation(prev => !prev)
-  }, [])
-
-  return (
-    <Marquee pairSize={data.length} pauseAnimation={pauseAnimation} onClick={toggleAnimation}>
+  return data.length > 0 ? (
+    <Marquee
+      pairSize={data.length}
+      pauseAnimation={pauseAnimation}
+      onClick={() => setPauseAnimation(prev => !prev)}
+      onMouseEnter={() => !pauseAnimation && setPauseAnimation(true)}
+      onMouseLeave={() => pauseAnimation && setPauseAnimation(false)}
+    >
       <div>
         <RowFixed height={'100%'}>
           {data.slice(0).map((pair: any) => (
@@ -158,5 +162,5 @@ export default function Footer() {
         </RowFixed>
       </div>
     </Marquee>
-  )
+  ) : null
 }

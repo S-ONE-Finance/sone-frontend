@@ -92,8 +92,9 @@ const FooterWrapper = styled.div`
   bottom: 0;
   width: 100%;
   height: 45px;
-  background: ${({ theme }) => theme.bg4Sone};
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  // Khi data empty thì hidden footer.
+  // background: ${({ theme }) => theme.bg4Sone};
+  // box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
   z-index: 1;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`

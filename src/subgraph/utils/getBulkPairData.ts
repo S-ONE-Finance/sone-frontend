@@ -11,15 +11,15 @@ import getTimestampsForChanges from './getTimestampsForChanges'
  * @param pairIds
  */
 export default async function getBulkPairData(chainId: number | undefined, pairIds: string[]) {
-  if (chainId === undefined) return []
-
-  const [t1Day, t2Day, t1Week, t2Week] = getTimestampsForChanges()
-  const [{ number: b1Day }, { number: b2Day }, { number: b1Week }, { number: b2Week }] =
-    (await getBlocksFromTimestamps(chainId, [t1Day, t2Day, t1Week, t2Week])) || {}
-
-  if (b1Day === undefined || b2Day === undefined || b1Week === undefined || b2Week === undefined) return []
-
   try {
+    if (chainId === undefined) return []
+
+    const [t1Day, t2Day, t1Week, t2Week] = getTimestampsForChanges()
+    const [{ number: b1Day }, { number: b2Day }, { number: b1Week }, { number: b2Week }] =
+      (await getBlocksFromTimestamps(chainId, [t1Day, t2Day, t1Week, t2Week])) || {}
+
+    if (b1Day === undefined || b2Day === undefined || b1Week === undefined || b2Week === undefined) return []
+
     // Lấy data current.
     const current = await clients[chainId].query({
       query: PAIRS_BULK,
