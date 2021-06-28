@@ -1,23 +1,87 @@
 import Row from '../../../components/Row'
 import CurrencyLogo from '../../../components/CurrencyLogo'
 import React, { forwardRef, useRef } from 'react'
-import { Heading } from '../index.styled'
+import { Card, Heading } from '../components'
 import { Currency } from '@s-one-finance/sdk-core'
 import { useAggregateSoneBalance, useCurrencyBalance } from '../../../state/wallet/hooks'
 import { MouseoverTooltip } from '../../../components/Tooltip'
 import { useActiveWeb3React } from '../../../hooks'
 import usePrevious from '../../../hooks/usePrevious'
 import { CountUp } from 'use-count-up'
-import {
-  BalanceSection,
-  CardBalance,
-  MyBalanceWrapper,
-  RowBaseLine,
-  TextBalance,
-  TextBalanceAmount,
-  TextBalanceSymbol
-} from './index.styled'
 import SoneBigImage from './SoneBigImage'
+import styled from 'styled-components'
+
+const CardBalance = styled(Card)`
+  padding: 51px 99px;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 51px 39px;    
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 20px 32px;    
+  `}
+`
+
+const TextBalance = styled.div`
+  font-size: 20px;
+  font-weight: 400;
+  color: ${({ theme }) => theme.text6Sone};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `}
+`
+
+const TextBalanceAmount = styled.div`
+  font-size: 40px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.text5Sone};
+  margin-left: 20px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 30px;
+    margin-left: 6px;
+  `}
+`
+
+const TextBalanceSymbol = styled.div`
+  font-size: 20px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.text6Sone};
+  margin-left: 8px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 16px;
+    margin-left: 3px;
+  `}
+`
+
+const MyBalanceWrapper = styled.div`
+  display: grid;
+  grid-auto-rows: auto;
+  grid-row-gap: 2rem;
+  justify-items: center;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-row-gap: 10px;
+  `}
+`
+
+const BalanceSection = styled.div`
+  display: grid;
+  grid-auto-rows: auto;
+  grid-row-gap: 20px;
+  flex-grow: 1;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-row-gap: 10px;
+  `}
+`
+
+const RowBaseLine = styled(Row)`
+  align-items: baseline;
+`
 
 function SoneLogo() {
   return <CurrencyLogo address="SONE" size="45px" sizeMobile="29px" style={{ alignSelf: 'center' }} />

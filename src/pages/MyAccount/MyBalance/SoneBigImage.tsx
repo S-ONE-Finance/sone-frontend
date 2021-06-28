@@ -3,7 +3,19 @@ import { useActiveWeb3React } from '../../../hooks'
 import { useAggregateSoneBalance, useCurrencyBalance } from '../../../state/wallet/hooks'
 import { Currency } from '@s-one-finance/sdk-core'
 import { useWindowSize } from '../../../hooks/useWindowSize'
-import { StyledSoneBigImage } from './SoneBigImage.styled'
+import styled from 'styled-components'
+import { ReactComponent as SoneBigImageSvg } from '../../../assets/images/my-account-balance.svg'
+
+export const StyledSoneBigImage = styled(SoneBigImageSvg)`
+  width: 136.62px;
+  min-width: 136.62px;
+  height: auto;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 71px;
+    min-width: 71px;
+  `}
+`
 
 export default function SoneBigImage({
   ethBalanceRef,
