@@ -5,10 +5,10 @@ import Modal from '../Modal'
 import { AutoColumn } from '../Column'
 import styled from 'styled-components'
 import { RowBetween } from '../Row'
-import { TYPE, CloseIcon } from '../../theme'
+import { TYPE, StyledCloseIcon } from '../../theme'
 import { ButtonConfirmed, ButtonError } from '../Button'
 import ProgressCircles from '../ProgressSteps'
-import CurrencyInputPanel from '../CurrencyInputPanel'
+import PanelCurrencyInput from '../PanelCurrencyInput'
 import { TokenAmount, Pair } from '@s-one-finance/sdk-core'
 import { useActiveWeb3React } from '../../hooks'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -198,9 +198,9 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
         <ContentWrapper gap="lg">
           <RowBetween>
             <TYPE.mediumHeader>Deposit</TYPE.mediumHeader>
-            <CloseIcon onClick={wrappedOnDismiss} />
+            <StyledCloseIcon onClick={wrappedOnDismiss} />
           </RowBetween>
-          <CurrencyInputPanel
+          <PanelCurrencyInput
             value={typedValue}
             onUserInput={onUserInput}
             onMax={handleMax}
@@ -208,7 +208,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
             currency={stakingInfo.stakedAmount.token}
             pair={dummyPair}
             label={''}
-            disableCurrencySelect={true}
+            disableCurrencyChange={true}
             customBalanceText={'Available to deposit: '}
             id="stake-liquidity-token"
           />

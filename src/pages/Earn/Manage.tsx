@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { JSBI, TokenAmount, ETHER } from '@s-one-finance/sdk-core'
 import { RouteComponentProps } from 'react-router-dom'
-import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import CurrencyLogoDouble from '../../components/CurrencyLogoDouble'
 import { useCurrency } from '../../hooks/Tokens'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { TYPE } from '../../theme'
@@ -159,7 +159,7 @@ export default function Manage({
         <TYPE.mediumHeader style={{ margin: 0 }}>
           {currencyA?.symbol}-{currencyB?.symbol} Liquidity Mining
         </TYPE.mediumHeader>
-        <DoubleCurrencyLogo currency0={currencyA ?? undefined} currency1={currencyB ?? undefined} size={24} />
+        <CurrencyLogoDouble currency0={currencyA ?? undefined} currency1={currencyB ?? undefined} size={24} />
       </RowBetween>
 
       <DataRow style={{ gap: '24px' }}>

@@ -1,4 +1,4 @@
-import { UNI } from './../../constants/index'
+import { SONE } from './../../constants/index'
 import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount } from '@s-one-finance/sdk-core'
 import { useMemo } from 'react'
 import ERC20_INTERFACE from '../../constants/abis/erc20'
@@ -134,23 +134,23 @@ export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | u
   return balances ?? {}
 }
 
-// get the total owned, unclaimed, and unharvested UNI for account
-export function useAggregateUniBalance(): TokenAmount | undefined {
+// get the total owned, unclaimed, and unharvested SONE for account
+export function useAggregateSoneBalance(): TokenAmount | undefined {
   const { account, chainId } = useActiveWeb3React()
 
-  const uni = chainId ? UNI[chainId] : undefined
+  const sone = chainId ? SONE[chainId] : undefined
 
-  const uniBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, uni)
-  const uniUnclaimed: TokenAmount | undefined = useUserUnclaimedAmount(account)
-  const uniUnHarvested: TokenAmount | undefined = useTotalUniEarned()
+  const soneBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, sone)
+  const soneUnclaimed: TokenAmount | undefined = useUserUnclaimedAmount(account)
+  const soneUnHarvested: TokenAmount | undefined = useTotalUniEarned()
 
-  if (!uni) return undefined
+  if (!sone) return undefined
 
   return new TokenAmount(
-    uni,
+    sone,
     JSBI.add(
-      JSBI.add(uniBalance?.raw ?? JSBI.BigInt(0), uniUnclaimed?.raw ?? JSBI.BigInt(0)),
-      uniUnHarvested?.raw ?? JSBI.BigInt(0)
+      JSBI.add(soneBalance?.raw ?? JSBI.BigInt(0), soneUnclaimed?.raw ?? JSBI.BigInt(0)),
+      soneUnHarvested?.raw ?? JSBI.BigInt(0)
     )
   )
 }

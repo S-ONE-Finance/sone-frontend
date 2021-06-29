@@ -6,15 +6,15 @@ import { Text } from 'rebass'
 import styled from 'styled-components'
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonConfirmed, ButtonError, ButtonPrimary } from '../../components/Button'
-import Card, { GreyCard } from '../../components/Card'
+import Card from '../../components/Card'
 import Column, { AutoColumn, ColumnCenter } from '../../components/Column'
 import ConfirmSwapModal from '../../components/swap/ConfirmSwapModal'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
+import PanelCurrencyInput from '../../components/PanelCurrencyInput'
 import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
 import AdvancedSwapDetails from '../../components/swap/AdvancedSwapDetails'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
-import { ArrowWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
+import { IconWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
@@ -56,12 +56,13 @@ import { useActiveWeb3React } from '../../hooks'
 import useENSAddress from '../../hooks/useENSAddress'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import useTheme from '../../hooks/useTheme'
+import { TransactionType } from '../../state/transactions/types'
 
 export const ResponsiveAutoColumn = styled(AutoColumn)`
   padding: 23px 14px 0;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 5.5px 8px 0;   
+    padding: 5.5px 8px 0;
     grid-row-gap: 10px;
   `}
 `
@@ -335,7 +336,7 @@ export default function Swap({ history }: RouteComponentProps) {
         onDismiss={handleDismissTokenWarning}
       />
       <AppBody>
-        <AppBodyTitleDescriptionSettings type="swap" />
+        <AppBodyTitleDescriptionSettings transactionType={TransactionType.SWAP} />
         <Wrapper id="swap-page">
           <ConfirmSwapModal
             isOpen={showConfirm}
@@ -351,8 +352,8 @@ export default function Swap({ history }: RouteComponentProps) {
             onDismiss={handleConfirmDismiss}
           />
 
-          <AutoColumn gap={'md'}>
-            <CurrencyInputPanel
+          <AutoColumn gap="md">
+            <PanelCurrencyInput
               label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
               value={formattedAmounts[Field.INPUT]}
               showMaxButton={!atMaxAmountInput}
@@ -363,21 +364,19 @@ export default function Swap({ history }: RouteComponentProps) {
               otherCurrency={currencies[Field.OUTPUT]}
               id="swap-currency-input"
             />
-            <AutoColumn justify="space-between">
-              <AutoRow justify={'center'}>
-                <ArrowWrapper clickable>
-                  <ArrowDown
-                    size={isUpToExtraSmall ? '14' : '22'}
-                    onClick={() => {
-                      setApprovalSubmitted(false) // reset 2 step UI for approvals
-                      onSwitchTokens()
-                    }}
-                    color={theme.text1Sone}
-                  />
-                </ArrowWrapper>
-              </AutoRow>
-            </AutoColumn>
-            <CurrencyInputPanel
+            <AutoRow justify="center">
+              <IconWrapper clickable>
+                <ArrowDown
+                  size={isUpToExtraSmall ? '14' : '22'}
+                  onClick={() => {
+                    setApprovalSubmitted(false) // reset 2 step UI for approvals
+                    onSwitchTokens()
+                  }}
+                  color={theme.text1Sone}
+                />
+              </IconWrapper>
+            </AutoRow>
+            <PanelCurrencyInput
               value={formattedAmounts[Field.OUTPUT]}
               onUserInput={handleTypeOutput}
               label={independentField === Field.INPUT && !showWrap && trade ? 'To (estimated)' : 'To'}
@@ -391,9 +390,9 @@ export default function Swap({ history }: RouteComponentProps) {
             {recipient !== null && !showWrap ? (
               <>
                 <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
-                  <ArrowWrapper clickable={false}>
+                  <IconWrapper clickable={false}>
                     <ArrowDown size="16" color={theme.text2} />
-                  </ArrowWrapper>
+                  </IconWrapper>
                   <LinkStyledButton id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
                     - Remove send
                   </LinkStyledButton>
@@ -491,12 +490,11 @@ export default function Swap({ history }: RouteComponentProps) {
                   (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
               </ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
-              <GreyCard style={{ textAlign: 'center' }} borderRadius={'40px'} padding={mobile16Desktop22 + 'px'}>
-                <Text fontSize={mobile16Desktop22} fontWeight={700} color={theme.text3}>
+              <ButtonError disabled>
+                <Text fontSize={mobile16Desktop22} fontWeight={700}>
                   Insufficient liquidity for this trade
                 </Text>
-                {singleHopOnly && <TYPE.main mb="4px">Try enabling multi-hop trades.</TYPE.main>}
-              </GreyCard>
+              </ButtonError>
             ) : showApproveFlow ? (
               <RowBetween>
                 <ButtonConfirmed

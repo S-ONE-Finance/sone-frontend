@@ -1,11 +1,11 @@
-import React, { Suspense } from 'react'
+import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
+import { useLocation } from 'react-router'
+import { useTranslation } from 'react-i18next'
 
 import { ApplicationModal } from '../state/application/actions'
-
 import { useModalOpen, useToggleModal } from '../state/application/hooks'
-
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
 
 import {
@@ -24,6 +24,8 @@ import Polling from '../components/Polling'
 import URLWarning from '../components/Header/URLWarning'
 import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
+import TabSwapLiquidity from '../components/TabSwapLiquidity'
+import WeeklyRanking from '../components/WeeklyRanking'
 
 import AddLiquidity from './AddLiquidity'
 import Earn from './Earn'
@@ -36,11 +38,11 @@ import RemoveLiquidity from './RemoveLiquidity'
 import Swap from './Swap'
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
-import TabSwapLiquidity from '../components/TabSwapLiquidity'
+import MyAccountPage from './MyAccount'
+import Pool from './Pool'
 import Farms from './Farms'
 import Farm from './Farm'
-import { useLocation } from 'react-router'
-import WeeklyRanking from '../components/WeeklyRanking'
+
 import { ReactComponent as LogoForMobileResponsive } from '../assets/images/logo_for_mobile_responsive.svg'
 
 const AppWrapper = styled.div`
@@ -90,8 +92,9 @@ const FooterWrapper = styled.div`
   bottom: 0;
   width: 100%;
   height: 45px;
-  background: ${({ theme }) => theme.bg4Sone};
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  // Khi data empty thì hidden footer.
+  // background: ${({ theme }) => theme.bg4Sone};
+  // box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
   z-index: 1;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
@@ -122,17 +125,18 @@ function TopLevelModals() {
   return <AddressClaimModal isOpen={open} onDismiss={toggle} />
 }
 
-function OnlyShowSwapAndLiquidity({ children }: { children?: React.ReactNode }) {
+function OnlyShowAtSwapAndAddLiquidityPages({ children }: { children?: React.ReactNode }) {
   const location = useLocation()
-
   const { pathname } = location
-
   return children && (pathname.startsWith('/swap') || pathname.startsWith('/add')) ? <>{children}</> : null
 }
 
 export default function App() {
+  // Trigger i18next in entire app.
+  useTranslation()
+
   return (
-    <Suspense fallback={null}>
+    <>
       <Route component={GoogleAnalyticsReporter} />
       <Route component={DarkModeQueryParamReader} />
       <AppWrapper>
@@ -144,10 +148,10 @@ export default function App() {
           <Popups />
           <Polling />
           <TopLevelModals />
-          <LogoResponsive />
-          <OnlyShowSwapAndLiquidity>
+          <OnlyShowAtSwapAndAddLiquidityPages>
+            <LogoResponsive />
             <TabSwapLiquidity />
-          </OnlyShowSwapAndLiquidity>
+          </OnlyShowAtSwapAndAddLiquidityPages>
           <Web3ReactManager>
             <Switch>
               <Route exact strict path="/swap" component={Swap} />
@@ -155,7 +159,7 @@ export default function App() {
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
               <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
               <Route exact strict path="/find" component={PoolFinder} />
-              {/*<Route exact strict path="/pool" component={Pool} />*/}
+              <Route exact strict path="/pool" component={Pool} />
               <Route exact strict path="/farming" component={Farms} />
               <Route exact strict path="/farming/:farmId" component={Farm} />
               <Route exact strict path="/uni" component={Earn} />
@@ -174,16 +178,19 @@ export default function App() {
               <Route exact strict path="/migrate/v1/:address" component={MigrateV1Exchange} />
               <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} />
               <Route exact strict path="/vote/:id" component={VotePage} />
+              <Route exact strict path="/my-account" component={MyAccountPage} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
-          <WeeklyRanking />
+          <OnlyShowAtSwapAndAddLiquidityPages>
+            <WeeklyRanking />
+          </OnlyShowAtSwapAndAddLiquidityPages>
         </BodyWrapper>
         <Marginer />
         <FooterWrapper>
           <Footer />
         </FooterWrapper>
       </AppWrapper>
-    </Suspense>
+    </>
   )
 }

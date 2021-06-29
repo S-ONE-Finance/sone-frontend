@@ -7,12 +7,12 @@ import { ArrowDown, Plus } from 'react-feather'
 import ReactGA from 'react-ga'
 import { RouteComponentProps } from 'react-router'
 import { Text } from 'rebass'
-import { ButtonPrimary, ButtonLight, ButtonError, ButtonConfirmed } from '../../components/Button'
+import { ButtonConfirmed, ButtonError, ButtonLight, ButtonPrimary } from '../../components/Button'
 import { BlueCard, LightCard } from '../../components/Card'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import DoubleCurrencyLogo from '../../components/DoubleLogo'
+import PanelCurrencyInput from '../../components/PanelCurrencyInput'
+import CurrencyLogoDouble from '../../components/CurrencyLogoDouble'
 import { AddRemoveTabs } from '../../components/NavigationTabs'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import Row, { RowBetween, RowFixed } from '../../components/Row'
@@ -33,16 +33,16 @@ import { currencyId } from '../../utils/currencyId'
 import useDebouncedChangeHandler from '../../utils/useDebouncedChangeHandler'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import AppBody from '../AppBody'
-import { ClickableText, MaxButton, Wrapper } from '../Pool/styleds'
-import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
+import { ClickableText, MaxButton, StyledPadding } from '../Pool/styleds'
+import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { Dots } from '../../components/swap/styleds'
-import { useBurnActionHandlers } from '../../state/burn/hooks'
-import { useDerivedBurnInfo, useBurnState } from '../../state/burn/hooks'
+import { useBurnActionHandlers, useBurnState, useDerivedBurnInfo } from '../../state/burn/hooks'
 import { Field } from '../../state/burn/actions'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { BigNumber } from '@ethersproject/bignumber'
 import useTheme from '../../hooks/useTheme'
+import { TransactionType } from '../../state/transactions/types'
 
 export default function RemoveLiquidity({
   history,
@@ -384,7 +384,7 @@ export default function RemoveLiquidity({
             {'UNI ' + currencyA?.symbol + '/' + currencyB?.symbol} Burned
           </Text>
           <RowFixed>
-            <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin={true} />
+            <CurrencyLogoDouble currency0={currencyA} currency1={currencyB} margin={true} />
             <Text fontWeight={500} fontSize={16}>
               {parsedAmounts[Field.LIQUIDITY]?.toSignificant(6)}
             </Text>
@@ -475,18 +475,20 @@ export default function RemoveLiquidity({
     <>
       <AppBody>
         <AddRemoveTabs adding={false} />
-        <Wrapper>
+        <StyledPadding>
           <TransactionConfirmationModal
             isOpen={showConfirm}
             onDismiss={handleDismissConfirmation}
             attemptingTxn={attemptingTxn}
             hash={txHash ? txHash : ''}
             content={() => (
+              // TODO: Để transactionType là SWAP (tạm thời)
               <ConfirmationModalContent
-                title={'You will receive'}
+                title="You will receive"
                 onDismiss={handleDismissConfirmation}
                 topContent={modalHeader}
                 bottomContent={modalBottom}
+                transactionType={TransactionType.SWAP}
               />
             )}
             pendingText={pendingText}
@@ -596,14 +598,14 @@ export default function RemoveLiquidity({
 
             {showDetailed && (
               <>
-                <CurrencyInputPanel
+                <PanelCurrencyInput
                   value={formattedAmounts[Field.LIQUIDITY]}
                   onUserInput={onLiquidityInput}
                   onMax={() => {
                     onUserInput(Field.LIQUIDITY_PERCENT, '100')
                   }}
                   showMaxButton={!atMaxAmount}
-                  disableCurrencySelect
+                  disableCurrencyChange
                   currency={pair?.liquidityToken}
                   pair={pair}
                   id="liquidity-amount"
@@ -611,7 +613,7 @@ export default function RemoveLiquidity({
                 <ColumnCenter>
                   <ArrowDown size="16" color={theme.text2} />
                 </ColumnCenter>
-                <CurrencyInputPanel
+                <PanelCurrencyInput
                   hideBalance={true}
                   value={formattedAmounts[Field.CURRENCY_A]}
                   onUserInput={onCurrencyAInput}
@@ -625,7 +627,7 @@ export default function RemoveLiquidity({
                 <ColumnCenter>
                   <Plus size="16" color={theme.text2} />
                 </ColumnCenter>
-                <CurrencyInputPanel
+                <PanelCurrencyInput
                   hideBalance={true}
                   value={formattedAmounts[Field.CURRENCY_B]}
                   onUserInput={onCurrencyBInput}
@@ -690,7 +692,7 @@ export default function RemoveLiquidity({
               )}
             </div>
           </AutoColumn>
-        </Wrapper>
+        </StyledPadding>
       </AppBody>
 
       {pair ? (

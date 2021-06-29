@@ -11,7 +11,7 @@ import {
 } from '../../utils/prices'
 import { ButtonError } from '../Button'
 import { AutoColumn } from '../Column'
-import { AutoRow, RowBetween, RowFixed } from '../Row'
+import { RowBetween, RowFixed } from '../Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
@@ -32,7 +32,7 @@ export default function SwapModalFooter({
   disabledConfirm: boolean
 }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-  const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
+  const mobile13Desktop16 = useMemo(() => (isUpToExtraSmall ? 13 : 16), [isUpToExtraSmall])
   const [showInverted, setShowInverted] = useState<boolean>(false)
   const theme = useTheme()
   const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
@@ -57,7 +57,7 @@ export default function SwapModalFooter({
           >
             <>
               {formatExecutionPrice(trade, showInverted)}
-              <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)} style={{ margin: '0 0 0 0.5rem' }}>
+              <StyledBalanceMaxMini onClick={() => setShowInverted(prev => !prev)} style={{ margin: '0 0 0 0.5rem' }}>
                 <RepeatIcon />
               </StyledBalanceMaxMini>
             </>
@@ -103,21 +103,12 @@ export default function SwapModalFooter({
         </RowBetween>
       </AutoColumn>
 
-      <AutoRow>
-        <ButtonError
-          onClick={onConfirm}
-          disabled={disabledConfirm}
-          error={severity > 2}
-          style={{ margin: '10px 0 0 0' }}
-          id="confirm-swap-or-send"
-        >
-          <Text fontSize={20} fontWeight={700}>
-            {severity > 2 ? 'Swap Anyway' : 'Swap'}
-          </Text>
-        </ButtonError>
-
-        {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
-      </AutoRow>
+      <ButtonError onClick={onConfirm} disabled={disabledConfirm} error={severity > 2} id="confirm-swap-or-send">
+        <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
+          {severity > 2 ? 'Swap Anyway' : 'Swap'}
+        </Text>
+      </ButtonError>
+      {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}
     </>
   )
 }

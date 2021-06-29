@@ -1,5 +1,4 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { AlertCircle, CheckCircle } from 'react-feather'
 import styled from 'styled-components'
 import { useActiveWeb3React } from '../../hooks'
@@ -7,7 +6,7 @@ import { ExternalLink, TYPE } from '../../theme'
 import { getEtherscanLink } from '../../utils'
 import { AutoColumn } from '../Column'
 import Row, { AutoRow } from '../Row'
-import { SummaryType, TransactionSummary } from '../../state/transactions/types'
+import { TransactionType, TransactionSummary } from '../../state/transactions/types'
 import StyledSummary from '../StyledSummary'
 import { ButtonMainRed } from '../Web3Status'
 import useTheme from '../../hooks/useTheme'
@@ -25,8 +24,6 @@ export default function TransactionPopup({
   success?: boolean
   summary?: string | TransactionSummary
 }) {
-  // NOTE: Để đây chỉ để cho thằng StyledSummary nó được render lại khi thay đổi ngôn ngữ.
-  useTranslation()
   const { chainId } = useActiveWeb3React()
 
   const theme = useTheme()
@@ -48,11 +45,13 @@ export default function TransactionPopup({
         {chainId && (
           <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>View on Etherscan</ExternalLink>
         )}
-        {success && typeof summary !== 'string' && summary?.type === SummaryType.ADD && (
-          <Row justify={'flex-end'}>
-            <ButtonMainRed>Stake now!</ButtonMainRed>
-          </Row>
-        )}
+        {success &&
+          typeof summary !== 'string' &&
+          (summary?.type === TransactionType.ADD_TWO_TOKENS || summary?.type === TransactionType.ADD_ONE_TOKEN) && (
+            <Row justify={'flex-end'}>
+              <ButtonMainRed>Stake now!</ButtonMainRed>
+            </Row>
+          )}
       </AutoColumn>
     </RowNoFlex>
   )

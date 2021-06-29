@@ -1,5 +1,3 @@
-// NOTE: Không cần query ethPrice nữa.
-
 import gql from 'graphql-tag'
 
 const PairFields = `
@@ -10,15 +8,15 @@ const PairFields = `
       id
       symbol
       name
-      totalLiquidity
       derivedETH
+      decimals
     }
     token1 {
       id
       symbol
       name
-      totalLiquidity
       derivedETH
+      decimals
     }
     reserve0
     reserve1
@@ -30,7 +28,6 @@ const PairFields = `
     untrackedVolumeUSD
     token0Price
     token1Price
-    createdAtTimestamp
   }
 `
 
@@ -95,7 +92,7 @@ export const PAIRS_HISTORICAL_BULK = (block: number, pairs: string[]) => {
     pairsString += `"${pair}"`
   })
   pairsString += ']'
-  let queryString = `
+  const queryString = `
   query pairs {
     pairs(first: 200, where: {id_in: ${pairsString}}, block: {number: ${block}}, orderBy: trackedReserveETH, orderDirection: desc) {
       id

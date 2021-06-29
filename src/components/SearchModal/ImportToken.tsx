@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Token, Currency } from '@s-one-finance/sdk-core'
 import styled from 'styled-components'
-import { TYPE, CloseIcon } from 'theme'
+import { TYPE, StyledCloseIcon } from 'theme'
 import Card from 'components/Card'
 import { AutoColumn } from 'components/Column'
 import { RowBetween, RowFixed, AutoRow } from 'components/Row'
@@ -69,7 +69,7 @@ export function ImportToken({ tokens, onBack, onDismiss, handleCurrencySelect }:
         <RowBetween>
           {onBack ? <ArrowLeft style={{ cursor: 'pointer' }} onClick={onBack} /> : <div></div>}
           <TYPE.mediumHeader>Import {tokens.length > 1 ? 'Tokens' : 'Token'}</TYPE.mediumHeader>
-          {onDismiss ? <CloseIcon onClick={onDismiss} color={theme.closeIcon}/> : <div></div>}
+          {onDismiss ? <StyledCloseIcon onClick={onDismiss} /> : <div></div>}
         </RowBetween>
       </PaddedColumn>
       <SectionBreak />

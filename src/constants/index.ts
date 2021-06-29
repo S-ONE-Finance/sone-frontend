@@ -4,7 +4,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
 
-export const ROUTER_ADDRESS = '0xFa09c1fc9B94d17Deb44e6B492A5E8C3945109F5'
+export const ROUTER_ADDRESS = '0x824291E4Fd77345D18cF7fe4DF0b2b113F7fA61A'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -30,13 +30,26 @@ export const GOVERNANCE_ADDRESS = '0x5e4be8Bc9637f0EAA1A755019e06A68ce081D58F'
 
 export const TIMELOCK_ADDRESS = '0x1a9C8182C09F50C8318d769245beA52c32BE35BC'
 
-const UNI_ADDRESS = '0x583bebcf350fabded19f255c2c92689aa1adc56a'
+const UNI_ADDRESS = '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984'
+
 export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
-  [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
+  [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, '0x57bb30bdb0d449bf687ed648acf2467f045c8e74', 18, 'UNI', 'Uniswap'),
   [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, UNI_ADDRESS, 18, 'UNI', 'Uniswap'),
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'UNI', 'Uniswap')
+}
+
+const TEMP = '0x0000000000000000000000000000000000000000'
+const SONE_ADDRESS = '0x57bb30bdb0d449bf687ed648acf2467f045c8e74'
+
+// TODO: Need fill address of sone in all 5 networks.
+export const SONE: { [chainId in ChainId]: Token } = {
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, TEMP, 18, 'SONE', 'S-ONE Finance'),
+  [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, TEMP, 18, 'SONE', 'S-ONE Finance'),
+  [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, SONE_ADDRESS, 18, 'SONE', 'S-ONE Finance'),
+  [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, TEMP, 18, 'SONE', 'S-ONE Finance'),
+  [ChainId.KOVAN]: new Token(ChainId.KOVAN, TEMP, 18, 'SONE', 'S-ONE Finance')
 }
 
 export const COMMON_CONTRACT_NAMES: { [address: string]: string } = {
@@ -152,8 +165,8 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#2F73BD',
     mobile: true
   }
-  // S-One doén't need below options.
-  /* 
+  // S-ONE doesn't need below options.
+  /*
     WALLET_LINK: {
     connector: walletlink,
     name: 'Coinbase Wallet',

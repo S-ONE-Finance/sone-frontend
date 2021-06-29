@@ -26,7 +26,7 @@ const ButtonGroup = styled(Row)`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     width: 160px;
-    height: 28px; 
+    height: 28px;
   `}
 `
 
@@ -49,7 +49,7 @@ const ItemTitle = styled(Text)`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-top: 0 !important;
-    font-size: 13px; 
+    font-size: 13px;
   `}
 `
 
@@ -59,11 +59,11 @@ const ItemDescription = styled(Text)`
   font-weight: 400;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    display: none; 
+    display: none;
   `}
 `
 
-export default function AddLiquidityMode() {
+export default function ModeToggle() {
   const [addLiquidityMode, updateAddLiquidityMode] = useAddLiquidityModeManager()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()

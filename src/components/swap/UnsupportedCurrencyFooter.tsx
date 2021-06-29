@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { TYPE, CloseIcon, ExternalLink } from 'theme'
+import { TYPE, StyledCloseIcon, ExternalLink } from 'theme'
 import { ButtonEmpty } from 'components/Button'
 import Modal from 'components/Modal'
 import Card, { OutlineCard } from 'components/Card'
@@ -64,7 +64,7 @@ export default function UnsupportedCurrencyFooter({
           <AutoColumn gap="lg">
             <RowBetween>
               <TYPE.mediumHeader>Unsupported Assets</TYPE.mediumHeader>
-              <CloseIcon onClick={() => setShowDetails(false)} />
+              <StyledCloseIcon onClick={() => setShowDetails(false)} />
             </RowBetween>
             {tokens.map(token => {
               return (

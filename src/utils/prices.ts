@@ -1,8 +1,9 @@
 import { BLOCKED_PRICE_IMPACT_NON_EXPERT } from '../constants'
-import { CurrencyAmount, Fraction, JSBI, Percent, TokenAmount, Trade } from '@s-one-finance/sdk-core'
+import { Currency, CurrencyAmount, Fraction, JSBI, Percent, TokenAmount, Trade } from '@s-one-finance/sdk-core'
 import { ALLOWED_PRICE_IMPACT_HIGH, ALLOWED_PRICE_IMPACT_LOW, ALLOWED_PRICE_IMPACT_MEDIUM } from '../constants'
-import { Field } from '../state/swap/actions'
 import { basisPointsToPercent } from './index'
+import { Field as FieldSwap } from '../state/swap/actions'
+import { Field as FieldMint } from '../state/mint/actions'
 
 const BASE_FEE = new Percent(JSBI.BigInt(30), JSBI.BigInt(10000))
 const ONE_HUNDRED_PERCENT = new Percent(JSBI.BigInt(10000), JSBI.BigInt(10000))
@@ -46,11 +47,11 @@ export function computeTradePriceBreakdown(
 export function computeSlippageAdjustedAmounts(
   trade: Trade | undefined,
   allowedSlippage: number
-): { [field in Field]?: CurrencyAmount } {
+): { [field in FieldSwap]?: CurrencyAmount } {
   const pct = basisPointsToPercent(allowedSlippage)
   return {
-    [Field.INPUT]: trade?.maximumAmountIn(pct),
-    [Field.OUTPUT]: trade?.minimumAmountOut(pct)
+    [FieldSwap.INPUT]: trade?.maximumAmountIn(pct),
+    [FieldSwap.OUTPUT]: trade?.minimumAmountOut(pct)
   }
 }
 
@@ -67,10 +68,45 @@ export function formatExecutionPrice(trade?: Trade, inverted?: boolean): string 
     return ''
   }
   return inverted
-    ? `${trade.executionPrice.invert().toSignificant(6)} ${trade.inputAmount.currency.symbol} / ${
-        trade.outputAmount.currency.symbol
-      }`
-    : `${trade.executionPrice.toSignificant(6)} ${trade.outputAmount.currency.symbol} / ${
+    ? `1 ${trade.outputAmount.currency.symbol} = ${trade.executionPrice.invert().toSignificant(6)} ${
         trade.inputAmount.currency.symbol
       }`
+    : `1 ${trade.inputAmount.currency.symbol} = ${trade.executionPrice.toSignificant(6)} ${
+        trade.outputAmount.currency.symbol
+      }`
+}
+
+export function formatExecutionPriceWithCurrencies(
+  currencies: { [field in FieldMint]?: Currency },
+  price?: Fraction,
+  inverted?: boolean
+): string {
+  if (!price) {
+    return ''
+  }
+
+  return inverted
+    ? `1 ${currencies[FieldMint.CURRENCY_B]?.symbol} = ${price?.invert().toSignificant(6)} ${
+        currencies[FieldMint.CURRENCY_A]?.symbol
+      }`
+    : `1 ${currencies[FieldMint.CURRENCY_A]?.symbol} = ${price?.toSignificant(6)} ${
+        currencies[FieldMint.CURRENCY_B]?.symbol
+      }`
+}
+
+// Không nghĩ ra tên hay hơn.
+// TODO: Need refactor cái đống currencies và tokens bên add liquidity one token mode thành kiểu FIELD.CURRENCY_A và FIELD.CURRENCY_B hết nhé.
+export function formatExecutionPriceWithCurrencies2(
+  currency0?: Currency,
+  currency1?: Currency,
+  price?: Fraction,
+  inverted?: boolean
+): string {
+  if (!price) {
+    return ''
+  }
+
+  return inverted
+    ? `1 ${currency1?.symbol} = ${price?.invert().toSignificant(6)} ${currency0?.symbol}`
+    : `1 ${currency0?.symbol} = ${price?.toSignificant(6)} ${currency1?.symbol}`
 }

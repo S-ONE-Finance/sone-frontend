@@ -31,10 +31,11 @@ const TransactionList = styled.div`
 `
 
 const ViewMore = styled(ExternalLink)`
-  color: ${({ theme }) => theme.red1Sone}
+  color: ${({ theme }) => theme.red1Sone};
   cursor: pointer;
   font-weight: 400;
   font-size: 14px;
+  margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 `
 

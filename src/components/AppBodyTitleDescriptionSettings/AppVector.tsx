@@ -1,4 +1,3 @@
-import { TransactionType } from './index'
 import React, { useMemo } from 'react'
 import SwapVectorDark from '../../assets/images/swap-vector-dark.svg'
 import SwapVectorLight from '../../assets/images/swap-vector-light.svg'
@@ -6,29 +5,38 @@ import AddLiquidityVectorDark from '../../assets/images/add-liquidity-vector-dar
 import AddLiquidityVectorLight from '../../assets/images/add-liquidity-vector-light.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
 import styled from 'styled-components'
+import { TransactionType } from '../../state/transactions/types'
 
-const Vector = styled.img<{ size?: string }>`
+const Vector = styled.img<{ size?: string; sizeMobile?: string }>`
   width: ${({ size }) => size || '83.11px'};
 
-  ${({ theme, size }) => theme.mediaWidth.upToExtraSmall`
-    width: ${size || '39.59px'};
+  ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
+    width: ${sizeMobile || '39.59px'};
   `};
 `
 
-export default function AppVector({ type, size }: { type: TransactionType; size?: string }) {
+export default function AppVector({
+  transactionType,
+  size,
+  sizeMobile
+}: {
+  transactionType: TransactionType
+  size?: string
+  sizeMobile?: string
+}) {
   const isDarkMode = useIsDarkMode()
 
   const vectorSrc = useMemo(() => {
-    return type === 'swap'
+    return transactionType === TransactionType.SWAP
       ? isDarkMode
         ? SwapVectorDark
         : SwapVectorLight
-      : type === 'add_liquidity'
+      : TransactionType.ADD_TWO_TOKENS || TransactionType.ADD_ONE_TOKEN
       ? isDarkMode
         ? AddLiquidityVectorDark
         : AddLiquidityVectorLight
       : null
-  }, [isDarkMode, type])
+  }, [isDarkMode, transactionType])
 
-  return vectorSrc ? <Vector src={vectorSrc} size={size} alt="vector" /> : null
+  return vectorSrc ? <Vector src={vectorSrc} size={size} sizeMobile={sizeMobile} alt="vector" /> : null
 }

@@ -16,7 +16,7 @@ import { ExternalLink, TYPE } from '../../theme'
 import Row, { RowFixed } from '../Row'
 import ClaimModal from '../claim/ClaimModal'
 import PendingStatus from './PendingStatus'
-import MyAccountPanel from './MyAccountPanel'
+import PanelMyAccount from './PanelMyAccount'
 import Web3Status from '../Web3Status'
 import Modal from '../Modal'
 import SoneAmount from '../SoneAmount'
@@ -441,7 +441,7 @@ export default function Header() {
         <MobileMenu setIsShowMobileMenu={setIsShowMobileMenu} />
       </Modal>
       <HeaderFrame>
-        {/* NOTE: Cái này là modal thông báo claim uni, sau này cho thành clame sone modal, giờ chưa cần sử dụng. */}
+        {/* Cái này là modal thông báo claim uni, sau này cho thành clame sone modal, giờ chưa cần sử dụng. */}
         <ClaimModal />
         <HideExtraSmall>
           <HeaderRow>
@@ -518,7 +518,7 @@ export default function Header() {
               {account && (
                 <HideExtraSmall>
                   <ResponsiveBottomLeftSubMenu width={'fit-content'} borderRadius={'20px'}>
-                    <MyAccountPanel />
+                    <PanelMyAccount />
                   </ResponsiveBottomLeftSubMenu>
                 </HideExtraSmall>
               )}

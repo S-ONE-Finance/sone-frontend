@@ -1,61 +1,62 @@
 // TODO: Chuyển mọi hooks sang sử dụng sdk của @s-one-finance.
-
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { client } from './apollo/client'
+import { clients } from './apollo/client'
 import { PAIRS_CURRENT } from './apollo/queries'
 
 import getBulkPairData from './utils/getBulkPairData'
+import getPairData from './utils/getPairData'
 import { useActiveWeb3React } from '../hooks'
 import getCaseSensitiveAddress from './utils/getCaseSensitiveAddress'
 import { useIsUpToExtraSmall } from '../hooks/useWindowSize'
+import { Pair, Token } from '@s-one-finance/sdk-core'
+import { PairState, usePairs } from 'data/Reserves'
+
+async function getPairIds(chainId?: number) {
+  if (chainId === undefined) return []
+
+  const {
+    data: { pairs }
+  } = await clients[chainId].query({
+    query: PAIRS_CURRENT,
+    fetchPolicy: 'cache-first'
+  })
+
+  return pairs.map((pair: { id: string }) => pair.id)
+}
 
 /**
- * Use Subgraph to query data for pairs.
+ * Use Subgraph to query bulk data for pairs.
+ * Interval every 15s after new block created
  */
-function useSubgraphData() {
+export function useBulkPairDataInterval() {
   const [subgraphData, setSubgraphData] = useState<any>({})
-  const { library } = useActiveWeb3React()
+  const { chainId, library } = useActiveWeb3React()
 
-  // region Callback functions.
-  const getData = useCallback(async () => {
-    const {
-      data: { pairs }
-    } = await client.query({
-      query: PAIRS_CURRENT,
-      fetchPolicy: 'cache-first'
-    })
-
-    // Format as array of addresses.
-    const pairIds = pairs.map((pair: { id: string }) => pair.id)
+  const getData = useCallback(async chainId => {
+    const pairIds = await getPairIds(chainId)
 
     // Get data for every pair in list.
-    const data = await getBulkPairData(pairIds)
+    const data = await getBulkPairData(chainId, pairIds)
     if (data?.length > 0) {
       setSubgraphData(data)
-    }
-
-    // Log out to track query results.
-    if (data?.length > 0) {
       console.log('Array trả về có ' + data.length + ' items.')
     } else {
       console.error('Array trả về lỗi', data)
     }
   }, [])
 
-  // Wait 5s for TheGraph mapping data.
+  // Wait 15s for TheGraph mapping data.
   const getDataAfter5Seconds = useCallback(() => {
     setTimeout(() => {
-      getData()
-    }, 5000)
-  }, [getData])
-  // endregion
+      getData(chainId)
+    }, 15000)
+  }, [chainId, getData])
 
-  // region Effects.
   // Query data the first time.
   useEffect(() => {
-    getData()
-  }, [getData])
+    getData(chainId)
+  }, [chainId, getData])
 
   // When new block created, run the getDataAfter5Seconds callback function.
   useEffect(() => {
@@ -66,21 +67,74 @@ function useSubgraphData() {
       library.removeListener('block', getDataAfter5Seconds)
     }
   }, [library, getDataAfter5Seconds])
-  // endregion
 
   return subgraphData
 }
 
+export function useGetPairFromSubgraphAndParse(): [boolean, Pair[]] {
+  const { chainId } = useActiveWeb3React()
+
+  const [pairTokens, setPairTokens] = useState<[Token, Token][]>([])
+
+  useEffect(() => {
+    ;(async () => {
+      if (chainId === undefined) return
+
+      const pairIds = await getPairIds(chainId)
+      const rawPairs = await getPairData(chainId, pairIds)
+      const sortedRawPairs = rawPairs
+        .slice()
+        .sort(
+          (a: any, b: any) => a?.token0?.symbol && b?.token0?.symbol && a.token0.symbol.localeCompare(b.token0.symbol)
+        )
+      const newPairTokens = sortedRawPairs
+        .map((item: any) => {
+          const { token0: t0, token1: t1 } = item
+          if (t0 && t1) {
+            const token0 = new Token(chainId, t0.id, t0.decimals, t0?.symbol ?? undefined, t0?.name ?? undefined)
+            const token1 = new Token(chainId, t1.id, t1.decimals, t1?.symbol ?? undefined, t1?.name ?? undefined)
+            return [token0, token1]
+          }
+          return undefined
+        })
+        .filter((item): item is [Token, Token] => item !== undefined)
+      setPairTokens(newPairTokens)
+    })()
+  }, [chainId])
+
+  const topPairs = usePairs(pairTokens)
+
+  const isLoading: boolean = useMemo(
+    () =>
+      topPairs.some((entry: [PairState, Pair | null]): entry is [PairState, Pair] => entry[0] === PairState.LOADING),
+    [topPairs]
+  )
+
+  // Only take pairs that EXISTS and NOT NULL.
+  const existedTopPairs: Pair[] = useMemo(
+    () =>
+      topPairs
+        .filter(
+          (entry: [PairState, Pair | null]): entry is [PairState, Pair] =>
+            entry[0] === PairState.EXISTS && entry[1] !== null
+        )
+        .map(entry => entry[1]),
+    [topPairs]
+  )
+
+  return [isLoading, existedTopPairs]
+}
+
 /**
- * Lấy ra giá token0 so với token1 ở thời điểm hiện tại = (số lượng token1) / (số lượng token0),
+ * Lấy ra giá token1 so với token1 ở thời điểm hiện tại = (số lượng token1) / (số lượng token0),
  * và so sánh giá trị này với chính nó ở thời điểm 24h trước.
  * Ta có 2 kết quả: "token1Price và token1PriceChange"
  *
  * PS: Chỗ này tại sao ko phải là "token0Price và token0PriceChange"?? do data trong subgraph là như thế, maybe
  * bug do token1 bị swap với token0, source: uniswap-info).
  */
-export function useOneDayPairPriceChange() {
-  const data = useSubgraphData()
+export function useOneDayPairPriceChangeData() {
+  const data = useBulkPairDataInterval()
 
   return useMemo(
     () =>
@@ -98,8 +152,8 @@ export function useOneDayPairPriceChange() {
   )
 }
 
-export function useWeeklyRanking() {
-  const data = useSubgraphData()
+export function useWeeklyRankingData() {
+  const data = useBulkPairDataInterval()
 
   // Màn hình dưới extra small chỉ show 4 items.
   const isUpToExtraSmall = useIsUpToExtraSmall()

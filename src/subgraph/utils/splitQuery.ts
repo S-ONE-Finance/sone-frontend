@@ -25,8 +25,8 @@ export default async function splitQuery(
     if (skip + skipCount < list.length) {
       end = skip + skipCount
     }
-    let sliced = list.slice(skip, end)
-    let result = await localClient.query({
+    const sliced = list.slice(skip, end)
+    const result = await localClient.query({
       query: query(...vars, sliced),
       fetchPolicy: 'cache-first'
     })

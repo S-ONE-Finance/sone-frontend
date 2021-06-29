@@ -3,7 +3,7 @@ import { PaddedColumn } from './styleds'
 import { RowBetween, RowFixed } from 'components/Row'
 import { ArrowLeft } from 'react-feather'
 import { Text } from 'rebass'
-import { CloseIcon } from 'theme'
+import { StyledCloseIcon } from 'theme'
 import styled from 'styled-components'
 import { ManageLists } from './ManageLists'
 import { TokenList } from '@uniswap/token-lists'
@@ -50,7 +50,7 @@ export default function Manage({
             </Text>
             <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
           </RowFixed>
-          <CloseIcon onClick={onDismiss} size={isUpToExtraSmall ? 24 : 36} color={theme.closeIcon} />
+          <StyledCloseIcon onClick={onDismiss} />
         </RowBetween>
       </PaddedColumn>
       <ManageLists setModalView={setModalView} setImportList={setImportList} setListUrl={setListUrl} />

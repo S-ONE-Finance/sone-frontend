@@ -1,12 +1,12 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { useOneDayPairPriceChange } from '../../subgraph'
+import { useOneDayPairPriceChangeData } from '../../subgraph'
 
 import { RowFixed } from '../Row'
 import PairInfo from './PairInfo'
 
-// NOTE: This is a practice using javascript for horizontal scroll infinite, it has the downside that the list will be jerky.
+// This is a practice using javascript for horizontal scroll infinite, it has the downside that the list will be jerky.
 // export default function Footer() {
 //   // BUG: Remove useTranslation() here makes list1Ref.current.clientWidth always equal to 0.
 //   useTranslation()
@@ -89,7 +89,7 @@ import PairInfo from './PairInfo'
 //   )
 // }
 
-// NOTE: This is a practice using only CSS, it has the downside that the list cannot be contiguous.
+// This is a practice using only CSS, it has the downside that the list cannot be contiguous.
 const Marquee = styled.div<{ pairSize: number; pauseAnimation: boolean }>`
   width: 100%;
   height: 100%;
@@ -97,6 +97,8 @@ const Marquee = styled.div<{ pairSize: number; pauseAnimation: boolean }>`
   overflow: hidden;
   box-sizing: border-box;
   display: flex;
+  background: ${({ theme }) => theme.bg4Sone};
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
 
   > * {
     display: inline-block;
@@ -137,17 +139,19 @@ const Marquee = styled.div<{ pairSize: number; pauseAnimation: boolean }>`
 export default function Footer() {
   const [pauseAnimation, setPauseAnimation] = useState(false)
 
-  const data = useOneDayPairPriceChange()
+  const data = useOneDayPairPriceChangeData()
 
-  const toggleAnimation = useCallback(() => {
-    setPauseAnimation(prev => !prev)
-  }, [])
-
-  return (
-    <Marquee pairSize={data.length} pauseAnimation={pauseAnimation} onClick={toggleAnimation}>
+  return data.length > 0 ? (
+    <Marquee
+      pairSize={data.length}
+      pauseAnimation={pauseAnimation}
+      onClick={() => setPauseAnimation(prev => !prev)}
+      onMouseEnter={() => !pauseAnimation && setPauseAnimation(true)}
+      onMouseLeave={() => pauseAnimation && setPauseAnimation(false)}
+    >
       <div>
         <RowFixed height={'100%'}>
-          {data.slice(0).map(pair => (
+          {data.slice(0).map((pair: any) => (
             <PairInfo
               key={pair.id}
               pairName={pair.token0Symbol + '-' + pair.token1Symbol}
@@ -158,5 +162,5 @@ export default function Footer() {
         </RowFixed>
       </div>
     </Marquee>
-  )
+  ) : null
 }

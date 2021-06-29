@@ -1,4 +1,4 @@
-// TODO: Sau khi chuyển hết logic sang bên MyAccountPanel (desktop) và màn Modal khi click
+// TODO: Sau khi chuyển hết logic sang bên PanelMyAccount (desktop) và màn Modal khi click
 // vào hamburger icon trên mobile thì sẽ xoá hết logic của file này đi. Chỉ để lại
 // Button Text My Account or Connect Wallet or Error
 import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core'
@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 
 import useENSName from '../../hooks/useENSName'
-import { useWindowSize } from '../../hooks/useWindowSize'
+import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 
@@ -16,6 +16,7 @@ import { NetworkContextName } from '../../constants'
 import { TransactionDetails } from '../../state/transactions/reducer'
 
 import WalletModal from '../WalletModal'
+import { darken } from 'polished'
 
 const Text = styled.p`
   flex: 1 1 auto;
@@ -35,12 +36,13 @@ const NetworkIcon = styled(Activity)`
   height: 16px;
 `
 
-export const ButtonMainRed = styled.div<{ cursor?: string }>`
+export const ButtonMainRed = styled.div<{ cursor?: string; padding?: string }>`
   background-color: ${({ theme }) => theme.red1Sone};
   color: #ffffff;
   min-width: 154px;
-  padding: 0.5rem;
-  height: 35px;
+  padding: ${({ padding }) => (padding ? padding : '0.5rem')};
+  // Nếu truyền vào padding thì không set height nữa.
+  height: ${({ padding }) => (padding ? 'unset' : '35px')};
   border-radius: 31px;
   display: flex;
   justify-content: center;
@@ -52,7 +54,7 @@ export const ButtonMainRed = styled.div<{ cursor?: string }>`
 
   :hover,
   :focus {
-    background-color: ${({ theme }) => theme.red1Sone};
+    background-color: ${({ theme }) => darken(0.05, theme.red1Sone)};
   }
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -68,8 +70,8 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 function Web3StatusInner() {
   const { account, error } = useWeb3React()
   const toggleWalletModal = useWalletModalToggle()
+  const isUpToExtraSmall = useIsUpToExtraSmall()
   const history = useHistory()
-  const size = useWindowSize()
 
   if (account) {
     return (
@@ -77,9 +79,9 @@ function Web3StatusInner() {
         id="web3-status-connected"
         cursor="normal"
         onClick={() => {
-          // Trên điện thoại và dưới 500px thì click vào sẽ ra my account.
-          if (size?.width && size?.width <= 500) {
-            history.push('/my_account')
+          // Trên small devices, click vào sẽ ra my account.
+          if (isUpToExtraSmall) {
+            history.push('/my-account')
           }
         }}
       >

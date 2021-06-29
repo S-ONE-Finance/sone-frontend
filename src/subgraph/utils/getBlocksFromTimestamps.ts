@@ -1,4 +1,4 @@
-import { blockClient } from '../apollo/client'
+import { blockClients } from '../apollo/client'
 import { GET_BLOCK, GET_BLOCKS } from '../apollo/queries'
 
 import splitQuery from './splitQuery'
@@ -8,8 +8,8 @@ import splitQuery from './splitQuery'
  * @dev Query speed is optimized by limiting to a 600-second period
  * @param timestamp in seconds
  */
-export async function getBlockFromTimestamp(timestamp: number) {
-  const result = await blockClient.query({
+export async function getBlockFromTimestamp(chainId: number, timestamp: number) {
+  const result = await blockClients[chainId].query({
     query: GET_BLOCK,
     variables: {
       timestampFrom: timestamp,
@@ -28,12 +28,16 @@ export async function getBlockFromTimestamp(timestamp: number) {
  * @param timestamps
  * @param skipCount
  */
-export default async function getBlocksFromTimestamps(timestamps: number[], skipCount = 500) {
-  if (timestamps?.length === 0) {
+export default async function getBlocksFromTimestamps(
+  chainId: number | undefined,
+  timestamps: number[],
+  skipCount = 500
+) {
+  if (timestamps?.length === 0 || chainId === undefined) {
     return []
   }
 
-  const fetchedData: any = await splitQuery(GET_BLOCKS, blockClient, [], timestamps, skipCount)
+  const fetchedData: any = await splitQuery(GET_BLOCKS, blockClients[chainId], [], timestamps, skipCount)
 
   const blocks = []
   if (fetchedData) {

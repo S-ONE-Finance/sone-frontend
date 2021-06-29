@@ -6,3 +6,7 @@ export const getFormatNumber = (num: number, digits: number): string => {
     .format(`0,0.[${'0'.repeat(digits)}]a`)
     .toLocaleUpperCase()
 }
+
+export function numberWithCommas(x: number) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}

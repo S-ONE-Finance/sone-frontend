@@ -3,7 +3,12 @@ import ReactGA from 'react-ga'
 import { Link } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
 import { darken } from 'polished'
-import { ArrowLeft, X, ExternalLink as LinkIconFeather, Trash } from 'react-feather'
+import { ArrowLeft } from 'react-feather'
+import { ReactComponent as DropDown } from 'assets/images/dropdown.svg'
+import { ReactComponent as Close } from '../assets/images/x.svg'
+import Column from 'components/Column'
+import { ReactComponent as SortDownIconSvg } from 'assets/svg/sort_down_icon.svg'
+import { ReactComponent as SortUpIconSvg } from 'assets/svg/sort_up_icon.svg'
 
 export const ButtonText = styled.button`
   outline: none;
@@ -53,8 +58,22 @@ export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColo
   }
 `
 
-export const CloseIcon = styled(X)<{ onClick: () => void }>`
+export const StyledCloseIcon = styled(Close)<{ size?: string; sizeMobile?: string }>`
   cursor: pointer;
+  width: ${({ size }) => size || '21px'};
+  height: auto;
+
+  path {
+    stroke: ${({ theme }) => theme.closeIcon};
+  }
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
+    width: ${sizeMobile || '11px'};
+  `};
 `
 
 // for wrapper react feather icons
@@ -136,51 +155,6 @@ const StyledLink = styled.a`
   }
 `
 
-const LinkIconWrapper = styled.a`
-  text-decoration: none;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-
-  :hover {
-    text-decoration: none;
-    opacity: 0.7;
-  }
-
-  :focus {
-    outline: none;
-    text-decoration: none;
-  }
-
-  :active {
-    text-decoration: none;
-  }
-`
-
-export const LinkIcon = styled(LinkIconFeather)`
-  height: 16px;
-  width: 18px;
-  margin-left: 10px;
-  stroke: ${({ theme }) => theme.blue1};
-`
-
-export const TrashIcon = styled(Trash)`
-  height: 16px;
-  width: 18px;
-  margin-left: 10px;
-  stroke: ${({ theme }) => theme.text3};
-
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-
-  :hover {
-    opacity: 0.7;
-  }
-`
-
 const rotateImg = keyframes`
   0% {
     transform: perspective(1000px) rotateY(0deg);
@@ -224,36 +198,6 @@ export function ExternalLink({
     [href, target]
   )
   return <StyledLink target={target} rel={rel} href={href} onClick={handleClick} {...rest} />
-}
-
-export function ExternalLinkIcon({
-  target = '_blank',
-  href,
-  rel = 'noopener noreferrer',
-  ...rest
-}: Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> & { href: string }) {
-  const handleClick = useCallback(
-    (event: React.MouseEvent<HTMLAnchorElement>) => {
-      // don't prevent default, don't redirect if it's a new tab
-      if (target === '_blank' || event.ctrlKey || event.metaKey) {
-        ReactGA.outboundLink({ label: href }, () => {
-          console.debug('Fired outbound link event', href)
-        })
-      } else {
-        event.preventDefault()
-        // send a ReactGA event and then trigger a location change
-        ReactGA.outboundLink({ label: href }, () => {
-          window.location.href = href
-        })
-      }
-    },
-    [href, target]
-  )
-  return (
-    <LinkIconWrapper target={target} rel={rel} href={href} onClick={handleClick} {...rest}>
-      <LinkIcon />
-    </LinkIconWrapper>
-  )
 }
 
 const rotate = keyframes`
@@ -304,4 +248,76 @@ export const ExtraSmallOnly = styled.span`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: block;
   `};
+`
+
+export const TextPanelLabel = styled.div`
+  color: ${({ theme }) => theme.text8Sone};
+  font-size: 16px;
+  font-weight: 500;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `};
+`
+
+export const CurrencySelect = styled.button<{ selected: boolean }>`
+  align-items: center;
+  height: 40px;
+  font-size: 20px;
+  font-weight: 500;
+  background-color: ${({ theme }) => theme.white};
+  color: ${({ theme }) => theme.textBlack};
+  border-radius: 51px;
+  box-shadow: ${({ selected }) => (selected ? 'none' : '0px 6px 10px rgba(0, 0, 0, 0.075)')};
+  outline: none;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  padding: 0 12px;
+
+  :hover {
+    background-color: ${({ theme }) => darken(0.2, theme.white)};
+  }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    height: 23px;
+    font-size: 13px;
+    padding: 0 10px;
+  `};
+`
+export const PairSelect = styled(CurrencySelect)``
+
+export const StyledTokenName = styled.span<{ active?: boolean }>`
+  ${({ active }) => (active ? 'margin: 0 0.5rem 0 0.5rem;' : 'margin: 0 0.5rem 0 0;')}
+  font-size: 16px;
+  font-weight: 500;
+
+  ${({ theme, active }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+    ${active ? 'margin: 0 0.25rem 0 0.25rem;' : 'margin: 0 0.25rem 0 0;'}
+  `};
+`
+
+export const StyledDropDown = styled(DropDown)<{ selected: boolean }>`
+  height: 35%;
+
+  path {
+    stroke: ${({ theme }) => theme.textBlack};
+    stroke-width: 1.5px;
+  }
+`
+
+export const SortDownIcon = styled(SortDownIconSvg)`
+  cursor: pointer;
+`
+
+export const SortUpIcon = styled(SortUpIconSvg)`
+  cursor: pointer;
+`
+
+export const PanelSearchContentWrapper = styled(Column)`
+  width: 100%;
+  flex: 1 1;
+  position: relative;
+  background-color: ${({ theme }) => theme.bg1Sone};
 `

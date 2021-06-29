@@ -41,7 +41,7 @@ export default function SwapModalHeader({
   return (
     <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>
       <RowBetween align="flex-end">
-        <RowFixed gap={'0px'}>
+        <RowFixed gap="0">
           <TruncatedText
             fontSize={mobile20Desktop28}
             fontWeight={600}
@@ -51,7 +51,7 @@ export default function SwapModalHeader({
           </TruncatedText>
         </RowFixed>
         {/* zIndex để hiển thị đè lên SwapVector. */}
-        <RowFixed gap={'0px'} style={{ height: '100%', zIndex: 1 }} align={'center'}>
+        <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align={'center'}>
           <CurrencyLogo currency={trade.inputAmount.currency} size={'24px'} style={{ marginRight: '5px' }} />
           <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
             {trade.inputAmount.currency.symbol}
@@ -59,10 +59,10 @@ export default function SwapModalHeader({
         </RowFixed>
       </RowBetween>
       <RowFixed>
-        <ArrowDown size="20" color={theme.text2} style={{ minWidth: '16px' }} />
+        <ArrowDown size="20" style={{ minWidth: '16px' }} />
       </RowFixed>
       <RowBetween align="flex-end">
-        <RowFixed gap={'0px'}>
+        <RowFixed gap="0">
           <TruncatedText
             fontSize={mobile20Desktop28}
             fontWeight={600}
@@ -77,7 +77,7 @@ export default function SwapModalHeader({
             {trade.outputAmount.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
-        <RowFixed gap={'0px'} style={{ height: '100%' }} align={'center'}>
+        <RowFixed gap="0" style={{ height: '100%' }} align={'center'}>
           <CurrencyLogo currency={trade.outputAmount.currency} size={'24px'} style={{ marginRight: '5px' }} />
           <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
             {trade.outputAmount.currency.symbol}
@@ -85,7 +85,7 @@ export default function SwapModalHeader({
         </RowFixed>
       </RowBetween>
       {showAcceptChanges ? (
-        <SwapShowAcceptChanges justify="flex-start" gap={'0px'}>
+        <SwapShowAcceptChanges justify="flex-start" gap="0">
           <RowBetween>
             <RowFixed>
               <AlertTriangle size={20} style={{ marginRight: '8px', minWidth: 24 }} />
@@ -100,7 +100,7 @@ export default function SwapModalHeader({
           </RowBetween>
         </SwapShowAcceptChanges>
       ) : null}
-      <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
+      <AutoColumn justify="flex-start" gap="sm">
         {trade.tradeType === TradeType.EXACT_INPUT ? (
           <TYPE.italic textAlign="left" style={{ width: '100%' }}>
             {`Output is estimated. You will receive at least `}

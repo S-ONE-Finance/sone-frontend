@@ -6,7 +6,6 @@ import { isMobile } from 'react-device-detect'
 import ReactGA from 'react-ga'
 import styled from 'styled-components'
 import MetamaskIcon from '../../assets/images/metamask.png'
-import { ReactComponent as Close } from '../../assets/images/x.svg'
 import { fortmatic, injected, portis } from '../../connectors'
 import { OVERLAY_READY } from '../../connectors/Fortmatic'
 import { SUPPORTED_WALLETS } from '../../constants'
@@ -14,31 +13,20 @@ import usePrevious from '../../hooks/usePrevious'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useWalletModalToggle } from '../../state/application/hooks'
 import { ExternalLink } from '../../theme'
-import AccountDetails from '../AccountDetails'
+import { StyledCloseIcon } from '../../theme/components'
 
 import Modal from '../Modal'
 import Option from './Option'
 import PendingView from './PendingView'
 
-export const CloseIcon = styled.div`
+export const StyledCloseAbsolute = styled.div`
   position: absolute;
   right: 2rem;
   top: 2.5rem;
 
-  &:hover {
-    cursor: pointer;
-    opacity: 0.6;
-  }
-
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     top: 1.75rem;
   `};
-`
-
-export const CloseColor = styled(Close)`
-  path {
-    stroke: ${({ theme }) => theme.closeIcon};
-  }
 `
 
 const Wrapper = styled.div`
@@ -171,7 +159,8 @@ export default function WalletModal({
   useEffect(() => {
     if (walletModalOpen) {
       setPendingError(false)
-      // setWalletView(WALLET_VIEWS.ACCOUNT) // Không cần WALLET_VIEWS.ACCOUNT nữa vì đã có MyAccountPanel
+      // Không cần WALLET_VIEWS.ACCOUNT nữa vì đã có PanelMyAccount.
+      // setWalletView(WALLET_VIEWS.ACCOUNT)
       setWalletView(WALLET_VIEWS.OPTIONS)
     }
   }, [walletModalOpen])
@@ -314,9 +303,9 @@ export default function WalletModal({
     if (error) {
       return (
         <UpperSection>
-          <CloseIcon onClick={toggleWalletModal}>
-            <CloseColor />
-          </CloseIcon>
+          <StyledCloseAbsolute onClick={toggleWalletModal}>
+            <StyledCloseIcon />
+          </StyledCloseAbsolute>
           <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
@@ -328,38 +317,12 @@ export default function WalletModal({
         </UpperSection>
       )
     }
-    if (account && walletView === WALLET_VIEWS.ACCOUNT) {
-      return (
-        <AccountDetails
-          toggleWalletModal={toggleWalletModal}
-          pendingTransactions={pendingTransactions}
-          confirmedTransactions={confirmedTransactions}
-          ENSName={ENSName}
-          openOptions={() => setWalletView(WALLET_VIEWS.OPTIONS)}
-        />
-      )
-    }
+
     return (
       <UpperSection>
-        <CloseIcon onClick={toggleWalletModal}>
-          <CloseColor />
-        </CloseIcon>
-        {/* {walletView !== WALLET_VIEWS.ACCOUNT ? (
-          <HeaderRow color="blue">
-            <HoverText
-              onClick={() => {
-                setPendingError(false)
-                setWalletView(WALLET_VIEWS.ACCOUNT)
-              }}
-            >
-              Back
-            </HoverText>
-          </HeaderRow>
-        ) : (
-          <HeaderRow>
-            <Title>Connect to a wallet</Title>
-          </HeaderRow>
-        )} */}
+        <StyledCloseAbsolute onClick={toggleWalletModal}>
+          <StyledCloseIcon />
+        </StyledCloseAbsolute>
         {walletView !== WALLET_VIEWS.OPTIONS ? (
           <HeaderRow>
             <HoverText
@@ -400,7 +363,6 @@ export default function WalletModal({
 
   return (
     <Modal isOpen={walletModalOpen} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}>
-      {/* <Modal isOpen={true} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}> */}
       <Wrapper>{getModalContent()}</Wrapper>
     </Modal>
   )

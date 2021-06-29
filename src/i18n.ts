@@ -19,5 +19,6 @@ i18next
     keySeparator: false,
     interpolation: { escapeValue: false }
   })
+  .then()
 
 export default i18next

@@ -6,6 +6,7 @@ import TransactionConfirmationModal, {
 } from '../TransactionConfirmationModal'
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
+import { TransactionType } from '../../state/transactions/types'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
@@ -84,10 +85,11 @@ export default function ConfirmSwapModal({
   const confirmationContent = useCallback(
     () =>
       swapErrorMessage ? (
-        // FIXME: Width của modal error vẫn là 602px, chưa sửa (do chưa có design, chưa thống nhất với khách).
+        // TODO: Width của modal error vẫn là 602px, chưa sửa (do chưa có design, chưa thống nhất với khách).
         <TransactionErrorContent onDismiss={onDismiss} message={swapErrorMessage} />
       ) : (
         <ConfirmationModalContent
+          transactionType={TransactionType.SWAP}
           title={'Confirm Swap'}
           onDismiss={onDismiss}
           topContent={modalHeader}

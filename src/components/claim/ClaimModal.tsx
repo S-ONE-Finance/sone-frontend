@@ -10,7 +10,7 @@ import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleSelfClaimModal } from '../../state/application/hooks'
 import { useClaimCallback, useUserClaimData, useUserUnclaimedAmount } from '../../state/claim/hooks'
 import { useUserHasSubmittedClaim } from '../../state/transactions/hooks'
-import { CloseIcon, CustomLightSpinner, ExternalLink, TYPE, UniTokenAnimated } from '../../theme'
+import { CustomLightSpinner, ExternalLink, TYPE, UniTokenAnimated, StyledCloseIcon } from '../../theme'
 import { getEtherscanLink } from '../../utils'
 import { ButtonPrimary } from '../Button'
 import { AutoColumn, ColumnCenter } from '../Column'
@@ -99,7 +99,7 @@ export default function ClaimModal() {
             <CardSection gap="md">
               <RowBetween>
                 <TYPE.white fontWeight={500}>Claim UNI</TYPE.white>
-                <CloseIcon onClick={toggleClaimModal} style={{ zIndex: 99 }} color="white" />
+                <StyledCloseIcon onClick={toggleClaimModal} style={{ zIndex: 99 }} />
               </RowBetween>
               <TYPE.white fontWeight={700} fontSize={36}>
                 {unclaimedAmount?.toFixed(0, { groupSeparator: ',' } ?? '-')} UNI
@@ -158,7 +158,7 @@ export default function ClaimModal() {
           <CardBGImageSmaller desaturate />
           <RowBetween>
             <div />
-            <CloseIcon onClick={toggleClaimModal} style={{ zIndex: 99 }} stroke="black" />
+            <StyledCloseIcon onClick={toggleClaimModal} style={{ zIndex: 99 }} />
           </RowBetween>
           <ConfirmedIcon>
             {!claimConfirmed ? (
