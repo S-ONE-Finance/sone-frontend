@@ -1,9 +1,10 @@
 import React from 'react'
-import Index from './MyBalance'
+import MyBalance from './MyBalance'
 import MyLiquidity from './MyLiquidity'
+import Referral from './Referral'
 import { useActiveWeb3React } from '../../hooks'
 import { Redirect } from 'react-router'
-import { MyAccountWrapper, PageTitle, Sections } from './index.styled'
+import { MyAccountWrapper, Sections, PageTitle } from './components'
 
 export default function MyAccount() {
   const { account } = useActiveWeb3React()
@@ -13,8 +14,9 @@ export default function MyAccount() {
       <MyAccountWrapper>
         <PageTitle>My Account</PageTitle>
         <Sections>
-          <Index />
+          <MyBalance />
           <MyLiquidity />
+          <Referral />
         </Sections>
       </MyAccountWrapper>
     )
