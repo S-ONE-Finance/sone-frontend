@@ -1,6 +1,7 @@
 import React from 'react'
 import MyBalance from './MyBalance'
 import MyLiquidity from './MyLiquidity'
+import MyStaking from './MyStaking'
 import Referral from './Referral'
 import { useActiveWeb3React } from '../../hooks'
 import { Redirect } from 'react-router'
@@ -14,8 +15,9 @@ export default function MyAccount() {
       <MyAccountWrapper>
         <PageTitle>My Account</PageTitle>
         <Sections>
-          <MyBalance />
-          <MyLiquidity />
+          {/* <MyBalance /> */}
+          {/* <MyLiquidity /> */}
+          <MyStaking />
           <Referral />
         </Sections>
       </MyAccountWrapper>

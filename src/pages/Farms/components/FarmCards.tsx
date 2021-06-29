@@ -30,11 +30,11 @@ const FarmCards: React.FC = () => {
       // fake data
       const farmWithStakedValue: FarmWithStakedValue = {
         ...farm,
-        tokenAmount:  new BigNumber(0),
+        tokenAmount: new BigNumber(0),
         token2Amount: new BigNumber(0),
-        totalToken2Value:  new BigNumber(0),
-        tokenPriceInToken2:  new BigNumber(0),
-        poolWeight:  new BigNumber(0),
+        totalToken2Value: new BigNumber(0),
+        tokenPriceInToken2: new BigNumber(0),
+        poolWeight: new BigNumber(0),
         usdValue: new BigNumber(0),
         luaPrice
       }
@@ -64,7 +64,7 @@ const FarmCards: React.FC = () => {
         ))
       ) : (
         <StyledLoadingWrapper>
-          <Loader/>
+          <Loader />
         </StyledLoadingWrapper>
       )}
     </StyledCards>
@@ -76,13 +76,12 @@ interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
-
   const fakeData = {
     id: 1,
-    newReward:  new BigNumber(1231321212131),
-    poolWeight:  new BigNumber(20),
-    luaPrice:  new BigNumber(1231321212131),
-    usdValue:  new BigNumber(1231321212131),
+    newReward: new BigNumber(1231321212131),
+    poolWeight: new BigNumber(20),
+    luaPrice: new BigNumber(1231321212131),
+    usdValue: new BigNumber(1231321212131),
     multiplier: 40
   }
 
@@ -100,21 +99,24 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                 <StyledTitle>{farm.name}</StyledTitle>
                 <StyledMultiplier> {fakeData.multiplier}X</StyledMultiplier>
               </div>
-              <div style={{ marginLeft: '10px'}}>
+              <div style={{ marginLeft: '10px' }}>
                 <img src={IconLP} alt="" height="40" />
               </div>
             </div>
             <br />
             <StyledInsight>
               <span>Earn</span>
-              <span><b>SONE</b></span>
+              <span>
+                <b>SONE</b>
+              </span>
             </StyledInsight>
             <StyledInsight>
               <span>APY</span>
               <span style={{ fontWeight: 'bold', color: '#3FAAB0' }}>
-                <img src={IconAPY} alt="" height={12}/>
+                <img src={IconAPY} alt="" height={12} />
                 {fakeData.newReward && fakeData.poolWeight && fakeData.luaPrice && fakeData.usdValue
-                  ? `${parseFloat(fakeData.luaPrice
+                  ? `${parseFloat(
+                      fakeData.luaPrice
                         .times(NUMBER_BLOCKS_PER_YEAR[ID])
                         .times(fakeData.newReward.div(10 ** 18))
                         .div(fakeData.usdValue)
@@ -135,7 +137,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                 )}
               </span>
             </StyledInsight>
-             <NavLink to={`/farming/${fakeData.id}`} style={{
+            <NavLink
+              to={`/staking/${fakeData.id}`}
+              style={{
                 background: 'linear-gradient(90deg, #F05359 27.06%, #F58287 111.99%)',
                 borderRadius: '52px',
                 color: 'white',
@@ -145,7 +149,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
                 textAlign: 'center',
                 textDecoration: 'none',
                 fontWeight: 'bold'
-             }}>
+              }}
+            >
               Select
             </NavLink>
           </StyledContent>
@@ -225,10 +230,10 @@ const StyledInsight = styled.div`
 `
 
 const StyledMultiplier = styled.div`
-  border: 2px solid #3FAAB0;
+  border: 2px solid #3faab0;
   border-radius: 19px;
   display: inline;
-  color: #3FAAB0;
+  color: #3faab0;
   padding: 5px 14px;
 `
 

@@ -29,21 +29,23 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
 
   const { onStake } = useStake(pid)
 
-  const handleApprove = useCallback(async (tokenName) => {
-    try {
-      setRequestedApproval(true)
-      const txHash = await onApprove(tokenName)
-      // user rejected tx or didn't go thru
-      if (!txHash) {
-        setRequestedApproval(false)
-      }else{
-        setRequestedApprovalSuccess(true)
+  const handleApprove = useCallback(
+    async tokenName => {
+      try {
+        setRequestedApproval(true)
+        const txHash = await onApprove(tokenName)
+        // user rejected tx or didn't go thru
+        if (!txHash) {
+          setRequestedApproval(false)
+        } else {
+          setRequestedApprovalSuccess(true)
+        }
+      } catch (e) {
+        console.log(e)
       }
-    } catch (e) {
-      console.log(e)
-    }
-  }, [onApprove, setRequestedApproval])
-
+    },
+    [onApprove, setRequestedApproval]
+  )
 
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(tokenBalance)
@@ -55,7 +57,6 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
-       console.log('111', 111)
       setVal(e.currentTarget.value)
     },
     [setVal]
@@ -72,16 +73,13 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
               max={fullBalance}
               symbol={tokenName}
             />
-            {(!allowance.toNumber() && !requestedApprovalSuccess) ? (
-              <button
-                disabled={requestedApproval}
-                onClick={() => handleApprove(tokenName)}
-              >
+            {!allowance.toNumber() && !requestedApprovalSuccess ? (
+              <button disabled={requestedApproval} onClick={() => handleApprove(tokenName)}>
                 {requestedApproval ? 'Approving' : `Approve ${tokenName}`}
               </button>
             ) : (
               <>
-               <button
+                <button
                   disabled={pendingStakeTx}
                   onClick={async () => {
                     if (val && parseFloat(val) > 0) {
@@ -92,8 +90,10 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
                         setSuccessStakeTx(true)
                       }
                     }
-                  }} >
-                    {pendingStakeTx ? 'Pending Confirmation' : 'Confirm'}</button>
+                  }}
+                >
+                  {pendingStakeTx ? 'Pending Confirmation' : 'Confirm'}
+                </button>
                 <StyledActionSpacer />
               </>
             )}
@@ -103,7 +103,6 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
     </div>
   )
 }
-
 
 const StyledCardActions = styled.div`
   display: flex;
