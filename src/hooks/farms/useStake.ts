@@ -19,7 +19,6 @@ const useStake = (pid: number) => {
         const txHash = await stake(getMasterChefContract(sushi), pid, amount, account, chainId, addTransaction, {
           tokenName
         })
-        console.log('txHash', txHash);
         return txHash
       } catch (ex) {
         return ''

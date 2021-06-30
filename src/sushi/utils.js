@@ -72,34 +72,24 @@ export const getFarms = sushi => {
     : []
 }
 
-export const getPoolWeight = async (masterChefContract, pid) => {
-  const { allocPoint } = await masterChefContract.methods.poolInfo(pid).call()
-  const totalAllocPoint = await masterChefContract.methods.totalAllocPoint().call()
-  return new BigNumber(allocPoint).div(new BigNumber(totalAllocPoint))
-}
-
-export const getEarned = async (masterChefContract, pid, account) => {
-  return masterChefContract.methods.pendingReward(pid, account).call({from: account})
-}
-
-export const approve = async (lpContract, masterChefContract, account, chainId, addTransaction, {tokenName}) => {
+export const approve = async (lpContract, masterChefContract, account, chainId, addTransaction, { tokenName }) => {
   const gasLimit = chainId === 3 ? { from: account, gasLimit: '0x7A120' } : { from: account }
   return lpContract.methods
     .approve(masterChefContract.options.address, MaxUint256)
     .send(gasLimit)
-    .on('transactionHash', function(hash){
-        addTransaction(
-          {
-            hash,
-            confirmations: 0,
-            from: account
-          },
-          {
-            summary: 'Approve ' + tokenName
-          }
-        )
+    .on('transactionHash', function(hash) {
+      addTransaction(
+        {
+          hash,
+          confirmations: 0,
+          from: account
+        },
+        {
+          summary: 'Approve ' + tokenName
+        }
+      )
     })
-    .on('receipt', function(receipt){
+    .on('receipt', function(receipt) {
       return receipt
     })
 }
@@ -108,7 +98,7 @@ export const approveAddress = async (lpContract, address, account) => {
   return lpContract.methods.approve(address, MaxUint256).send({ from: account })
 }
 
-export const stake = async (masterChefContract, pid, amount, account, chainId, addTransaction, {tokenName}) => {
+export const stake = async (masterChefContract, pid, amount, account, chainId, addTransaction, { tokenName }) => {
   const gasLimit = chainId === 3 ? { from: account, gasLimit: '0x7A120' } : { from: account }
   return masterChefContract.methods
     .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
@@ -136,7 +126,7 @@ export const unstake = async (masterChefContract, pid, amount, account, chainId)
       return tx.transactionHash
     })
 }
-export const harvest = async (masterChefContract, pid, account, chainId) => {
+export const harvest = async (masterChefContract, pid, account, chainId, addTransaction) => {
   const gasLimit = chainId === 3 ? { from: account, gasLimit: '0x7A120' } : { from: account }
   return masterChefContract.methods
     .claimReward(pid)
@@ -144,27 +134,27 @@ export const harvest = async (masterChefContract, pid, account, chainId) => {
     .on('transactionHash', tx => {
       return tx.transactionHash
     })
+    .on('transactionHash', hash => {
+      addTransaction(
+        {
+          hash,
+          confirmations: 0,
+          from: account
+        },
+        {
+          summary: `Claim reward success`
+        }
+      )
+    })
 }
 
 export const getStaked = async (masterChefContract, pid, account) => {
   try {
-    const { amount } = await masterChefContract.methods
-      .userInfo(pid, account)
-      .call({ from: account })
+    const { amount } = await masterChefContract.methods.userInfo(pid, account).call({ from: account })
     return new BigNumber(amount)
   } catch {
     return new BigNumber(0)
   }
-}
-
-export const getCanUnlockLua = async (sushi, account) => {
-  const lua = getSushiContract(sushi)
-  return new BigNumber(await lua.methods.canUnlockAmount(account).call())
-}
-
-export const getLockOf = async (sushi, account) => {
-  const lua = getSushiContract(sushi)
-  return new BigNumber(await lua.methods.lockOf(account).call())
 }
 
 export const unlock = async (sushi, account) => {

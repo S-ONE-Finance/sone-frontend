@@ -42,6 +42,7 @@ import MyAccountPage from './MyAccount'
 import Pool from './Pool'
 import Farms from './Farms'
 import Farm from './Farm'
+import Unstake from './Unstake'
 
 import { ReactComponent as LogoForMobileResponsive } from '../assets/images/logo_for_mobile_responsive.svg'
 
@@ -162,6 +163,7 @@ export default function App() {
               <Route exact strict path="/pool" component={Pool} />
               <Route exact strict path="/staking" component={Farms} />
               <Route exact strict path="/staking/:farmId" component={Farm} />
+              <Route exact strict path="/unstake/:farmId" component={Unstake} />
               <Route exact strict path="/uni" component={Earn} />
               <Route exact strict path="/vote" component={Vote} />
               <Route exact strict path="/create" component={RedirectToAddLiquidity} />

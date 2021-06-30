@@ -22,12 +22,12 @@ interface FarmWithStakedValue extends Farm {
 
 const FarmCards: React.FC = () => {
   const [farms] = useFarms()
-  // fake data
+  // TODO_STAKING: remove fake data
   const luaPrice = new BigNumber(10)
 
   const rows = farms.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
-      // fake data
+      // TODO_STAKING: remove fake data
       const farmWithStakedValue: FarmWithStakedValue = {
         ...farm,
         tokenAmount: new BigNumber(0),
@@ -76,6 +76,7 @@ interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
+  // TODO_STAKING: remove fake data
   const fakeData = {
     id: 1,
     newReward: new BigNumber(1231321212131),
