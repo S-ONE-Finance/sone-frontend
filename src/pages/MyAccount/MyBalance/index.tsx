@@ -1,7 +1,7 @@
 import Row from '../../../components/Row'
 import CurrencyLogo from '../../../components/CurrencyLogo'
 import React, { forwardRef, useRef } from 'react'
-import { Card, Heading } from '../components'
+import { Card, Heading, Section } from '../components'
 import { Currency } from '@s-one-finance/sdk-core'
 import { useAggregateSoneBalance, useCurrencyBalance } from '../../../state/wallet/hooks'
 import { MouseoverTooltip } from '../../../components/Tooltip'
@@ -54,17 +54,6 @@ const TextBalanceSymbol = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 16px;
     margin-left: 3px;
-  `}
-`
-
-const MyBalanceWrapper = styled.div`
-  display: grid;
-  grid-auto-rows: auto;
-  grid-row-gap: 2rem;
-  justify-items: center;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    grid-row-gap: 10px;
   `}
 `
 
@@ -122,7 +111,7 @@ export default function MyBalance() {
   const soneBalanceRef = useRef<HTMLDivElement>(null)
 
   return (
-    <MyBalanceWrapper>
+    <Section>
       <Heading>My Balance</Heading>
       <CardBalance>
         <Row>
@@ -142,6 +131,6 @@ export default function MyBalance() {
           <SoneBigImage ethBalanceRef={ethBalanceRef} soneBalanceRef={soneBalanceRef} />
         </Row>
       </CardBalance>
-    </MyBalanceWrapper>
+    </Section>
   )
 }

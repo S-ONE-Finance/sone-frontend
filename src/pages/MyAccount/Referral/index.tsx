@@ -1,21 +1,57 @@
 import React from 'react'
-import { Heading } from '../components'
+import { Card, Heading, Section } from '../components'
 import { RowBetween, RowFitContent } from '../../../components/Row'
-import { ButtonAddLiquidity, CardLiquidity, ResponsiveColumn, TextAddLiquidity } from '../MyLiquidity'
+import { SectionButton, SectionText } from '../components'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+import InvitedFriendsTable from './InvitedFriendsTable'
+import ReferralInformation from './ReferralInformation'
+import { Text } from 'rebass'
 
-export default function MyLiquidity() {
+const CardReferral = styled(Card)`
+  padding: 40px 40px 30px 40px;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-row-gap: 40px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 40px 0;
+    grid-row-gap: 30px;
+  `}
+`
+
+const TitleBodyWrapper = styled.div`
+  display: grid;
+  grid-row-gap: 20px;
+`
+
+const TextSubSection = styled(Text)`
+  color: ${({ theme }) => theme.text6Sone};
+  font-size: 24px;
+  font-weight: 700;
+`
+
+export default function Referral() {
   return (
-    <ResponsiveColumn>
+    <Section>
       <RowBetween>
         <Heading>Referral</Heading>
-        <ButtonAddLiquidity as={Link} to="/add/ETH">
+        <SectionButton as={Link} to="/add/ETH">
           <RowFitContent gap="8px">
-            <TextAddLiquidity>Request Reward</TextAddLiquidity>
+            <SectionText>Request Reward</SectionText>
           </RowFitContent>
-        </ButtonAddLiquidity>
+        </SectionButton>
       </RowBetween>
-      <CardLiquidity>No item to show.</CardLiquidity>
-    </ResponsiveColumn>
+      <CardReferral>
+        <TitleBodyWrapper>
+          <TextSubSection>Referral Information</TextSubSection>
+          <ReferralInformation />
+        </TitleBodyWrapper>
+        <TitleBodyWrapper>
+          <TextSubSection>Invited Friends</TextSubSection>
+          <InvitedFriendsTable />
+        </TitleBodyWrapper>
+      </CardReferral>
+    </Section>
   )
 }
