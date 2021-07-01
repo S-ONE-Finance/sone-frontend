@@ -44,5 +44,13 @@ export default function SoneBigImage({
     )
   }, [soneBalance, ethBalance, windowWidth, ethBalanceRef, soneBalanceRef])
 
+  // Làm + Tự Test + (Backend Support 24/7) : 3 - 5.
+
+  // UI : 2 ngày + 2 ngày responsive.
+
+  // Render ra data mặc định + sort + phân trang: 2 ngày
+
+  // Filter: 2 ngày. (Radio, Input, Input (Hint), ComboBox, DateTime)
+
   return isShowBigImage ? <StyledSoneBigImage /> : null
 }

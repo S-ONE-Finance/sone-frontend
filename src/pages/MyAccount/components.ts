@@ -86,24 +86,27 @@ export const SectionText = styled(Text)`
   `}
 `
 
-export const SectionButton = styled(Button)`
+export const SectionButton = styled(Button)<{ is_disabled?: 'yes' }>`
   font-size: 20px;
   font-weight: 500;
   color: ${({ theme }) => theme.white};
   height: 60px;
   width: 192px;
   border-radius: 40px;
-  background-color: ${({ theme }) => theme.red1Sone};
+  background-color: ${({ theme, is_disabled }) => (is_disabled ? theme.text9Sone : theme.red1Sone)};
   box-shadow: 0 4px 39px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
+  cursor: ${({ is_disabled }) => (is_disabled ? 'normal' : 'pointer')};
   display: flex;
   justify-content: center;
   align-items: center;
   text-decoration: none;
 
-  :hover,
-  :focus {
-    background-color: ${({ theme }) => darken(0.15, theme.red1Sone)};
+  :hover {
+    background-color: ${({ theme, is_disabled }) => !is_disabled && darken(0.15, theme.red1Sone)};
+  }
+
+  :active {
+    background-color: ${({ theme, is_disabled }) => !is_disabled && darken(0.2, theme.red1Sone)};
   }
 
   ${({ theme }) => theme.mediaWidth.upToSmall`

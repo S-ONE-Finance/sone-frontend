@@ -1,12 +1,13 @@
 import React from 'react'
-import { Card, Heading, Section } from '../components'
-import { RowBetween, RowFitContent } from '../../../components/Row'
-import { SectionButton, SectionText } from '../components'
-import { Link } from 'react-router-dom'
+import { Card, Heading, Section, SectionButton, SectionText } from '../components'
+import { RowBetween } from '../../../components/Row'
 import styled from 'styled-components'
 import InvitedFriendsTable from './InvitedFriendsTable'
 import ReferralInformation from './ReferralInformation'
 import { Text } from 'rebass'
+import useRequestRewardHandler from './hooks/useRequestRewardHandler'
+import useReferrerInformation from './hooks/useReferrerInformation'
+import { AutoColumn } from '../../../components/Column'
 
 const CardReferral = styled(Card)`
   padding: 40px 40px 30px 40px;
@@ -14,7 +15,7 @@ const CardReferral = styled(Card)`
   grid-template-columns: 100%;
   grid-row-gap: 40px;
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 40px 0;
     grid-row-gap: 30px;
   `}
@@ -23,32 +24,76 @@ const CardReferral = styled(Card)`
 const TitleBodyWrapper = styled.div`
   display: grid;
   grid-row-gap: 20px;
+  width: 100%;
+  overflow-x: hidden;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    grid-row-gap: 10px;
+  `}
+`
+
+const ReferralInformationWrapper = styled(TitleBodyWrapper)`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 0 20px;
+  `}
 `
 
 const TextSubSection = styled(Text)`
   color: ${({ theme }) => theme.text6Sone};
   font-size: 24px;
   font-weight: 700;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 20px;
+  `}
 `
 
+export const Padding20ExtraSmall = styled.div`
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 0 20px;
+  `}
+`
+
+const PendingText = styled(Text)`
+  color: ${({ theme }) => theme.text6Sone};
+  font-size: 14px;
+  text-align: center;
+  padding-top: 10px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 11px;
+    padding-top: 3px;
+  `}
+`
+
+export const FETCH_REFERRAL_DATA_INTERVAL = 15000
+
 export default function Referral() {
+  // Ở đây dùng tạm hàm biến cờ "clicked" để set "Waiting for Approval"
+  // ngay sau khi POST lệnh "request reward" thành công. Sau 5000ms (FETCH_DATA_REFERRAL_INTERVAL) sẽ nhả ra.
+  const [clicked, requestReward] = useRequestRewardHandler()
+  const { isRequestRewardPending } = useReferrerInformation() || {}
+
   return (
     <Section>
       <RowBetween>
         <Heading>Referral</Heading>
-        <SectionButton as={Link} to="/add/ETH">
-          <RowFitContent gap="8px">
+        <AutoColumn>
+          <SectionButton onClick={requestReward} is_disabled={clicked || isRequestRewardPending ? 'yes' : undefined}>
             <SectionText>Request Reward</SectionText>
-          </RowFitContent>
-        </SectionButton>
+          </SectionButton>
+          {(clicked || isRequestRewardPending) && <PendingText>Waiting for Approval</PendingText>}
+        </AutoColumn>
       </RowBetween>
       <CardReferral>
-        <TitleBodyWrapper>
+        <ReferralInformationWrapper>
           <TextSubSection>Referral Information</TextSubSection>
           <ReferralInformation />
-        </TitleBodyWrapper>
+        </ReferralInformationWrapper>
         <TitleBodyWrapper>
-          <TextSubSection>Invited Friends</TextSubSection>
+          <Padding20ExtraSmall>
+            <TextSubSection>Invited Friends</TextSubSection>
+          </Padding20ExtraSmall>
           <InvitedFriendsTable />
         </TitleBodyWrapper>
       </CardReferral>

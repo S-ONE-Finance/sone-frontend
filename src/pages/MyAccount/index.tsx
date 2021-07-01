@@ -5,9 +5,12 @@ import Referral from './Referral'
 import { useActiveWeb3React } from '../../hooks'
 import { Redirect } from 'react-router'
 import { MyAccountWrapper, Sections, PageTitle } from './components'
+import useAccountIsReferrer from './Referral/hooks/useAccountIsReferrer'
 
 export default function MyAccount() {
   const { account } = useActiveWeb3React()
+
+  const accountIsReferrer = useAccountIsReferrer()
 
   if (account) {
     return (
@@ -16,7 +19,7 @@ export default function MyAccount() {
         <Sections>
           <MyBalance />
           <MyLiquidity />
-          <Referral />
+          {accountIsReferrer && <Referral />}
         </Sections>
       </MyAccountWrapper>
     )

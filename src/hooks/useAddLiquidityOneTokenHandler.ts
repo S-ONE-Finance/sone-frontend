@@ -143,13 +143,6 @@ export default function useAddLiquidityOneTokenHandler({
           })
 
           setTxHash(response.hash)
-
-          // TODO: Xoá bỏ bọn ReactGA này sau khi confirm với team và khách.
-          // ReactGA.event({
-          //   category: 'Liquidity',
-          //   action: 'Add',
-          //   label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/')
-          // })
         })
       )
       .catch(error => {
