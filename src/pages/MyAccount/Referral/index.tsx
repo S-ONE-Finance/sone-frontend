@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import InvitedFriendsTable from './InvitedFriendsTable'
 import ReferralInformation from './ReferralInformation'
 import { Text } from 'rebass'
-import useRequestRewardHandler from './hooks/useRequestRewardHandler'
+import useRequestReward from './hooks/useRequestReward'
 import useReferrerInformation from './hooks/useReferrerInformation'
 import { AutoColumn } from '../../../components/Column'
 
@@ -71,7 +71,7 @@ export const FETCH_REFERRAL_DATA_INTERVAL = 15000
 export default function Referral() {
   // Ở đây dùng tạm hàm biến cờ "clicked" để set "Waiting for Approval"
   // ngay sau khi POST lệnh "request reward" thành công. Sau 5000ms (FETCH_DATA_REFERRAL_INTERVAL) sẽ nhả ra.
-  const [clicked, requestReward] = useRequestRewardHandler()
+  const [clicked, requestReward] = useRequestReward()
   const { isRequestRewardPending } = useReferrerInformation() || {}
 
   return (

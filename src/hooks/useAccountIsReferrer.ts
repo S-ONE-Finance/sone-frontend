@@ -1,8 +1,7 @@
-import { useActiveWeb3React } from '../../../../hooks'
+import { useActiveWeb3React } from './index'
 import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
-import { ADMIN_BACKEND_BASE_URL } from '../../../../constants'
-import { FETCH_REFERRAL_DATA_INTERVAL } from '../index'
+import { ADMIN_BACKEND_BASE_URL } from '../constants'
 
 interface Response {
   data:
@@ -33,8 +32,6 @@ export default function useAccountIsReferrer(): boolean {
 
   useEffect(() => {
     fetchData()
-    const interval = setInterval(fetchData, FETCH_REFERRAL_DATA_INTERVAL)
-    return () => clearInterval(interval)
   }, [fetchData])
 
   return isReferrer

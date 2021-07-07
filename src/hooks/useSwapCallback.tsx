@@ -14,8 +14,9 @@ import useTransactionDeadline from './useTransactionDeadline'
 import useENS from './useENS'
 import { Version } from './useToggledVersion'
 import { TransactionType } from '../state/transactions/types'
-
-// import { spawn } from 'child_process'
+import useSwapReferralCallback from './useSwapReferralCallback'
+import { useIsAccountReferred, useIsReferralWorksOnCurrentNetwork, useReferral } from '../state/referral/hooks'
+import useAccountIsReferrer from './useAccountIsReferrer'
 
 export enum SwapCallbackState {
   INVALID,
@@ -123,6 +124,13 @@ export function useSwapCallback(
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
 
+  const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
+  const { id: referralId } = useReferral()
+  const isAccountReferred = useIsAccountReferred()
+  const accountIsReferrer = useAccountIsReferrer()
+  const weCanUseReferral = isReferralWorksOnCurrentNetwork && !isAccountReferred && referralId && !accountIsReferrer
+  const onSwapReferral = useSwapReferralCallback()
+
   return useMemo(() => {
     if (!trade || !library || !account || !chainId) {
       return { state: SwapCallbackState.INVALID, callback: null, error: 'Missing dependencies' }
@@ -221,6 +229,10 @@ export function useSwapCallback(
               }
             })
 
+            if (weCanUseReferral) {
+              onSwapReferral(response.hash)
+            }
+
             return response.hash
           })
           .catch((error: any) => {
@@ -236,5 +248,16 @@ export function useSwapCallback(
       },
       error: null
     }
-  }, [trade, library, account, chainId, recipient, recipientAddressOrName, swapCalls, addTransaction])
+  }, [
+    trade,
+    library,
+    account,
+    chainId,
+    recipient,
+    recipientAddressOrName,
+    swapCalls,
+    addTransaction,
+    onSwapReferral,
+    weCanUseReferral
+  ])
 }

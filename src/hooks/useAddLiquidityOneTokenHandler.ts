@@ -121,7 +121,6 @@ export default function useAddLiquidityOneTokenHandler({
         account,
         deadline.toHexString()
       ]
-      console.log('args', args)
       value = null
     }
 

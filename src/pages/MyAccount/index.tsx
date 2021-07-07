@@ -5,12 +5,14 @@ import Referral from './Referral'
 import { useActiveWeb3React } from '../../hooks'
 import { Redirect } from 'react-router'
 import { MyAccountWrapper, Sections, PageTitle } from './components'
-import useAccountIsReferrer from './Referral/hooks/useAccountIsReferrer'
+import useAccountIsReferrer from '../../hooks/useAccountIsReferrer'
+import { useIsReferralWorksOnCurrentNetwork } from '../../state/referral/hooks'
 
 export default function MyAccount() {
   const { account } = useActiveWeb3React()
 
   const accountIsReferrer = useAccountIsReferrer()
+  const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
 
   if (account) {
     return (
@@ -19,7 +21,7 @@ export default function MyAccount() {
         <Sections>
           <MyBalance />
           <MyLiquidity />
-          {accountIsReferrer && <Referral />}
+          {isReferralWorksOnCurrentNetwork && accountIsReferrer && <Referral />}
         </Sections>
       </MyAccountWrapper>
     )

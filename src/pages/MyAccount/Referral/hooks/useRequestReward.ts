@@ -4,11 +4,11 @@ import useReferrerInformation from './useReferrerInformation'
 import { ADMIN_BACKEND_BASE_URL } from '../../../../constants'
 import { FETCH_REFERRAL_DATA_INTERVAL } from '../index'
 
-export default function useRequestRewardHandler(): [boolean, () => Promise<void>] {
+export default function useRequestReward(): [boolean, () => void] {
   const { id: referralId, pendingAmount: amount, isRequestRewardPending } = useReferrerInformation() || {}
   const [clicked, setClicked] = useState(false)
 
-  const handler = useCallback(async () => {
+  const handler = useCallback(() => {
     if (
       referralId === undefined ||
       amount === undefined ||

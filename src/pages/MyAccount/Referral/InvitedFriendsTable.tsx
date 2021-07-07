@@ -74,8 +74,7 @@ const TableHeading = styled.th<{ align?: string }>`
 
 export default function InvitedFriendsTable() {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-  // const [limit, setLimit] = useState<5 | 10 | 100>(5)
-  const [limit, setLimit] = useState<number>(1)
+  const [limit, setLimit] = useState<5 | 10 | 100>(5)
   const [selectedPage, setSelectedPage] = useState(1)
 
   const friendList = useFriendList(limit, selectedPage)
