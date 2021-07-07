@@ -138,8 +138,8 @@ export const StyledInternalLink = styled(Link)`
 const StyledLink = styled.a`
   text-decoration: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.primary1};
-  font-weight: 500;
+  color: ${({ theme }) => theme.blue1};
+  font-weight: 400;
 
   :hover {
     text-decoration: underline;
@@ -229,6 +229,18 @@ export function BackArrow({ to }: { to: string }) {
 export const CustomLightSpinner = styled(Spinner)<{ size: string }>`
   height: ${({ size }) => size};
   width: ${({ size }) => size};
+`
+
+export const HideLarge = styled.span`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    display: none;
+  `};
+`
+
+export const HideMedium = styled.span`
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: none;
+  `};
 `
 
 export const HideSmall = styled.span`

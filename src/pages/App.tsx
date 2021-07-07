@@ -44,6 +44,7 @@ import WeeklyRanking from '../components/WeeklyRanking'
 import { ReactComponent as LogoForMobileResponsive } from '../assets/images/logo_for_mobile_responsive.svg'
 import { useTranslation } from 'react-i18next'
 import Pool from './Pool'
+import { HideLarge } from '../theme'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -146,7 +147,9 @@ export default function App() {
         </HeaderWrapper>
         <BodyWrapper>
           <Popups />
-          <Polling />
+          <HideLarge>
+            <Polling />
+          </HideLarge>
           <TopLevelModals />
           <OnlyShowAtSwapAndAddLiquidityPages>
             <LogoResponsive />

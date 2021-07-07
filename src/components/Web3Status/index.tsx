@@ -58,7 +58,8 @@ export const ButtonMainRed = styled.div<{ cursor?: string; padding?: string }>`
   }
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      width: 140px;
+    min-width: fit-content;
+    width: fit-content;
   `}
 `
 
