@@ -4,12 +4,16 @@ import Balances from './components/Balances'
 import FarmCards from './components/FarmCards'
 import StakingHeader from './components/StakingHeader'
 import { Filter } from 'react-feather'
+import useFarms from '../../hooks/masterfarmer/useFarms'
 
 export default function Farms() {
   //TODO_STAKING: remove fake data
   const fakeData = {
     totalLockValue: '1231321212131'
   }
+
+  const farms = useFarms()
+  console.log('farms1', farms)
 
   return (
     <>
