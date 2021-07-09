@@ -1,5 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
+import { Farm } from 'hooks/masterfarmer/interfaces'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
@@ -7,7 +8,6 @@ import IconAPY from '../../../assets/images/icon_apy.svg'
 import IconLP from '../../../assets/images/icon_lp.svg'
 import Loader from '../../../components/Loader'
 import { NUMBER_BLOCKS_PER_YEAR } from '../../../config'
-import { Farm } from '../../../contexts/Farms'
 import useFarms from '../../../hooks/farms/useFarms'
 import { IsRopsten } from '../../../utils'
 interface FarmWithStakedValue extends Farm {
@@ -20,13 +20,14 @@ interface FarmWithStakedValue extends Farm {
   luaPrice: BigNumber
 }
 
-const FarmCards: React.FC = () => {
-  const [farms] = useFarms()
+const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms }) => {
+  // const [farms] = useFarms()
   // TODO_STAKING: remove fake data
   const luaPrice = new BigNumber(10)
 
-  const rows = farms.reduce<FarmWithStakedValue[][]>(
+  const rows = farms?.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
+      console.log('farm', farm)
       // TODO_STAKING: remove fake data
       const farmWithStakedValue: FarmWithStakedValue = {
         ...farm,
@@ -48,10 +49,9 @@ const FarmCards: React.FC = () => {
     },
     [[]]
   )
-
   return (
     <StyledCards>
-      {!!rows[0].length ? (
+      {rows && !!rows[0].length ? (
         rows.map((farmRow, i) => (
           <StyledRow key={i}>
             {farmRow.map((farm, j) => (
@@ -97,7 +97,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
           <StyledContent>
             <div style={{ display: 'flex', background: 'linear-gradient(180deg, #FFEFEF 48.7%, #F8F8F8 100%)' }}>
               <div>
-                <StyledTitle>{farm.name}</StyledTitle>
+                <StyledTitle>{farm.symbol}</StyledTitle>
                 <StyledMultiplier> {fakeData.multiplier}X</StyledMultiplier>
               </div>
               <div style={{ marginLeft: '10px' }}>
@@ -116,15 +116,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               <span style={{ fontWeight: 'bold', color: '#3FAAB0' }}>
                 <img src={IconAPY} alt="" height={12} />
                 {fakeData.newReward && fakeData.poolWeight && fakeData.luaPrice && fakeData.usdValue
-                  ? `${parseFloat(
-                      fakeData.luaPrice
-                        .times(NUMBER_BLOCKS_PER_YEAR[ID])
-                        .times(fakeData.newReward.div(10 ** 18))
-                        .div(fakeData.usdValue)
-                        .div(10 ** 8)
-                        .times(100)
-                        .toFixed(2)
-                    ).toLocaleString('en-US')}%`
+                  ? `${parseFloat('' + farm.roiPerYear).toLocaleString('en-US')}%`
                   : '~'}
               </span>
             </StyledInsight>

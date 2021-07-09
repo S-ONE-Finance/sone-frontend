@@ -1,19 +1,33 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Balances from './components/Balances'
 import FarmCards from './components/FarmCards'
 import StakingHeader from './components/StakingHeader'
 import { Filter } from 'react-feather'
 import useFarms from '../../hooks/masterfarmer/useFarms'
+import BigNumber from 'bignumber.js'
+import { Farm } from 'hooks/masterfarmer/interfaces'
 
 export default function Farms() {
   //TODO_STAKING: remove fake data
-  const fakeData = {
-    totalLockValue: '1231321212131'
-  }
+  // const fakeData = {
+  //   totalLockValue: '10000000000'
+  // }
 
-  const farms = useFarms()
-  console.log('farms1', farms)
+  const [totalLockValue, setTotalLockValue] = useState<BigNumber>(new BigNumber(0))
+
+  const farms: Farm[] | undefined = useFarms()
+  console.log('farms', farms)
+
+  useEffect(() => {
+    if (farms) {
+      let totalLockValue: BigNumber = new BigNumber(0)
+      farms.map((farm: Farm) => {
+        totalLockValue = totalLockValue.plus(new BigNumber(farm.tvl | 0))
+      })
+      setTotalLockValue(totalLockValue)
+    }
+  }, [farms, setTotalLockValue])
 
   return (
     <>
@@ -21,7 +35,7 @@ export default function Farms() {
       <div style={{ marginTop: '60px' }}>
         <div style={{ fontSize: 40, color: '#333333', textAlign: 'center' }}>
           <span style={{ fontWeight: 'bold' }}>S-ONE Finance</span> Currently Has{' '}
-          <span style={{ color: '#65BAC5', fontSize: 40 }}>$ {fakeData.totalLockValue}</span> Of Total Locked Value
+          <span style={{ color: '#65BAC5', fontSize: 40 }}>$ {totalLockValue.toNumber()}</span> Of Total Locked Value
         </div>
         <Balances />
       </div>
@@ -49,7 +63,7 @@ export default function Farms() {
         </span>
       </div>
       <Box className="mt-4">
-        <FarmCards />
+        <FarmCards farms={farms} />
       </Box>
     </>
   )
