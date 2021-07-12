@@ -72,17 +72,24 @@ export default function Referral() {
   // Ở đây dùng tạm hàm biến cờ "clicked" để set "Waiting for Approval"
   // ngay sau khi POST lệnh "request reward" thành công. Sau 5000ms (FETCH_DATA_REFERRAL_INTERVAL) sẽ nhả ra.
   const [clicked, requestReward] = useRequestReward()
-  const { isRequestRewardPending } = useReferrerInformation() || {}
+  const { isRequestRewardPending, pendingAmount } = useReferrerInformation() || {}
+  const isDisabled =
+    clicked ||
+    isRequestRewardPending === undefined ||
+    isRequestRewardPending === true ||
+    pendingAmount === undefined ||
+    pendingAmount === 0
+  const disabledText = pendingAmount === 0 ? 'Empty pending reward' : 'Waiting for Approval'
 
   return (
     <Section>
       <RowBetween>
         <Heading>Referral</Heading>
         <AutoColumn>
-          <SectionButton onClick={requestReward} is_disabled={clicked || isRequestRewardPending ? 'yes' : undefined}>
+          <SectionButton onClick={requestReward} is_disabled={isDisabled ? 'yes' : undefined}>
             <SectionText>Request Reward</SectionText>
           </SectionButton>
-          {(clicked || isRequestRewardPending) && <PendingText>Waiting for Approval</PendingText>}
+          {isDisabled && <PendingText>{disabledText}</PendingText>}
         </AutoColumn>
       </RowBetween>
       <CardReferral>
