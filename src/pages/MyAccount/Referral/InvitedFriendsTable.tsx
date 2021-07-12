@@ -78,6 +78,7 @@ export default function InvitedFriendsTable() {
   const [selectedPage, setSelectedPage] = useState(1)
 
   const friendList = useFriendList(limit, selectedPage)
+
   const numberOfPages = useNumberOfPages(limit)
 
   const handleChangePaginationLimit = () => {
@@ -101,7 +102,8 @@ export default function InvitedFriendsTable() {
             <TableRow key={friend.id}>
               <TableData align="center">{limit * (selectedPage - 1) + index + 1}</TableData>
               <TableData breakk="break-all">{shortenAddress(friend.address, isUpToExtraSmall ? 6 : 14)}</TableData>
-              <TableData>{friend.date}</TableData>
+              {/* Thằng Date chuẩn ISO thì cứ đẩy substr(0, 10) là ăn :D. */}
+              <TableData>{friend.updatedAt.substr(0, 10)}</TableData>
               <TableData>
                 <ExternalLink href={friend.transaction}>Etherscan</ExternalLink>
               </TableData>

@@ -19,6 +19,14 @@ import Column from '../Column'
 import { RowBetween } from '../Row'
 import { StyledCloseAbsolute } from '../WalletModal'
 import { StyledCloseIcon } from '../../theme/components'
+import {
+  S_ONE_TOP_PAGE_URL,
+  S_ONE_SWAP_STATISTICS_URL,
+  S_ONE_STAKING_STATISTICS_URL,
+  S_ONE_WHITE_PAPER_URL,
+  S_ONE_FAQ_URL,
+  S_ONE_BLOG_URL
+} from '../../constants/urls'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
   padding-top: 1rem;
@@ -133,17 +141,17 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         </RowBetween>
       </Column>
       <Column>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>S-ONE Wallet</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_TOP_PAGE_URL}>S-ONE Wallet</StyledExternalLink>
         <StyledNavLink to={'/swap'}>Swap</StyledNavLink>
         <StyledNavLink to={'/pool'} isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
           Liquidity
         </StyledNavLink>
         <StyledNavLink to={'/uni'}>Staking</StyledNavLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>Swap Stats</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>Staking Stats</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>White Paper</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>FAQ</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>Blog</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_SWAP_STATISTICS_URL}>Swap Stats</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>Staking Stats</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>White Paper</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_FAQ_URL}>FAQ</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_BLOG_URL}>Blog</StyledExternalLink>
       </Column>
       <RecentTransactions isSmall={true} />
     </ColumnWrapper>

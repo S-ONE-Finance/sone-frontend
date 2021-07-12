@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import axios from 'axios'
 import useReferrerInformation from './useReferrerInformation'
-import { ADMIN_BACKEND_BASE_URL } from '../../../../constants'
+import { ADMIN_BACKEND_BASE_URL } from '../../../../constants/urls'
 import { FETCH_REFERRAL_DATA_INTERVAL } from '../index'
 
 export default function useRequestReward(): [boolean, () => void] {
