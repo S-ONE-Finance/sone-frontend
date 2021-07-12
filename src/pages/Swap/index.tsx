@@ -57,6 +57,8 @@ import useENSAddress from '../../hooks/useENSAddress'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import useTheme from '../../hooks/useTheme'
 import { TransactionType } from '../../state/transactions/types'
+import { useIsAccountReferred, useIsReferralWorksOnCurrentNetwork, useReferral } from '../../state/referral/hooks'
+import useAccountIsReferrer from '../../hooks/useAccountIsReferrer'
 
 export const ResponsiveAutoColumn = styled(AutoColumn)`
   padding: 23px 14px 0;
@@ -67,7 +69,7 @@ export const ResponsiveAutoColumn = styled(AutoColumn)`
   `}
 `
 
-export default function Swap({ history }: RouteComponentProps) {
+export default function Swap({ history, match }: RouteComponentProps) {
   // For Styling Responsive.
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
@@ -327,6 +329,12 @@ export default function Swap({ history }: RouteComponentProps) {
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
+  const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
+  const { code } = useReferral()
+  const isAccountReferred = useIsAccountReferred()
+  const accountIsReferrer = useAccountIsReferrer()
+  const weCanUseReferral = isReferralWorksOnCurrentNetwork && !isAccountReferred && code && !accountIsReferrer
+
   return (
     <>
       <TokenWarningModal
@@ -469,6 +477,19 @@ export default function Swap({ history }: RouteComponentProps) {
                         ) : (
                           '-'
                         )}
+                      </Text>
+                    </RowBetween>
+                  )}
+                  {weCanUseReferral && (
+                    <RowBetween align="center">
+                      <RowFixed>
+                        <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                          Referral ID
+                        </Text>
+                        <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic, minus." />
+                      </RowFixed>
+                      <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+                        {code}
                       </Text>
                     </RowBetween>
                   )}

@@ -148,7 +148,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
         pendingText={pendingText}
         currencyToAdd={selectedPair?.liquidityToken}
       />
-      <AutoColumn gap="20px">
+      <AutoColumn gap="md">
         <PanelSelectPair selectedPair={selectedPair} onPairSelect={handlePairSelect} />
         {isPairExistAndNotNull && (
           <>

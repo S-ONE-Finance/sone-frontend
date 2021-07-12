@@ -36,12 +36,13 @@ const NetworkIcon = styled(Activity)`
   height: 16px;
 `
 
-export const ButtonMainRed = styled.div<{ cursor?: string }>`
+export const ButtonMainRed = styled.div<{ cursor?: string; padding?: string }>`
   background-color: ${({ theme }) => theme.red1Sone};
   color: #ffffff;
   min-width: 154px;
-  padding: 0.5rem;
-  height: 35px;
+  padding: ${({ padding }) => (padding ? padding : '0.5rem')};
+  // Nếu truyền vào padding thì không set height nữa.
+  height: ${({ padding }) => (padding ? 'unset' : '35px')};
   border-radius: 31px;
   display: flex;
   justify-content: center;
@@ -57,7 +58,8 @@ export const ButtonMainRed = styled.div<{ cursor?: string }>`
   }
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      width: 140px;
+    min-width: fit-content;
+    width: fit-content;
   `}
 `
 
@@ -80,7 +82,7 @@ function Web3StatusInner() {
         onClick={() => {
           // Trên small devices, click vào sẽ ra my account.
           if (isUpToExtraSmall) {
-            history.push('/my_account')
+            history.push('/my-account')
           }
         }}
       >

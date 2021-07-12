@@ -67,6 +67,8 @@ export interface Colors {
   bg3Sone: Color
   bg4Sone: Color
   bg5Sone: Color
+  bg6Sone: Color
+  bg7Sone: Color
   bgPanels: Color
 
   /* Others */

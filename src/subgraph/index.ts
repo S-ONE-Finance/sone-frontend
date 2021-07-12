@@ -71,7 +71,7 @@ export function useBulkPairDataInterval() {
   return subgraphData
 }
 
-export function useGetPairFromSubgraphAndParse(): Pair[] {
+export function useGetPairFromSubgraphAndParse(): [boolean, Pair[]] {
   const { chainId } = useActiveWeb3React()
 
   const [pairTokens, setPairTokens] = useState<[Token, Token][]>([])
@@ -104,6 +104,12 @@ export function useGetPairFromSubgraphAndParse(): Pair[] {
 
   const topPairs = usePairs(pairTokens)
 
+  const isLoading: boolean = useMemo(
+    () =>
+      topPairs.some((entry: [PairState, Pair | null]): entry is [PairState, Pair] => entry[0] === PairState.LOADING),
+    [topPairs]
+  )
+
   // Only take pairs that EXISTS and NOT NULL.
   const existedTopPairs: Pair[] = useMemo(
     () =>
@@ -116,7 +122,7 @@ export function useGetPairFromSubgraphAndParse(): Pair[] {
     [topPairs]
   )
 
-  return existedTopPairs
+  return [isLoading, existedTopPairs]
 }
 
 /**

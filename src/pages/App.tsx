@@ -36,12 +36,15 @@ import RemoveLiquidity from './RemoveLiquidity'
 import Swap from './Swap'
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
+import MyAccountPage from './MyAccount'
+
 import TabSwapLiquidity from '../components/TabSwapLiquidity'
 import { useLocation } from 'react-router'
 import WeeklyRanking from '../components/WeeklyRanking'
 import { ReactComponent as LogoForMobileResponsive } from '../assets/images/logo_for_mobile_responsive.svg'
 import { useTranslation } from 'react-i18next'
 import Pool from './Pool'
+import { HideLarge } from '../theme'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -90,8 +93,9 @@ const FooterWrapper = styled.div`
   bottom: 0;
   width: 100%;
   height: 45px;
-  background: ${({ theme }) => theme.bg4Sone};
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  // Khi data empty thì hidden footer.
+  // background: ${({ theme }) => theme.bg4Sone};
+  // box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
   z-index: 1;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
@@ -131,6 +135,7 @@ function OnlyShowAtSwapAndAddLiquidityPages({ children }: { children?: React.Rea
 export default function App() {
   // Trigger i18next in entire app.
   useTranslation()
+
   return (
     <>
       <Route component={GoogleAnalyticsReporter} />
@@ -142,10 +147,12 @@ export default function App() {
         </HeaderWrapper>
         <BodyWrapper>
           <Popups />
-          <Polling />
+          <HideLarge>
+            <Polling />
+          </HideLarge>
           <TopLevelModals />
-          <LogoResponsive />
           <OnlyShowAtSwapAndAddLiquidityPages>
+            <LogoResponsive />
             <TabSwapLiquidity />
           </OnlyShowAtSwapAndAddLiquidityPages>
           <Web3ReactManager>
@@ -172,6 +179,7 @@ export default function App() {
               <Route exact strict path="/migrate/v1/:address" component={MigrateV1Exchange} />
               <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} />
               <Route exact strict path="/vote/:id" component={VotePage} />
+              <Route exact strict path="/my-account" component={MyAccountPage} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
