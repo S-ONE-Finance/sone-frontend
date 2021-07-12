@@ -445,7 +445,7 @@ export default function Header() {
         <ClaimModal />
         <HideExtraSmall>
           <HeaderRow>
-            <Title href="https://www.lipsum.com/" target="_blank">
+            <Title href="https://s-one.finance/" target="_blank">
               <img width={'100px'} src={darkMode ? LogoDark : Logo} alt="logo" />
             </Title>
             <HeaderMenu>
