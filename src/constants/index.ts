@@ -244,9 +244,3 @@ export const BLOCKED_ADDRESSES: string[] = [
   '0xA7e5d5A720f06526557c513402f2e6B5fA20b008',
   '0x8576aCC5C05D6Ce88f4e49bf65BdF0C62F91353C'
 ]
-
-export const ADMIN_BACKEND_BASE_URL = process.env.REACT_APP_ADMIN_BACKEND_BASE_URL
-
-if (typeof ADMIN_BACKEND_BASE_URL === 'undefined') {
-  throw new Error(`REACT_APP_ADMIN_BACKEND_BASE_URL must be a defined environment variable.`)
-}

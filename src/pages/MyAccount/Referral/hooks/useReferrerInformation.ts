@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
-import { ADMIN_BACKEND_BASE_URL } from '../../../../constants'
+import { ADMIN_BACKEND_BASE_URL } from '../../../../constants/urls'
 import { useActiveWeb3React } from '../../../../hooks'
 import { FETCH_REFERRAL_DATA_INTERVAL } from '../index'
 

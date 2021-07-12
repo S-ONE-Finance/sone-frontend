@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
-import { ADMIN_BACKEND_BASE_URL } from '../../../../constants'
+import { ADMIN_BACKEND_BASE_URL } from '../../../../constants/urls'
 import { useActiveWeb3React } from '../../../../hooks'
 import { FETCH_REFERRAL_DATA_INTERVAL } from '../index'
 
 export interface Friend {
   id: number
   address: string
-  date: Date // Date ở đây là cái ngày trong transaction receipt.
+  updatedAt: string
   rewardAmount: number // Số lượng SONE trả cho referrer = 0.05% khối lượng swap.
   transaction: string // Transaction Hash.
 }
