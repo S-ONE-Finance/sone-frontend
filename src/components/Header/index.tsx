@@ -21,6 +21,16 @@ import Web3Status from '../Web3Status'
 import Modal from '../Modal'
 import SoneAmount from '../SoneAmount'
 import MobileMenu from '../MobileMenu'
+import {
+  S_ONE_BLOG_URL,
+  S_ONE_DOCS_URL,
+  S_ONE_FAQ_URL,
+  S_ONE_TOP_PAGE_URL,
+  S_ONE_WALLET_INTRO_PAGE_URL,
+  S_ONE_WHITE_PAPER_URL,
+  S_ONE_STAKING_STATISTICS_URL,
+  S_ONE_SWAP_STATISTICS_URL
+} from '../../constants/urls'
 
 const activeClassName = 'ACTIVE'
 
@@ -445,12 +455,12 @@ export default function Header() {
         <ClaimModal />
         <HideExtraSmall>
           <HeaderRow>
-            <Title href="https://s-one.finance/" target="_blank">
+            <Title href={S_ONE_TOP_PAGE_URL} target="_blank">
               <img width={'100px'} src={darkMode ? LogoDark : Logo} alt="logo" />
             </Title>
             <HeaderMenu>
               <HideSmall>
-                <StyledExternalLink href={'https://www.lipsum.com/'}>S-ONE Wallet</StyledExternalLink>
+                <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>S-ONE Wallet</StyledExternalLink>
               </HideSmall>
               <MenuItem>
                 <StyledNavLink
@@ -473,27 +483,24 @@ export default function Header() {
               </MenuItem>
               <MenuItem>
                 <StyledExternalLink
-                  href={isMobile ? '' : 'https://www.lipsum.com/'}
+                  href={isMobile ? '' : S_ONE_SWAP_STATISTICS_URL}
                   target={isMobile ? '_self' : '_blank'}
                 >
                   Stats
                 </StyledExternalLink>
                 <SubMenu>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>Swap Stats</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>Staking Stats</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_SWAP_STATISTICS_URL}>Swap Stats</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_STAKING_STATISTICS_URL}>Staking Stats</SubMenuItemExternalLink>
                 </SubMenu>
               </MenuItem>
               <MenuItem>
-                <StyledExternalLink
-                  href={isMobile ? '' : 'https://docs.s-one.finance/'}
-                  target={isMobile ? '_self' : '_blank'}
-                >
+                <StyledExternalLink href={isMobile ? '' : S_ONE_DOCS_URL} target={isMobile ? '_self' : '_blank'}>
                   Docs
                 </StyledExternalLink>
                 <ResponsiveTopEndSubMenu>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>White Paper</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>FAQ</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>Blog</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_WHITE_PAPER_URL}>White Paper</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_FAQ_URL}>FAQ</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_BLOG_URL}>Blog</SubMenuItemExternalLink>
                 </ResponsiveTopEndSubMenu>
               </MenuItem>
             </HeaderMenu>
