@@ -2932,10 +2932,10 @@
     truffle "^5.1.44"
     truffle-hdwallet-provider "^1.0.17"
 
-"@s-one-finance/sdk-core@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@s-one-finance/sdk-core/-/sdk-core-1.0.11.tgz#5fac2eefdf4bcb2608dbc7a0a358c2b3380c4020"
-  integrity sha512-yoCgxlX/Xl3YAA2qeQ3D/w/nlKySWOT3psvvoP6UKopSODZgSnF8R6lJJw/PUW0iArzK7xEWPGWXW+KM2q00BA==
+"@s-one-finance/sdk-core@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@s-one-finance/sdk-core/-/sdk-core-1.0.12.tgz#f5e46de4f78cbf8187be83e31dd6b4fb63ef2d2e"
+  integrity sha512-GCTbdpEzEcxFflAPjW2npB0obkV7WnjggqyNLigzAHPcy5dCf7TasP3ot15e3K2RlDj2Pyg/F6il+0PkcfzD6Q==
   dependencies:
     "@s-one-finance/core" "^0.0.6"
     big.js "^5.2.2"
