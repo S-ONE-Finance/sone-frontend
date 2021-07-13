@@ -12,7 +12,7 @@ import { Farm } from './interfaces'
 
 const useFarms = () => {
   const { account, chainId } = useActiveWeb3React()
-  const [farms, setFarms] = useState<Farm[] | undefined>()
+  const [farms, setFarms] = useState<Farm[]>([])
 
   const fetchSLPFarms = useCallback(async () => {
     const results = await Promise.all([
@@ -36,7 +36,6 @@ const useFarms = () => {
       query: pairSubsetQuery,
       variables: { pairAddresses }
     })
-    console.log('pairsQuery', pairsQuery)
 
     const liquidityPositions = results[1]?.data.liquidityPositions
     const averageBlockTime = results[2]
@@ -63,14 +62,20 @@ const useFarms = () => {
         const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
         const rewardPerBlock = ((pool.allocPoint / pool.owner.totalAllocPoint) * pool.owner.sushiPerBlock) / 1e18
 
-        const roiPerBlock = (rewardPerBlock * sushiPrice) / balanceUSD
+        // const roiPerBlock = (rewardPerBlock * sushiPrice) / balanceUSD
+        const investedValue = 1000
+        const LPTokenPrice = pair.reserveUSD / pair.totalSupply
+        const LPTokenValue = investedValue / LPTokenPrice
+        const poolShare = LPTokenValue / (LPTokenValue + Number(pair.totalSupply))
+        const roiPerBlock = (rewardPerBlock * sushiPrice * poolShare) / investedValue
         const roiPerHour = roiPerBlock * blocksPerHour
         const roiPerDay = roiPerHour * 24
         const roiPerMonth = roiPerDay * 30
         const roiPerYear = roiPerMonth * 12
 
         const rewardPerDay = rewardPerBlock * blocksPerHour * 24
-
+        const sushiHarvested = pool.sushiHarvested > 0 ? pool.sushiHarvested : 0
+        const multiplier = (pool.owner.bonusMultiplier * pool.allocPoint) / 100
         return {
           ...pool,
           contract: 'masterchefv1',
@@ -87,6 +92,9 @@ const useFarms = () => {
           roiPerDay,
           roiPerMonth,
           roiPerYear,
+          sushiHarvested,
+          multiplier,
+          balanceUSD,
           rewardPerThousand: 1 * roiPerDay * (1000 / sushiPrice),
           tvl: liquidityPosition?.liquidityTokenBalance
             ? (pair.reserveUSD / pair.totalSupply) * liquidityPosition.liquidityTokenBalance

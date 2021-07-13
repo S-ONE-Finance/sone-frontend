@@ -27,7 +27,6 @@ const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms }) => {
 
   const rows = farms?.reduce<FarmWithStakedValue[][]>(
     (farmRows, farm, i) => {
-      console.log('farm', farm)
       // TODO_STAKING: remove fake data
       const farmWithStakedValue: FarmWithStakedValue = {
         ...farm,
@@ -98,7 +97,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             <div style={{ display: 'flex', background: 'linear-gradient(180deg, #FFEFEF 48.7%, #F8F8F8 100%)' }}>
               <div>
                 <StyledTitle>{farm.symbol}</StyledTitle>
-                <StyledMultiplier> {fakeData.multiplier}X</StyledMultiplier>
+                <StyledMultiplier> {farm.multiplier}X</StyledMultiplier>
               </div>
               <div style={{ marginLeft: '10px' }}>
                 <img src={IconLP} alt="" height="40" />
@@ -115,9 +114,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               <span>APY</span>
               <span style={{ fontWeight: 'bold', color: '#3FAAB0' }}>
                 <img src={IconAPY} alt="" height={12} />
-                {fakeData.newReward && fakeData.poolWeight && fakeData.luaPrice && fakeData.usdValue
-                  ? `${parseFloat('' + farm.roiPerYear).toLocaleString('en-US')}%`
-                  : '~'}
+                {`${farm.roiPerYear * 100}%`}
               </span>
             </StyledInsight>
             <StyledInsight>
@@ -125,7 +122,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               <span>
                 {fakeData.usdValue && (
                   <>
-                    <b>${parseFloat(fakeData.usdValue.toFixed(2)).toLocaleString('en-US')}</b>
+                    <b>${farm.balanceUSD}</b>
                   </>
                 )}
               </span>

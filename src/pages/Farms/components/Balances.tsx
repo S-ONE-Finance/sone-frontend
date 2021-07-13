@@ -1,7 +1,11 @@
-import React, { memo } from 'react'
+import React, { FC, memo } from 'react'
 import styled from 'styled-components'
 
-const Balances = memo(() => {
+interface BalanceProps {
+  circulatingSupplyValue: number
+}
+
+const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
   // TODO_STAKING: remove fake data
   const fakeData = {
     circulatingSupply: 323233,
@@ -15,7 +19,7 @@ const Balances = memo(() => {
             <div>
               <div>
                 <StyledCirculating>CRS Circulating Supply</StyledCirculating>
-                <span>{fakeData.circulatingSupply}</span>
+                <span>{circulatingSupplyValue}</span>
                 <StyledCirculating style={{ borderLeft: '1px solid black' }}>Total Supply</StyledCirculating>
                 <span>{fakeData.totalSupply}</span>
               </div>
@@ -25,7 +29,7 @@ const Balances = memo(() => {
       </>
     </StyledWrapper>
   )
-})
+}
 
 const StyledWrapper = styled.div`
   align-items: center;

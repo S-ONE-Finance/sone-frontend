@@ -88,10 +88,12 @@ export const poolsQuery = gql`
       accSushiPerShare
       balance
       userCount
+      sushiHarvested
       owner {
         id
         sushiPerBlock
         totalAllocPoint
+        bonusMultiplier
       }
     }
   }
@@ -255,8 +257,6 @@ const poolUserFragment = gql`
     exitUSD
     sushiHarvested
     sushiHarvestedUSD
-    sushiHarvestedSinceLockup
-    sushiHarvestedSinceLockupUSD
   }
 `
 

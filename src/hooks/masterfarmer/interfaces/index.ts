@@ -31,6 +31,9 @@ interface LiquidityPair extends BaseDataSushi {
   txCount: string
   timestamp: string
 }
+
+interface Pair extends BaseDataSushi {}
+interface User extends BaseDataSushi {}
 export interface Farm extends BaseDataSushi {
   pair: string
   allocPoint: string
@@ -55,4 +58,24 @@ export interface Farm extends BaseDataSushi {
   roiPerYear: number
   rewardPerThousand: number
   tvl: number
+  sushiHarvested: number
+  multiplier: number
+  balanceUSD: number
+}
+
+export interface MyStaked extends BaseDataSushi {
+  address: string
+  amount: string
+  entryUSD: string
+  exitUSD: string
+  pool: Farm
+  rewardDebt: string
+  sushiHarvested: string
+  sushiHarvestedUSD: string
+}
+
+export interface LiquidityPosition extends BaseDataSushi {
+  liquidityTokenBalance: string
+  pair: Pair
+  user: User
 }
