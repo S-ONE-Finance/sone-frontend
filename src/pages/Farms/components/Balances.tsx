@@ -12,29 +12,22 @@ const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
     totalSupply: 2131321
   }
   return (
-    <StyledWrapper>
-      <>
-        <div>
-          <div>
-            <div>
-              <div>
-                <StyledCirculating>CRS Circulating Supply</StyledCirculating>
-                <span>{circulatingSupplyValue}</span>
-                <StyledCirculating style={{ borderLeft: '1px solid black' }}>Total Supply</StyledCirculating>
-                <span>{fakeData.totalSupply}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
-    </StyledWrapper>
+    <>
+      <StyledWrapper>
+        <StyledCirculating>CRS Circulating Supply</StyledCirculating>
+        <StyledNumber1>{`${circulatingSupplyValue} SONE`}</StyledNumber1>
+        <StyledCirculating>Total Supply</StyledCirculating>
+        <StyledNumber>{`${fakeData.totalSupply} SONE`}</StyledNumber>
+      </StyledWrapper>
+    </>
   )
 }
 
 const StyledWrapper = styled.div`
-  align-items: center;
   display: flex;
-  text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
   @media (max-width: 768px) {
     width: 100%;
     flex-flow: column nowrap;
@@ -48,6 +41,21 @@ const StyledCirculating = styled.span`
   line-height: 23px;
   color: #767676;
   margin-right: 10px;
+`
+
+const StyledNumber = styled.div`
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 36.31px;
+  color: #333333;
+`
+
+const StyledNumber1 = styled(StyledNumber)`
+  &:after {
+    content: ' ';
+    margin: 0 10px;
+    border-left: 3px solid #333;
+  }
 `
 
 export default Balances

@@ -38,28 +38,30 @@ const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms }) => {
         usdValue: new BigNumber(0),
         luaPrice
       }
-      const newFarmRows = [...farmRows]
-      if (newFarmRows[newFarmRows.length - 1].length === 3) {
-        newFarmRows.push([farmWithStakedValue])
-      } else {
-        newFarmRows[newFarmRows.length - 1].push(farmWithStakedValue)
-      }
-      return newFarmRows
+      // const newFarmRows = [...farmRows]
+      // if (newFarmRows[newFarmRows.length - 1].length === 3) {
+      //   newFarmRows.push([farmWithStakedValue])
+      // } else {
+      //   newFarmRows[newFarmRows.length - 1].push(farmWithStakedValue)
+      // }
+      return [...farmRows, farmWithStakedValue]
     },
     [[]]
   )
+  console.log(rows)
+
   return (
     <StyledCards>
       {rows && !!rows[0].length ? (
         rows.map((farmRow, i) => (
-          <StyledRow key={i}>
+          <div key={i}>
             {farmRow.map((farm, j) => (
               <React.Fragment key={j}>
                 <FarmCard farm={farm} />
                 {(j === 0 || j === 1) && <StyledSpacer />}
               </React.Fragment>
             ))}
-          </StyledRow>
+          </div>
         ))
       ) : (
         <StyledLoadingWrapper>
@@ -90,63 +92,63 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
   const ID = isRopsten ? 3 : 1
 
   return (
-    <StyledCardWrapper>
-      <CardWrap>
-        <div>
-          <StyledContent>
-            <div style={{ display: 'flex', background: 'linear-gradient(180deg, #FFEFEF 48.7%, #F8F8F8 100%)' }}>
-              <div>
-                <StyledTitle>{farm.symbol}</StyledTitle>
-                <StyledMultiplier> {farm.multiplier}X</StyledMultiplier>
-              </div>
-              <div style={{ marginLeft: '10px' }}>
-                <img src={IconLP} alt="" height="40" />
-              </div>
+    <>
+      {/* <CardWrap> */}
+      <div>
+        <StyledContent>
+          <StyledCardHeader>
+            <div>
+              <StyledTitle>{farm.symbol}</StyledTitle>
+              <StyledMultiplier> {farm.multiplier}X</StyledMultiplier>
             </div>
-            <br />
-            <StyledInsight>
-              <span>Earn</span>
-              <span>
-                <b>SONE</b>
-              </span>
-            </StyledInsight>
-            <StyledInsight>
-              <span>APY</span>
-              <span style={{ fontWeight: 'bold', color: '#3FAAB0' }}>
-                <img src={IconAPY} alt="" height={12} />
-                {`${farm.roiPerYear * 100}%`}
-              </span>
-            </StyledInsight>
-            <StyledInsight>
-              <span>Total liquidity</span>
-              <span>
-                {fakeData.usdValue && (
-                  <>
-                    <b>${farm.balanceUSD}</b>
-                  </>
-                )}
-              </span>
-            </StyledInsight>
-            <NavLink
-              to={`/staking/${fakeData.id}`}
-              style={{
-                background: 'linear-gradient(90deg, #F05359 27.06%, #F58287 111.99%)',
-                borderRadius: '52px',
-                color: 'white',
-                width: '230px',
-                height: '40px',
-                lineHeight: '40px',
-                textAlign: 'center',
-                textDecoration: 'none',
-                fontWeight: 'bold'
-              }}
-            >
-              Select
-            </NavLink>
-          </StyledContent>
-        </div>
-      </CardWrap>
-    </StyledCardWrapper>
+            <div style={{ marginLeft: '10px' }}>
+              <img src={IconLP} alt="" height="84" width="84" />
+            </div>
+          </StyledCardHeader>
+          <br />
+          <StyledInsight>
+            <span>Earn</span>
+            <span>
+              <b>SONE</b>
+            </span>
+          </StyledInsight>
+          <StyledInsight>
+            <span>APY</span>
+            <span style={{ fontWeight: 'bold', color: '#3FAAB0' }}>
+              <img src={IconAPY} alt="" height={12} />
+              {`${farm.roiPerYear * 100}%`}
+            </span>
+          </StyledInsight>
+          <StyledInsight>
+            <span>Total liquidity</span>
+            <span>
+              {fakeData.usdValue && (
+                <>
+                  <b>${farm.balanceUSD}</b>
+                </>
+              )}
+            </span>
+          </StyledInsight>
+          <NavLink
+            to={`/staking/${fakeData.id}`}
+            style={{
+              background: 'linear-gradient(90deg, #F05359 27.06%, #F58287 111.99%)',
+              borderRadius: '52px',
+              color: 'white',
+              width: '230px',
+              height: '40px',
+              lineHeight: '40px',
+              textAlign: 'center',
+              textDecoration: 'none',
+              fontWeight: 'bold'
+            }}
+          >
+            Select
+          </NavLink>
+        </StyledContent>
+      </div>
+      {/* </CardWrap> */}
+    </>
   )
 }
 
@@ -155,6 +157,10 @@ const CardWrap = styled.div`
 `
 
 const StyledCards = styled.div`
+  display: grid;
+  column-gap: 50px;
+  row-gap: 50px;
+  grid-template-columns: 1fr 1fr 1fr;
   width: 1200px;
   @media (max-width: 768px) {
     width: 100%;
@@ -169,14 +175,14 @@ const StyledLoadingWrapper = styled.div`
 `
 
 const StyledRow = styled.div`
-  display: flex;
-  margin-bottom: 10px;
-  flex-flow: row wrap;
-  @media (max-width: 768px) {
-    width: 100%;
-    flex-flow: column nowrap;
-    align-items: center;
-  }
+  // display: flex;
+  margin-bottom: 2000px;
+  // flex-flow: row wrap;
+  // @media (max-width: 768px) {
+  //   width: 100%;
+  //   flex-flow: column nowrap;
+  //   align-items: center;
+  // }
 `
 
 const StyledCardWrapper = styled.div`
@@ -225,6 +231,16 @@ const StyledMultiplier = styled.div`
   display: inline;
   color: #3faab0;
   padding: 5px 14px;
+`
+
+const StyledCardHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 23px 32px;
+  background: linear-gradient(180deg, #ffefef 48.7%, #f8f8f8 100%);
+  width: 100%;
+  border-top-left-radius: 32px
+  border-top-right-radius: 32px
 `
 
 export default FarmCards

@@ -10,6 +10,7 @@ import { Farm, LiquidityPosition, MyStaked } from 'hooks/masterfarmer/interfaces
 import _ from 'lodash'
 import useMyStaked from 'hooks/masterfarmer/useMyStaked'
 import useMyLPToken from 'hooks/masterfarmer/useMyLPToken'
+import FilterC from './components/FilterC'
 
 export default function Farms() {
   //TODO_STAKING: remove fake data
@@ -22,6 +23,24 @@ export default function Farms() {
   const [circulatingSupplyValue, setCirculatingSupplyValue] = useState<BigNumber>(new BigNumber(0))
   const [sortBy, setSortBy] = useState('Bonus campaign')
   const [filter, setFilter] = useState('Active pool')
+  const [optionsSort] = useState([
+    {
+      label: 'APY',
+      value: 'APY'
+    },
+    {
+      label: 'Total liquidity',
+      value: 'Total liquidity'
+    },
+    {
+      label: 'Bonus campaign',
+      value: 'Bonus campaign'
+    },
+    {
+      label: 'LP Name',
+      value: 'LP Name'
+    }
+  ])
 
   const farms: Farm[] = useFarms()
   const myStaked: MyStaked[] = useMyStaked()
@@ -94,13 +113,13 @@ export default function Farms() {
   return (
     <>
       <StakingHeader />
-      <div style={{ marginTop: '60px' }}>
-        <div style={{ fontSize: 40, color: '#333333', textAlign: 'center' }}>
-          <span style={{ fontWeight: 'bold' }}>S-ONE Finance</span> Currently Has{' '}
-          <span style={{ color: '#65BAC5', fontSize: 40 }}>$ {totalLockValue.toNumber()}</span> Of Total Locked Value
-        </div>
+      <WrapTitle>
+        <Title>
+          <span style={{ fontWeight: 'bold' }}>S-ONE Finance&nbsp;</span> Currently Has
+          <span style={{ color: '#65BAC5' }}>&nbsp;{totalLockValue.toNumber()}&nbsp;</span> Of Total Locked Value
+        </Title>
         <Balances circulatingSupplyValue={circulatingSupplyValue.toNumber()} />
-      </div>
+      </WrapTitle>
       <div>
         <span>
           <span>Sort by</span>
@@ -110,6 +129,7 @@ export default function Farms() {
             <option value="Bonus campaign">Bonus campaign</option>
             <option value="LP Name">LP Name</option>
           </select>
+          {/* <FilterC options={optionsSort} value={sortBy} handleOnchange={handleSortBy} /> */}
         </span>
         <span style={{ marginLeft: '100px' }}>
           <span>
@@ -137,4 +157,16 @@ const Box = styled.div`
       margin-top: 30px;
     }
   }
+`
+const Title = styled.div`
+  display: flex;
+  font-size: 40px;
+  color: #333333;
+  justify-content: 'center';
+  align-items: center;
+  padding: 20px;
+`
+
+const WrapTitle = styled.div`
+  padding: 55px;
 `
