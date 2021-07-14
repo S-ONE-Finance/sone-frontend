@@ -51,8 +51,6 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
     }
   }, [onFieldInput, currencyIdA, currencyIdB])
 
-  // TODO: Chưa xử lý selectedPairState là NOT_EXISTS hoặc INVALID.
-
   // Đang chọn WETH mà switch sang one token mode thì đổi url thành eth.
   useEffect(() => {
     if (chainId) {
@@ -72,7 +70,8 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
   const selectedCurrency = isSelectCurrencyA ? currencyA : currencyB
   const theOtherCurrency = isSelectCurrencyA ? currencyB : currencyA
 
-  // Chỉ select được ETH, ko cho select WETH
+  // Parse WETH sang ETH, khi select pair sẽ là chọn đồng ETH.
+  // Đồng nghĩa với việc không có use-case add liquidity one token mode với token WETH.
   const handlePairSelect = (pair: Pair) => {
     const { token0, token1 } = pair
     const currency0 = unwrappedToken(token0)
@@ -186,10 +185,8 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
         selectedPairState={selectedPairState}
         selectedPair={selectedPair}
         selectedCurrency={selectedCurrency ?? undefined}
-        theOtherCurrency={theOtherCurrency ?? undefined}
-        setAttemptingTxn={setAttemptingTxn}
-        setTxHash={setTxHash}
         setShowConfirm={setShowConfirm}
+        onAdd={onAdd}
       />
       <TransactionDetails
         selectedPairState={selectedPairState}

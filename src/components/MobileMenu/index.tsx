@@ -18,9 +18,9 @@ import RecentTransactions from '../RecentTransactions'
 import Column from '../Column'
 import { RowBetween } from '../Row'
 import { StyledCloseAbsolute } from '../WalletModal'
-import { StyledCloseIcon } from '../../theme/components'
+import { StyledCloseIcon } from '../../theme'
 import {
-  S_ONE_TOP_PAGE_URL,
+  S_ONE_WALLET_INTRO_PAGE_URL,
   S_ONE_SWAP_STATISTICS_URL,
   S_ONE_STAKING_STATISTICS_URL,
   S_ONE_WHITE_PAPER_URL,
@@ -29,6 +29,7 @@ import {
 } from '../../constants/urls'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
+  position: relative;
   padding-top: 1rem;
   background-color: ${({ theme }) => theme.bg1Sone};
 
@@ -103,7 +104,7 @@ const StyledExternalLink = styled(ExternalLink).attrs({
 
   :hover,
   :focus {
-    color: ${({ theme }) => theme.red1Sone};
+    text-decoration: none;
   }
 
   ::after {
@@ -141,7 +142,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         </RowBetween>
       </Column>
       <Column>
-        <StyledExternalLink href={S_ONE_TOP_PAGE_URL}>S-ONE Wallet</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>S-ONE Wallet</StyledExternalLink>
         <StyledNavLink to={'/swap'}>Swap</StyledNavLink>
         <StyledNavLink to={'/pool'} isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
           Liquidity

@@ -5,7 +5,6 @@ import { RowBetween } from 'components/Row'
 import { PairState } from 'data/Reserves'
 import { useActiveWeb3React } from 'hooks'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import useAddLiquidityOneTokenHandler from 'hooks/useAddLiquidityOneTokenHandler'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { Dots } from 'pages/Pool/styleds'
 import React from 'react'
@@ -20,20 +19,16 @@ type ButtonGroupingProps = {
   selectedPairState: PairState
   selectedPair: Pair | null
   selectedCurrency: Currency | undefined
-  theOtherCurrency: Currency | undefined
-  setAttemptingTxn: React.Dispatch<React.SetStateAction<boolean>>
-  setTxHash: React.Dispatch<React.SetStateAction<string>>
   setShowConfirm: React.Dispatch<React.SetStateAction<boolean>>
+  onAdd: () => void
 }
 
-export default function ButtonGroupping({
+export default function ButtonGrouping({
   selectedPairState,
   selectedPair,
   selectedCurrency,
-  theOtherCurrency,
-  setAttemptingTxn,
-  setTxHash,
-  setShowConfirm
+  setShowConfirm,
+  onAdd
 }: ButtonGroupingProps) {
   const { token0, token1 } = selectedPair ?? {}
   const { error, selectedTokenParsedAmount, theOtherTokenParsedAmount } = useDerivedMintSimpleInfo(
@@ -61,15 +56,6 @@ export default function ButtonGroupping({
   )
 
   const expertMode = useIsExpertMode()
-
-  const onAdd = useAddLiquidityOneTokenHandler({
-    selectedPairState,
-    selectedPair,
-    selectedCurrency,
-    theOtherCurrency,
-    setAttemptingTxn,
-    setTxHash
-  })
 
   return (
     <ButtonWrapper>
