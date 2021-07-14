@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { tryParseAmount } from 'state/swap/hooks'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { wrappedCurrency, wrappedCurrencyAmount } from 'utils/wrappedCurrency'
+import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { typeInput } from './actions'
 
@@ -42,7 +42,7 @@ export function useDerivedMintSimpleInfo(
   theOtherCurrency?: Currency
   maxAmount?: CurrencyAmount
   // Lượng selectedCurrency mà người dùng nhập vào.
-  userInputParsedAmount?: TokenAmount
+  selectedTokenUserInputAmount?: TokenAmount
   // Lượng selectedCurrency sau khi chia 2.
   selectedTokenParsedAmount?: TokenAmount
   // Lượng theOtherCurrency sau khi lấy selectedTokenParsedAmount ra để swap (chưa tính slippage).
@@ -62,12 +62,16 @@ export function useDerivedMintSimpleInfo(
 
   const selectedToken = wrappedCurrency(selectedCurrency, chainId)
 
-  const userInputAmount = tryParseAmount(typedValue, selectedCurrency ?? undefined)
-  const userInputParsedAmount: TokenAmount | undefined =
-    selectedToken && userInputAmount && new TokenAmount(selectedToken, userInputAmount.raw.toString())
-  const wrappedUserInputParsedAmount = wrappedCurrencyAmount(userInputParsedAmount, chainId)
+  const selectedCurrencyUserInputAmount: CurrencyAmount | undefined = tryParseAmount(
+    typedValue,
+    selectedCurrency ?? undefined
+  )
+  const selectedTokenUserInputAmount: TokenAmount | undefined =
+    selectedToken &&
+    selectedCurrencyUserInputAmount &&
+    new TokenAmount(selectedToken, selectedCurrencyUserInputAmount.raw.toString())
   const [selectedTokenParsedAmount, theOtherTokenParsedAmount] =
-    (pair && wrappedUserInputParsedAmount && pair.getAmountsOutAddOneToken(wrappedUserInputParsedAmount)) ?? []
+    (pair && selectedTokenUserInputAmount && pair.getAmountsOutAddOneToken(selectedTokenUserInputAmount)) ?? []
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
@@ -120,7 +124,7 @@ export function useDerivedMintSimpleInfo(
     error = 'Invalid Pair'
   } else if (noLiquidity) {
     error = 'Invalid Pair (No Liquidity)'
-  } else if (userInputParsedAmount && currencyBalance?.lessThan(userInputParsedAmount)) {
+  } else if (selectedTokenUserInputAmount && currencyBalance?.lessThan(selectedTokenUserInputAmount)) {
     error = 'Insufficient ' + selectedCurrency?.symbol + ' balance'
   } else if (
     typeof isSelectedToken0 === 'boolean' &&
@@ -133,7 +137,7 @@ export function useDerivedMintSimpleInfo(
 
   return {
     maxAmount,
-    userInputParsedAmount,
+    selectedTokenUserInputAmount,
     selectedTokenParsedAmount,
     theOtherTokenParsedAmount,
     noLiquidity,
