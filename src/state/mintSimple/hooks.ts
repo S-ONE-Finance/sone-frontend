@@ -41,8 +41,11 @@ export function useDerivedMintSimpleInfo(
 ): {
   theOtherCurrency?: Currency
   maxAmount?: CurrencyAmount
-  userInputParsedAmount?: CurrencyAmount
+  // Lượng selectedCurrency mà người dùng nhập vào.
+  userInputParsedAmount?: TokenAmount
+  // Lượng selectedCurrency sau khi chia 2.
   selectedTokenParsedAmount?: TokenAmount
+  // Lượng theOtherCurrency sau khi lấy selectedTokenParsedAmount ra để swap (chưa tính slippage).
   theOtherTokenParsedAmount?: TokenAmount
   noLiquidity: boolean
   price?: Price
@@ -57,19 +60,19 @@ export function useDerivedMintSimpleInfo(
 
   const maxAmount = maxAmountSpend(currencyBalance)
 
-  // userInputParsedAmount = lượng currency mà người dùng nhập vào.
-  // selectedTokenParsedAmount = lượng selected currency sau khi chia 2.
-  // theOtherTokenParsedAmount = lượng currency sau khi lấy selectedTokenParsedAmount ra để swap.
-  const userInputParsedAmount = tryParseAmount(typedValue, selectedCurrency ?? undefined)
+  const selectedToken = wrappedCurrency(selectedCurrency, chainId)
+
+  const userInputAmount = tryParseAmount(typedValue, selectedCurrency ?? undefined)
+  const userInputParsedAmount: TokenAmount | undefined =
+    selectedToken && userInputAmount && new TokenAmount(selectedToken, userInputAmount.raw.toString())
   const wrappedUserInputParsedAmount = wrappedCurrencyAmount(userInputParsedAmount, chainId)
   const [selectedTokenParsedAmount, theOtherTokenParsedAmount] =
-    (pair && wrappedUserInputParsedAmount && pair.getAmountsAddOneToken(wrappedUserInputParsedAmount)) ?? []
+    (pair && wrappedUserInputParsedAmount && pair.getAmountsOutAddOneToken(wrappedUserInputParsedAmount)) ?? []
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
   const noLiquidity = pairState === PairState.NOT_EXISTS || Boolean(totalSupply && JSBI.equal(totalSupply.raw, ZERO))
 
-  const selectedToken = wrappedCurrency(selectedCurrency, chainId)
   const price = useMemo(() => {
     if (noLiquidity) {
       if (selectedTokenParsedAmount && theOtherTokenParsedAmount) {
@@ -105,6 +108,9 @@ export function useDerivedMintSimpleInfo(
     }
   }, [liquidityMinted, totalSupply])
 
+  const isSelectedToken0 =
+    pair && pair.token0 && selectedTokenParsedAmount && selectedTokenParsedAmount.token.equals(pair.token0)
+
   // Error section.
   let error: string | undefined
 
@@ -115,7 +121,14 @@ export function useDerivedMintSimpleInfo(
   } else if (noLiquidity) {
     error = 'Invalid Pair (No Liquidity)'
   } else if (userInputParsedAmount && currencyBalance?.lessThan(userInputParsedAmount)) {
-    error = 'Insufficient' + selectedCurrency?.symbol + ' balance'
+    error = 'Insufficient ' + selectedCurrency?.symbol + ' balance'
+  } else if (
+    typeof isSelectedToken0 === 'boolean' &&
+    pair &&
+    selectedTokenParsedAmount &&
+    selectedTokenParsedAmount.greaterThan(isSelectedToken0 ? pair.reserve0 : pair.reserve1)
+  ) {
+    error = `Insufficient ${isSelectedToken0 ? pair.token0.symbol : pair.token1.symbol} liquidity for swap`
   }
 
   return {
