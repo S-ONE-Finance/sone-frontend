@@ -7,7 +7,7 @@ import { ChainId, WETH } from '@s-one-finance/sdk-core'
 // import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { abi as IUniswapV2PairABI } from '@s-one-finance/core/build/contracts/IUniswapV2Pair.json'
 import { useMemo } from 'react'
-import { GOVERNANCE_ADDRESS, MERKLE_DISTRIBUTOR_ADDRESS, UNI } from '../constants'
+import { GOVERNANCE_ADDRESS, MASTER_FARMER_ADDRESS, MERKLE_DISTRIBUTOR_ADDRESS, SONE, UNI } from '../constants'
 import {
   ARGENT_WALLET_DETECTOR_ABI,
   ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS
@@ -23,6 +23,8 @@ import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
+import SONE_MASTER_FARMER_ABI from '../constants/abis/SoneMasterFarmer.json'
+import SONE_TOKEN_ABI from '../constants/abis/SoneToken.json'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -128,4 +130,14 @@ export function useSocksController(): Contract | null {
     UNISOCKS_ABI,
     false
   )
+}
+
+export function useMasterFarmerContract(withSignerIfPossible?: boolean): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId && MASTER_FARMER_ADDRESS[chainId], SONE_MASTER_FARMER_ABI.abi, withSignerIfPossible)
+}
+
+export function useSoneContract(withSignerIfPossible = true): Contract | null {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId && SONE[chainId].address, SONE_TOKEN_ABI.abi, withSignerIfPossible)
 }

@@ -13,18 +13,12 @@ import StakeBackground from '../../assets/images/stake_background.svg'
 import { useActiveWeb3React } from 'hooks'
 
 const Farm: React.FC = () => {
-  const { farmId } = useParams() as any
+  // TODO_STAKING
+  // const { farmId } = useParams() as any
+  const farmId = 1
   const [val, setVal] = useState('')
-  
-  const {
-    pid,
-    lpToken,
-    lpTokenAddress,
-    tokenSymbol,
-    token2Symbol,
-    name
-  } = useFarm(+farmId)
-  || {
+
+  const { pid, lpToken, lpTokenAddress, tokenSymbol, token2Symbol, name } = useFarm(+farmId) || {
     pid: 0,
     lpToken: '',
     lpTokenAddress: '',
@@ -47,12 +41,9 @@ const Farm: React.FC = () => {
 
   return (
     <>
-      <PageHeader
-        icon={IconLP}
-        title={name}
-      />
+      <PageHeader icon={IconLP} title={name} />
       <StyledFarm>
-        <img src={StakeBackground} alt=""/>
+        <img src={StakeBackground} alt="" />
         <span>
           <StyledHeading>Stake</StyledHeading>
           <div>Content here</div>
@@ -82,20 +73,12 @@ const Farm: React.FC = () => {
                 justifyContent: 'center'
               }}
             >
-              <button
-                onClick={toggleWalletModal}
-              >
-                Unlock Wallet To Continue
-              </button>
+              <button onClick={toggleWalletModal}>Unlock Wallet To Continue</button>
             </div>
           </StyledCardsWrapper>
         )}
         <StyledApyWrap>
-          <Apy
-            pid={pid}
-            lpTokenAddress={lpTokenAddress}
-            val={val}
-          />
+          <Apy pid={pid} lpTokenAddress={lpTokenAddress} val={val} />
         </StyledApyWrap>
       </StyledFarm>
     </>
