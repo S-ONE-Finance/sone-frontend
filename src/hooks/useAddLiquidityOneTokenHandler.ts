@@ -31,11 +31,11 @@ export default function useAddLiquidityOneTokenHandler({
 }: UseAddLiquidityOneTokenHandlerProps) {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const { userInputParsedAmount, selectedTokenParsedAmount, theOtherTokenParsedAmount } = useDerivedMintSimpleInfo(
-    selectedPairState,
-    selectedPair,
-    selectedCurrency
-  )
+  const {
+    selectedTokenUserInputAmount,
+    selectedTokenParsedAmount,
+    theOtherTokenParsedAmount
+  } = useDerivedMintSimpleInfo(selectedPairState, selectedPair, selectedCurrency)
 
   const deadline = useTransactionDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -50,18 +50,26 @@ export default function useAddLiquidityOneTokenHandler({
       !selectedTokenParsedAmount ||
       !selectedPair ||
       !theOtherTokenParsedAmount ||
-      !deadline
+      !deadline ||
+      !selectedTokenUserInputAmount
     )
       return
 
     const router = getRouterContract(chainId, library, account)
     const isSelectedToken0 = selectedTokenParsedAmount.token.equals(selectedPair.token0)
     const [
-      _selectedTokenParsedAmount,
-      _selectedTokenMinAmount,
-      _theOtherTokenMinAmount,
-      _theOtherTokenMinOutputAmount
-    ] = userInputParsedAmount && selectedPair.getAmountsAddOneToken(userInputParsedAmount, allowedSlippage)
+      selectedTokenUserInputAmountJSBI,
+      selectedTokenMinAmountJSBI,
+      theOtherTokenMinAmountJSBI,
+      theOtherTokenMinOutputAmountJSBI
+    ] = selectedPair.getAmountsAddOneToken(selectedTokenUserInputAmount, allowedSlippage)
+
+    // TODO: Khi nào hiểu logic thì xoá chỗ này đi.
+    console.clear()
+    console.log('selectedTokenUserInputAmountJSBI', +selectedTokenUserInputAmountJSBI.toString() / 1e18)
+    console.log('selectedTokenMinAmountJSBI', +selectedTokenMinAmountJSBI.toString() / 1e18)
+    console.log('theOtherTokenMinAmountJSBI', +theOtherTokenMinAmountJSBI.toString() / 1e18)
+    console.log('theOtherTokenMinOutputAmountJSBI', +theOtherTokenMinOutputAmountJSBI.toString() / 1e18)
 
     let estimate,
       method: (...args: any) => Promise<TransactionResponse>,
@@ -74,24 +82,24 @@ export default function useAddLiquidityOneTokenHandler({
       method = router.addLiquidityOneTokenETHExactETH
       // amountTokenMin, amountETHMin, amountOutTokenMin, path, to, deadline
       args = [
-        _theOtherTokenMinAmount.toString(),
-        _selectedTokenMinAmount.toString(),
-        _theOtherTokenMinOutputAmount.toString(),
+        theOtherTokenMinAmountJSBI.toString(),
+        selectedTokenMinAmountJSBI.toString(),
+        theOtherTokenMinOutputAmountJSBI.toString(),
         [selectedTokenParsedAmount.token.address, theOtherTokenParsedAmount.token.address],
         account,
         deadline.toHexString()
       ]
-      value = BigNumber.from(_theOtherTokenMinAmount.toString())
+      value = BigNumber.from(theOtherTokenMinAmountJSBI.toString())
     } else if (ETHER === theOtherCurrency) {
       // If user select a token, and the other currency is ETHER.
       estimate = router.estimateGas.addLiquidityOneTokenETHExactToken
       method = router.addLiquidityOneTokenETHExactToken
       // amountIn, amountTokenMin, amountETHMin, amountOutETHMin, path, to, deadline
       args = [
-        _selectedTokenParsedAmount.toString(),
-        _selectedTokenMinAmount.toString(),
-        _theOtherTokenMinAmount.toString(),
-        _theOtherTokenMinOutputAmount.toString(),
+        selectedTokenUserInputAmountJSBI.toString(),
+        selectedTokenMinAmountJSBI.toString(),
+        theOtherTokenMinAmountJSBI.toString(),
+        theOtherTokenMinOutputAmountJSBI.toString(),
         [selectedTokenParsedAmount.token.address, theOtherTokenParsedAmount.token.address],
         account,
         deadline.toHexString()
@@ -121,10 +129,10 @@ export default function useAddLiquidityOneTokenHandler({
        */
 
       args = [
-        _selectedTokenParsedAmount.toString(),
-        isSelectedToken0 ? _selectedTokenMinAmount.toString() : _theOtherTokenMinAmount.toString(),
-        isSelectedToken0 ? _theOtherTokenMinAmount.toString() : _selectedTokenMinAmount.toString(),
-        _theOtherTokenMinOutputAmount.toString(),
+        selectedTokenUserInputAmountJSBI.toString(),
+        isSelectedToken0 ? selectedTokenMinAmountJSBI.toString() : theOtherTokenMinAmountJSBI.toString(),
+        isSelectedToken0 ? theOtherTokenMinAmountJSBI.toString() : selectedTokenMinAmountJSBI.toString(),
+        theOtherTokenMinOutputAmountJSBI.toString(),
         [selectedTokenParsedAmount.token.address, theOtherTokenParsedAmount.token.address],
         account,
         deadline.toHexString()
@@ -144,8 +152,8 @@ export default function useAddLiquidityOneTokenHandler({
           addTransaction(response, {
             summary: {
               type: TransactionType.ADD_ONE_TOKEN,
-              userInputAmount: userInputParsedAmount?.toSignificant(3),
-              userInputSymbol: userInputParsedAmount?.currency.symbol
+              userInputAmount: selectedTokenUserInputAmount?.toSignificant(3),
+              userInputSymbol: selectedTokenUserInputAmount?.currency.symbol
             }
           })
 
@@ -173,7 +181,7 @@ export default function useAddLiquidityOneTokenHandler({
     setTxHash,
     theOtherCurrency,
     theOtherTokenParsedAmount,
-    userInputParsedAmount
+    selectedTokenUserInputAmount
   ])
 
   return handler
