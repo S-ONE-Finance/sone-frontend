@@ -12,11 +12,6 @@ import useMyStaked from 'hooks/masterfarmer/useMyStaked'
 import useMyLPToken from 'hooks/masterfarmer/useMyLPToken'
 
 export default function Farms() {
-  //TODO_STAKING: remove fake data
-  // const fakeData = {
-  //   totalLockValue: '10000000000'
-  // }
-
   const [farmData, setFarmData] = useState<Farm[] | undefined>([])
   const [totalLockValue, setTotalLockValue] = useState<BigNumber>(new BigNumber(0))
   const [circulatingSupplyValue, setCirculatingSupplyValue] = useState<BigNumber>(new BigNumber(0))

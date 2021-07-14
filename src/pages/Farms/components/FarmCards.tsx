@@ -1,5 +1,3 @@
-import { useWeb3React } from '@web3-react/core'
-import BigNumber from 'bignumber.js'
 import { Farm } from 'hooks/masterfarmer/interfaces'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
@@ -7,42 +5,15 @@ import styled from 'styled-components'
 import IconAPY from '../../../assets/images/icon_apy.svg'
 import IconLP from '../../../assets/images/icon_lp.svg'
 import Loader from '../../../components/Loader'
-import { NUMBER_BLOCKS_PER_YEAR } from '../../../config'
-import useFarms from '../../../hooks/farms/useFarms'
-import { IsRopsten } from '../../../utils'
-interface FarmWithStakedValue extends Farm {
-  tokenAmount: BigNumber
-  token2Amount: BigNumber
-  totalToken2Value: BigNumber
-  tokenPriceInToken2: BigNumber
-  usdValue: BigNumber
-  poolWeight: BigNumber
-  luaPrice: BigNumber
-}
 
 const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms }) => {
-  // const [farms] = useFarms()
-  // TODO_STAKING: remove fake data
-  const luaPrice = new BigNumber(10)
-
-  const rows = farms?.reduce<FarmWithStakedValue[][]>(
+  const rows = farms?.reduce<Farm[][]>(
     (farmRows, farm, i) => {
-      // TODO_STAKING: remove fake data
-      const farmWithStakedValue: FarmWithStakedValue = {
-        ...farm,
-        tokenAmount: new BigNumber(0),
-        token2Amount: new BigNumber(0),
-        totalToken2Value: new BigNumber(0),
-        tokenPriceInToken2: new BigNumber(0),
-        poolWeight: new BigNumber(0),
-        usdValue: new BigNumber(0),
-        luaPrice
-      }
       const newFarmRows = [...farmRows]
       if (newFarmRows[newFarmRows.length - 1].length === 3) {
-        newFarmRows.push([farmWithStakedValue])
+        newFarmRows.push([farm])
       } else {
-        newFarmRows[newFarmRows.length - 1].push(farmWithStakedValue)
+        newFarmRows[newFarmRows.length - 1].push(farm)
       }
       return newFarmRows
     },
@@ -71,24 +42,10 @@ const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms }) => {
 }
 
 interface FarmCardProps {
-  farm: FarmWithStakedValue
+  farm: Farm
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
-  // TODO_STAKING: remove fake data
-  const fakeData = {
-    id: 1,
-    newReward: new BigNumber(1231321212131),
-    poolWeight: new BigNumber(20),
-    luaPrice: new BigNumber(1231321212131),
-    usdValue: new BigNumber(1231321212131),
-    multiplier: 40
-  }
-
-  const { chainId } = useWeb3React()
-  const isRopsten = IsRopsten(chainId)
-  const ID = isRopsten ? 3 : 1
-
   return (
     <StyledCardWrapper>
       <CardWrap>
@@ -120,7 +77,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             <StyledInsight>
               <span>Total liquidity</span>
               <span>
-                {fakeData.usdValue && (
+                {farm.balanceUSD && (
                   <>
                     <b>${farm.balanceUSD}</b>
                   </>
@@ -128,7 +85,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
               </span>
             </StyledInsight>
             <NavLink
-              to={`/staking/${fakeData.id}`}
+              to={`/staking/${farm.pid}`}
               style={{
                 background: 'linear-gradient(90deg, #F05359 27.06%, #F58287 111.99%)',
                 borderRadius: '52px',
