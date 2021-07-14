@@ -99,6 +99,55 @@ export const poolsQuery = gql`
   }
 `
 
+export const poolsQueryDetail = gql`
+  query poolsQueryDetail(
+    $first: Int! = 1000
+    $skip: Int! = 0
+    $orderBy: String! = "timestamp"
+    $orderDirection: String! = "desc"
+    $id: String
+  ) {
+    pools(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection, where: { id: $id }) {
+      id
+      pair
+      allocPoint
+      lastRewardBlock
+      accSushiPerShare
+      balance
+      userCount
+      sushiHarvested
+      owner {
+        id
+        sushiPerBlock
+        totalAllocPoint
+        bonusMultiplier
+      }
+    }
+  }
+`
+
+export const pairsQueryDetail = gql`
+  query pairsQueryDetail($token0: String, $token1: String) {
+    pairs(where: { token0: $token0, token1: $token1 }) {
+      id
+      reserve0
+      token0Price
+      reserve1
+      token1Price
+      token0 {
+        id
+        name
+        symbol
+      }
+      token1 {
+        id
+        name
+        symbol
+      }
+    }
+  }
+`
+
 const blockFieldsQuery = gql`
   fragment blockFields on Block {
     id

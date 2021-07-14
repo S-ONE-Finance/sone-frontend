@@ -14,7 +14,7 @@ const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
   useEffect(() => {
     ;(async () => {
       const balanceData: BigNumber = await soneContract?.totalSupply()
-      const balance = balanceData.div(BigNumber.from(10).pow(18))
+      const balance = balanceData?.div(BigNumber.from(10).pow(18))
       setTotalSupply(balance)
     })()
   }, [])

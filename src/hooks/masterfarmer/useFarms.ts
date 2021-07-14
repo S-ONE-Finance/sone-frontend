@@ -5,14 +5,15 @@ import { useCallback, useEffect, useState } from 'react'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
-//import range from 'lodash/range'
 import { ChainId } from '@s-one-finance/sdk-core'
 import { useActiveWeb3React } from 'hooks'
 import { Farm } from './interfaces'
+import useSonePrice from './useSonePrice'
 
 const useFarms = () => {
   const { account, chainId } = useActiveWeb3React()
   const [farms, setFarms] = useState<Farm[]>([])
+  const sushiPrice = useSonePrice()
 
   const fetchSLPFarms = useCallback(async () => {
     const results = await Promise.all([
@@ -24,7 +25,6 @@ const useFarms = () => {
         variables: { user: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd' }
       }),
       getAverageBlockTime()
-      // sushiData.sushi.priceUSD()
     ])
     const pools = results[0]?.data.pools
     const pairAddresses = pools
@@ -39,10 +39,6 @@ const useFarms = () => {
 
     const liquidityPositions = results[1]?.data.liquidityPositions
     const averageBlockTime = results[2]
-    // const sushiPrice = results[3]
-
-    // TODO_STAKING: remove fake data
-    const sushiPrice = 20
 
     const pairs = pairsQuery?.data.pairs
 
@@ -62,7 +58,6 @@ const useFarms = () => {
         const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
         const rewardPerBlock = ((pool.allocPoint / pool.owner.totalAllocPoint) * pool.owner.sushiPerBlock) / 1e18
 
-        // const roiPerBlock = (rewardPerBlock * sushiPrice) / balanceUSD
         const investedValue = 1000
         const LPTokenPrice = pair.reserveUSD / pair.totalSupply
         const LPTokenValue = investedValue / LPTokenPrice
@@ -107,7 +102,7 @@ const useFarms = () => {
 
     const sorted = orderBy(farms, ['pid'], ['desc'])
     return sorted
-  }, [])
+  }, [sushiPrice])
 
   useEffect(() => {
     const fetchData = async () => {

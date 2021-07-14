@@ -4,29 +4,30 @@ import styled from 'styled-components'
 import { useWeb3React } from '@web3-react/core'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import PageHeader from '../../components/PageHeader'
-import useFarm from '../../hooks/farms/useFarm'
+// import useFarm from '../../hooks/farms/useFarm'
 import { getContract } from '../../sushi/format/erc20'
 import Apy from './components/Apy'
 import Stake from './components/Stake'
 import IconLP from '../../assets/images/icon_lp.svg'
 import StakeBackground from '../../assets/images/stake_background.svg'
 import { useActiveWeb3React } from 'hooks'
+import useFarm from '../../hooks/masterfarmer/useFarm'
+import { Farm } from 'hooks/masterfarmer/interfaces'
 
-const Farm: React.FC = () => {
+const FarmDetail: React.FC = () => {
   // TODO_STAKING
   // const { farmId } = useParams() as any
   const farmId = 1
   const [val, setVal] = useState('')
 
-  const { pid, lpToken, lpTokenAddress, tokenSymbol, token2Symbol, name } = useFarm(+farmId) || {
+  const data: Farm | undefined = useFarm('' + farmId)
+
+  const { pid, pairAddress, name } = data || {
     pid: 0,
-    lpToken: '',
-    lpTokenAddress: '',
-    symbolShort: '',
-    tokenSymbol: '',
-    token2Symbol: '',
+    pairAddress: '',
     name: ''
   }
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
@@ -36,8 +37,8 @@ const Farm: React.FC = () => {
   const { library: ethereum } = useWeb3React()
   const lpContract = useMemo(() => {
     const e_provider = ethereum && ethereum.provider ? ethereum.provider : null
-    return getContract(e_provider as any, lpTokenAddress)
-  }, [ethereum, lpTokenAddress])
+    return getContract(e_provider as any, pairAddress)
+  }, [ethereum, pairAddress])
 
   return (
     <>
@@ -51,15 +52,7 @@ const Farm: React.FC = () => {
         {account && (
           <StyledCardsWrapper>
             <StyledCardWrapper>
-              <Stake
-                lpContract={lpContract}
-                pid={pid}
-                tokenName={lpToken.toUpperCase()}
-                tokenSymbol={tokenSymbol}
-                token2Symbol={token2Symbol}
-                val={val}
-                setVal={setVal}
-              />
+              <Stake pairAddress={pairAddress} pid={pid} tokenName={name.toUpperCase()} val={val} setVal={setVal} />
             </StyledCardWrapper>
           </StyledCardsWrapper>
         )}
@@ -78,7 +71,7 @@ const Farm: React.FC = () => {
           </StyledCardsWrapper>
         )}
         <StyledApyWrap>
-          <Apy pid={pid} lpTokenAddress={lpTokenAddress} val={val} />
+          <Apy pid={pid} lpTokenAddress={pairAddress} val={val} />
         </StyledApyWrap>
       </StyledFarm>
     </>
@@ -127,4 +120,4 @@ const StyledHeading = styled.h2`
   margin-bottom: 20px;
 `
 
-export default Farm
+export default FarmDetail

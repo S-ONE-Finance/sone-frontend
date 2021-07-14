@@ -1,30 +1,36 @@
+import { Contract } from '@ethersproject/contracts'
 import { useCallback } from 'react'
-
-import useSushi from './useSushi'
 import { useWeb3React } from '@web3-react/core'
-import { Contract } from 'web3-eth-contract'
-
-import { approve, getMasterChefContract } from '../../sushi/utils'
 import { useTransactionAdder } from 'state/transactions/hooks'
+import { useLPContract } from 'hooks/useContract'
+import { MASTER_FARMER_ADDRESS } from '../../constants'
+import { ChainId } from '@s-one-finance/sdk-core'
+import { TransactionResponse } from '@ethersproject/providers'
 
-const useApprove = (lpContract: Contract) => {
+const useApprove = (pairAddress: string) => {
   const addTransaction = useTransactionAdder()
 
   const { chainId, account } = useWeb3React()
-  const sushi = useSushi()
-  const masterChefContract = getMasterChefContract(sushi)
+  const masterFarmerAddress = MASTER_FARMER_ADDRESS[chainId as ChainId]
 
-  const handleApprove = useCallback(async (tokenName) => {
-    try {
-      // TODO: Chưa có summary.
-      const tx = await approve(lpContract, masterChefContract, account, chainId, addTransaction, {
-        tokenName
-      })
-      return tx
-    } catch (e) {
-      return false
-    }
-  }, [account, lpContract, masterChefContract, chainId, addTransaction])
+  const lpContract: Contract | null = useLPContract('0x9019e228ac3524885c803dc6fbfb7e6111a5f049')
+
+  const handleApprove = useCallback(
+    async (tokenName: string) => {
+      try {
+        const tx = lpContract
+          ?.approve(account, masterFarmerAddress)
+          .then((data: TransactionResponse) => {
+            console.log('data', data)
+          })
+          .catch((err: any) => console.log('err', err))
+        return tx
+      } catch (e) {
+        return false
+      }
+    },
+    [account, lpContract, chainId, addTransaction]
+  )
 
   return { onApprove: handleApprove }
 }
