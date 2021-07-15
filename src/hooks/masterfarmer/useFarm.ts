@@ -4,11 +4,13 @@ import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import { pairSubsetQuery, poolsQueryDetail } from 'apollo/queries'
 import { useActiveWeb3React } from 'hooks'
 import { useCallback, useEffect, useState } from 'react'
+import { useBlockNumber } from 'state/application/hooks'
 import { Farm } from './interfaces'
 import useSonePrice from './useSonePrice'
 
 const useFarm = (id: string) => {
   const { account, chainId } = useActiveWeb3React()
+  const block = useBlockNumber()
   const [farm, setFarm] = useState<Farm>()
   const sushiPrice = useSonePrice()
 
@@ -21,7 +23,6 @@ const useFarm = (id: string) => {
       getAverageBlockTime()
     ])
     const farm = results[0]?.data.pools[0]
-
     const dataPair = await exchange.query({
       query: pairSubsetQuery,
       variables: { pairAddresses: [farm.pair] }
@@ -61,6 +62,7 @@ const useFarm = (id: string) => {
       slpBalance: farm.balance,
       sushiRewardPerDay: rewardPerDay,
       liquidityPair: pair,
+      rewardPerBlock,
       roiPerBlock,
       roiPerHour,
       roiPerDay,
@@ -79,7 +81,7 @@ const useFarm = (id: string) => {
       setFarm(results)
     }
     fetchData()
-  }, [account, chainId, fetchFarmsDetail])
+  }, [account, chainId, fetchFarmsDetail, block])
   return farm
 }
 

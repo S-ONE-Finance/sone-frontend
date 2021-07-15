@@ -4,9 +4,9 @@ import { useActiveWeb3React } from 'hooks'
 import { useEffect, useState } from 'react'
 import { MyStaked } from './interfaces'
 
-const useMyStaked = () => {
+const useMyStakedDetail = (pid: number) => {
   const { account, chainId } = useActiveWeb3React()
-  const [myStaked, setMyStaked] = useState<MyStaked[]>([])
+  const [myStaked, setMyStaked] = useState<MyStaked>()
   useEffect(() => {
     ;(async () => {
       const result: any = await masterchef.query({
@@ -16,10 +16,13 @@ const useMyStaked = () => {
           address: '0x9ae383135ef1ead2bab41c1f97640d51ae8f458f'
         }
       })
-      setMyStaked(result?.data?.users)
+      const stakedDetails = result?.data?.users.filter((item: MyStaked) => Number(item.pool.id) === pid)
+      if (stakedDetails?.length) {
+        setMyStaked(stakedDetails[0])
+      }
     })()
   }, [account, chainId, setMyStaked])
   return myStaked
 }
 
-export default useMyStaked
+export default useMyStakedDetail

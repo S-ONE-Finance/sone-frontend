@@ -82,6 +82,7 @@ const useFarms = () => {
           slpBalance: pool.balance,
           sushiRewardPerDay: rewardPerDay,
           liquidityPair: pair,
+          rewardPerBlock,
           roiPerBlock,
           roiPerHour,
           roiPerDay,

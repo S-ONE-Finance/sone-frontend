@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 const useSonePrice = () => {
   const { account, chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
+  // TODO_STAKING: Remove fake address token
   let SONE_ADDRESS = '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2' // token sone
   let WETH_ADDRESS = '0xdac17f958d2ee523a2206206994597c13d831ec7' // token WETH
   let [token0, token1] = ['', '']

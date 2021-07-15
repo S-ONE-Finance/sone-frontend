@@ -1,48 +1,33 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import { useActiveWeb3React } from 'hooks'
+import { Farm } from 'hooks/masterfarmer/interfaces'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
-import { useWalletModalToggle } from '../../state/application/hooks'
-import PageHeader from '../../components/PageHeader'
-// import useFarm from '../../hooks/farms/useFarm'
-import { getContract } from '../../sushi/format/erc20'
-import Apy from './components/Apy'
-import Stake from './components/Stake'
 import IconLP from '../../assets/images/icon_lp.svg'
 import StakeBackground from '../../assets/images/stake_background.svg'
-import { useActiveWeb3React } from 'hooks'
+import PageHeader from '../../components/PageHeader'
 import useFarm from '../../hooks/masterfarmer/useFarm'
-import { Farm } from 'hooks/masterfarmer/interfaces'
+import { useWalletModalToggle } from '../../state/application/hooks'
+import Apy from './components/Apy'
+import Stake from './components/Stake'
 
 const FarmDetail: React.FC = () => {
-  // TODO_STAKING
-  // const { farmId } = useParams() as any
-  const farmId = 1
+  const { farmId } = useParams() as any
   const [val, setVal] = useState('')
 
-  const data: Farm | undefined = useFarm('' + farmId)
+  const farm: Farm | undefined = useFarm('' + farmId)
 
-  const { pid, pairAddress, name } = data || {
-    pid: 0,
+  const { pairAddress, symbol } = farm || {
     pairAddress: '',
-    name: ''
+    symbol: ''
   }
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
 
   const toggleWalletModal = useWalletModalToggle()
   const { account } = useActiveWeb3React()
-  const { library: ethereum } = useWeb3React()
-  const lpContract = useMemo(() => {
-    const e_provider = ethereum && ethereum.provider ? ethereum.provider : null
-    return getContract(e_provider as any, pairAddress)
-  }, [ethereum, pairAddress])
 
   return (
     <>
-      <PageHeader icon={IconLP} title={name} />
+      <PageHeader icon={IconLP} title={symbol} />
       <StyledFarm>
         <img src={StakeBackground} alt="" />
         <span>
@@ -52,7 +37,13 @@ const FarmDetail: React.FC = () => {
         {account && (
           <StyledCardsWrapper>
             <StyledCardWrapper>
-              <Stake pairAddress={pairAddress} pid={pid} tokenName={name.toUpperCase()} val={val} setVal={setVal} />
+              <Stake
+                pairAddress={pairAddress}
+                pid={Number(farmId)}
+                symbol={symbol.toUpperCase()}
+                val={val}
+                setVal={setVal}
+              />
             </StyledCardWrapper>
           </StyledCardsWrapper>
         )}
@@ -71,7 +62,7 @@ const FarmDetail: React.FC = () => {
           </StyledCardsWrapper>
         )}
         <StyledApyWrap>
-          <Apy pid={pid} lpTokenAddress={pairAddress} val={val} />
+          <Apy pid={Number(farmId)} val={val} farm={farm} />
         </StyledApyWrap>
       </StyledFarm>
     </>
