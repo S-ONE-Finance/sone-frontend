@@ -5,15 +5,17 @@ import { useCallback, useEffect, useState } from 'react'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
-import { ChainId } from '@s-one-finance/sdk-core'
+import { calculateAPY, ChainId } from '@s-one-finance/sdk-core'
 import { useActiveWeb3React } from 'hooks'
 import { Farm } from './interfaces'
 import useSonePrice from './useSonePrice'
+import { useBlockNumber } from 'state/application/hooks'
 
 const useFarms = () => {
   const { account, chainId } = useActiveWeb3React()
   const [farms, setFarms] = useState<Farm[]>([])
   const sushiPrice = useSonePrice()
+  const block = useBlockNumber()
 
   const fetchSLPFarms = useCallback(async () => {
     const results = await Promise.all([
@@ -61,12 +63,10 @@ const useFarms = () => {
         const investedValue = 1000
         const LPTokenPrice = pair.reserveUSD / pair.totalSupply
         const LPTokenValue = investedValue / LPTokenPrice
-        const poolShare = LPTokenValue / (LPTokenValue + Number(pair.totalSupply))
+        const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
         const roiPerBlock = (rewardPerBlock * sushiPrice * poolShare) / investedValue
-        const roiPerHour = roiPerBlock * blocksPerHour
-        const roiPerDay = roiPerHour * 24
-        const roiPerMonth = roiPerDay * 30
-        const roiPerYear = roiPerMonth * 12
+        const multiplierYear = calculateAPY(Number(averageBlockTime), 13546399 || 0)
+        const roiPerYear = multiplierYear * roiPerBlock
 
         const rewardPerDay = rewardPerBlock * blocksPerHour * 24
         const sushiHarvested = pool.sushiHarvested > 0 ? pool.sushiHarvested : 0
@@ -84,17 +84,16 @@ const useFarms = () => {
           liquidityPair: pair,
           rewardPerBlock,
           roiPerBlock,
-          roiPerHour,
-          roiPerDay,
-          roiPerMonth,
           roiPerYear,
           sushiHarvested,
           multiplier,
           balanceUSD,
-          rewardPerThousand: 1 * roiPerDay * (1000 / sushiPrice),
           tvl: liquidityPosition?.liquidityTokenBalance
             ? (pair.reserveUSD / pair.totalSupply) * liquidityPosition.liquidityTokenBalance
-            : 0.1
+            : 0.1,
+          sushiPrice,
+          LPTokenPrice,
+          secondsPerBlock: Number(averageBlockTime)
         }
       })
       .filter((item: Farm | false) => {

@@ -1,4 +1,5 @@
 //import range from 'lodash/range'
+import { calculateAPY } from '@s-one-finance/sdk-core'
 import { exchange, masterchef } from 'apollo/client'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import { pairSubsetQuery, poolsQueryDetail } from 'apollo/queries'
@@ -34,18 +35,17 @@ const useFarm = (id: string) => {
     const balance = Number(farm.balance / 1e18)
     const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
     const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
+    // TODO_STAKING: confirm cong thuc tinh price LP token
     const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
     const rewardPerBlock = ((farm.allocPoint / farm.owner.totalAllocPoint) * farm.owner.sushiPerBlock) / 1e18
 
     const investedValue = 1000
     const LPTokenPrice = pair.reserveUSD / pair.totalSupply
     const LPTokenValue = investedValue / LPTokenPrice
-    const poolShare = LPTokenValue / (LPTokenValue + Number(pair.totalSupply))
+    const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
     const roiPerBlock = (rewardPerBlock * sushiPrice * poolShare) / investedValue
-    const roiPerHour = roiPerBlock * blocksPerHour
-    const roiPerDay = roiPerHour * 24
-    const roiPerMonth = roiPerDay * 30
-    const roiPerYear = roiPerMonth * 12
+    const multiplierYear = calculateAPY(Number(averageBlockTime), block || 0)
+    const roiPerYear = multiplierYear * roiPerBlock
 
     const rewardPerDay = rewardPerBlock * blocksPerHour * 24
     const sushiHarvested = farm.sushiHarvested > 0 ? farm.sushiHarvested : 0
@@ -64,14 +64,13 @@ const useFarm = (id: string) => {
       liquidityPair: pair,
       rewardPerBlock,
       roiPerBlock,
-      roiPerHour,
-      roiPerDay,
-      roiPerMonth,
       roiPerYear,
       sushiHarvested,
       multiplier,
       balanceUSD,
-      rewardPerThousand: 1 * roiPerDay * (1000 / sushiPrice)
+      sushiPrice,
+      LPTokenPrice,
+      secondsPerBlock: Number(averageBlockTime)
     }
   }, [sushiPrice])
 
@@ -81,7 +80,7 @@ const useFarm = (id: string) => {
       setFarm(results)
     }
     fetchData()
-  }, [account, chainId, fetchFarmsDetail, block])
+  }, [account, chainId, fetchFarmsDetail])
   return farm
 }
 

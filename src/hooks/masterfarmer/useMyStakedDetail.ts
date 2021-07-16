@@ -6,7 +6,7 @@ import { MyStaked } from './interfaces'
 
 const useMyStakedDetail = (pid: number) => {
   const { account, chainId } = useActiveWeb3React()
-  const [myStaked, setMyStaked] = useState<MyStaked>()
+  const [myStaked, setMyStaked] = useState<MyStaked>({} as MyStaked)
   useEffect(() => {
     ;(async () => {
       const result: any = await masterchef.query({

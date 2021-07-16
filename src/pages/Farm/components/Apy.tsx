@@ -1,9 +1,10 @@
 import { JSBI, PoolInfo, UserInfo } from '@s-one-finance/sdk-core/'
 import useMyStakedDetail from 'hooks/masterfarmer/useMyStakedDetail'
 import React, { useEffect, useMemo, useState } from 'react'
-import { BigNumber } from '../../../sushi'
+import BigNumber from 'bignumber.js'
 import { Farm } from 'hooks/masterfarmer/interfaces'
 import { getBalanceNumber } from 'hooks/masterfarmer/utils'
+import { useBlockNumber } from 'state/application/hooks'
 
 interface ApyProps {
   pid: number
@@ -15,8 +16,9 @@ const Apy: React.FC<ApyProps> = ({ pid, val, farm }) => {
   const [totalStakedAfterStake, setTotalStakedAfterStake] = useState('0')
   const [earnedRewardAfterStake, setEarnedRewardAfterStake] = useState('0')
 
+  const block = useBlockNumber()
+
   const myStakeDetail = useMyStakedDetail(pid)
-  console.log('myStakeDetail', myStakeDetail)
 
   useEffect(() => {
     const poolInfo = new PoolInfo(farm)
@@ -27,16 +29,17 @@ const Apy: React.FC<ApyProps> = ({ pid, val, farm }) => {
       const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
         new BigNumber(val).times(new BigNumber(10).pow(18)).toString()
       )
+      console.log('block', block)
       setTotalStakedAfterStake(newTotalStaked)
-      // const newEarnedReward = userInfo.getEarnedRewardAfterStake(
-      //   JSBI.BigInt(20),
-      //   JSBI.BigInt(newReward.toNumber()),
-      //   JSBI.BigInt(new BigNumber(val).times(new BigNumber(10).pow(18)).toNumber())
-      // )
-      // setTotalStakedAfterStake(new BigNumber(newTotalStaked.toString()))
+      const newEarnedReward = userInfo.getEarnedRewardAfterStake(
+        new BigNumber(val).times(new BigNumber(10).pow(18)).toString(),
+        block || 0
+      )
+      console.log('newEarnedReward', newEarnedReward)
+      setEarnedRewardAfterStake(newEarnedReward)
       // setEarnedRewardAfterStake(new BigNumber(newEarnedReward.toString()))
     }
-  }, [val, myStakeDetail, farm])
+  }, [val, myStakeDetail, farm, block])
 
   return (
     <div>
@@ -46,7 +49,7 @@ const Apy: React.FC<ApyProps> = ({ pid, val, farm }) => {
       </div>
       <div>
         <span>Earned reward</span>
-        {/* <span>- {getBalanceNumber(earnedRewardAfterStake)}</span> */}
+        <span>- {earnedRewardAfterStake}</span>
       </div>
       <div>
         <span>APY</span>
