@@ -69,15 +69,17 @@ const BodyWrapper = styled.div`
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-top: 20px;
+  // padding-top: 20px;
   padding-bottom: 45px;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    padding: 22px 1rem 5rem 1rem;
+    // padding: 22px 1rem 5rem 1rem;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding-bottom: 3rem;
+    padding-right: 0;
+    padding-left: 0;
   `};
 
   z-index: 1;

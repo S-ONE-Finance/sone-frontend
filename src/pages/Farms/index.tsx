@@ -1,9 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Balances from './components/Balances'
 import FarmCards from './components/FarmCards'
 import StakingHeader from './components/StakingHeader'
-import { Filter } from 'react-feather'
 import useFarms from '../../hooks/masterfarmer/useFarms'
 import BigNumber from 'bignumber.js'
 import { Farm, LiquidityPosition, MyStaked } from 'hooks/masterfarmer/interfaces'
@@ -11,13 +11,10 @@ import _ from 'lodash'
 import useMyStaked from 'hooks/masterfarmer/useMyStaked'
 import useMyLPToken from 'hooks/masterfarmer/useMyLPToken'
 import FilterC from './components/FilterC'
+import iconFilter from '../../assets/images/icon-filter.svg'
+import iconSort from '../../assets/images/icon-sort.svg'
 
 export default function Farms() {
-  //TODO_STAKING: remove fake data
-  // const fakeData = {
-  //   totalLockValue: '10000000000'
-  // }
-
   const [farmData, setFarmData] = useState<Farm[] | undefined>([])
   const [totalLockValue, setTotalLockValue] = useState<BigNumber>(new BigNumber(0))
   const [circulatingSupplyValue, setCirculatingSupplyValue] = useState<BigNumber>(new BigNumber(0))
@@ -42,19 +39,32 @@ export default function Farms() {
     }
   ])
 
+  const [optionsFilter] = useState([
+    {
+      label: 'Active pool',
+      value: 'Active pool'
+    },
+    {
+      label: 'Inactive',
+      value: 'Inactive'
+    },
+    {
+      label: 'My LP tokens',
+      value: 'My LP tokens'
+    },
+    {
+      label: 'Staked',
+      value: 'Staked'
+    }
+  ])
+
   const farms: Farm[] = useFarms()
   const myStaked: MyStaked[] = useMyStaked()
   const myLpToken: LiquidityPosition[] = useMyLPToken()
 
-  const handleSortBy = useCallback((e: React.FormEvent<HTMLSelectElement>) => {
-    const target = e.target as HTMLInputElement
-    setSortBy(target.value)
-  }, [])
-
-  const handleFilter = useCallback((e: React.FormEvent<HTMLSelectElement>) => {
-    const target = e.target as HTMLInputElement
-    setFilter(target.value)
-  }, [])
+  const handleChangeDropDown = (value: string, callback: (item: string) => void) => {
+    callback(value)
+  }
 
   useEffect(() => {
     if (farms) {
@@ -105,7 +115,6 @@ export default function Farms() {
           break
       }
       result = result && result.filter(item => !isNaN(item.roiPerYear))
-      console.log('result', result)
       setFarmData(result)
     }
   }, [farms, setTotalLockValue, sortBy, filter, setFarmData])
@@ -114,59 +123,63 @@ export default function Farms() {
     <>
       <StakingHeader />
       <WrapTitle>
-        <Title>
-          <span style={{ fontWeight: 'bold' }}>S-ONE Finance&nbsp;</span> Currently Has
-          <span style={{ color: '#65BAC5' }}>&nbsp;{totalLockValue.toNumber()}&nbsp;</span> Of Total Locked Value
-        </Title>
+        <StyledCurrently>
+          <b>S-ONE Finance</b> Currently Has <span>${totalLockValue.toNumber()}</span> Of Total Locked Value
+        </StyledCurrently>
         <Balances circulatingSupplyValue={circulatingSupplyValue.toNumber()} />
       </WrapTitle>
-      <div>
-        <span>
-          <span>Sort by</span>
-          <select value={sortBy} onChange={handleSortBy}>
-            <option value="APY">APY</option>
-            <option value="Total liquidity">Total liquidity</option>
-            <option value="Bonus campaign">Bonus campaign</option>
-            <option value="LP Name">LP Name</option>
-          </select>
-          {/* <FilterC options={optionsSort} value={sortBy} handleOnchange={handleSortBy} /> */}
-        </span>
-        <span style={{ marginLeft: '100px' }}>
-          <span>
-            <Filter size={16} /> Filter
-          </span>
-          <select value={filter} onChange={handleFilter}>
-            <option value="Active pool">Active pool</option>
-            <option value="Inactive">Inactive</option>
-            <option value="My LP tokens">My LP tokens</option>
-            <option value="Staked">Staked</option>
-          </select>
-        </span>
-      </div>
-      <Box className="mt-4">
+      <StyledFilterWrap>
+        <FilterC
+          title="Sort by"
+          icon={iconSort}
+          options={optionsSort}
+          value={sortBy}
+          handleOnchange={e => handleChangeDropDown(e, setSortBy)}
+        />
+        <FilterC
+          title="Filter"
+          icon={iconFilter}
+          options={optionsFilter}
+          value={filter}
+          handleOnchange={e => handleChangeDropDown(e, setFilter)}
+        />
+      </StyledFilterWrap>
+      <Box>
         <FarmCards farms={farmData} />
       </Box>
     </>
   )
 }
 
-const Box = styled.div`
-  &.mt-4 {
-    margin-top: 40px;
-    @media (max-width: 767px) {
-      margin-top: 30px;
+const Box = styled.div``
+const WrapTitle = styled.div`
+  padding: 25px;
+  font-size: 20px;
+  @media (min-width: 1200px) {
+    font-size: 45px;
+  }
+`
+
+const StyledCurrently = styled.div`
+  margin-bottom: 20px;
+  & > span {
+    color: #65bac5;
+    font-weight: 700;
+  }
+  @media (min-width: 1200px) {
+    & > span {
+      font-size: 45px;
     }
   }
 `
-const Title = styled.div`
-  display: flex;
-  font-size: 40px;
-  color: #333333;
-  justify-content: 'center';
-  align-items: center;
-  padding: 20px;
-`
 
-const WrapTitle = styled.div`
-  padding: 55px;
+const StyledFilterWrap = styled.div`
+  width: 100%;
+  min-width: 300px
+  max-width: 1200px
+  padding: 0 25px;
+  @media (min-width: 1024px) {
+    display: flex;
+    align-items: center;
+  }
 `

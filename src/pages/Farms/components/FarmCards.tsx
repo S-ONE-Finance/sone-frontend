@@ -1,169 +1,103 @@
-import { useWeb3React } from '@web3-react/core'
-import BigNumber from 'bignumber.js'
-import { Farm } from 'hooks/masterfarmer/interfaces'
 import React from 'react'
+import { isEmpty } from 'lodash'
+import { Farm } from 'hooks/masterfarmer/interfaces'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import IconAPY from '../../../assets/images/icon_apy.svg'
 import IconLP from '../../../assets/images/icon_lp.svg'
 import Loader from '../../../components/Loader'
-import { NUMBER_BLOCKS_PER_YEAR } from '../../../config'
-import useFarms from '../../../hooks/farms/useFarms'
-import { IsRopsten } from '../../../utils'
-interface FarmWithStakedValue extends Farm {
-  tokenAmount: BigNumber
-  token2Amount: BigNumber
-  totalToken2Value: BigNumber
-  tokenPriceInToken2: BigNumber
-  usdValue: BigNumber
-  poolWeight: BigNumber
-  luaPrice: BigNumber
-}
 
-const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms }) => {
-  // const [farms] = useFarms()
-  // TODO_STAKING: remove fake data
-  const luaPrice = new BigNumber(10)
-
-  const rows = farms?.reduce<FarmWithStakedValue[][]>(
-    (farmRows, farm, i) => {
-      // TODO_STAKING: remove fake data
-      const farmWithStakedValue: FarmWithStakedValue = {
-        ...farm,
-        tokenAmount: new BigNumber(0),
-        token2Amount: new BigNumber(0),
-        totalToken2Value: new BigNumber(0),
-        tokenPriceInToken2: new BigNumber(0),
-        poolWeight: new BigNumber(0),
-        usdValue: new BigNumber(0),
-        luaPrice
-      }
-      // const newFarmRows = [...farmRows]
-      // if (newFarmRows[newFarmRows.length - 1].length === 3) {
-      //   newFarmRows.push([farmWithStakedValue])
-      // } else {
-      //   newFarmRows[newFarmRows.length - 1].push(farmWithStakedValue)
-      // }
-      return [...farmRows, farmWithStakedValue]
-    },
-    [[]]
-  )
-  console.log(rows)
-
+const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms = [] }) => {
   return (
-    <StyledCards>
-      {rows && !!rows[0].length ? (
-        rows.map((farmRow, i) => (
-          <div key={i}>
-            {farmRow.map((farm, j) => (
-              <React.Fragment key={j}>
-                <FarmCard farm={farm} />
-                {(j === 0 || j === 1) && <StyledSpacer />}
-              </React.Fragment>
-            ))}
-          </div>
-        ))
-      ) : (
+    <>
+      {isEmpty(farms) ? (
         <StyledLoadingWrapper>
-          <Loader />
+          <Loader size="30px" />
         </StyledLoadingWrapper>
+      ) : (
+        <StyledCards>
+          {farms.map((farm, i) => (
+            <FarmCard farm={farm} key={i} />
+          ))}
+        </StyledCards>
       )}
-    </StyledCards>
+    </>
   )
 }
 
 interface FarmCardProps {
-  farm: FarmWithStakedValue
+  farm: Farm
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
-  // TODO_STAKING: remove fake data
-  const fakeData = {
-    id: 1,
-    newReward: new BigNumber(1231321212131),
-    poolWeight: new BigNumber(20),
-    luaPrice: new BigNumber(1231321212131),
-    usdValue: new BigNumber(1231321212131),
-    multiplier: 40
-  }
-
-  const { chainId } = useWeb3React()
-  const isRopsten = IsRopsten(chainId)
-  const ID = isRopsten ? 3 : 1
-
   return (
     <>
-      {/* <CardWrap> */}
-      <div>
-        <StyledContent>
-          <StyledCardHeader>
-            <div>
-              <StyledTitle>{farm.symbol}</StyledTitle>
-              <StyledMultiplier> {farm.multiplier}X</StyledMultiplier>
-            </div>
-            <div style={{ marginLeft: '10px' }}>
-              <img src={IconLP} alt="" height="84" width="84" />
-            </div>
-          </StyledCardHeader>
-          <br />
-          <StyledInsight>
-            <span>Earn</span>
-            <span>
-              <b>SONE</b>
-            </span>
-          </StyledInsight>
-          <StyledInsight>
-            <span>APY</span>
-            <span style={{ fontWeight: 'bold', color: '#3FAAB0' }}>
-              <img src={IconAPY} alt="" height={12} />
-              {`${farm.roiPerYear * 100}%`}
-            </span>
-          </StyledInsight>
-          <StyledInsight>
-            <span>Total liquidity</span>
-            <span>
-              {fakeData.usdValue && (
-                <>
-                  <b>${farm.balanceUSD}</b>
-                </>
-              )}
-            </span>
-          </StyledInsight>
-          <NavLink
-            to={`/staking/${fakeData.id}`}
-            style={{
-              background: 'linear-gradient(90deg, #F05359 27.06%, #F58287 111.99%)',
-              borderRadius: '52px',
-              color: 'white',
-              width: '230px',
-              height: '40px',
-              lineHeight: '40px',
-              textAlign: 'center',
-              textDecoration: 'none',
-              fontWeight: 'bold'
-            }}
-          >
-            Select
-          </NavLink>
-        </StyledContent>
-      </div>
-      {/* </CardWrap> */}
+      <CardWrap>
+        <StyledCardHeader>
+          <StyledCardHeaderTitle>
+            <StyledTitle>{farm.symbol}</StyledTitle>
+            <StyledMultiplier>{farm.multiplier}X</StyledMultiplier>
+          </StyledCardHeaderTitle>
+          <div>
+            <img src={IconLP} alt="" height="84" width="84" />
+          </div>
+        </StyledCardHeader>
+        <StyledCardBody>
+          <StyledItemRow>
+            Earn
+            <span>SONE</span>
+          </StyledItemRow>
+          <StyledItemRow>
+            APY
+            <StyledItemRowImage>
+              <img src={IconAPY} alt="" />
+              <div>&nbsp;{`${farm.roiPerYear * 100}%`}</div>
+            </StyledItemRowImage>
+          </StyledItemRow>
+          <StyledLastItemRow>
+            Total liquidity
+            <span>${farm.balanceUSD && farm.balanceUSD}</span>
+          </StyledLastItemRow>
+          <StyledButton>
+            <NavLink to={`/staking/${farm.id}`}>Select</NavLink>
+          </StyledButton>
+        </StyledCardBody>
+      </CardWrap>
     </>
   )
 }
 
 const CardWrap = styled.div`
-  background-color: ${props => props.theme.bg1};
+  background: ${({ theme }) => theme.bg10Sone};
+  border-radius: 32px;
 `
 
 const StyledCards = styled.div`
   display: grid;
-  column-gap: 50px;
-  row-gap: 50px;
-  grid-template-columns: 1fr 1fr 1fr;
-  width: 1200px;
-  @media (max-width: 768px) {
-    width: 100%;
+  width: 100%;
+  padding: 0 25px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  column-gap: 13px;
+  row-gap: 13px;
+
+  @media (min-width: 768px) {
+    column-gap: 25px;
+    row-gap: 25px;
+    grid-template-columns: repeat(2, minmax(350px, 400px));
+  }
+
+  @media (min-width: 1024px) {
+    padding: 10px 25px 25px;
+    column-gap: 45px;
+    row-gap: 45px;
+    grid-template-columns: repeat(2, minmax(350px, 400px));
+  }
+
+  @media (min-width: 1200px) {
+    padding: 25px 25px 25px;
+    column-gap: 50px;
+    row-gap: 50px;
+    grid-template-columns: repeat(3, minmax(350px, 400px));
   }
 `
 
@@ -172,57 +106,58 @@ const StyledLoadingWrapper = styled.div`
   display: flex;
   flex: 1;
   justify-content: center;
-`
-
-const StyledRow = styled.div`
-  // display: flex;
-  margin-bottom: 2000px;
-  // flex-flow: row wrap;
-  // @media (max-width: 768px) {
-  //   width: 100%;
-  //   flex-flow: column nowrap;
-  //   align-items: center;
-  // }
-`
-
-const StyledCardWrapper = styled.div`
-  display: flex;
-  width: calc((1200px - 10px * 2) / 3);
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
+  width: 100vw;
+  height: 100%;
+  & > svg {
+    margin: 30px 0;
+  }
 `
 
 const StyledTitle = styled.h4`
-  font-size: 26px;
+  font-size: 20px;
   line-height: 30px;
   font-weight: bold;
-  margin: 10px 0 0;
-  padding: 0;
+  margin: 10px 0 12px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @media (min-width: 1024px) {
+    font-size: 26px;
+  }
 `
 
-const StyledContent = styled.div`
-  align-items: center;
+const StyledItemRow = styled.div`
+  color: ${({ theme }) => theme.text4Sone};
   display: flex;
-  flex-direction: column;
-`
-
-const StyledSpacer = styled.div`
-  height: 10px;
-  width: 10px;
-`
-
-const StyledInsight = styled.div`
-  display: flex;
+  font-size: 13px;
   justify-content: space-between;
   box-sizing: border-box;
   border-radius: 8px;
+  margin-bottom: 10px;
   background: transparent;
   width: 100%;
-  line-height: 25px;
-  font-size: 13px;
   border: 0px solid #e6dcd5;
-  text-align: center;
+  @media (min-width: 1024px) {
+    font-size: 16px;
+  }
+
+  & > span {
+    color: ${({ theme }) => theme.text6Sone};
+    font-weight: 700;
+  }
+`
+
+const StyledLastItemRow = styled(StyledItemRow)`
+  margin-bottom: 0;
+`
+const StyledItemRowImage = styled.div`
+  display: flex;
+  align-items: center;
+  color: #3faab0;
+  height: 22px;
+  & > div {
+    font-weight: 700;
+  }
 `
 
 const StyledMultiplier = styled.div`
@@ -231,16 +166,44 @@ const StyledMultiplier = styled.div`
   display: inline;
   color: #3faab0;
   padding: 5px 14px;
+  margin-top: 12px;
+  font-size: 16px;
 `
 
 const StyledCardHeader = styled.div`
   display: flex;
-  justify-content: center;
-  padding: 23px 32px;
-  background: linear-gradient(180deg, #ffefef 48.7%, #f8f8f8 100%);
+  justify-content: space-between;
+  padding: 25px;
+  background: ${({ theme }) => theme.bg9Sone};
   width: 100%;
-  border-top-left-radius: 32px
-  border-top-right-radius: 32px
+  border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
+`
+
+const StyledCardBody = styled.div`
+  padding: 28px 25px;
+`
+const StyledCardHeaderTitle = styled.div`
+  max-width: 60%;
+`
+
+const StyledButton = styled.div`
+  & > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(90deg, #f05359 27.06%, #f58287 111.99%);
+    color: white;
+    border-radius: 52px;
+    font-size: 13px;
+    padding: 15px 0;
+    text-decoration: none;
+    font-weight: 700;
+    margin: 20px auto 0;
+    @media (min-width: 1024px) {
+      margin: 36px auto 0;
+    }
+  }
 `
 
 export default FarmCards

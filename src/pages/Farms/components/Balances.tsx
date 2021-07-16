@@ -1,60 +1,77 @@
-import React, { FC, memo } from 'react'
+import { useSoneContract } from 'hooks/useContract'
+import React, { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
-
+import { Contract } from '@ethersproject/contracts'
+import { BigNumber } from 'ethers'
 interface BalanceProps {
   circulatingSupplyValue: number
 }
 
 const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
-  // TODO_STAKING: remove fake data
-  const fakeData = {
-    circulatingSupply: 323233,
-    totalSupply: 2131321
-  }
+  const [totalSupply, setTotalSupply] = useState<BigNumber>()
+
+  const soneContract: Contract | null = useSoneContract()
+
+  useEffect(() => {
+    ;(async () => {
+      const balanceData: BigNumber = await soneContract?.totalSupply()
+      const balance = balanceData?.div(BigNumber.from(10).pow(18))
+      setTotalSupply(balance)
+    })()
+  }, [])
+
   return (
     <>
       <StyledWrapper>
-        <StyledCirculating>CRS Circulating Supply</StyledCirculating>
-        <StyledNumber1>{`${circulatingSupplyValue} SONE`}</StyledNumber1>
-        <StyledCirculating>Total Supply</StyledCirculating>
-        <StyledNumber>{`${fakeData.totalSupply} SONE`}</StyledNumber>
+        <StyledItem>
+          SONE Circulating Supply <span>&nbsp;{circulatingSupplyValue} SONE</span>
+        </StyledItem>
+        <StyledSticky />
+        <StyledItem>
+          Total Supply <span>&nbsp;{totalSupply?.toString()} SONE</span>
+        </StyledItem>
       </StyledWrapper>
     </>
   )
 }
 
-const StyledWrapper = styled.div`
+const StyledItem = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  @media (max-width: 768px) {
-    width: 100%;
-    flex-flow: column nowrap;
-    align-items: stretch;
+  align-items: baseline;
+  margin-bottom: 15px;
+  color: ${({ theme }) => theme.text4Sone};
+  & > span {
+    font-size: 20px;
+    font-weight: 700;
+    color: ${({ theme }) => theme.text6Sone};
+  }
+  @media (min-width: 1200px) {
+    padding: 0 10px;
+    & > span {
+      font-size: 30px;
+    }
+  }
+`
+const StyledWrapper = styled.div`
+  font-size: 13px;
+  font-weight: 500;
+  color: #767676;
+  ${StyledItem}:nth-child (1) {
+    margin-bottom: 15px;
+  }
+  @media (min-width: 1200px) {
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
   }
 `
 
-const StyledCirculating = styled.span`
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 23px;
-  color: #767676;
-  margin-right: 10px;
-`
-
-const StyledNumber = styled.div`
-  font-weight: 700;
-  font-size: 30px;
-  line-height: 36.31px;
-  color: #333333;
-`
-
-const StyledNumber1 = styled(StyledNumber)`
-  &:after {
-    content: ' ';
-    margin: 0 10px;
-    border-left: 3px solid #333;
+const StyledSticky = styled.div`
+  border-left: 3px solid ${({ theme }) => theme.text10Sone};
+  height: 35px;
+  display: none;
+  @media (min-width: 1200px) {
+    display: inline-block;
   }
 `
 

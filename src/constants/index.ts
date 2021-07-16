@@ -52,6 +52,14 @@ export const SONE: { [chainId in ChainId]: Token } = {
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, TEMP, 18, 'SONE', 'S-ONE Finance')
 }
 
+export const MASTER_FARMER_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: '',
+  [ChainId.RINKEBY]: '',
+  [ChainId.ROPSTEN]: '0x20878e9c07926ec6e1b8ebd1acd82e83cf4395b9',
+  [ChainId.GÖRLI]: '',
+  [ChainId.KOVAN]: ''
+}
+
 export const COMMON_CONTRACT_NAMES: { [address: string]: string } = {
   [UNI_ADDRESS]: 'UNI',
   [GOVERNANCE_ADDRESS]: 'Governance',

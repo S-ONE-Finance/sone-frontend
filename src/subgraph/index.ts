@@ -40,7 +40,6 @@ export function useBulkPairDataInterval() {
     const data = await getBulkPairData(chainId, pairIds)
     if (data?.length > 0) {
       setSubgraphData(data)
-      console.log('Array trả về có ' + data.length + ' items.')
     } else {
       console.error('Array trả về lỗi', data)
     }
