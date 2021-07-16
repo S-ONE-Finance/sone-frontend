@@ -65,7 +65,7 @@ const useFarms = () => {
         const LPTokenValue = investedValue / LPTokenPrice
         const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
         const roiPerBlock = (rewardPerBlock * sushiPrice * poolShare) / investedValue
-        const multiplierYear = calculateAPY(Number(averageBlockTime), 13546399 || 0)
+        const multiplierYear = calculateAPY(Number(averageBlockTime), block || 0)
         const roiPerYear = multiplierYear * roiPerBlock
 
         const rewardPerDay = rewardPerBlock * blocksPerHour * 24

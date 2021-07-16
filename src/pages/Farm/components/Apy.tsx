@@ -15,6 +15,7 @@ interface ApyProps {
 const Apy: React.FC<ApyProps> = ({ pid, val, farm }) => {
   const [totalStakedAfterStake, setTotalStakedAfterStake] = useState('0')
   const [earnedRewardAfterStake, setEarnedRewardAfterStake] = useState('0')
+  const [apyAfterStake, setAPYAfterStake] = useState('0')
 
   const block = useBlockNumber()
 
@@ -29,15 +30,17 @@ const Apy: React.FC<ApyProps> = ({ pid, val, farm }) => {
       const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
         new BigNumber(val).times(new BigNumber(10).pow(18)).toString()
       )
-      console.log('block', block)
       setTotalStakedAfterStake(newTotalStaked)
       const newEarnedReward = userInfo.getEarnedRewardAfterStake(
         new BigNumber(val).times(new BigNumber(10).pow(18)).toString(),
         block || 0
       )
-      console.log('newEarnedReward', newEarnedReward)
       setEarnedRewardAfterStake(newEarnedReward)
-      // setEarnedRewardAfterStake(new BigNumber(newEarnedReward.toString()))
+      const newAPY = userInfo.getAPYAfterStake(
+        new BigNumber(val).times(new BigNumber(10).pow(18)).toString(),
+        block || 0
+      )
+      setAPYAfterStake(newAPY)
     }
   }, [val, myStakeDetail, farm, block])
 
@@ -53,10 +56,7 @@ const Apy: React.FC<ApyProps> = ({ pid, val, farm }) => {
       </div>
       <div>
         <span>APY</span>
-        <span>
-          {/* TODO_STAKING: remove fake data */}
-          {21212}
-        </span>
+        <span>- {Number(apyAfterStake) * 100}</span>
       </div>
       <div>
         <span>Reward / block -----</span>
