@@ -16,7 +16,6 @@ const useTokenBalance = (pairAddress: string) => {
 
   const fetchBalance = useCallback(async () => {
     const balanceToken: BigNumber = await lpContract?.balanceOf(account)
-    console.log('balanceToken', balanceToken.toString())
     setBalance(balanceToken)
   }, [account, masterFarmerAddress, setBalance])
 

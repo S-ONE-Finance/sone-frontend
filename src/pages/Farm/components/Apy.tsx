@@ -1,30 +1,25 @@
-import { JSBI, PoolInfo, UserInfo } from '@s-one-finance/sdk-core/'
-import useMyStakedDetail from 'hooks/masterfarmer/useMyStakedDetail'
-import React, { useEffect, useMemo, useState } from 'react'
+import { PoolInfo, UserInfo } from '@s-one-finance/sdk-core/'
+import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { Farm } from 'hooks/masterfarmer/interfaces'
 import { getBalanceNumber } from 'hooks/masterfarmer/utils'
 import { useBlockNumber } from 'state/application/hooks'
-
 interface ApyProps {
-  pid: number
   val: string
   farm: Farm | undefined
 }
 
-const Apy: React.FC<ApyProps> = ({ pid, val, farm }) => {
+const Apy: React.FC<ApyProps> = ({ val, farm }) => {
   const [totalStakedAfterStake, setTotalStakedAfterStake] = useState('0')
   const [earnedRewardAfterStake, setEarnedRewardAfterStake] = useState('0')
   const [apyAfterStake, setAPYAfterStake] = useState('0')
 
   const block = useBlockNumber()
 
-  const myStakeDetail = useMyStakedDetail(pid)
-
   useEffect(() => {
     const poolInfo = new PoolInfo(farm)
     console.log('poolInfo', poolInfo)
-    const userInfo = new UserInfo(poolInfo, myStakeDetail)
+    const userInfo = new UserInfo(poolInfo, farm?.userInfo)
     console.log('userInfo', userInfo)
     if (val) {
       const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
@@ -42,7 +37,7 @@ const Apy: React.FC<ApyProps> = ({ pid, val, farm }) => {
       )
       setAPYAfterStake(newAPY)
     }
-  }, [val, myStakeDetail, farm, block])
+  }, [val, farm, block])
 
   return (
     <div>
@@ -68,7 +63,7 @@ const Apy: React.FC<ApyProps> = ({ pid, val, farm }) => {
       </div>
       <div>
         <span>My Reward ----- </span>
-        <span>{myStakeDetail ? getBalanceNumber(myStakeDetail.rewardDebt) : '~'} SONE</span>
+        <span>{farm?.userInfo ? farm.userInfo.sushiHarvested : '~'} SONE</span>
       </div>
     </div>
   )

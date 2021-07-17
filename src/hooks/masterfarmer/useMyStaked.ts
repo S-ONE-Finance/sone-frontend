@@ -2,11 +2,11 @@ import { masterchef } from 'apollo/client'
 import { poolUserQuery } from 'apollo/queries'
 import { useActiveWeb3React } from 'hooks'
 import { useEffect, useState } from 'react'
-import { MyStaked } from './interfaces'
+import { UserInfo } from './interfaces'
 
 const useMyStaked = () => {
   const { account, chainId } = useActiveWeb3React()
-  const [myStaked, setMyStaked] = useState<MyStaked[]>([])
+  const [myStaked, setMyStaked] = useState<UserInfo[]>([])
   useEffect(() => {
     ;(async () => {
       const result: any = await masterchef.query({

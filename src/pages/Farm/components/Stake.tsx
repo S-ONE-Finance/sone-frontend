@@ -18,7 +18,6 @@ const Stake: React.FC<StakeProps> = ({ pairAddress, pid, symbol, val, setVal }) 
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [requestedApprovalSuccess, setRequestedApprovalSuccess] = useState(false)
   const [pendingStakeTx, setPendingStakeTx] = useState(false)
-  const [successStakeTx, setSuccessStakeTx] = useState(false)
 
   const allowance = useAllowance(pairAddress)
   const { onApprove } = useApprove(pairAddress)
@@ -81,12 +80,8 @@ const Stake: React.FC<StakeProps> = ({ pairAddress, pid, symbol, val, setVal }) 
                   onClick={async () => {
                     if (val && parseFloat(val) > 0) {
                       setPendingStakeTx(true)
-                      const tx: any = await onStake(val, symbol)
-                      console.log('tx', tx)
-                      if (tx) {
-                        setPendingStakeTx(false)
-                        setSuccessStakeTx(true)
-                      }
+                      await onStake(val, symbol)
+                      setPendingStakeTx(false)
                     }
                   }}
                 >

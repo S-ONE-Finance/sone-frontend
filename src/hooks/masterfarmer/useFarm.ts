@@ -2,7 +2,7 @@
 import { calculateAPY } from '@s-one-finance/sdk-core'
 import { exchange, masterchef } from 'apollo/client'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
-import { pairSubsetQuery, poolsQueryDetail } from 'apollo/queries'
+import { pairSubsetQuery, poolsQueryDetail, poolUserDetailQuery } from 'apollo/queries'
 import { useActiveWeb3React } from 'hooks'
 import { useCallback, useEffect, useState } from 'react'
 import { useBlockNumber } from 'state/application/hooks'
@@ -21,6 +21,13 @@ const useFarm = (id: string) => {
         query: poolsQueryDetail,
         variables: { id: id }
       }),
+      masterchef.query({
+        query: poolUserDetailQuery,
+        // TODO_STAKING: remove fake account
+        variables: {
+          id: `${id}-0x9ae383135ef1ead2bab41c1f97640d51ae8f458f`
+        }
+      }),
       getAverageBlockTime()
     ])
     const farm = results[0]?.data.pools[0]
@@ -29,8 +36,8 @@ const useFarm = (id: string) => {
       variables: { pairAddresses: [farm.pair] }
     })
     const pair = dataPair?.data.pairs[0]
-    const averageBlockTime = results[1]
-
+    const userInfo = results[1]?.data?.users[0]
+    const averageBlockTime = results[2]
     const blocksPerHour = 3600 / Number(averageBlockTime)
     const balance = Number(farm.balance / 1e18)
     const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
@@ -70,7 +77,8 @@ const useFarm = (id: string) => {
       balanceUSD,
       sushiPrice,
       LPTokenPrice,
-      secondsPerBlock: Number(averageBlockTime)
+      secondsPerBlock: Number(averageBlockTime),
+      userInfo: userInfo || {}
     }
   }, [sushiPrice])
 

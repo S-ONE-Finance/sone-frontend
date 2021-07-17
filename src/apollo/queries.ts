@@ -318,6 +318,54 @@ export const poolUserQuery = gql`
   ${poolUserFragment}
 `
 
+export const poolUserDetailQuery = gql`
+  query poolUserQuery($id: String!, $amount_gt: Int! = 0) {
+    users(where: { id: $id, amount_gt: $amount_gt }) {
+      id
+      address
+      pool {
+        id
+      }
+      amount
+      rewardDebt
+      entryUSD
+      exitUSD
+      sushiHarvested
+      sushiHarvestedUSD
+    }
+  }
+`
+export const poolUserWithPoolDetailQuery = gql`
+  query poolUserQuery($address: String!, $amount_gt: Int! = 0) {
+    users(where: { address: $address, amount_gt: $amount_gt }) {
+      id
+      address
+      pool {
+        id
+        pair
+        allocPoint
+        lastRewardBlock
+        accSushiPerShare
+        balance
+        userCount
+        sushiHarvested
+        owner {
+          id
+          sushiPerBlock
+          totalAllocPoint
+          bonusMultiplier
+        }
+      }
+      amount
+      rewardDebt
+      entryUSD
+      exitUSD
+      sushiHarvested
+      sushiHarvestedUSD
+    }
+  }
+`
+
 export const SUBGRAPH_HEALTH = gql`
   query health {
     indexingStatusForCurrentVersion(subgraphName: "ianlapham/uniswapv2") {

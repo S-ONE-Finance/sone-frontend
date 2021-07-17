@@ -62,7 +62,7 @@ const FarmDetail: React.FC = () => {
           </StyledCardsWrapper>
         )}
         <StyledApyWrap>
-          <Apy pid={Number(farmId)} val={val} farm={farm} />
+          <Apy val={val} farm={farm} />
         </StyledApyWrap>
       </StyledFarm>
     </>
