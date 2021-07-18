@@ -59,6 +59,13 @@ const AbsoluteVector = styled.div`
   position: absolute;
   top: 0;
   right: 2rem;
+  width: 119.2px;
+  height: 119.2px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 67.8px;
+    height: 67.8px;
+  `};
 `
 
 const Spinner = styled.img`
@@ -174,7 +181,7 @@ export function ConfirmationModalContent({
       <Section>
         <RowBetween style={{ position: 'relative' }}>
           <AbsoluteVector>
-            <AppVector transactionType={transactionType} size="119.27px" sizeMobile="67.84px" />
+            <AppVector transactionType={transactionType} size="119.2px" sizeMobile="67.8px" />
           </AbsoluteVector>
           <ModalTitle>{title}</ModalTitle>
           <StyledCloseIcon onClick={onDismiss} />

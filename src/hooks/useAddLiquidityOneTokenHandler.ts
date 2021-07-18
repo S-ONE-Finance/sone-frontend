@@ -64,6 +64,13 @@ export default function useAddLiquidityOneTokenHandler({
       theOtherTokenMinOutputAmountJSBI
     ] = selectedPair.getAmountsAddOneToken(selectedTokenUserInputAmount, allowedSlippage)
 
+    const selectedTokenUserInputAmountJSBI2 = selectedPair.getAmountsAddOneToken(
+      selectedTokenUserInputAmount,
+      allowedSlippage
+    )[0]
+
+    console.log('sel', selectedTokenUserInputAmountJSBI2)
+
     // TODO: Khi nào hiểu logic thì xoá chỗ này đi.
     console.clear()
     console.log('selectedTokenUserInputAmountJSBI', +selectedTokenUserInputAmountJSBI.toString() / 1e18)
@@ -77,10 +84,12 @@ export default function useAddLiquidityOneTokenHandler({
       value: BigNumber | null
 
     if (ETHER === selectedCurrency) {
-      // If user select ETHER.
+      /**
+       * If user select ETHER.
+       */
       estimate = router.estimateGas.addLiquidityOneTokenETHExactETH
       method = router.addLiquidityOneTokenETHExactETH
-      // amountTokenMin, amountETHMin, amountOutTokenMin, path, to, deadline
+      // args = [amountTokenMin, amountETHMin, amountOutTokenMin, path, to, deadline]
       args = [
         theOtherTokenMinAmountJSBI.toString(),
         selectedTokenMinAmountJSBI.toString(),
@@ -91,10 +100,12 @@ export default function useAddLiquidityOneTokenHandler({
       ]
       value = BigNumber.from(theOtherTokenMinAmountJSBI.toString())
     } else if (ETHER === theOtherCurrency) {
-      // If user select a token, and the other currency is ETHER.
+      /**
+       * If user select a token, and the other currency is ETHER.
+       */
       estimate = router.estimateGas.addLiquidityOneTokenETHExactToken
       method = router.addLiquidityOneTokenETHExactToken
-      // amountIn, amountTokenMin, amountETHMin, amountOutETHMin, path, to, deadline
+      // args = [amountIn, amountTokenMin, amountETHMin, amountOutETHMin, path, to, deadline]
       args = [
         selectedTokenUserInputAmountJSBI.toString(),
         selectedTokenMinAmountJSBI.toString(),
@@ -106,13 +117,11 @@ export default function useAddLiquidityOneTokenHandler({
       ]
       value = null
     } else {
-      // If pair no contains ETHER, which means user select one of two tokens.
-      estimate = router.estimateGas.addLiquidityOneToken
-      method = router.addLiquidityOneToken
       /**
-       *
-       * args = [amountIn, amountAMin, amountBMin, amountOutMin, path, to, deadline]
-       *
+       * If pair no contains ETHER, which means user select one of two tokens.
+       */
+
+      /**
        * Let this comment here for debugging in the future:
        *
        * Pair: SONE - DAI
@@ -127,7 +136,9 @@ export default function useAddLiquidityOneTokenHandler({
        * Phần 1: "0.5*amountIn = 1 DAI" -> [swap("amountOutMin = "42946.4 SONE")] -> "amountOut = 43380.2 SONE"
        * Phần 2: ("0.5*amountIn = 1 DAI", "amountOut = 43380.2 SONE") -> [add("amountAMin = 42516.9 SONE", "amountBMin = 0.99 DAI")]
        */
-
+      estimate = router.estimateGas.addLiquidityOneToken
+      method = router.addLiquidityOneToken
+      // args = [amountIn, amountAMin, amountBMin, amountOutMin, path, to, deadline]
       args = [
         selectedTokenUserInputAmountJSBI.toString(),
         isSelectedToken0 ? selectedTokenMinAmountJSBI.toString() : theOtherTokenMinAmountJSBI.toString(),

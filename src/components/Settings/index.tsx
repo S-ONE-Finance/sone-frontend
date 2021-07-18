@@ -169,12 +169,14 @@ const AbsoluteVector = styled.div`
   position: absolute;
   bottom: 2rem;
   right: 2rem;
-  width: 177.12px;
+  width: 177.1px;
+  height: 177.1px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     bottom: 1rem;
     right: 1rem;
-    width: 119.71px;
+    width: 119.7px;
+    height: 119.7px;
   `};
 `
 
@@ -260,7 +262,7 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
         <Modal isOpen={open} onDismiss={toggle}>
           <MenuFlyout>
             <AbsoluteVector>
-              <AppVector transactionType={transactionType} size={'100%'} />
+              <AppVector transactionType={transactionType} size="100%" sizeMobile="100%" />
             </AbsoluteVector>
             <TitleBodyMarginer>
               <RowBetween>

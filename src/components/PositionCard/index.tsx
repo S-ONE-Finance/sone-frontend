@@ -316,7 +316,7 @@ export default function FullPositionCard({ pair, border, stakedBalance }: Positi
                   borderRadius="8px"
                   as={Link}
                   width="48%"
-                  to={`/remove/${currencyId(currency0)}/${currencyId(currency1)}`}
+                  to={`/my-account/withdraw/${currencyId(currency0)}/${currencyId(currency1)}`}
                 >
                   Remove
                 </ButtonPrimary>

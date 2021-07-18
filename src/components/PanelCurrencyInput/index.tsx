@@ -11,7 +11,7 @@ import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../hooks'
 import { TextPanelLabel, CurrencySelect, StyledTokenName, StyledDropDown } from 'theme'
 
-const InputRow = styled.div`
+export const InputRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   padding: 17px 30px 0;
@@ -21,7 +21,7 @@ const InputRow = styled.div`
   `};
 `
 
-const LabelRow = styled.div`
+export const LabelRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: center;
   color: ${({ theme }) => theme.text1};
@@ -39,32 +39,32 @@ const LabelRow = styled.div`
   `};
 `
 
-const Aligner = styled.span`
+export const Aligner = styled.span`
   display: flex;
   align-items: center;
   justify-content: space-between;
 `
 
-const InputPanel = styled.div``
+export const InputPanel = styled.div``
 
-const Container = styled.div`
+export const Container = styled.div<{ height?: string; height_mobile?: string }>`
   ${({ theme }) => theme.flexColumnNoWrap}
   position: relative;
   z-index: 1;
-  height: 120px;
+  height: ${({ height }) => height ?? '120px'};
   width: 100%;
   border-radius: 32px;
   background-color: ${({ theme }) => theme.bgPanels};
   border: ${({ theme }) => `1px solid ${theme.border2Sone}`};
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    height: 95px;
+  ${({ theme, height_mobile }) => theme.mediaWidth.upToExtraSmall`
+    height: ${height_mobile ?? '95px'};
     border-radius: 25px;
   `};
 `
 
-const StyledBalanceMax = styled.button`
-  height: 40px;
+export const StyledBalanceMax = styled.button`
+  height: 41px;
   width: 105px;
   background-color: ${({ theme }) => theme.white};
   border-radius: 51px;
@@ -91,12 +91,23 @@ const StyledBalanceMax = styled.button`
   `};
 `
 
-const RowBalance = styled(Row)`
+const ButtonReceiveWETH = styled(StyledBalanceMax)`
+  width: fit-content;
+  padding: 0 15px;
+  margin: 0;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    margin: 0;
+    width: fit-content;
+  `};
+`
+
+export const RowBalance = styled(Row)`
   width: fit-content;
   cursor: pointer;
 `
 
-const TextSmaller = styled(TextPanelLabel)`
+export const TextSmaller = styled(TextPanelLabel)`
   line-height: normal;
   font-size: 13px;
 
@@ -109,6 +120,7 @@ export enum SelectOrToggle {
   SELECT = 'SELECT',
   TOGGLE = 'TOGGLE'
 }
+
 interface PanelCurrencyInputProps {
   value: string
   onUserInput: (value: string) => void
@@ -118,6 +130,7 @@ interface PanelCurrencyInputProps {
   isCurrencySelectOrToggle?: SelectOrToggle
   onCurrencySelect?: (currency: Currency) => void
   onCurrencyToggle?: () => void
+  showCurrencySelect?: boolean
   currency?: Currency | null
   disableCurrencyChange?: boolean
   hideBalance?: boolean
@@ -126,6 +139,8 @@ interface PanelCurrencyInputProps {
   id: string
   showCommonBases?: boolean
   customBalanceText?: string
+  showReceiveWETH?: boolean
+  onReceiveWETHToggle?: () => void
 }
 
 export default function PanelCurrencyInput({
@@ -137,6 +152,7 @@ export default function PanelCurrencyInput({
   isCurrencySelectOrToggle = SelectOrToggle.SELECT,
   onCurrencySelect,
   onCurrencyToggle,
+  showCurrencySelect = true,
   currency,
   disableCurrencyChange = false,
   hideBalance = false,
@@ -144,7 +160,9 @@ export default function PanelCurrencyInput({
   otherCurrency,
   id,
   showCommonBases,
-  customBalanceText
+  customBalanceText,
+  showReceiveWETH = false,
+  onReceiveWETHToggle
 }: PanelCurrencyInputProps) {
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
@@ -186,41 +204,48 @@ export default function PanelCurrencyInput({
               <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
             )}
           </>
-          <CurrencySelect
-            selected={!!currency}
-            className="open-currency-select-button"
-            onClick={() => {
-              if (!disableCurrencyChange) {
-                if (isCurrencySelectOrToggle === SelectOrToggle.SELECT) {
-                  setModalOpen(true)
-                } else if (isCurrencySelectOrToggle === SelectOrToggle.TOGGLE && onCurrencyToggle !== undefined) {
-                  onCurrencyToggle()
+          {showCurrencySelect && (
+            <CurrencySelect
+              selected={!!currency}
+              className="open-currency-select-button"
+              onClick={() => {
+                if (!disableCurrencyChange) {
+                  if (isCurrencySelectOrToggle === SelectOrToggle.SELECT) {
+                    setModalOpen(true)
+                  } else if (isCurrencySelectOrToggle === SelectOrToggle.TOGGLE && onCurrencyToggle !== undefined) {
+                    onCurrencyToggle()
+                  }
                 }
-              }
-            }}
-          >
-            <Aligner>
-              {pair ? (
-                <CurrencyLogoDouble currency0={pair?.token0} currency1={pair?.token1} size={22} margin={true} />
-              ) : currency ? (
-                <CurrencyLogo currency={currency} size={'22px'} sizeMobile={'15px'} />
-              ) : null}
-              {pair ? (
-                <StyledTokenName className="pair-name-container">
-                  {pair?.token0.symbol}:{pair?.token1.symbol}
-                </StyledTokenName>
-              ) : (
-                <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                  {(currency && currency.symbol && currency.symbol.length > 20
-                    ? currency.symbol.slice(0, 4) +
-                      '...' +
-                      currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                    : currency?.symbol) || 'Select Token'}
-                </StyledTokenName>
-              )}
-              {!disableCurrencyChange && <StyledDropDown selected={!!currency} />}
-            </Aligner>
-          </CurrencySelect>
+              }}
+            >
+              <Aligner>
+                {pair ? (
+                  <CurrencyLogoDouble currency0={pair?.token0} currency1={pair?.token1} size={22} margin={true} />
+                ) : currency ? (
+                  <CurrencyLogo currency={currency} size={'23px'} sizeMobile={'15px'} />
+                ) : null}
+                {pair ? (
+                  <StyledTokenName className="pair-name-container">
+                    {pair?.token0.symbol}:{pair?.token1.symbol}
+                  </StyledTokenName>
+                ) : (
+                  <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                    {(currency && currency.symbol && currency.symbol.length > 20
+                      ? currency.symbol.slice(0, 4) +
+                        '...' +
+                        currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                      : currency?.symbol) || 'Select Token'}
+                  </StyledTokenName>
+                )}
+                {!disableCurrencyChange && <StyledDropDown selected={!!currency} />}
+              </Aligner>
+            </CurrencySelect>
+          )}
+          {showReceiveWETH && (
+            <ButtonReceiveWETH onClick={onReceiveWETHToggle}>
+              {currency === Currency.ETHER ? 'Receive WETH' : 'Receive ETH'}
+            </ButtonReceiveWETH>
+          )}
         </InputRow>
       </Container>
       {!disableCurrencyChange && onCurrencySelect && (

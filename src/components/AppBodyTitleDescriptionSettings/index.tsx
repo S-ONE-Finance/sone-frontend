@@ -45,25 +45,30 @@ const TitleDescWrapper = styled(Column)`
 `
 
 export default function AppBodyTitleDescriptionSettings({ transactionType }: { transactionType: TransactionType }) {
+  const title =
+    transactionType === TransactionType.SWAP
+      ? 'Swap'
+      : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
+      ? 'Add Liquidity'
+      : transactionType === TransactionType.WITHDRAW
+      ? 'Withdraw Liquidity'
+      : null
+  const description =
+    transactionType === TransactionType.SWAP
+      ? 'Trade tokens in an instant'
+      : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
+      ? 'Add liquidity to receive LP tokens'
+      : transactionType === TransactionType.WITHDRAW
+      ? 'Lorem ipsum dolor sit amet.'
+      : null
+
   return (
     <StyledHeader>
       <RowBetween>
         <AppVector transactionType={transactionType} />
         <TitleDescWrapper>
-          <Title>
-            {transactionType === TransactionType.SWAP
-              ? 'Swap'
-              : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
-              ? 'Add Liquidity'
-              : null}
-          </Title>
-          <Description>
-            {transactionType === TransactionType.SWAP
-              ? 'Trade tokens in an instant'
-              : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
-              ? 'Add liquidity to receive LP tokens'
-              : null}
-          </Description>
+          <Title>{title}</Title>
+          <Description>{description}</Description>
         </TitleDescWrapper>
         <Settings transactionType={transactionType} />
       </RowBetween>

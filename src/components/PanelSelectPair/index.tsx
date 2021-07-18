@@ -26,9 +26,11 @@ const PanelWrapper = styled(RowBetween)`
 type PanelSelectPairProps = {
   selectedPair?: Pair | null
   onPairSelect: (pair: Pair) => void
+  isLoading: boolean
+  allPairs: Array<Pair>
 }
 
-export default function PanelSelectPair({ selectedPair, onPairSelect }: PanelSelectPairProps) {
+export default function PanelSelectPair({ selectedPair, onPairSelect, isLoading, allPairs }: PanelSelectPairProps) {
   const [modalOpen, setModalOpen] = useState(false)
 
   const handleDismissSearch = () => {
@@ -44,7 +46,7 @@ export default function PanelSelectPair({ selectedPair, onPairSelect }: PanelSel
       <PairSelect
         selected={Boolean(selectedPair)}
         onClick={() => {
-          if (modalOpen === false) {
+          if (!modalOpen) {
             setModalOpen(true)
           }
         }}
@@ -64,6 +66,8 @@ export default function PanelSelectPair({ selectedPair, onPairSelect }: PanelSel
         onDismiss={handleDismissSearch}
         onPairSelect={onPairSelect}
         selectedPair={selectedPair}
+        isLoading={isLoading}
+        allPairs={allPairs}
       />
     </PanelWrapper>
   )

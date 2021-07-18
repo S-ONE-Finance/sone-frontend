@@ -10,11 +10,8 @@ import { PairState, usePair } from 'data/Reserves'
 import { useActiveWeb3React } from 'hooks'
 import { useCurrency } from 'hooks/Tokens'
 import useAddLiquidityOneTokenHandler from 'hooks/useAddLiquidityOneTokenHandler'
-import useTheme from 'hooks/useTheme'
 import useToggle from 'hooks/useToggle'
-import { useIsUpToExtraSmall } from 'hooks/useWindowSize'
 import React, { useCallback, useEffect, useState } from 'react'
-import { ArrowDown } from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import { useDerivedMintSimpleInfo, useMintSimpleActionHandlers, useMintSimpleState } from 'state/mintSimple/hooks'
 import { TransactionType } from 'state/transactions/types'
@@ -24,6 +21,8 @@ import ButtonGrouping from './ButtonGrouping'
 import ModalFooter from './ModalFooter'
 import ModalHeader from './ModalHeader'
 import TransactionDetails from './TransactionDetails'
+import { useGetPairFromSubgraphAndParse } from '../../../subgraph'
+import { StyledArrowDown } from '../../../theme'
 
 type ModeOneTokenProps = {
   currencyIdA: string | undefined
@@ -31,9 +30,6 @@ type ModeOneTokenProps = {
 }
 
 export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenProps) {
-  const theme = useTheme()
-  const isUpToExtraSmall = useIsUpToExtraSmall()
-
   const { chainId } = useActiveWeb3React()
 
   const history = useHistory()
@@ -112,6 +108,8 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
     setTxHash
   })
 
+  const [isLoading, allPairs] = useGetPairFromSubgraphAndParse()
+
   return (
     <>
       <TransactionConfirmationModal
@@ -148,7 +146,12 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
         currencyToAdd={selectedPair?.liquidityToken}
       />
       <AutoColumn gap="md">
-        <PanelSelectPair selectedPair={selectedPair} onPairSelect={handlePairSelect} />
+        <PanelSelectPair
+          selectedPair={selectedPair}
+          onPairSelect={handlePairSelect}
+          isLoading={isLoading}
+          allPairs={allPairs}
+        />
         {isPairExistAndNotNull && (
           <>
             <PanelCurrencyInput
@@ -169,7 +172,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
               <>
                 <AutoRow justify="center">
                   <IconWrapper clickable={false}>
-                    <ArrowDown size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />
+                    <StyledArrowDown />
                   </IconWrapper>
                 </AutoRow>
                 <PanelAddLiquidityOneTokenModeOutput

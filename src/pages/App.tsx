@@ -8,12 +8,8 @@ import { useModalOpen, useToggleModal } from '../state/application/hooks'
 
 import DarkModeQueryParamReader from '../theme/DarkModeQueryParamReader'
 
-import {
-  RedirectDuplicateTokenIds,
-  RedirectOldAddLiquidityPathStructure,
-  RedirectToAddLiquidity
-} from './AddLiquidity/redirects'
-import { RedirectOldRemoveLiquidityPathStructure } from './RemoveLiquidity/redirects'
+import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './AddLiquidity/redirects'
+import { RedirectOldRemoveLiquidityPathStructure } from './WithdrawLiquidity/redirects'
 import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
 
 import GoogleAnalyticsReporter from '../components/analytics/GoogleAnalyticsReporter'
@@ -28,11 +24,8 @@ import Web3ReactManager from '../components/Web3ReactManager'
 import AddLiquidity from './AddLiquidity'
 import Earn from './Earn'
 import Manage from './Earn/Manage'
-import MigrateV1 from './MigrateV1'
-import MigrateV1Exchange from './MigrateV1/MigrateV1Exchange'
-import RemoveV1Exchange from './MigrateV1/RemoveV1Exchange'
 import PoolFinder from './PoolFinder'
-import RemoveLiquidity from './RemoveLiquidity'
+import WithdrawLiquidity from './WithdrawLiquidity'
 import Swap from './Swap'
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
@@ -41,10 +34,10 @@ import MyAccountPage from './MyAccount'
 import TabSwapLiquidity from '../components/TabSwapLiquidity'
 import { useLocation } from 'react-router'
 import WeeklyRanking from '../components/WeeklyRanking'
-import { ReactComponent as LogoForMobileResponsive } from '../assets/images/logo_for_mobile_responsive.svg'
 import { useTranslation } from 'react-i18next'
-import Pool from './Pool'
 import { HideLarge } from '../theme'
+import LogoWithPendingAmount from 'components/LogoWithPendingAmount'
+import WithdrawLiquidity2 from './WithdrawLiquidity2'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -109,27 +102,16 @@ const FooterWrapper = styled.div`
   `};
 `
 
-const LogoResponsive = styled(LogoForMobileResponsive)`
-  display: none;
-  width: 140px;
-  height: 20px;
-  margin-bottom: 20px;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    display: unset;
-  `};
-`
-
 function TopLevelModals() {
   const open = useModalOpen(ApplicationModal.ADDRESS_CLAIM)
   const toggle = useToggleModal(ApplicationModal.ADDRESS_CLAIM)
   return <AddressClaimModal isOpen={open} onDismiss={toggle} />
 }
 
-function OnlyShowAtSwapAndAddLiquidityPages({ children }: { children?: React.ReactNode }) {
+function OnlyShowAt({ children, paths }: { children?: React.ReactNode; paths: Array<string> }) {
   const location = useLocation()
   const { pathname } = location
-  return children && (pathname.startsWith('/swap') || pathname.startsWith('/add')) ? <>{children}</> : null
+  return children && paths.some(path => pathname.startsWith(path)) ? <>{children}</> : null
 }
 
 export default function App() {
@@ -151,41 +133,45 @@ export default function App() {
             <Polling />
           </HideLarge>
           <TopLevelModals />
-          <OnlyShowAtSwapAndAddLiquidityPages>
-            <LogoResponsive />
+          <LogoWithPendingAmount />
+          <OnlyShowAt paths={['/swap', '/add']}>
             <TabSwapLiquidity />
-          </OnlyShowAtSwapAndAddLiquidityPages>
+          </OnlyShowAt>
           <Web3ReactManager>
             <Switch>
               <Route exact strict path="/swap" component={Swap} />
-              <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />
               <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
-              <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
-              <Route exact strict path="/find" component={PoolFinder} />
-              <Route exact strict path="/pool" component={Pool} />
-              <Route exact strict path="/uni" component={Earn} />
-              <Route exact strict path="/vote" component={Vote} />
-              <Route exact strict path="/create" component={RedirectToAddLiquidity} />
               <Route exact path="/add" component={AddLiquidity} />
               <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
               <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
-              {/*<Route exact path="/create" component={AddLiquidity} />*/}
-              {/*<Route exact path="/create/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />*/}
-              {/*<Route exact path="/create/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />*/}
-              <Route exact strict path="/remove/v1/:address" component={RemoveV1Exchange} />
-              <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
-              <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
-              <Route exact strict path="/migrate/v1" component={MigrateV1} />
-              <Route exact strict path="/migrate/v1/:address" component={MigrateV1Exchange} />
-              <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} />
-              <Route exact strict path="/vote/:id" component={VotePage} />
               <Route exact strict path="/my-account" component={MyAccountPage} />
+              <Route
+                exact
+                strict
+                path="/my-account/withdraw/:tokens"
+                component={RedirectOldRemoveLiquidityPathStructure}
+              />
+              <Route exact strict path="/my-account/withdraw/:currencyIdA/:currencyIdB" component={WithdrawLiquidity} />
+              <Route
+                exact
+                strict
+                path="/my-account/withdraw2/:currencyIdA/:currencyIdB"
+                component={WithdrawLiquidity2}
+              />
+              {/* Component PoolFinder để import Pool, hiện tại trong requirements của sone chưa có use-case này. */}
+              <Route exact strict path="/find" component={PoolFinder} />
+              {/* Nhưng route dưới đây là của uni, trong sone không có, nhưng nên giữ lại. */}
+              <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />
+              <Route exact strict path="/vote" component={Vote} />
+              <Route exact strict path="/vote/:id" component={VotePage} />
+              <Route exact strict path="/uni" component={Earn} />
+              <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} />
               <Route component={RedirectPathToSwapOnly} />
             </Switch>
           </Web3ReactManager>
-          <OnlyShowAtSwapAndAddLiquidityPages>
+          <OnlyShowAt paths={['/swap', '/add']}>
             <WeeklyRanking />
-          </OnlyShowAtSwapAndAddLiquidityPages>
+          </OnlyShowAt>
         </BodyWrapper>
         <Marginer />
         <FooterWrapper>
