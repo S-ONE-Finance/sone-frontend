@@ -7,25 +7,31 @@ import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { TYPE } from '../../theme'
-import { StyledCloseIcon } from '../../theme/components'
+import { PanelSearchContentWrapper, SortDownIcon, SortUpIcon, StyledCloseIcon, TYPE } from '../../theme'
 import Column from '../Column'
 import { QuestionHelper1416 } from '../QuestionHelper'
 import Row, { RowBetween, RowFixed } from '../Row'
 import { filterPairs } from '../SearchModal/filtering'
 import { PaddedColumn, SearchInput } from '../SearchModal/styleds'
-import { PanelSearchContentWrapper, SortDownIcon, SortUpIcon } from 'theme'
 import PairList from './PairList'
-import { useGetPairFromSubgraphAndParse } from 'subgraph'
 
 type ModalSearchPairProps = {
   isOpen: boolean
   onDismiss: () => void
   selectedPair?: Pair | null
   onPairSelect: (pair: Pair) => void
+  isLoading: boolean
+  allPairs: Array<Pair>
 }
 
-export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPairSelect }: ModalSearchPairProps) {
+export default function ModalSearchPair({
+  isOpen,
+  onDismiss,
+  selectedPair,
+  onPairSelect,
+  isLoading,
+  allPairs
+}: ModalSearchPairProps) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
 
@@ -36,8 +42,6 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
   const debouncedQuery = useDebounce(searchQuery, 200)
 
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
-
-  const [isLoading, allPairs] = useGetPairFromSubgraphAndParse()
 
   const filteredPairs: Pair[] = useMemo(() => {
     return filterPairs(allPairs, debouncedQuery)

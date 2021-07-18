@@ -4,9 +4,9 @@ import { useAggregateSoneBalance, useCurrencyBalance } from '../../../state/wall
 import { Currency } from '@s-one-finance/sdk-core'
 import { useWindowSize } from '../../../hooks/useWindowSize'
 import styled from 'styled-components'
-import { ReactComponent as SoneBigImageSvg } from '../../../assets/images/my-account-balance.svg'
+import SoneBigImageSvg from '../../../assets/images/my-account-balance.svg'
 
-export const StyledSoneBigImage = styled(SoneBigImageSvg)`
+export const StyledSoneBigImage = styled.img`
   width: 136.62px;
   min-width: 136.62px;
   height: auto;
@@ -44,13 +44,5 @@ export default function SoneBigImage({
     )
   }, [soneBalance, ethBalance, windowWidth, ethBalanceRef, soneBalanceRef])
 
-  // Làm + Tự Test + (Backend Support 24/7) : 3 - 5.
-
-  // UI : 2 ngày + 2 ngày responsive.
-
-  // Render ra data mặc định + sort + phân trang: 2 ngày
-
-  // Filter: 2 ngày. (Radio, Input, Input (Hint), ComboBox, DateTime)
-
-  return isShowBigImage ? <StyledSoneBigImage /> : null
+  return isShowBigImage ? <StyledSoneBigImage src={SoneBigImageSvg} alt="StyledSoneBigImage" /> : null
 }

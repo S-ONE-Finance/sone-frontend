@@ -27,19 +27,17 @@ export default function AddLiquidity({
   const [addLiquidityMode] = useAddLiquidityModeManager()
 
   return (
-    <>
-      <AppBody>
-        {/* transactionType chỗ này chỉ để lấy ra vector, để ADD_ONE_TOKEN hay ADD_TWO_TOKENS đều giống nhau. */}
-        <AppBodyTitleDescriptionSettings transactionType={TransactionType.ADD_ONE_TOKEN} />
-        <ModeToggle />
-        <StyledPadding>
-          {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
-            <ModeOneToken currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
-          ) : (
-            <ModeTwoTokens currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
-          )}
-        </StyledPadding>
-      </AppBody>
-    </>
+    <AppBody>
+      {/* transactionType chỗ này chỉ để lấy ra vector, để ADD_ONE_TOKEN hay ADD_TWO_TOKENS đều giống nhau. */}
+      <AppBodyTitleDescriptionSettings transactionType={TransactionType.ADD_ONE_TOKEN} />
+      <ModeToggle />
+      <StyledPadding>
+        {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
+          <ModeOneToken currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
+        ) : (
+          <ModeTwoTokens currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
+        )}
+      </StyledPadding>
+    </AppBody>
   )
 }

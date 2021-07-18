@@ -56,7 +56,7 @@ export default function Popups() {
         <ClaimPopup />
         {activePopups.map(item => (
           <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={item.removeAfterMs} />
-          // <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={null} />
+          // <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={1000000} />
         ))}
       </FixedPopupColumn>
       <MobilePopupWrapper height={activePopups?.length > 0 ? 'fit-content' : 0}>
@@ -66,7 +66,7 @@ export default function Popups() {
             .reverse()
             .map(item => (
               <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={item.removeAfterMs} />
-              // <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={null} />
+              // <PopupItem key={item.key} content={item.content} popKey={item.key} removeAfterMs={1000000} />
             ))}
         </MobilePopupInner>
       </MobilePopupWrapper>

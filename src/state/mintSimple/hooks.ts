@@ -41,11 +41,17 @@ export function useDerivedMintSimpleInfo(
 ): {
   theOtherCurrency?: Currency
   maxAmount?: CurrencyAmount
-  // Lượng selectedCurrency mà người dùng nhập vào.
+  /**
+   * Lượng selectedCurrency mà người dùng nhập vào.
+   */
   selectedTokenUserInputAmount?: TokenAmount
-  // Lượng selectedCurrency sau khi chia 2.
+  /**
+   * Lượng selectedCurrency sau khi chia 2.
+   */
   selectedTokenParsedAmount?: TokenAmount
-  // Lượng theOtherCurrency sau khi lấy selectedTokenParsedAmount ra để swap (chưa tính slippage).
+  /**
+   * Lượng theOtherCurrency sau khi lấy selectedTokenParsedAmount ra để swap (chưa tính slippage).
+   */
   theOtherTokenParsedAmount?: TokenAmount
   noLiquidity: boolean
   price?: Price
@@ -89,7 +95,7 @@ export function useDerivedMintSimpleInfo(
       }
       return undefined
     } else {
-      // FIXME: Chỗ này có thể bị ngược token0 token1, kiểm tra sau.
+      // TODO: Chỗ này có thể bị ngược token0 token1, kiểm tra sau.
       return pair && pair.token0 && pair.token1 && selectedToken
         ? pair.priceOf(pair.token0.equals(selectedToken) ? pair.token0 : pair.token1)
         : undefined

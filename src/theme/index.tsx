@@ -118,6 +118,7 @@ export function colors(darkMode: boolean): Colors {
     bg5Sone: '#DFDFDF',
     bg6Sone: darkMode ? '#05243B' : '#F2F2F2',
     bg7Sone: '#C4C4C4',
+    bg8Sone: darkMode ? '#212429' : '#FAFAFA',
     bgPanels: darkMode ? 'transparent' : '#F3F3F3',
 
     border1Sone: darkMode ? '#AAAAAA' : '#C9C9C9',

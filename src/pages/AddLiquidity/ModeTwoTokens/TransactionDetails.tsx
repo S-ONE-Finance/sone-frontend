@@ -2,7 +2,6 @@ import { Currency } from '@s-one-finance/sdk-core'
 import { AutoColumn, ColumnCenter } from 'components/Column'
 import { QuestionHelper1416 } from 'components/QuestionHelper'
 import { RowBetween, RowFixed } from 'components/Row'
-import { InfoLink } from 'components/swap/AdvancedSwapDetailsContent'
 import TradePrice from 'components/swap/TradePrice'
 import { PairState } from 'data/Reserves'
 import useTheme from 'hooks/useTheme'
@@ -15,8 +14,8 @@ import { useToggleSettingsMenu } from 'state/application/hooks'
 import { Field } from 'state/mint/actions'
 import { useDerivedMintInfo } from 'state/mint/hooks'
 import { useShowTransactionDetailsManager, useUserSlippageTolerance } from 'state/user/hooks'
-import { unwrappedToken } from 'utils/wrappedCurrency'
 import { INITIAL_ALLOWED_SLIPPAGE, ONE_BIPS } from '../../../constants'
+import ViewPairAnalytics from '../../../components/ViewPairAnalytics'
 
 type TransactionDetailsProps = {
   currencyA?: Currency
@@ -115,9 +114,7 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
           </AutoColumn>
           {pair?.liquidityToken.address && (
             <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '35px' }}>
-              <InfoLink href={'https://info.uniswap.org/pair/' + pair.liquidityToken.address} target="_blank">
-                View {unwrappedToken(pair.token0).symbol} - {unwrappedToken(pair.token1).symbol} analytics
-              </InfoLink>
+              <ViewPairAnalytics pairAddress={pair.liquidityToken.address} tokenA={pair.token0} tokenB={pair.token1} />
             </ColumnCenter>
           )}
         </>

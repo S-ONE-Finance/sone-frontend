@@ -1,7 +1,6 @@
 import { Currency, TokenAmount } from '@s-one-finance/sdk-core'
 import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
 import React, { useCallback, useState } from 'react'
-import { Plus } from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import { TransactionType } from 'state/transactions/types'
 import { AutoColumn } from '../../../components/Column'
@@ -10,8 +9,6 @@ import { AutoRow } from '../../../components/Row'
 import { IconWrapper } from '../../../components/swap/styleds'
 import { useCurrency } from '../../../hooks/Tokens'
 import useAddLiquidityTwoTokensHandler from '../../../hooks/useAddLiquidityTwoTokensHandler'
-import useTheme from '../../../hooks/useTheme'
-import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
 import { Field } from '../../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
 import { currencyId } from '../../../utils/currencyId'
@@ -20,6 +17,7 @@ import ModalFooter from './ModalFooter'
 import ModalHeader from './ModalHeader'
 import ButtonGrouping from './ButtonGrouping'
 import TransactionDetails from './TransactionDetails'
+import { StyledPlus } from '../../../theme'
 
 type ModeTwoTokensProps = {
   currencyIdA: string | undefined
@@ -28,9 +26,6 @@ type ModeTwoTokensProps = {
 
 export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoTokensProps) {
   const history = useHistory()
-
-  const isUpToExtraSmall = useIsUpToExtraSmall()
-  const theme = useTheme()
 
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
@@ -170,7 +165,7 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
         <AutoColumn justify="space-between">
           <AutoRow justify={'center'}>
             <IconWrapper clickable={false}>
-              <Plus size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />
+              <StyledPlus />
             </IconWrapper>
           </AutoRow>
         </AutoColumn>

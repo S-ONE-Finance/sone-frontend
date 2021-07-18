@@ -1,15 +1,11 @@
-import React, { useMemo } from 'react'
-import { Card, Heading, SectionButton, SectionText, Section } from '../components'
+import React from 'react'
+import { Card, Heading, Section, SectionButton, SectionText } from '../components'
 import { RowBetween, RowFitContent } from '../../../components/Row'
 import MyLiquidityItem from './MyLiquidityItem'
-import { useActiveWeb3React } from '../../../hooks'
-import { toV2LiquidityToken, useTrackedTokenPairs } from '../../../state/user/hooks'
-import { useTokenBalancesWithLoadingIndicator } from '../../../state/wallet/hooks'
-import { usePairs } from '../../../data/Reserves'
-import { Pair } from '@s-one-finance/sdk-core'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { ReactComponent as PlusIconSvg } from '../../../assets/images/add-liquidity-vector-light.svg'
+import useAddedLiquidityPairs from '../../../hooks/useAddedLiquidityPairs'
 
 const PlusIcon = styled(PlusIconSvg)`
   width: 21px;
@@ -44,36 +40,7 @@ const CardLiquidity = styled(Card)`
 `
 
 export default function MyLiquidity() {
-  const { account } = useActiveWeb3React()
-
-  // fetch the user's balances of all tracked V2 LP tokens
-  const trackedTokenPairs = useTrackedTokenPairs()
-  const tokenPairsWithLiquidityTokens = useMemo(
-    () => trackedTokenPairs.map(tokens => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
-    [trackedTokenPairs]
-  )
-  const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map(tpwlt => tpwlt.liquidityToken), [
-    tokenPairsWithLiquidityTokens
-  ])
-  const [v2PairsBalances, fetchingV2PairBalances] = useTokenBalancesWithLoadingIndicator(
-    account ?? undefined,
-    liquidityTokens
-  )
-
-  // fetch the reserves for all V2 pools in which the user has a balance
-  const liquidityTokensWithBalances = useMemo(
-    () =>
-      tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
-        v2PairsBalances[liquidityToken.address]?.greaterThan('0')
-      ),
-    [tokenPairsWithLiquidityTokens, v2PairsBalances]
-  )
-
-  const pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
-    .map(([, pair]) => pair)
-    .filter((pair): pair is Pair => Boolean(pair))
-  const isLoading =
-    fetchingV2PairBalances || pairs?.length < liquidityTokensWithBalances.length || pairs?.some(pair => !pair)
+  const [isLoading, allPairs] = useAddedLiquidityPairs()
 
   return (
     <Section>
@@ -89,8 +56,8 @@ export default function MyLiquidity() {
       <CardLiquidity>
         {isLoading
           ? 'Loading...'
-          : pairs.length > 0
-          ? pairs.map(pair => <MyLiquidityItem key={pair.liquidityToken.address} pair={pair} />)
+          : allPairs.length > 0
+          ? allPairs.map(pair => <MyLiquidityItem key={pair.liquidityToken.address} pair={pair} />)
           : 'No item to show.'}
       </CardLiquidity>
     </Section>

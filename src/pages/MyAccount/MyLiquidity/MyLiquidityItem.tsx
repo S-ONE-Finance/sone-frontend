@@ -248,7 +248,7 @@ export default function MyLiquidityItem({ pair }: { pair: Pair }) {
           <CurrencyLogoDouble currency0={currency0} currency1={currency1} size={22} />
           <PairName
             style={{ marginLeft: isUpToExtraSmall ? '0' : '20px' }}
-          >{`${pair.token0.symbol}-${pair.token1.symbol}`}</PairName>
+          >{`${currency0.symbol}-${currency1.symbol}`}</PairName>
         </RowFitContent>
         <FlexibleRow gap={isUpToExtraSmall ? '0' : '10px'} justify="center">
           <Column width="fit-content" align="center">
@@ -294,15 +294,26 @@ export default function MyLiquidityItem({ pair }: { pair: Pair }) {
               }
             />
             <Row style={{ marginTop: isUpToSmall ? '0' : '25px', zIndex: 1 }} gap="2rem" justify="center">
-              <ButtonRemove onClick={() => alert('Not implemented yet!')}>Remove</ButtonRemove>
+              <ButtonRemove
+                as={Link}
+                to={
+                  currency0 === ETHER
+                    ? `/my-account/withdraw/ETH/${pair.token1.address}`
+                    : currency1 === ETHER
+                    ? `/my-account/withdraw/${pair.token0.address}/ETH`
+                    : `/my-account/withdraw/${pair.token0.address}/${pair.token1.address}`
+                }
+              >
+                Remove
+              </ButtonRemove>
               <ButtonAdd
                 as={Link}
                 to={
                   currency0 === ETHER
-                    ? `/ETH/${pair.token1.address}`
+                    ? `/add/ETH/${pair.token1.address}`
                     : currency1 === ETHER
-                    ? `/${pair.token0.address}/ETH`
-                    : `/${pair.token0.address}/${pair.token1.address}`
+                    ? `/add/${pair.token0.address}/ETH`
+                    : `/add/${pair.token0.address}/${pair.token1.address}`
                 }
               >
                 Add
