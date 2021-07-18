@@ -1,0 +1,37 @@
+import { Contract } from '@ethersproject/contracts'
+import { TransactionResponse } from '@ethersproject/providers'
+import { useWeb3React } from '@web3-react/core'
+import BigNumber from 'bignumber.js'
+import { useMasterFarmerContract } from 'hooks/useContract'
+import { useCallback } from 'react'
+import { useTransactionAdder } from 'state/transactions/hooks'
+
+const useUnstake = (pid: number) => {
+  const addTransaction = useTransactionAdder()
+  const { account } = useWeb3React()
+  const masterContract: Contract | null = useMasterFarmerContract()
+
+  const handleUnstake = useCallback(
+    async (amount: string, symbol: string) => {
+      try {
+        const tx = masterContract
+          ?.withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+          .then((txResponse: TransactionResponse) => {
+            addTransaction(txResponse, {
+              summary: `Unstaked ${amount} ${symbol} LP Token`
+            })
+            return txResponse
+          })
+          .catch((err: any) => console.log('err', err))
+        return tx
+      } catch (e) {
+        return false
+      }
+    },
+    [account, pid, addTransaction]
+  )
+
+  return { onUnstake: handleUnstake }
+}
+
+export default useUnstake

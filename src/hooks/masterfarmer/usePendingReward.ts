@@ -10,15 +10,21 @@ const usePendingReward = (pid: number) => {
   const masterContract: Contract | null = useMasterFarmerContract()
 
   const fetchPending = useCallback(async () => {
-    const pending: BigNumber = await masterContract?.pendingReward(pid, account)
-    setPendingReward(pending)
+    if (pid) {
+      try {
+        const pending: BigNumber = await masterContract?.pendingReward(pid, account)
+        setPendingReward(pending)
+      } catch (err) {
+        console.error(err)
+      }
+    }
   }, [account, masterContract, setPendingReward])
 
   useEffect(() => {
     if (account) {
       fetchPending()
     }
-  }, [account, fetchPending])
+  }, [account, fetchPending, pid])
 
   return pendingReward
 }

@@ -14,8 +14,10 @@ const useAllowance = (pairAddress: string) => {
   const masterFarmerAddress = MASTER_FARMER_ADDRESS[chainId as ChainId]
 
   const fetchAllowance = useCallback(async () => {
-    const allowance: BigNumber = await lpContract?.allowance(account, masterFarmerAddress)
-    setAllowance(allowance)
+    try {
+      const allowance: BigNumber = await lpContract?.allowance(account, masterFarmerAddress)
+      setAllowance(allowance)
+    } catch (e) {}
   }, [account, masterFarmerAddress, setAllowance])
 
   useEffect(() => {

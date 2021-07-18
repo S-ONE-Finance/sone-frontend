@@ -7,7 +7,7 @@ import { MASTER_FARMER_ADDRESS } from '../../constants/'
 import { ChainId } from '@s-one-finance/sdk-core'
 import { Contract } from '@ethersproject/contracts'
 
-const useTokenBalance = (pairAddress: string) => {
+const useTokenBalance = (pairAddress: string | undefined) => {
   const [balance, setBalance] = useState(BigNumber.from(0))
   const { account, chainId } = useWeb3React()
   const block = useBlockNumber()
@@ -15,8 +15,10 @@ const useTokenBalance = (pairAddress: string) => {
   const masterFarmerAddress = MASTER_FARMER_ADDRESS[chainId as ChainId]
 
   const fetchBalance = useCallback(async () => {
-    const balanceToken: BigNumber = await lpContract?.balanceOf(account)
-    setBalance(balanceToken)
+    try {
+      const balanceToken: BigNumber = await lpContract?.balanceOf(account)
+      setBalance(balanceToken)
+    } catch (e) {}
   }, [account, masterFarmerAddress, setBalance])
 
   useEffect(() => {

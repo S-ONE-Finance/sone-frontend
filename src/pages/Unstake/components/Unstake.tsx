@@ -1,29 +1,26 @@
-import React, { useCallback, useState, useMemo } from 'react'
+import BigNumber from 'bignumber.js'
+import useUnstake from 'hooks/masterfarmer/useUnstake'
+import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import TokenInput from '../../../components/TokenInput'
 import { getFullDisplayBalance } from '../../../sushi/format/formatBalance'
-import useStakedBalance from 'hooks/farms/useStakedBalance'
-import useUnstake from 'hooks/farms/useUnstake'
+
 interface UnstakeProps {
-  lpContract: any
+  amountStaked: string | undefined
   pid: number
-  tokenName: string
-  tokenSymbol: string
-  token2Symbol: string
+  symbol: string
   val: string
   setVal: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Unstake: React.FC<UnstakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, token2Symbol, val, setVal }) => {
+const Unstake: React.FC<UnstakeProps> = ({ amountStaked, pid, symbol, val, setVal }) => {
   const [pendingUnstakeTx, setPendingUnstakeTx] = useState(false)
-
-  const stakedValue = useStakedBalance(1)
 
   const { onUnstake } = useUnstake(pid)
 
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(stakedValue)
-  }, [stakedValue])
+    return getFullDisplayBalance(new BigNumber(amountStaked || '0'))
+  }, [amountStaked])
 
   const handleSelectMax = useCallback(() => {
     setVal(fullBalance)
@@ -45,17 +42,15 @@ const Unstake: React.FC<UnstakeProps> = ({ lpContract, pid, tokenName, tokenSymb
               onSelectMax={handleSelectMax}
               onChange={handleChange}
               max={fullBalance}
-              symbol={tokenName}
+              symbol={symbol}
             />
             <button
               disabled={pendingUnstakeTx}
               onClick={async () => {
                 if (val && parseFloat(val) > 0) {
                   setPendingUnstakeTx(true)
-                  const tx: any = await onUnstake(val)
-                  if (tx) {
-                    setPendingUnstakeTx(false)
-                  }
+                  await onUnstake(val, symbol)
+                  setPendingUnstakeTx(false)
                 }
               }}
             >

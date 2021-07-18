@@ -80,7 +80,7 @@ const useFarm = (id: string) => {
       secondsPerBlock: Number(averageBlockTime),
       userInfo: userInfo || {}
     }
-  }, [sushiPrice])
+  }, [sushiPrice, block])
 
   useEffect(() => {
     const fetchData = async () => {

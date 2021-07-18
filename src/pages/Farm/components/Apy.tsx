@@ -18,10 +18,8 @@ const Apy: React.FC<ApyProps> = ({ val, farm }) => {
 
   useEffect(() => {
     const poolInfo = new PoolInfo(farm)
-    console.log('poolInfo', poolInfo)
-    const userInfo = new UserInfo(poolInfo, farm?.userInfo)
-    console.log('userInfo', userInfo)
-    if (val) {
+    if (val && farm?.userInfo) {
+      const userInfo = new UserInfo(poolInfo, farm.userInfo)
       const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
         new BigNumber(val).times(new BigNumber(10).pow(18)).toString()
       )
