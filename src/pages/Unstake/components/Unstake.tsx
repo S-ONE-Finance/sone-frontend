@@ -1,9 +1,9 @@
 import BigNumber from 'bignumber.js'
 import useUnstake from 'hooks/masterfarmer/useUnstake'
+import { getFullDisplayBalance } from 'hooks/masterfarmer/utils'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import TokenInput from '../../../components/TokenInput'
-import { getFullDisplayBalance } from '../../../sushi/format/formatBalance'
 
 interface UnstakeProps {
   amountStaked: string | undefined
@@ -19,7 +19,7 @@ const Unstake: React.FC<UnstakeProps> = ({ amountStaked, pid, symbol, val, setVa
   const { onUnstake } = useUnstake(pid)
 
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(new BigNumber(amountStaked || '0'))
+    return getFullDisplayBalance(amountStaked || '0')
   }, [amountStaked])
 
   const handleSelectMax = useCallback(() => {

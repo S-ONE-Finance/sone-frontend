@@ -5,7 +5,7 @@ import useTokenBalance from 'hooks/masterfarmer/useTokenBalance'
 import { getBalanceNumber } from 'hooks/masterfarmer/utils'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useBlockNumber } from 'state/application/hooks'
-import { BigNumber } from '../../../sushi'
+import BigNumber from 'bignumber.js'
 
 interface InfoProps {
   farm: Farm | undefined
