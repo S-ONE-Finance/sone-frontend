@@ -12,7 +12,8 @@ export const MyStakeItem: React.FC<{ userInfor: UserInfo }> = ({ userInfor }) =>
   const [poolRequestPending, setPoolRequestPending] = useState(false)
 
   const claimReward = async (farmId: number | undefined) => {
-    if (farmId) {
+    console.log('farmId', farmId)
+    if (farmId !== undefined) {
       setPoolRequestPending(true)
       await onClaimReward(farmId)
       setPoolRequestPending(false)
