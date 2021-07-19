@@ -13,13 +13,15 @@ import styled from 'styled-components'
 
 const CardBalance = styled(Card)`
   padding: 51px 99px;
+  border-radius: 40px;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 51px 39px;    
   `}
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 20px 32px;    
+    padding: 20px 32px;
+    border-radius: 25px;
   `}
 `
 
