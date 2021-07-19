@@ -17,8 +17,10 @@ const useAllowance = (pairAddress: string) => {
     try {
       const allowance: BigNumber = await lpContract?.allowance(account, masterFarmerAddress)
       setAllowance(allowance)
-    } catch (e) {}
-  }, [account, masterFarmerAddress, setAllowance])
+    } catch (e) {
+      console.error(e)
+    }
+  }, [account, lpContract, masterFarmerAddress])
 
   useEffect(() => {
     if (fetchAllowance) {

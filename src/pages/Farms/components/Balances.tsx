@@ -17,7 +17,7 @@ const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
       const balance = balanceData?.div(BigNumber.from(10).pow(18))
       setTotalSupply(balance)
     })()
-  }, [])
+  }, [soneContract])
 
   return (
     <StyledWrapper>

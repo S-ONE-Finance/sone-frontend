@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js'
 import useUnstake from 'hooks/masterfarmer/useUnstake'
 import { getFullDisplayBalance } from 'hooks/masterfarmer/utils'
 import React, { useCallback, useMemo, useState } from 'react'

@@ -1,9 +1,8 @@
 import { Farm, PoolInfo, UserInfo } from '@s-one-finance/sdk-core/'
-import { useWeb3React } from '@web3-react/core'
 import usePendingReward from 'hooks/masterfarmer/usePendingReward'
 import useTokenBalance from 'hooks/masterfarmer/useTokenBalance'
 import { getBalanceNumber } from 'hooks/masterfarmer/utils'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useBlockNumber } from 'state/application/hooks'
 import BigNumber from 'bignumber.js'
 
@@ -13,8 +12,6 @@ interface InfoProps {
 }
 
 const Information: React.FC<InfoProps> = ({ farm, val }) => {
-  const { chainId } = useWeb3React()
-
   const [totalLPToken, setTotalLPToken] = useState('0')
   const [remainStakedLP, setRemainStakedLP] = useState('0')
   const [availableReward, setAvailableReward] = useState('0')
@@ -38,7 +35,7 @@ const Information: React.FC<InfoProps> = ({ farm, val }) => {
       setRemainStakedLP(newTotalStaked)
       setAvailableReward(pendingReward.toString())
     }
-  }, [val, farm, block])
+  }, [val, farm, block, tokenBalance, pendingReward])
 
   return (
     <div>

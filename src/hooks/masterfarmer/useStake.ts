@@ -1,6 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
-import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import { useMasterFarmerContract } from 'hooks/useContract'
 import { useCallback } from 'react'
@@ -8,7 +7,6 @@ import { useTransactionAdder } from 'state/transactions/hooks'
 
 const useStake = (pid: number) => {
   const addTransaction = useTransactionAdder()
-  const { chainId, account } = useWeb3React()
   const masterContract: Contract | null = useMasterFarmerContract()
 
   const handleStake = useCallback(
@@ -25,10 +23,11 @@ const useStake = (pid: number) => {
           .catch((err: any) => console.log('err', err))
         return tx
       } catch (e) {
+        console.error(e)
         return false
       }
     },
-    [account, pid, addTransaction, chainId]
+    [masterContract, pid, addTransaction]
   )
 
   return { onStake: handleStake }

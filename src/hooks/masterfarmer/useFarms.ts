@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
-import { calculateAPY, ChainId } from '@s-one-finance/sdk-core'
+import { calculateAPY } from '@s-one-finance/sdk-core'
 import { useActiveWeb3React } from 'hooks'
 import { Farm } from './interfaces'
 import useSonePrice from './useSonePrice'
@@ -102,18 +102,14 @@ const useFarms = () => {
 
     const sorted = orderBy(farms, ['pid'], ['desc'])
     return sorted
-  }, [sushiPrice])
+  }, [block, sushiPrice])
 
   useEffect(() => {
     const fetchData = async () => {
-      if (chainId === ChainId.MAINNET || !account) {
-        const results = await fetchSLPFarms()
-        const uniqResult = _.uniq(results)
-        const sorted = orderBy(uniqResult, ['pid'], ['desc'])
-        setFarms(sorted)
-      } else {
-        setFarms([])
-      }
+      const results = await fetchSLPFarms()
+      const uniqResult = _.uniq(results)
+      const sorted = orderBy(uniqResult, ['pid'], ['desc'])
+      setFarms(sorted)
     }
     fetchData()
   }, [account, chainId, fetchSLPFarms])

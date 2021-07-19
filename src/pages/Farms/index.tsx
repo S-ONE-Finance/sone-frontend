@@ -39,6 +39,7 @@ export default function Farms() {
       farms.map((farm: Farm) => {
         totalLock = totalLock.plus(new BigNumber(farm.tvl | 0))
         circulatingSupply = circulatingSupply.plus(new BigNumber(farm.sushiHarvested | 0))
+        return farm
       })
       setTotalLockValue(totalLock)
       setCirculatingSupplyValue(circulatingSupply)
@@ -84,7 +85,7 @@ export default function Farms() {
       console.log('result', result)
       setFarmData(result)
     }
-  }, [farms, setTotalLockValue, sortBy, filter, setFarmData])
+  }, [farms, setTotalLockValue, sortBy, filter, setFarmData, myLpToken, myStaked])
 
   return (
     <>

@@ -18,7 +18,7 @@ const usePendingReward = (pid: number) => {
         console.error(err)
       }
     }
-  }, [account, masterContract, setPendingReward])
+  }, [account, masterContract, setPendingReward, pid])
 
   useEffect(() => {
     if (account) {

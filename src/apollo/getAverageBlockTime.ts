@@ -1,16 +1,14 @@
-import { blockClient, blockClient_matic } from './client'
-import { blockQuery, blocksQuery } from './queries'
-import { getUnixTime, startOfHour, startOfMinute, startOfSecond, subDays, subHours } from 'date-fns'
-
 import { ChainId } from '@s-one-finance/sdk-core'
+import { getUnixTime, startOfHour, startOfMinute, startOfSecond, subDays, subHours } from 'date-fns'
+import { blockClient } from './client'
+import { blockQuery, blocksQuery } from './queries'
 
 export async function getOneDayBlock(chainId: ChainId = 1): Promise<{ number: number }> {
   const date = startOfMinute(subDays(Date.now(), 1))
   const start = Math.floor(Number(date) / 1000)
   const end = Math.floor(Number(date) / 1000) + 600
 
-  let blocksData
-  blocksData = await blockClient.query({
+  const blocksData = await blockClient.query({
     query: blockQuery,
     variables: {
       start,
@@ -31,8 +29,7 @@ export async function getAverageBlockTime(chainId: ChainId = 1): Promise<{ times
   const start = getUnixTime(subHours(now, 6))
   const end = getUnixTime(now)
 
-  let query
-  query = await blockClient.query({
+  const query = await blockClient.query({
     query: blocksQuery,
     variables: {
       start,

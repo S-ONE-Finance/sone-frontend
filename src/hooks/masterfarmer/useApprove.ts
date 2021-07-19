@@ -12,7 +12,7 @@ const MaxUint256 = '999999999900000000000000000000000000000'
 const useApprove = (pairAddress: string) => {
   const addTransaction = useTransactionAdder()
 
-  const { chainId, account } = useWeb3React()
+  const { chainId } = useWeb3React()
   const masterFarmerAddress = MASTER_FARMER_ADDRESS[chainId as ChainId]
 
   // TODO_STAKING: Remove fake pairAddress
@@ -32,10 +32,11 @@ const useApprove = (pairAddress: string) => {
           .catch((err: any) => console.log('err', err))
         return tx
       } catch (e) {
+        console.error(e)
         return false
       }
     },
-    [account, lpContract, chainId, addTransaction]
+    [lpContract, masterFarmerAddress, addTransaction]
   )
 
   return { onApprove: handleApprove }

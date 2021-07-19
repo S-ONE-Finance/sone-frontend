@@ -96,7 +96,7 @@ const useMyAccountStaked = () => {
 
     const sorted = orderBy(userData, ['id'], ['desc'])
     return sorted
-  }, [sushiPrice])
+  }, [block, sushiPrice])
 
   useEffect(() => {
     const fetchData = async () => {
