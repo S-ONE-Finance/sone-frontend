@@ -26,7 +26,7 @@ export const MyStakeItem: React.FC<{ userInfor: UserInfo }> = ({ userInfor }) =>
       <div>My Staked LP Token: {getBalanceNumber(userInfor.amount)}</div>
       <div>APY: {Number(userInfor.pool?.roiPerYear) * 100}%</div>
       <div>Rewarded SONE: {userInfor.sushiHarvested}</div>
-      <div>Available Reward: {pendingReward.toNumber()}</div>
+      <div>Available Reward: {pendingReward?.toString()}</div>
       <Link to={`/unstake/${userInfor.pool?.pid}`}>Unstake</Link>
       <br />
       <Link to={`/staking/${userInfor.pool?.pid}`}>Stake more</Link>
