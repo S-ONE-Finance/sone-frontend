@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
-import { useWeeklyRankingData } from '../../subgraph'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import { useWeeklyRankingData } from '../../subgraph'
 import Row from '../Row'
 import QuestionHelper from '../QuestionHelper'
 import { useIsUpToExtraSmall, useIsUpToSmall } from '../../hooks/useWindowSize'
@@ -55,6 +56,7 @@ const Title = styled.div`
 
 // Ranking theo volume.
 function WeeklyRanking() {
+  const { t } = useTranslation()
   const ranking = useWeeklyRankingData()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const isUpToSmall = useIsUpToSmall()
@@ -70,7 +72,7 @@ function WeeklyRanking() {
   return (
     <Container>
       <SpanFullColumns>
-        <Title>Weekly Ranking</Title>
+        <Title>{t('weekly_ranking')}</Title>
         <QuestionHelper text="Sort theo oneWeekVolumeUSD" size={isUpToExtraSmall ? 15 : isUpToSmall ? 19 : 23} />
       </SpanFullColumns>
       {(ranking?.length >= 1 ? ranking : rankingPlaceholder).map((item: any) => (

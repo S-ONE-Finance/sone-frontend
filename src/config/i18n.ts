@@ -16,7 +16,7 @@ i18next
     },
     fallbackLng: 'en',
     preload: ['en'],
-    keySeparator: false,
+    keySeparator: '.',
     interpolation: { escapeValue: false }
   })
   .then()

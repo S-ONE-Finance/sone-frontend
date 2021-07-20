@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Settings } from 'react-feather'
 import { Text } from 'rebass'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { ApplicationModal } from '../../state/application/actions'
 import { useModalOpen, useToggleSettingsMenu } from '../../state/application/hooks'
 import { useExpertModeManager, useUserTransactionTTL, useUserSlippageTolerance } from '../../state/user/hooks'
@@ -195,6 +196,7 @@ const StyledExpertIcon = styled(ExpertIcon)`
 `
 
 export default function SettingsTab({ transactionType }: { transactionType: TransactionType }) {
+  const { t } = useTranslation()
   const open = useModalOpen(ApplicationModal.SETTINGS)
   const toggle = useToggleSettingsMenu()
   const theme = useTheme()
@@ -217,18 +219,18 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
             <RowBetween style={{ padding: '0 2rem' }}>
               <div />
               <Text fontWeight={500} fontSize={20}>
-                Are you sure?
+                {t('Are you sure?')}
               </Text>
               <StyledCloseIcon onClick={() => setShowConfirmation(false)} />
             </RowBetween>
             <Break />
             <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
               <Text fontWeight={500} fontSize={20}>
-                Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result
-                in bad rates and lost funds.
+                {t(`Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result
+                in bad rates and lost funds.`)}
               </Text>
               <Text fontWeight={600} fontSize={20}>
-                ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.
+                {t('ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.')}
               </Text>
               <ButtonError
                 error={true}
@@ -241,7 +243,7 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
                 }}
               >
                 <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
-                  Turn on Expert Mode
+                  {t('Turn on Expert Mode')}
                 </Text>
               </ButtonError>
             </AutoColumn>
@@ -251,7 +253,7 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
       <RowFixed>
         {expertMode && (
           <Text fontSize={13} fontWeight={700} color={theme.text5Sone} marginRight={'8px'}>
-            Expert
+            {t('Expert')}
           </Text>
         )}
         <StyledMenuButton onClick={toggle} id="open-settings-dialog-button">
@@ -266,7 +268,7 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
             </AbsoluteVector>
             <TitleBodyMarginer>
               <RowBetween>
-                <Title>Settings</Title>
+                <Title>{t('Settings')}</Title>
                 <StyledCloseIcon onClick={toggle} />
               </RowBetween>
               <SectionWrapper>
@@ -279,7 +281,7 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
                 <ResponsiveAutoColumn>
                   <RowFixed>
                     <StyledExpertIcon />
-                    <SectionHeading>Expert Mode</SectionHeading>
+                    <SectionHeading>{t('Expert Mode')}</SectionHeading>
                     <QuestionHelper text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam, quibusdam?" />
                   </RowFixed>
                   <Toggle

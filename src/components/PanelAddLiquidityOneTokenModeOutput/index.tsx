@@ -1,4 +1,5 @@
 import { Currency, TokenAmount } from '@s-one-finance/sdk-core'
+import { useTranslation } from 'react-i18next'
 import { AutoColumn } from 'components/Column'
 import CurrencyLogo from 'components/CurrencyLogo'
 import { RowBetween, RowFixed } from 'components/Row'
@@ -81,6 +82,7 @@ export default function PanelAddLiquidityOneTokenModeOutput({
   selectedTokenParsedAmount,
   theOtherTokenParsedAmount
 }: PanelAddLiquidityOneTokenModeOutputProps) {
+  const { t } = useTranslation()
   const theme = useTheme()
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
@@ -92,7 +94,7 @@ export default function PanelAddLiquidityOneTokenModeOutput({
 
   return (
     <PanelWrapper>
-      <TextPanelLabel>To</TextPanelLabel>
+      <TextPanelLabel>{t('to')}</TextPanelLabel>
       <OutputCurrency currency={selectedCurrency} amount={_selectedTokenParsedAmount} />
       <IconWrapper clickable={false}>
         <Plus size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />

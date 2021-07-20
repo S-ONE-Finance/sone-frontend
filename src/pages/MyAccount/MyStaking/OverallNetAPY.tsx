@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 
 const StakingBackground = styled.div`
   width: 100%;
@@ -44,10 +45,11 @@ const NetAPYValue = styled.div`
 `
 
 export default function OverallNetAPY() {
+  const { t } = useTranslation()
   return (
     <StakingBackground>
       <AbsoluteCenter>
-        <NetAPYField>NET APY</NetAPYField>
+        <NetAPYField>{t('NET APY')}</NetAPYField>
         <NetAPYValue>88.88%</NetAPYValue>
       </AbsoluteCenter>
     </StakingBackground>

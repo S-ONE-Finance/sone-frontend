@@ -4,6 +4,7 @@ import ReactGA from 'react-ga'
 import { usePopper } from 'react-popper'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { useFetchListCallback } from '../../hooks/useFetchListCallback'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { TokenList } from '@uniswap/token-lists'
@@ -113,6 +114,7 @@ function listUrlRowHTMLId(listUrl: string) {
 }
 
 const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
+  const { t } = useTranslation()
   const theme = useTheme()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const listsByUrl = useSelector<AppState, AppState['lists']['byUrl']>(state => state.lists.byUrl)
@@ -223,20 +225,27 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
           <PopoverContainer show={true} ref={setPopperElement as any} style={styles.popper} {...attributes.popper}>
             <div>{list && listVersionLabel(list.version)}</div>
             <SeparatorDark />
-            <ExternalLink style={{ color: theme.text10Sone }} href={`https://tokenlists.org/token-list?url=${listUrl}`}>
-              View
-            </ExternalLink>
+            <UnpaddedLinkStyledButton
+              as={ExternalLink}
+              style={{ color: theme.text10Sone, textAlign: 'start' }}
+              href={`https://tokenlists.org/token-list?url=${listUrl}`}
+            >
+              {t('view')}
+            </UnpaddedLinkStyledButton>
             {pending && (
-              <UnpaddedLinkStyledButton style={{ color: theme.text10Sone }} onClick={handleAcceptListUpdate}>
-                Update
+              <UnpaddedLinkStyledButton
+                style={{ color: theme.text10Sone, textAlign: 'start' }}
+                onClick={handleAcceptListUpdate}
+              >
+                {t('update')}
               </UnpaddedLinkStyledButton>
             )}
             <UnpaddedLinkStyledButton
-              style={{ color: theme.text10Sone }}
+              style={{ color: theme.text10Sone, textAlign: 'start' }}
               onClick={handleRemoveList}
               disabled={Object.keys(listsByUrl).length === 1}
             >
-              Remove
+              {t('remove')}
             </UnpaddedLinkStyledButton>
           </PopoverContainer>
         )}
@@ -247,7 +256,7 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
           className="select-button"
           style={{ width: '5rem', minWidth: '5rem', padding: '0.5rem .35rem', borderRadius: '12px', fontSize: '14px' }}
         >
-          Selected
+          {t('selected')}
         </ButtonPrimary>
       ) : (
         <>
@@ -262,7 +271,7 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
             }}
             onClick={handleEnableList}
           >
-            Select
+            {t('select')}
           </ButtonPrimary>
         </>
       )}
@@ -288,6 +297,7 @@ export function ManageLists({
   setImportList: (list: TokenList) => void
   setListUrl: (url: string) => void
 }) {
+  const { t } = useTranslation()
   const theme = useTheme()
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
@@ -386,7 +396,7 @@ export function ManageLists({
       <PaddedColumn gap="10px" style={{ padding: isUpToExtraSmall ? '20px 1rem' : '20px 2rem' }}>
         <RowFixed>
           <Text fontWeight={500} fontSize={16} color={theme.text10Sone}>
-            Add a list
+            {t('add_a_list')}
           </Text>
           <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
         </RowFixed>
@@ -398,7 +408,7 @@ export function ManageLists({
             value={listUrlInput}
             onChange={handleInput}
           />
-          <ButtonAdd onClick={handleAddList}>Add</ButtonAdd>
+          <ButtonAdd onClick={handleAddList}>{t('add')}</ButtonAdd>
         </Row>
         {addError ? (
           <TYPE.error title={addError} style={{ textOverflow: 'ellipsis', overflow: 'hidden' }} error>
@@ -449,7 +459,7 @@ export function ManageLists({
       <Footer>
         <ExternalLink href="https://tokenlists.org/" style={{ textDecoration: 'none' }}>
           <TYPE.main color={theme.text5Sone} textAlign={'center'}>
-            Browse List
+            {t('browse_lists')}
           </TYPE.main>
         </ExternalLink>
       </Footer>

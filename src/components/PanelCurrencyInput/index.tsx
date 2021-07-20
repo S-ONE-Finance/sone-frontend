@@ -2,6 +2,7 @@ import { Currency, Pair } from '@s-one-finance/sdk-core'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
+import { useTranslation } from 'react-i18next'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import CurrencyLogo from '../CurrencyLogo'
@@ -164,6 +165,7 @@ export default function PanelCurrencyInput({
   showReceiveWETH = false,
   onReceiveWETHToggle
 }: PanelCurrencyInputProps) {
+  const { t } = useTranslation()
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
@@ -201,7 +203,7 @@ export default function PanelCurrencyInput({
               }}
             />
             {account && currency && showMaxButton && label !== 'To' && (
-              <StyledBalanceMax onClick={onMax}>MAX</StyledBalanceMax>
+              <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
             )}
           </>
           {showCurrencySelect && (
@@ -234,7 +236,7 @@ export default function PanelCurrencyInput({
                       ? currency.symbol.slice(0, 4) +
                         '...' +
                         currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                      : currency?.symbol) || 'Select Token'}
+                      : currency?.symbol) || t('select_token')}
                   </StyledTokenName>
                 )}
                 {!disableCurrencyChange && <StyledDropDown selected={!!currency} />}
@@ -243,7 +245,7 @@ export default function PanelCurrencyInput({
           )}
           {showReceiveWETH && (
             <ButtonReceiveWETH onClick={onReceiveWETHToggle}>
-              {currency === Currency.ETHER ? 'Receive WETH' : 'Receive ETH'}
+              {currency === Currency.ETHER ? t('Receive WETH') : t('Receive ETH')}
             </ButtonReceiveWETH>
           )}
         </InputRow>

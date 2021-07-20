@@ -1,8 +1,10 @@
 import React from 'react'
+import { ETHER, JSBI, Pair, Percent } from '@s-one-finance/sdk-core'
+import { Link } from 'react-router-dom'
+import { Text } from 'rebass'
+import { useTranslation } from 'react-i18next'
 import Row, { RowFitContent } from '../../../components/Row'
 import CurrencyLogoDouble from '../../../components/CurrencyLogoDouble'
-import { ETHER, JSBI, Pair, Percent } from '@s-one-finance/sdk-core'
-import { Text } from 'rebass'
 import Column from '../../../components/Column'
 import { useIsUpToExtraSmall, useIsUpToSmall } from '../../../hooks/useWindowSize'
 import useTheme from '../../../hooks/useTheme'
@@ -14,7 +16,6 @@ import { useActiveWeb3React } from '../../../hooks'
 import { useTokenBalance } from '../../../state/wallet/hooks'
 import { useTotalSupply } from '../../../data/TotalSupply'
 import { unwrappedToken } from '../../../utils/wrappedCurrency'
-import { Link } from 'react-router-dom'
 import {
   ButtonAdd,
   ButtonRemove,
@@ -40,6 +41,7 @@ export default function MyLiquidityItem({
   isShowDetailedSection: boolean
   setDetailPair: React.Dispatch<React.SetStateAction<string | undefined>>
 }) {
+  const { t } = useTranslation()
   // Style.
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const isUpToSmall = useIsUpToSmall()
@@ -82,23 +84,23 @@ export default function MyLiquidityItem({
             style={{
               marginLeft: isUpToExtraSmall ? '0' : '20px'
             }}
-            text="Pair"
+            text={t('pair')}
           >{`${currency0.symbol}-${currency1.symbol}`}</PairName>
         </RowFitContent>
         <FlexibleRow gap={isUpToExtraSmall ? '0' : '10px'} justify="center">
           <Column width="fit-content" align="center">
             <Text color={theme.text8Sone} fontSize={isUpToSmall ? '13px' : '16px'}>
-              Your total LP tokens
+              {t('your_total_lp_tokens')}
             </Text>
             <TextLpTokens>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</TextLpTokens>
           </Column>
           {/* TODO: Change proper link after code stake page. */}
-          <StakeLink to="/stake">Stake</StakeLink>
+          <StakeLink to="/stake">{t('Stake')}</StakeLink>
         </FlexibleRow>
         <Row gap="10px" justify="flex-end">
           <Column width="fit-content" justify="center" align="center">
             <TextPercentage onClick={() => alert('Not implemented yet!')}>88.88%</TextPercentage>
-            <TextAPY>APY</TextAPY>
+            <TextAPY>{t('APY')}</TextAPY>
           </Column>
           <DownIcon
             active={isShowDetailedSection ? 0 : 1}
@@ -113,17 +115,17 @@ export default function MyLiquidityItem({
         <>
           <MyLiquidityDetailedSection gap="15px">
             <DetailedSectionItem
-              name={currency0?.symbol ? `Pooled ${currency0.symbol}` : '-'}
+              name={currency0?.symbol ? t('pooled_symbol', { symbol: currency0.symbol }) : '-'}
               explain="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, voluptates!"
               value={token0Deposited ? token0Deposited.toSignificant(6) : '-'}
             />
             <DetailedSectionItem
-              name={currency1?.symbol ? `Pooled ${currency1.symbol}` : '-'}
+              name={currency1?.symbol ? t('pooled_symbol', { symbol: currency1.symbol }) : '-'}
               explain="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, voluptates!"
               value={token1Deposited ? token1Deposited.toSignificant(6) : '-'}
             />
             <DetailedSectionItem
-              name="Your pool share"
+              name={t('your_pool_share')}
               explain="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, voluptates!"
               value={
                 poolTokenPercentage
@@ -142,7 +144,7 @@ export default function MyLiquidityItem({
                     : `/my-account/withdraw/${pair.token0.address}/${pair.token1.address}`
                 }
               >
-                Remove
+                {t('remove_account')}
               </ButtonRemove>
               <ButtonAdd
                 as={Link}
@@ -154,7 +156,7 @@ export default function MyLiquidityItem({
                     : `/add/${pair.token0.address}/${pair.token1.address}`
                 }
               >
-                Add
+                {t('add_account')}
               </ButtonAdd>
             </Row>
           </MyLiquidityDetailedSection>

@@ -1,8 +1,12 @@
 import React, { useMemo } from 'react'
-import Row, { RowFitContent, RowFixed } from '../../../components/Row'
-import CurrencyLogoDouble from '../../../components/CurrencyLogoDouble'
 import { Pair } from '@s-one-finance/sdk-core'
 import { Text } from 'rebass'
+import styled from 'styled-components'
+import { darken } from 'polished'
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import Row, { RowFitContent, RowFixed } from '../../../components/Row'
+import CurrencyLogoDouble from '../../../components/CurrencyLogoDouble'
 import Column from '../../../components/Column'
 import { useIsUpToExtraSmall, useIsUpToSmall } from '../../../hooks/useWindowSize'
 import useTheme from '../../../hooks/useTheme'
@@ -24,9 +28,6 @@ import EscalationLight from '../../../assets/images/escalation-light.svg'
 import { useIsDarkMode } from '../../../state/user/hooks'
 import SoneLogoSvg from '../../../assets/images/logo_token_sone.svg'
 import TickIconSvg from '../../../assets/images/tick-icon.svg'
-import styled from 'styled-components'
-import { darken } from 'polished'
-import { Link } from 'react-router-dom'
 import { HideExtraSmall } from '../../../theme'
 
 const DetailedSectionIcon = styled.img`
@@ -164,7 +165,7 @@ const RowButtons = styled(Row)`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-top: 1rem;
-    
+
     > * + * {
       margin-left: 0.5rem !important;
     }
@@ -180,6 +181,7 @@ export default function MyStakingItem({
   isShowDetailedSection: boolean
   setDetailPair: React.Dispatch<React.SetStateAction<string | undefined>>
 }) {
+  const { t } = useTranslation()
   // Style.
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const isUpToSmall = useIsUpToSmall()
@@ -222,13 +224,13 @@ export default function MyStakingItem({
             style={{
               marginLeft: isUpToExtraSmall ? '0' : '20px'
             }}
-            text="LP Token"
+            text={t('LP Token')}
           >{`${currency0.symbol}-${currency1.symbol}`}</PairName>
         </RowFitContent>
         <FlexibleRow gap={isUpToExtraSmall ? '0' : '10px'} justify="center">
           <Column width="fit-content" align="center">
             <Text color={theme.text8Sone} fontSize={isUpToSmall ? '13px' : '16px'}>
-              My Staked LP Token
+              {t('my_staked_lp_token')}
             </Text>
             <TextLpTokens>{_8e8}</TextLpTokens>
           </Column>
@@ -236,7 +238,7 @@ export default function MyStakingItem({
         <Row gap="10px" justify="flex-end">
           <Column width="fit-content" justify="center" align="center">
             <TextPercentage onClick={() => alert('Not implemented yet!')}>88.88%</TextPercentage>
-            <TextAPY>APY</TextAPY>
+            <TextAPY>{t('APY')}</TextAPY>
           </Column>
           <DownIcon
             active={isShowDetailedSection ? 0 : 1}
@@ -255,28 +257,28 @@ export default function MyStakingItem({
                   <DetailedSectionIcon src={SoneLogoSvg} alt="sone-logo-svg" />
                   <Column>
                     <RewardedSoneValue style={{ fontSize: valueFontSize }}>{rewardedSone}</RewardedSoneValue>
-                    <RewardedSone style={{ fontSize: titleFontSize }}>Rewarded SONE</RewardedSone>
+                    <RewardedSone style={{ fontSize: titleFontSize }}>{t('rewarded_sone')}</RewardedSone>
                   </Column>
                 </RowFixed>
                 <RowFixed>
                   <DetailedSectionIcon src={TickIconSvg} alt="tick-icon-svg" />
                   <Column>
                     <RewardedSoneValue style={{ fontSize: valueFontSize }}>{availableReward}</RewardedSoneValue>
-                    <RewardedSone style={{ fontSize: titleFontSize }}>Available Reward</RewardedSone>
+                    <RewardedSone style={{ fontSize: titleFontSize }}>{t('available_reward')}</RewardedSone>
                   </Column>
                 </RowFixed>
               </RowReward>
               <RowButtons justify="center" gap="2rem">
                 {/* TODO: Specific pair. */}
                 <ButtonUnstake as={Link} to="/my-account/unstake">
-                  Unstake
+                  {t('unstake')}
                 </ButtonUnstake>
                 {/* TODO: Specific pair. */}
                 <ButtonStake as={Link} to="/staking">
-                  Stake More
+                  {t('stake_more')}
                 </ButtonStake>
                 {/* TODO: ??? */}
-                <ButtonRequestReward>Request Reward</ButtonRequestReward>
+                <ButtonRequestReward>{t('request_reward')}</ButtonRequestReward>
               </RowButtons>
             </Column>
           </MyStakingDetailedSection>

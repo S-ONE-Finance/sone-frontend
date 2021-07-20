@@ -1,4 +1,5 @@
 import { Pair, WETH } from '@s-one-finance/sdk-core'
+import { useTranslation } from 'react-i18next'
 import { AutoColumn } from 'components/Column'
 import PanelAddLiquidityOneTokenModeOutput from 'components/PanelAddLiquidityOneTokenModeOutput'
 import PanelCurrencyInput, { SelectOrToggle } from 'components/PanelCurrencyInput'
@@ -30,6 +31,7 @@ type ModeOneTokenProps = {
 }
 
 export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenProps) {
+  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
 
   const history = useHistory()
@@ -119,7 +121,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
         hash={txHash}
         content={() => (
           <ConfirmationModalContent
-            title="Confirm Add Liquidity"
+            title={t('confirm_add_liquidity')}
             onDismiss={handleDismissConfirmation}
             topContent={() =>
               ModalHeader({

@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { Globe, Menu as MenuIcon, Moon, Sun } from 'react-feather'
 import { isMobile } from 'react-device-detect'
+import { useTranslation } from 'react-i18next'
 
 import Logo from '../../assets/svg/logo_text_sone.svg'
 import LogoDark from '../../assets/svg/logo_text_white_sone.svg'
@@ -438,6 +439,7 @@ const ShowOnlyExtraSmall = styled.div`
 `
 
 export default function Header() {
+  const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [language, setLanguage] = useLanguage()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
@@ -469,7 +471,7 @@ export default function Header() {
                     Boolean(match) || pathname.startsWith('/swap') || pathname.startsWith('/add')
                   }
                 >
-                  Swap
+                  {t('swap')}
                 </StyledNavLink>
                 <SubMenu>
                   <SubMenuItemNavLink to={'/swap'}>Swap</SubMenuItemNavLink>

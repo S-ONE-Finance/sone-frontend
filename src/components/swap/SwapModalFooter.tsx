@@ -1,6 +1,7 @@
 import { Trade, TradeType } from '@s-one-finance/sdk-core'
 import React, { useMemo, useState } from 'react'
 import { Text } from 'rebass'
+import { useTranslation } from 'react-i18next'
 import { Field } from '../../state/swap/actions'
 import { TYPE } from '../../theme'
 import {
@@ -31,6 +32,7 @@ export default function SwapModalFooter({
   swapErrorMessage: string | undefined
   disabledConfirm: boolean
 }) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = useMemo(() => (isUpToExtraSmall ? 13 : 16), [isUpToExtraSmall])
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -47,7 +49,7 @@ export default function SwapModalFooter({
       <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'}>
         <RowBetween align="center">
           <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-            Price
+            {t('price')}
           </Text>
           <Text
             fontWeight={700}
@@ -67,7 +69,7 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-              {trade.tradeType === TradeType.EXACT_INPUT ? 'Minimum received' : 'Maximum sold'}
+              {trade.tradeType === TradeType.EXACT_INPUT ? t('minimum_received') : t('Maximum sold')}
             </Text>
           </RowFixed>
           <RowFixed>
@@ -86,7 +88,7 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-              Price Impact
+              {t('price_impact')}
             </Text>
           </RowFixed>
           <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
@@ -94,7 +96,7 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-              Liquidity Provider Fee
+              {t('liquidity_provider_fee')}
             </Text>
           </RowFixed>
           <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
@@ -105,7 +107,7 @@ export default function SwapModalFooter({
 
       <ButtonError onClick={onConfirm} disabled={disabledConfirm} error={severity > 2} id="confirm-swap-or-send">
         <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
-          {severity > 2 ? 'Swap Anyway' : 'Swap'}
+          {severity > 2 ? t('swap_anyway') : t('Swap')}
         </Text>
       </ButtonError>
       {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Currency, Pair } from '@s-one-finance/sdk-core'
+import { useTranslation } from 'react-i18next'
 
 import { PairSelect, TextPanelLabel, StyledTokenName, StyledDropDown } from '../../theme'
 import { RowBetween } from '../Row'
@@ -31,6 +32,7 @@ type PanelSelectPairProps = {
 }
 
 export default function PanelSelectPair({ selectedPair, onPairSelect, isLoading, allPairs }: PanelSelectPairProps) {
+  const { t } = useTranslation()
   const [modalOpen, setModalOpen] = useState(false)
 
   const handleDismissSearch = () => {
@@ -42,7 +44,7 @@ export default function PanelSelectPair({ selectedPair, onPairSelect, isLoading,
 
   return (
     <PanelWrapper>
-      <TextPanelLabel>Pair</TextPanelLabel>
+      <TextPanelLabel>{t('pair')}</TextPanelLabel>
       <PairSelect
         selected={Boolean(selectedPair)}
         onClick={() => {
@@ -56,7 +58,7 @@ export default function PanelSelectPair({ selectedPair, onPairSelect, isLoading,
             <CurrencyLogoDouble currency0={currency0} currency1={currency1} size={22} margin={true} />
           )}
           <StyledTokenName active={Boolean(selectedPair)}>
-            {selectedPair ? `${currency0?.symbol || '?'} - ${currency1?.symbol || '?'}` : 'Select Pair'}
+            {selectedPair ? `${currency0?.symbol || '?'} - ${currency1?.symbol || '?'}` : t('select_a_pair')}
           </StyledTokenName>
           <StyledDropDown selected={Boolean(selectedPair)} />
         </RowBetween>

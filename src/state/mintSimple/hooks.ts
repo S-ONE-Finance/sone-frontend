@@ -10,6 +10,7 @@ import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { typeInput } from './actions'
+import { useTranslation } from 'react-i18next'
 
 const ZERO = JSBI.BigInt(0)
 
@@ -58,6 +59,7 @@ export function useDerivedMintSimpleInfo(
   poolTokenPercentage?: Percent
   error?: string
 } {
+  const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
 
   const { typedValue } = useMintSimpleState()
@@ -125,12 +127,13 @@ export function useDerivedMintSimpleInfo(
   let error: string | undefined
 
   if (!account) {
-    error = 'Connect Wallet'
+    error = t('connect_wallet')
   } else if (pairState === PairState.INVALID) {
-    error = 'Invalid Pair'
+    error = t('invalid_pair')
   } else if (noLiquidity) {
-    error = 'Invalid Pair (No Liquidity)'
+    error = t('invalid_pair_no_liquidity')
   } else if (selectedTokenUserInputAmount && currencyBalance?.lessThan(selectedTokenUserInputAmount)) {
+    // TODO: i18n.
     error = 'Insufficient ' + selectedCurrency?.symbol + ' balance'
   } else if (
     typeof isSelectedToken0 === 'boolean' &&
@@ -138,6 +141,7 @@ export function useDerivedMintSimpleInfo(
     selectedTokenParsedAmount &&
     selectedTokenParsedAmount.greaterThan(isSelectedToken0 ? pair.reserve0 : pair.reserve1)
   ) {
+    // TODO: i18n.
     error = `Insufficient ${isSelectedToken0 ? pair.token0.symbol : pair.token1.symbol} liquidity for swap`
   }
 

@@ -1,4 +1,5 @@
 import { Currency } from '@s-one-finance/sdk-core'
+import { useTranslation } from 'react-i18next'
 import { AutoColumn, ColumnCenter } from 'components/Column'
 import { QuestionHelper1416 } from 'components/QuestionHelper'
 import { RowBetween, RowFixed } from 'components/Row'
@@ -23,6 +24,7 @@ type TransactionDetailsProps = {
 }
 
 export default function TransactionDetails({ currencyA, currencyB }: TransactionDetailsProps) {
+  const { t } = useTranslation()
   const theme = useTheme()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
@@ -58,7 +60,7 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
             color={theme.text5Sone}
             onClick={toggleIsShowTransactionDetails}
           >
-            Show more information <ChevronDown size={12} />
+            {t('show_more_information')} <ChevronDown size={12} />
           </ClickableText>
         </ColumnCenter>
       )}
@@ -68,7 +70,7 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
             <RowBetween>
               <RowFixed>
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                  Price
+                  {t('price')}
                 </Text>
                 <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
               </RowFixed>
@@ -100,7 +102,7 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
             <RowBetween>
               <RowFixed>
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                  Share of Pair
+                  {t('share_of_pair')}
                 </Text>
                 <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
               </RowFixed>
@@ -153,7 +155,7 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
             color={theme.text5Sone}
             onClick={toggleIsShowTransactionDetails}
           >
-            Show less <ChevronUp size={12} />
+            {t('show_less')} <ChevronUp size={12} />
           </ClickableText>
         </ColumnCenter>
       )}

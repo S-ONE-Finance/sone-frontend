@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
+import { Text } from 'rebass'
 import { useAddLiquidityModeManager } from '../../state/user/hooks'
 import Row from '../../components/Row'
 import { QuestionHelper1416 } from '../../components/QuestionHelper'
-import { Text } from 'rebass'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import useTheme from '../../hooks/useTheme'
-import styled from 'styled-components'
 import { ColumnCenter } from '../../components/Column'
 import { AddLiquidityModeEnum } from '../../state/user/actions'
 
@@ -64,6 +65,7 @@ const ItemDescription = styled(Text)`
 `
 
 export default function ModeToggle() {
+  const { t } = useTranslation()
   const [addLiquidityMode, updateAddLiquidityMode] = useAddLiquidityModeManager()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
@@ -82,17 +84,17 @@ export default function ModeToggle() {
     <Container>
       <Row>
         <Text fontSize={isUpToExtraSmall ? 13 : 16} color={theme.text10Sone}>
-          Mode
+          {t('mode')}
         </Text>
         <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
         <ButtonGroup>
           <Item onClick={setModeOneToken} active={addLiquidityMode === AddLiquidityModeEnum.OneToken}>
-            <ItemTitle>Simple</ItemTitle>
-            <ItemDescription>One token mode</ItemDescription>
+            <ItemTitle>{t('simple')}</ItemTitle>
+            <ItemDescription>{t('one_token_mode')}</ItemDescription>
           </Item>
           <Item onClick={setModeTwoToken} active={addLiquidityMode === AddLiquidityModeEnum.TwoToken}>
-            <ItemTitle>Advanced</ItemTitle>
-            <ItemDescription>Two tokens mode</ItemDescription>
+            <ItemTitle>{t('advance')}</ItemTitle>
+            <ItemDescription>{t('two_tokens_mode')}</ItemDescription>
           </Item>
         </ButtonGroup>
       </Row>

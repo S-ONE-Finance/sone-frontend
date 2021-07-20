@@ -1,23 +1,25 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Heading, Section, SectionButton, SectionText, PlusIcon, CardStaking, StakingList } from '../components'
 import { RowBetween, RowFitContent } from '../../../components/Row'
 import MyStakingItem from './MyStakingItem'
-import { Link } from 'react-router-dom'
 import useAddedLiquidityPairs from '../../../hooks/useAddedLiquidityPairs'
 import OverallNetAPY from './OverallNetAPY'
 
 export default function MyStaking() {
+  const { t } = useTranslation()
   const [isLoading, allPairs] = useAddedLiquidityPairs()
   const [detailPair, setDetailPair] = useState<string | undefined>()
 
   return (
     <Section>
       <RowBetween>
-        <Heading>My Staking</Heading>
+        <Heading>{t('my_staking')}</Heading>
         <SectionButton as={Link} to="/add/ETH">
           <RowFitContent gap="8px">
             <PlusIcon />
-            <SectionText>Stake</SectionText>
+            <SectionText>{t('Stake')}</SectionText>
           </RowFitContent>
         </SectionButton>
       </RowBetween>
@@ -25,7 +27,7 @@ export default function MyStaking() {
         <OverallNetAPY />
         <StakingList>
           {isLoading
-            ? 'Loading...'
+            ? t('Loading...')
             : allPairs.length > 0
             ? allPairs.map(pair => (
                 <MyStakingItem
@@ -35,7 +37,7 @@ export default function MyStaking() {
                   setDetailPair={setDetailPair}
                 />
               ))
-            : 'No item to show.'}
+            : t('No item to show.')}
         </StakingList>
       </CardStaking>
     </Section>
