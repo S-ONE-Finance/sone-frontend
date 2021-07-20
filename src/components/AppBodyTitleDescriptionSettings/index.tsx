@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import Settings from '../Settings'
 import { RowBetween } from '../Row'
 import Column from '../Column'
@@ -45,21 +46,22 @@ const TitleDescWrapper = styled(Column)`
 `
 
 export default function AppBodyTitleDescriptionSettings({ transactionType }: { transactionType: TransactionType }) {
+  const { t } = useTranslation()
   const title =
     transactionType === TransactionType.SWAP
-      ? 'Swap'
+      ? t('Swap')
       : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
-      ? 'Add Liquidity'
+      ? t('add_liquidity')
       : transactionType === TransactionType.WITHDRAW
-      ? 'Withdraw Liquidity'
+      ? t('Withdraw Liquidity')
       : null
   const description =
     transactionType === TransactionType.SWAP
-      ? 'Trade tokens in an instant'
+      ? t('Trade tokens in an instant')
       : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
-      ? 'Add liquidity to receive LP tokens'
+      ? t('add_liquidity_to_receive_lp_tokens')
       : transactionType === TransactionType.WITHDRAW
-      ? 'Lorem ipsum dolor sit amet.'
+      ? t('Lorem ipsum dolor sit amet.')
       : null
 
   return (

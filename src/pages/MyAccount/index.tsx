@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import MyBalance from './MyBalance'
 import MyLiquidity from './MyLiquidity'
 import MyStaking from './MyStaking'
@@ -10,6 +11,7 @@ import useAccountIsReferrer from '../../hooks/useAccountIsReferrer'
 import { useIsReferralWorksOnCurrentNetwork } from '../../state/referral/hooks'
 
 export default function MyAccount() {
+  const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 
   const accountIsReferrer = useAccountIsReferrer()
@@ -18,7 +20,7 @@ export default function MyAccount() {
   if (account) {
     return (
       <MyAccountWrapper>
-        <PageTitle>My Account</PageTitle>
+        <PageTitle>{t('My Account')}</PageTitle>
         <Sections>
           <MyBalance />
           <MyLiquidity />

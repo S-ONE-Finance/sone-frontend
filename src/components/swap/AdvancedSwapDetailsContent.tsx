@@ -1,5 +1,6 @@
-import { Trade, TradeType } from '@s-one-finance/sdk-core'
 import React from 'react'
+import { Trade, TradeType } from '@s-one-finance/sdk-core'
+import { useTranslation } from 'react-i18next'
 import { Field } from '../../state/swap/actions'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from '../../utils/prices'
@@ -16,6 +17,7 @@ import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { useActiveWeb3React } from '../../hooks'
 
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
   const theme = useTheme()
@@ -30,7 +32,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         <RowBetween>
           <RowFixed>
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-              {isExactIn ? 'Minimum received' : 'Maximum sold'}
+              {isExactIn ? t('minimum_received') : 'Maximum sold'}
             </Text>
             <QuestionHelper1416 text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />
           </RowFixed>
@@ -47,7 +49,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         <RowBetween>
           <RowFixed>
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-              Price Impact
+              {t('price_impact')}
             </Text>
             <QuestionHelper1416 text="The difference between the market price and estimated price due to trade size." />
           </RowFixed>
@@ -63,6 +65,7 @@ export interface AdvancedSwapDetailsProps {
 }
 
 export function AdvancedSwapDetailsContent({ trade }: AdvancedSwapDetailsProps) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
 
@@ -84,7 +87,7 @@ export function AdvancedSwapDetailsContent({ trade }: AdvancedSwapDetailsProps) 
                 <RowBetween>
                   <RowFixed>
                     <Text fontWeight={500} fontSize={16} color={theme.text4Sone}>
-                      Route
+                      {t('route')}
                     </Text>
                     <QuestionHelper1416 text="Routing through these tokens resulted in the best price for your trade." />
                   </RowFixed>

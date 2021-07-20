@@ -2,6 +2,7 @@ import { Pair } from '@s-one-finance/sdk-core'
 import Modal from 'components/Modal'
 import useDebounce from 'hooks/useDebounce'
 import useTheme from 'hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 import React, { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
@@ -32,6 +33,7 @@ export default function ModalSearchPair({
   isLoading,
   allPairs
 }: ModalSearchPairProps) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
 
@@ -92,7 +94,7 @@ export default function ModalSearchPair({
           <RowBetween>
             <RowFixed>
               <Text fontWeight={700} fontSize={isUpToExtraSmall ? 20 : 28}>
-                Select a pair
+                {t('select_a_pair')}
               </Text>
               <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
             </RowFixed>
@@ -122,7 +124,7 @@ export default function ModalSearchPair({
           <>
             <RowBetween style={{ padding: isUpToExtraSmall ? '20px 1.25rem 0' : '20px 2rem 0' }}>
               <Text fontWeight={500} fontSize={16}>
-                Pair Name
+                {t('pair_name')}
               </Text>
               {invertSearchOrder === false ? (
                 <SortDownIcon onClick={handleSort} />

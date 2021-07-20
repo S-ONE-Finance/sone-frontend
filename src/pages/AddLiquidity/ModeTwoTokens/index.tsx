@@ -2,6 +2,7 @@ import { Currency, TokenAmount } from '@s-one-finance/sdk-core'
 import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
 import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { TransactionType } from 'state/transactions/types'
 import { AutoColumn } from '../../../components/Column'
 import PanelCurrencyInput from '../../../components/PanelCurrencyInput'
@@ -25,6 +26,7 @@ type ModeTwoTokensProps = {
 }
 
 export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoTokensProps) {
+  const { t } = useTranslation()
   const history = useHistory()
 
   const currencyA = useCurrency(currencyIdA)
@@ -131,7 +133,7 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
         hash={txHash}
         content={() => (
           <ConfirmationModalContent
-            title="Confirm Add Liquidity"
+            title={t('confirm_add_liquidity')}
             onDismiss={handleDismissConfirmation}
             topContent={() => ModalHeader({ parsedAmounts, currencies })}
             bottomContent={() => (

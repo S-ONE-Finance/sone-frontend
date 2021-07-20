@@ -1,28 +1,30 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { Heading, Section, SectionButton, SectionText, PlusIcon, CardLiquidity } from '../components'
 import { RowBetween, RowFitContent } from '../../../components/Row'
 import MyLiquidityItem from './MyLiquidityItem'
-import { Link } from 'react-router-dom'
 import useAddedLiquidityPairs from '../../../hooks/useAddedLiquidityPairs'
 
 export default function MyLiquidity() {
+  const { t } = useTranslation()
   const [isLoading, allPairs] = useAddedLiquidityPairs()
   const [detailPair, setDetailPair] = useState<string | undefined>()
 
   return (
     <Section>
       <RowBetween>
-        <Heading>My Liquidity</Heading>
+        <Heading>{t('my_liquidity')}</Heading>
         <SectionButton as={Link} to="/add/ETH">
           <RowFitContent gap="8px">
             <PlusIcon />
-            <SectionText>Add Liquidity</SectionText>
+            <SectionText>{t('add_liquidity')}</SectionText>
           </RowFitContent>
         </SectionButton>
       </RowBetween>
       <CardLiquidity>
         {isLoading
-          ? 'Loading...'
+          ? t('Loading...')
           : allPairs.length > 0
           ? allPairs.map(pair => (
               <MyLiquidityItem
@@ -32,7 +34,7 @@ export default function MyLiquidity() {
                 setDetailPair={setDetailPair}
               />
             ))
-          : 'No item to show.'}
+          : t('No item to show.')}
       </CardLiquidity>
     </Section>
   )

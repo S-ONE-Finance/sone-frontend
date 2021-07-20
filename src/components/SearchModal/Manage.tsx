@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { PaddedColumn } from './styleds'
 import { RowBetween, RowFixed } from 'components/Row'
 import { ArrowLeft } from 'react-feather'
@@ -31,6 +32,7 @@ export default function Manage({
   setImportList: (list: TokenList) => void
   setListUrl: (url: string) => void
 }) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
 
@@ -46,7 +48,7 @@ export default function Manage({
           />
           <RowFixed>
             <Text fontWeight={700} fontSize={isUpToExtraSmall ? 20 : 28}>
-              Manage Lists
+              {t('manage_lists')}
             </Text>
             <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
           </RowFixed>

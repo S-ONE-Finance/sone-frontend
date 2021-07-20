@@ -27,6 +27,7 @@ import {
   S_ONE_FAQ_URL,
   S_ONE_BLOG_URL
 } from '../../constants/urls'
+import { useTranslation } from 'react-i18next'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
   position: relative;
@@ -121,6 +122,7 @@ interface MobileMenuProps {
 }
 
 export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
+  const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
@@ -143,7 +145,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
       </Column>
       <Column>
         <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>S-ONE Wallet</StyledExternalLink>
-        <StyledNavLink to={'/swap'}>Swap</StyledNavLink>
+        <StyledNavLink to={'/swap'}>{t('swap')}</StyledNavLink>
         <StyledNavLink to={'/pool'} isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
           Liquidity
         </StyledNavLink>

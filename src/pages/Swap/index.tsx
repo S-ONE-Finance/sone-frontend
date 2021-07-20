@@ -4,6 +4,7 @@ import { ArrowDown, ChevronDown, ChevronUp } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import AddressInputPanel from '../../components/AddressInputPanel'
 import { ButtonConfirmed, ButtonError, ButtonPrimary } from '../../components/Button'
 import Card from '../../components/Card'
@@ -70,6 +71,8 @@ export const ResponsiveAutoColumn = styled(AutoColumn)`
 `
 
 export default function Swap({ history, match }: RouteComponentProps) {
+  const { t } = useTranslation()
+
   // For Styling Responsive.
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
@@ -362,7 +365,7 @@ export default function Swap({ history, match }: RouteComponentProps) {
 
           <AutoColumn gap="md">
             <PanelCurrencyInput
-              label={independentField === Field.OUTPUT && !showWrap && trade ? 'From (estimated)' : 'From'}
+              label={independentField === Field.OUTPUT && !showWrap && trade ? `${t('from')} (estimated)` : t('from')}
               value={formattedAmounts[Field.INPUT]}
               showMaxButton={!atMaxAmountInput}
               currency={currencies[Field.INPUT]}
@@ -387,7 +390,9 @@ export default function Swap({ history, match }: RouteComponentProps) {
             <PanelCurrencyInput
               value={formattedAmounts[Field.OUTPUT]}
               onUserInput={handleTypeOutput}
-              label={independentField === Field.INPUT && !showWrap && trade ? 'To (estimated)' : 'To'}
+              label={
+                independentField === Field.INPUT && !showWrap && trade ? `${t('to')} (${t('estimated')})` : t('to')
+              }
               showMaxButton={false}
               currency={currencies[Field.OUTPUT]}
               onCurrencySelect={handleOutputSelect}
@@ -402,7 +407,7 @@ export default function Swap({ history, match }: RouteComponentProps) {
                     <ArrowDown size="16" color={theme.text2} />
                   </IconWrapper>
                   <LinkStyledButton id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
-                    - Remove send
+                    - {t('Remove send')}
                   </LinkStyledButton>
                 </AutoRow>
                 <AddressInputPanel id="recipient" value={recipient} onChange={onChangeRecipient} />
@@ -416,7 +421,7 @@ export default function Swap({ history, match }: RouteComponentProps) {
                     <RowBetween align="center">
                       <RowFixed>
                         <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                          Price
+                          {t('price')}
                         </Text>
                         <QuestionHelper1416 text="Lorem ipsum" />
                       </RowFixed>
@@ -436,7 +441,7 @@ export default function Swap({ history, match }: RouteComponentProps) {
                           color={theme.text4Sone}
                           onClick={toggleSettings}
                         >
-                          Slippage Tolerance
+                          {t('Slippage Tolerance')}
                         </ClickableText>
                         <QuestionHelper1416 text="Lorem ipsum" />
                       </RowFixed>
@@ -454,7 +459,7 @@ export default function Swap({ history, match }: RouteComponentProps) {
                     <RowBetween align="center">
                       <RowFixed>
                         <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                          Liquidity Provider Fee
+                          {t('liquidity_provider_fee')}
                         </Text>
                         <QuestionHelper1416 text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />
                       </RowFixed>
@@ -484,7 +489,7 @@ export default function Swap({ history, match }: RouteComponentProps) {
                     <RowBetween align="center">
                       <RowFixed>
                         <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                          Referral ID
+                          {t('Referral ID')}
                         </Text>
                         <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic, minus." />
                       </RowFixed>
@@ -501,19 +506,19 @@ export default function Swap({ history, match }: RouteComponentProps) {
           <BottomGrouping hasTrade={Boolean(trade)}>
             {swapIsUnsupported ? (
               <ButtonPrimary disabled={true}>
-                <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
+                <TYPE.main mb="4px">{t('Unsupported Asset')}</TYPE.main>
               </ButtonPrimary>
             ) : !account ? (
-              <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
+              <ButtonPrimary onClick={toggleWalletModal}>{t('Connect Wallet')}</ButtonPrimary>
             ) : showWrap ? (
               <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>
                 {wrapInputError ??
-                  (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
+                  (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
               </ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <ButtonError disabled>
                 <Text fontSize={mobile16Desktop22} fontWeight={700}>
-                  Insufficient liquidity for this trade
+                  {t('Insufficient liquidity for this trade')}
                 </Text>
               </ButtonError>
             ) : showApproveFlow ? (
@@ -527,12 +532,12 @@ export default function Swap({ history, match }: RouteComponentProps) {
                 >
                   {approval === ApprovalState.PENDING ? (
                     <AutoRow gap="6px" justify="center">
-                      Approving <Loader stroke="white" />
+                      {t('Approving')} <Loader stroke="white" />
                     </AutoRow>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                    'Approved'
+                    t('Approved')
                   ) : (
-                    'Approve ' + currencies[Field.INPUT]?.symbol
+                    `${t('Approve')} ` + currencies[Field.INPUT]?.symbol
                   )}
                 </ButtonConfirmed>
                 <ButtonError
@@ -558,7 +563,7 @@ export default function Swap({ history, match }: RouteComponentProps) {
                 >
                   <Text fontSize={mobile16Desktop22} fontWeight={700}>
                     {priceImpactSeverity > 3 && !isExpertMode
-                      ? `Price Impact High`
+                      ? t(`Price Impact High`)
                       : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
                   </Text>
                 </ButtonError>
@@ -586,7 +591,7 @@ export default function Swap({ history, match }: RouteComponentProps) {
                   {swapInputError
                     ? swapInputError
                     : priceImpactSeverity > 3 && !isExpertMode
-                    ? `Price Impact Too High`
+                    ? t('price_impact_too_high')
                     : `Swap${priceImpactSeverity > 2 ? ' Anyway' : ''}`}
                 </Text>
               </ButtonError>
@@ -611,7 +616,7 @@ export default function Swap({ history, match }: RouteComponentProps) {
                 color={theme.text5Sone}
                 onClick={toggleIsShowTransactionDetails}
               >
-                Show more information <ChevronDown size={12} />
+                {t('show_more_information')} <ChevronDown size={12} />
               </ClickableText>
             </ColumnCenter>
           )}
@@ -625,7 +630,7 @@ export default function Swap({ history, match }: RouteComponentProps) {
                 color={theme.text5Sone}
                 onClick={toggleIsShowTransactionDetails}
               >
-                Show less <ChevronUp size={12} />
+                {t('show_more_information')} <ChevronUp size={12} />
               </ClickableText>
             </ColumnCenter>
           )}

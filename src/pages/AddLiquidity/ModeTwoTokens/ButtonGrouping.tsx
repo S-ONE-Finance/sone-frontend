@@ -1,4 +1,5 @@
 import { Currency } from '@s-one-finance/sdk-core'
+import { useTranslation } from 'react-i18next'
 import { ButtonError, ButtonPrimary } from 'components/Button'
 import { AutoColumn } from 'components/Column'
 import { RowBetween } from 'components/Row'
@@ -31,6 +32,7 @@ export default function ButtonGroupping({
   setTxHash,
   setShowConfirm
 }: ButtonGroupingProps) {
+  const { t } = useTranslation()
   const { currencies, parsedAmounts, error } = useDerivedMintInfo(currencyA, currencyB)
 
   const isValid = !error
@@ -101,7 +103,7 @@ export default function ButtonGroupping({
             disabled={!isValid || approvalA !== ApprovalState.APPROVED || approvalB !== ApprovalState.APPROVED}
             error={!isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]}
           >
-            {error ?? 'Add Liquidity'}
+            {error ?? t('add_liquidity')}
           </ButtonError>
         </AutoColumn>
       )}

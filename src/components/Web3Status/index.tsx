@@ -17,6 +17,7 @@ import { TransactionDetails } from '../../state/transactions/reducer'
 
 import WalletModal from '../WalletModal'
 import { darken } from 'polished'
+import { useTranslation } from 'react-i18next'
 
 const Text = styled.p`
   flex: 1 1 auto;
@@ -69,6 +70,7 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 }
 
 function Web3StatusInner() {
+  const { t } = useTranslation()
   const { account, error } = useWeb3React()
   const toggleWalletModal = useWalletModalToggle()
   const isUpToExtraSmall = useIsUpToExtraSmall()
@@ -99,7 +101,7 @@ function Web3StatusInner() {
   } else {
     return (
       <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
-        Connect Wallet
+        {t('connect_wallet')}
       </ButtonMainRed>
     )
   }
