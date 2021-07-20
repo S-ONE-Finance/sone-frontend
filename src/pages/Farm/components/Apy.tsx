@@ -1,7 +1,6 @@
-import { PoolInfo, UserInfo } from '@s-one-finance/sdk-core/'
+import { Farm, PoolInfo, UserInfo } from '@s-one-finance/sdk-core/'
 import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { Farm } from 'hooks/masterfarmer/interfaces'
 import { getBalanceNumber } from 'hooks/masterfarmer/utils'
 import { useBlockNumber } from 'state/application/hooks'
 interface ApyProps {

@@ -7,9 +7,9 @@ import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
 import { calculateAPY } from '@s-one-finance/sdk-core'
 import { useActiveWeb3React } from 'hooks'
-import { Farm } from './interfaces'
 import useSonePrice from './useSonePrice'
 import { useBlockNumber } from 'state/application/hooks'
+import { Farm } from '@s-one-finance/sdk-core/'
 
 const useFarms = () => {
   const { account, chainId } = useActiveWeb3React()

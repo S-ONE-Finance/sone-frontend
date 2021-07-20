@@ -1,5 +1,4 @@
 import { useActiveWeb3React } from 'hooks'
-import { Farm } from 'hooks/masterfarmer/interfaces'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -10,6 +9,7 @@ import useFarm from '../../hooks/masterfarmer/useFarm'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import Apy from './components/Apy'
 import Stake from './components/Stake'
+import { Farm } from '@s-one-finance/sdk-core/'
 
 const FarmDetail: React.FC = () => {
   const { farmId } = useParams() as any

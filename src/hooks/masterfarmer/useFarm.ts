@@ -6,8 +6,8 @@ import { pairSubsetQuery, poolsQueryDetail, poolUserDetailQuery } from 'apollo/q
 import { useActiveWeb3React } from 'hooks'
 import { useCallback, useEffect, useState } from 'react'
 import { useBlockNumber } from 'state/application/hooks'
-import { Farm } from './interfaces'
 import useSonePrice from './useSonePrice'
+import { Farm } from '@s-one-finance/sdk-core/'
 
 const useFarm = (id: string) => {
   const { account, chainId } = useActiveWeb3React()

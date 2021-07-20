@@ -2,7 +2,7 @@ import { masterchef } from 'apollo/client'
 import { poolUserQuery } from 'apollo/queries'
 import { useActiveWeb3React } from 'hooks'
 import { useEffect, useState } from 'react'
-import { UserInfoSushi } from './interfaces'
+import { UserInfoSushi } from '@s-one-finance/sdk-core'
 
 const useMyStaked = () => {
   const { account, chainId } = useActiveWeb3React()

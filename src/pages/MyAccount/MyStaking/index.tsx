@@ -1,8 +1,8 @@
-import { UserInfoSushi } from 'hooks/masterfarmer/interfaces'
-import useMyAccountStaked from 'hooks/masterfarmer/useMyAccountStaked'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import useMyAccountStaked from 'hooks/masterfarmer/useMyAccountStaked'
 import { MyStakeItem } from './MyStakeItem'
+import { UserInfoSushi } from '@s-one-finance/sdk-core'
 
 export default function MyStaking() {
   const [netApy, setNetApy] = useState(0)
@@ -26,7 +26,7 @@ export default function MyStaking() {
       <div>NET APY: {netApy * 100}%</div>
       <hr />
       {myAccountStaked.map((item, key) => {
-        return <MyStakeItem key={key} userInfor={item} />
+        return <MyStakeItem key={key} userInfo={item} />
       })}
     </div>
   )

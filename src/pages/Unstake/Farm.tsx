@@ -1,5 +1,5 @@
 import { useActiveWeb3React } from 'hooks'
-import { Farm } from 'hooks/masterfarmer/interfaces'
+import { Farm } from '@s-one-finance/sdk-core'
 import useFarm from 'hooks/masterfarmer/useFarm'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'

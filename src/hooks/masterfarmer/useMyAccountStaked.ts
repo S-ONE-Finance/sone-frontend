@@ -1,4 +1,4 @@
-import { calculateAPY } from '@s-one-finance/sdk-core'
+import { calculateAPY, UserInfoSushi } from '@s-one-finance/sdk-core'
 import { exchange, masterchef } from 'apollo/client'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'apollo/queries'
@@ -7,7 +7,6 @@ import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
 import { useCallback, useEffect, useState } from 'react'
 import { useBlockNumber } from 'state/application/hooks'
-import { UserInfoSushi } from './interfaces'
 import useSonePrice from './useSonePrice'
 
 const useMyAccountStaked = () => {
