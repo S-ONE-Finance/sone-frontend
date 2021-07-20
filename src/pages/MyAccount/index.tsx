@@ -18,7 +18,7 @@ export default function MyAccount() {
           {/* <MyBalance /> */}
           {/* <MyLiquidity /> */}
           <MyStaking />
-          <Referral />
+          {/*<Referral />*/}
         </Sections>
       </MyAccountWrapper>
     )

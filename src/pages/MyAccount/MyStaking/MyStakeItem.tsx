@@ -1,11 +1,11 @@
 import useClaimReward from '../../../hooks/masterfarmer/useClaimReward'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { UserInfo } from 'hooks/masterfarmer/interfaces'
+import { UserInfoSushi } from 'hooks/masterfarmer/interfaces'
 import { getBalanceNumber } from 'hooks/masterfarmer/utils'
 import usePendingReward from 'hooks/masterfarmer/usePendingReward'
 
-export const MyStakeItem: React.FC<{ userInfor: UserInfo }> = ({ userInfor }) => {
+export const MyStakeItem: React.FC<{ userInfor: UserInfoSushi }> = ({ userInfor }) => {
   const { onClaimReward } = useClaimReward()
   const pendingReward = usePendingReward(Number(userInfor.pool?.pid))
 

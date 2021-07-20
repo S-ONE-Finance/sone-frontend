@@ -6,7 +6,7 @@ import StakingHeader from './components/StakingHeader'
 import { Filter } from 'react-feather'
 import useFarms from '../../hooks/masterfarmer/useFarms'
 import BigNumber from 'bignumber.js'
-import { Farm, LiquidityPosition, UserInfo } from 'hooks/masterfarmer/interfaces'
+import { Farm, LiquidityPosition, UserInfoSushi } from 'hooks/masterfarmer/interfaces'
 import _ from 'lodash'
 import useMyStaked from 'hooks/masterfarmer/useMyStaked'
 import useMyLPToken from 'hooks/masterfarmer/useMyLPToken'
@@ -19,7 +19,7 @@ export default function Farms() {
   const [filter, setFilter] = useState('Active pool')
 
   const farms: Farm[] = useFarms()
-  const myStaked: UserInfo[] = useMyStaked()
+  const myStaked: UserInfoSushi[] = useMyStaked()
   const myLpToken: LiquidityPosition[] = useMyLPToken()
 
   const handleSortBy = useCallback((e: React.FormEvent<HTMLSelectElement>) => {

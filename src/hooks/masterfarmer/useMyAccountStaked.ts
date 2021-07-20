@@ -7,12 +7,12 @@ import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
 import { useCallback, useEffect, useState } from 'react'
 import { useBlockNumber } from 'state/application/hooks'
-import { UserInfo } from './interfaces'
+import { UserInfoSushi } from './interfaces'
 import useSonePrice from './useSonePrice'
 
 const useMyAccountStaked = () => {
   const { account, chainId } = useActiveWeb3React()
-  const [users, setUsers] = useState<UserInfo[]>([])
+  const [users, setUsers] = useState<UserInfoSushi[]>([])
   const sushiPrice = useSonePrice()
   const block = useBlockNumber()
 
@@ -29,7 +29,7 @@ const useMyAccountStaked = () => {
     ])
     const users = results[0]?.data.users
     const pairAddresses = users
-      .map((user: UserInfo) => {
+      .map((user: UserInfoSushi) => {
         return user.pool?.pair
       })
       .sort()
@@ -41,7 +41,7 @@ const useMyAccountStaked = () => {
 
     const pairs = pairsQuery?.data.pairs
 
-    const userData: UserInfo[] = users.map((user: any) => {
+    const userData: UserInfoSushi[] = users.map((user: any) => {
       const pair = pairs.find((pair: any) => pair.id === user.pool?.pair)
       if (pair === undefined) {
         return false
@@ -100,7 +100,7 @@ const useMyAccountStaked = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const results: UserInfo[] = await fetchDataStaked()
+      const results: UserInfoSushi[] = await fetchDataStaked()
       const uniqResult = _.uniq(results)
       const sorted = orderBy(uniqResult, ['id'], ['desc'])
       setUsers(sorted)
