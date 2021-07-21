@@ -544,13 +544,13 @@ export default function Header() {
                 <Globe size={20} />
                 {/* Only support 3 languages */}
                 <TYPE.language style={{ marginLeft: '5px' }}>
-                  {language === 'en' ? t('EN') : language === 'jp' ? t('日本語') : t('中文')}
+                  {language === 'en' ? 'EN' : language === 'jp' ? '日本語' : '中文'}
                 </TYPE.language>
               </StyledMenuButtonWithText>
               <ResponsiveBottomRightSubMenu>
-                <SubMenuItemText onClick={() => setLanguage('jp')}>{t('日本語')}</SubMenuItemText>
-                <SubMenuItemText onClick={() => setLanguage('en')}>{t('English')}</SubMenuItemText>
-                <SubMenuItemText onClick={() => setLanguage('zh-CN')}>{t('中文')}</SubMenuItemText>
+                <SubMenuItemText onClick={() => setLanguage('jp')}>日本語</SubMenuItemText>
+                <SubMenuItemText onClick={() => setLanguage('en')}>English</SubMenuItemText>
+                <SubMenuItemText onClick={() => setLanguage('zh-CN')}>中文</SubMenuItemText>
               </ResponsiveBottomRightSubMenu>
             </ResponsiveMenuItem>
             <ShowOnlyExtraSmall>

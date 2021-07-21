@@ -117,7 +117,7 @@ export default function ModalSearchPair({
         {isLoading ? (
           <Column width="unset" style={{ margin: '20px', height: '100%' }}>
             <TYPE.main color={theme.text3} textAlign="center" mb="20px">
-              {t('Loading')}...
+              {t('Loading...')}
             </TYPE.main>
           </Column>
         ) : sortedPairs?.length > 0 ? (
