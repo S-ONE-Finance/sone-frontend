@@ -57,7 +57,7 @@ function TabSwapLiquidity() {
   return (
     <TabContainer>
       <TabItem isActive={isSwap} as={Link} to="/swap">
-        Swap
+        {t('swap')}
       </TabItem>
       <TabItem isActive={!isSwap} as={Link} to="/add">
         {t('liquidity')}

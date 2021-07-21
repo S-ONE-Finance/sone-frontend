@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-
+import { useTranslation } from 'react-i18next'
 import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
 import { TransactionDetails } from '../../state/transactions/reducer'
 
@@ -55,6 +55,7 @@ function renderTransactions(transactions: string[]) {
 }
 
 export default function RecentTransactions({ isSmall = false }: { isSmall?: boolean }) {
+  const { t } = useTranslation()
   const allTransactions = useAllTransactions()
 
   const sortedRecentTransactions = useMemo(() => {
@@ -68,7 +69,7 @@ export default function RecentTransactions({ isSmall = false }: { isSmall?: bool
   return (
     <ColumnScroll>
       <TYPE.red1Sone marginBottom={'0.75rem'} fontSize={isSmall ? '18px' : '20px'} fontWeight={700}>
-        Transaction History
+        {t('transaction_history')}
       </TYPE.red1Sone>
       {pending.length || confirmed.length ? (
         <>
@@ -76,11 +77,11 @@ export default function RecentTransactions({ isSmall = false }: { isSmall?: bool
           {renderTransactions(confirmed)}
           <Row justify={'center'}>
             {/* TODO: href chưa fill. */}
-            <ViewMore href="#">View more</ViewMore>
+            <ViewMore href="#">{t('view_more')}</ViewMore>
           </Row>
         </>
       ) : (
-        <TYPE.subText paddingBottom={'0.75rem'}>Your recent transactions will appear here...</TYPE.subText>
+        <TYPE.subText paddingBottom={'0.75rem'}>{t('Your recent transactions will appear here...')}</TYPE.subText>
       )}
     </ColumnScroll>
   )

@@ -253,7 +253,7 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
       <RowFixed>
         {expertMode && (
           <Text fontSize={13} fontWeight={700} color={theme.text5Sone} marginRight={'8px'}>
-            {t('Expert')}
+            {t('expert')}
           </Text>
         )}
         <StyledMenuButton onClick={toggle} id="open-settings-dialog-button">
@@ -268,7 +268,7 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
             </AbsoluteVector>
             <TitleBodyMarginer>
               <RowBetween>
-                <Title>{t('Settings')}</Title>
+                <Title>{t('swap_setteing')}</Title>
                 <StyledCloseIcon onClick={toggle} />
               </RowBetween>
               <SectionWrapper>

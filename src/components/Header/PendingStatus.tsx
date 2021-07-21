@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import { useTranslation } from 'react-i18next'
 import LoaderSone from '../LoaderSone'
 import useNoPendingTxs from '../../hooks/useNoPendingTxs'
 
@@ -31,13 +31,16 @@ const Text = styled.p`
 `
 
 export default function PendingStatus() {
+  const { t } = useTranslation()
   const noPendingTxs = useNoPendingTxs()
 
   if (noPendingTxs) {
     return (
       <PendingBox>
         <LoaderSone size="19px" />
-        <Text>{noPendingTxs} pending</Text>
+        <Text>
+          {noPendingTxs} {t('pending')}
+        </Text>
       </PendingBox>
     )
   }

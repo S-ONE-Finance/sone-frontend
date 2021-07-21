@@ -166,6 +166,9 @@ export default function PanelCurrencyInput({
   onReceiveWETHToggle
 }: PanelCurrencyInputProps) {
   const { t } = useTranslation()
+  if (label === 'Input') {
+    label = t('input')
+  }
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)

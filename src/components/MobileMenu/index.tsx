@@ -7,6 +7,7 @@ import React, { useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { lighten } from 'polished'
+import { useTranslation } from 'react-i18next'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -27,7 +28,6 @@ import {
   S_ONE_FAQ_URL,
   S_ONE_BLOG_URL
 } from '../../constants/urls'
-import { useTranslation } from 'react-i18next'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
   position: relative;
@@ -136,25 +136,25 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         <StyledCloseAbsolute>
           <StyledCloseIcon />
         </StyledCloseAbsolute>
-        <TYPE.black fontSize={14}>Address:</TYPE.black>
+        <TYPE.black fontSize={14}>{t('Address')}:</TYPE.black>
         <TYPE.subText marginTop="0.25rem">{account && shortenAddress(account, 14)}</TYPE.subText>
         <RowBetween marginTop="1rem">
           <SoneAmount isSmall={true} />
-          <TextBoxChangeAccount onClick={toggleWalletModal}>Change Account</TextBoxChangeAccount>
+          <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change_account')}</TextBoxChangeAccount>
         </RowBetween>
       </Column>
       <Column>
-        <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>S-ONE Wallet</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>{t('sone_wallet')}</StyledExternalLink>
         <StyledNavLink to="/swap">{t('swap')}</StyledNavLink>
         <StyledNavLink to="/pool" isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
-          Liquidity
+          {t('liquidity')}
         </StyledNavLink>
-        <StyledNavLink to="/staking">Staking</StyledNavLink>
-        <StyledExternalLink href={S_ONE_SWAP_STATISTICS_URL}>Swap Stats</StyledExternalLink>
-        <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>Staking Stats</StyledExternalLink>
-        <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>White Paper</StyledExternalLink>
-        <StyledExternalLink href={S_ONE_FAQ_URL}>FAQ</StyledExternalLink>
-        <StyledExternalLink href={S_ONE_BLOG_URL}>Blog</StyledExternalLink>
+        <StyledNavLink to="/staking">{t('staking')}</StyledNavLink>
+        <StyledExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>{t('Staking Stats')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('White Paper')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_FAQ_URL}>{t('faq')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_BLOG_URL}>{t('blog')}</StyledExternalLink>
       </Column>
       <RecentTransactions isSmall={true} />
     </ColumnWrapper>

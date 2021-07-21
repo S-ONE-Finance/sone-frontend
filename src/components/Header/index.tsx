@@ -72,11 +72,11 @@ const HeaderElement = styled.div`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     flex-direction: row-reverse;
     align-items: center;
-    
+
     & > *:last-child {
       margin-left: 0 !important;
     }
-    
+
     & > *:first-child {
       margin-left: 0.5rem !important;
     }
@@ -462,7 +462,7 @@ export default function Header() {
             </Title>
             <HeaderMenu>
               <HideSmall>
-                <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>S-ONE Wallet</StyledExternalLink>
+                <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>{t('sone_wallet')}</StyledExternalLink>
               </HideSmall>
               <MenuItem>
                 <StyledNavLink
@@ -474,35 +474,37 @@ export default function Header() {
                   {t('swap')}
                 </StyledNavLink>
                 <SubMenu>
-                  <SubMenuItemNavLink to="/swap">Swap</SubMenuItemNavLink>
+                  <SubMenuItemNavLink to="/swap">{t('swap')}</SubMenuItemNavLink>
                   <SubMenuItemNavLink id="pool-nav-link" to="/add">
-                    Liquidity
+                    {t('liquidity')}
                   </SubMenuItemNavLink>
                 </SubMenu>
               </MenuItem>
               <MenuItem>
-                <StyledNavLink to="/staking">Staking</StyledNavLink>
+                <StyledNavLink to="/staking">{t('staking')}</StyledNavLink>
               </MenuItem>
               <MenuItem>
                 <StyledExternalLink
                   href={isMobile ? '' : S_ONE_SWAP_STATISTICS_URL}
                   target={isMobile ? '_self' : '_blank'}
                 >
-                  Stats
+                  {t('stats')}
                 </StyledExternalLink>
                 <SubMenu>
-                  <SubMenuItemExternalLink href={S_ONE_SWAP_STATISTICS_URL}>Swap Stats</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={S_ONE_STAKING_STATISTICS_URL}>Staking Stats</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_STAKING_STATISTICS_URL}>
+                    {t('Staking Stats')}
+                  </SubMenuItemExternalLink>
                 </SubMenu>
               </MenuItem>
               <MenuItem>
                 <StyledExternalLink href={isMobile ? '' : S_ONE_DOCS_URL} target={isMobile ? '_self' : '_blank'}>
-                  Docs
+                  {t('docs')}
                 </StyledExternalLink>
                 <ResponsiveTopEndSubMenu>
-                  <SubMenuItemExternalLink href={S_ONE_WHITE_PAPER_URL}>White Paper</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={S_ONE_FAQ_URL}>FAQ</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={S_ONE_BLOG_URL}>Blog</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('swap_stats')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_FAQ_URL}>{t('faq')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_BLOG_URL}>{t('blog')}</SubMenuItemExternalLink>
                 </ResponsiveTopEndSubMenu>
               </MenuItem>
             </HeaderMenu>
@@ -542,7 +544,7 @@ export default function Header() {
                 <Globe size={20} />
                 {/* Only support 3 languages */}
                 <TYPE.language style={{ marginLeft: '5px' }}>
-                  {language === 'en' ? 'EN' : language === 'jp' ? '日本語' : language === 'zh-CN' ? '中文' : 'EN'}
+                  {language === 'en' ? 'EN' : language === 'jp' ? '日本語' : '中文'}
                 </TYPE.language>
               </StyledMenuButtonWithText>
               <ResponsiveBottomRightSubMenu>

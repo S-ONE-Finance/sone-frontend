@@ -2,7 +2,7 @@ import React from 'react'
 import { Text } from 'rebass'
 import { ChainId, Currency, currencyEquals, ETHER, Token } from '@s-one-finance/sdk-core'
 import styled from 'styled-components'
-
+import { useTranslation } from 'react-i18next'
 import { SUGGESTED_BASES } from '../../constants'
 import { AutoColumn } from '../Column'
 import QuestionHelper from '../QuestionHelper'
@@ -34,11 +34,12 @@ export default function CommonBases({
   selectedCurrency?: Currency | null
   onSelect: (currency: Currency) => void
 }) {
+  const { t } = useTranslation()
   return (
     <AutoColumn gap="md">
       <AutoRow>
         <Text fontWeight={500} fontSize={16}>
-          Common bases
+          {t('Common bases')}
         </Text>
         <QuestionHelper text="These tokens are commonly paired with other tokens." />
       </AutoRow>

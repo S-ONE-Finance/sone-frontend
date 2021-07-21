@@ -245,7 +245,7 @@ export function CurrencySearch({
       ) : (
         <Column width="unset" style={{ margin: '20px', height: '100%' }}>
           <TYPE.main color={theme.text3} textAlign="center" mb="20px">
-            No results found.
+            {t('No results found.')}
           </TYPE.main>
         </Column>
       )}

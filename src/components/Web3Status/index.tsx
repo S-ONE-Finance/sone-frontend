@@ -88,14 +88,14 @@ function Web3StatusInner() {
           }
         }}
       >
-        My Account
+        {t('my_account')}
       </ButtonMainRed>
     )
   } else if (error) {
     return (
       <ButtonMainRed onClick={toggleWalletModal}>
         <NetworkIcon />
-        <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
+        <Text>{error instanceof UnsupportedChainIdError ? t('Wrong Network') : t('Error')}</Text>
       </ButtonMainRed>
     )
   } else {
