@@ -238,7 +238,7 @@ export default function MyStakingItem({
         <Row gap="10px" justify="flex-end">
           <Column width="fit-content" justify="center" align="center">
             <TextPercentage onClick={() => alert('Not implemented yet!')}>88.88%</TextPercentage>
-            <TextAPY>{t('APY')}</TextAPY>
+            <TextAPY>{t('apy')}</TextAPY>
           </Column>
           <DownIcon
             active={isShowDetailedSection ? 0 : 1}

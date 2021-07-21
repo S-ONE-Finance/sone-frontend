@@ -19,7 +19,7 @@ export default function MyStaking() {
         <SectionButton as={Link} to="/add/ETH">
           <RowFitContent gap="8px">
             <PlusIcon />
-            <SectionText>{t('Stake')}</SectionText>
+            <SectionText>{t('stake')}</SectionText>
           </RowFitContent>
         </SectionButton>
       </RowBetween>
