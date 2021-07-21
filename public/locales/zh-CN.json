@@ -56,7 +56,6 @@
   "liquidity_settings": "流动性设置",
   "confirm_add_liquidity": "确认添加流动性",
   "stake_now": "现在质押!",
-
   "my_balance": "我的钱包余额",
   "your_available_balance": "您的可用余额",
   "my_liquidity": "我的流动资金",
@@ -88,7 +87,6 @@
   "stake_more": "质押更多",
   "show_less_account": "不再显示",
   "view_details": "查看详情",
-
   "sone_wallet": "S-ONE 钱包",
   "swap": "币币交易",
   "staking": "质押挖矿",
@@ -104,7 +102,6 @@
   "swap_stats": "交易数据",
   "faq": "常见问题",
   "blog": "博客",
-
   "connect_to_wallet": "连接钱包",
   "sone_wallet_wallet": "S-ONE Wallet",
   "meta_mask": "MetaMask",
@@ -119,8 +116,6 @@
   "transaction_deadline": "交易截止时间",
   "minute": "分",
   "swap_expert": "交易专家模式",
-
-  "STAKING": "STACKING",
   "eth-dai_lp_tOKEN": "ETH-DAI LP TOKEN",
   "stake": "质押",
   "stake_lp_token_and_get_rewards": "质押LP代币并获得奖励",
@@ -154,8 +149,6 @@
   "my_lp_tokens": "我的LP代币",
   "staked": "已质押",
   "earn": "赚取",
-
-  "STATS": "STATS",
   "staking_statistics": "质押统计",
   "98.9%_of_total_liquidity": "占总流动资金的98.9%",
   "Sone_token_price": "SONE代币价格",

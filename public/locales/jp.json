@@ -56,7 +56,6 @@
   "liquidity_settings": "預入れ設定",
   "confirm_add_liquidity": "預入れ内容の確認",
   "stake_now": "今すぐ運用を行う",
-
   "my_balance": "ウォレット資産",
   "your_available_balance": "利用可能な資産",
   "my_liquidity": "預入れ状況",
@@ -88,7 +87,6 @@
   "stake_more": "運用",
   "show_less_account": "表示を減らす",
   "view_details": "詳細を見る",
-
   "sone_wallet": "S-ONEウォレット",
   "swap": "取引",
   "staking": "運用",
@@ -104,7 +102,6 @@
   "swap_stats": "取引データ",
   "faq": "よくある質問",
   "blog": "ブログ",
-
   "connect_to_wallet": "ウォレット接続",
   "sone_wallet_wallet": "S-ONE Wallet",
   "meta_mask": "MetaMask",
@@ -119,8 +116,6 @@
   "transaction_deadline": "最大取引時間",
   "minute": "分",
   "swap_expert": "エキスパートモード",
-
-  "STAKING": "STACKING",
   "eth-dai_lp_tOKEN": "ETH-DAI LPトークン",
   "stake": "運用",
   "stake_lp_token_and_get_rewards": "LPトークン預けて報酬を受け取る",
@@ -154,8 +149,6 @@
   "my_lp_tokens": "マイLPトークン",
   "staked": "運用中",
   "earn": "報酬",
-
-  "STATS": "STATS",
   "staking_statistics": "運用データ",
   "98.9%_of_total_liquidity": "合計預入額の98.9%",
   "Sone_token_price": "SONEトークン価格",
