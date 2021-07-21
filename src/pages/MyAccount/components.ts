@@ -11,7 +11,7 @@ import Row from '../../components/Row'
 export const MyAccountWrapper = styled.div`
   width: 773px;
   max-width: 100%;
-  margin-top: 30px;
+  margin-top: 3rem;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-top: 0;
@@ -22,7 +22,7 @@ export const PageTitle = styled.h1`
   text-align: center;
   font-size: 20px;
   font-weight: 700;
-  margin: 0 0 1em 0;
+  margin: 1rem 0;
   display: none;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -36,7 +36,7 @@ export const Sections = styled.div`
   grid-row-gap: 5em;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    grid-row-gap: 2em;  
+    grid-row-gap: 2rem;  
   `}
 `
 

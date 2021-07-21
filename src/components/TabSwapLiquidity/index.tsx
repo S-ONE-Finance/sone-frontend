@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { useLocation } from 'react-router'
 import styled from 'styled-components'
 import { darken } from 'polished'
-import { useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
 const TabContainer = styled.div`
@@ -11,7 +11,7 @@ const TabContainer = styled.div`
   border-radius: 39px;
   background-color: ${({ theme }) => theme.tabBg};
   display: flex;
-  margin-bottom: 20px;
+  margin: 1.25rem 0;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     width: 90vw;
@@ -32,6 +32,7 @@ const TabItem = styled.div<{ isActive?: boolean }>`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  text-decoration: none;
 
   :hover,
   :focus {
@@ -50,16 +51,15 @@ const TabItem = styled.div<{ isActive?: boolean }>`
 function TabSwapLiquidity() {
   const { t } = useTranslation()
   const location = useLocation()
-  const history = useHistory()
 
   const isSwap = useMemo(() => location?.pathname.startsWith('/swap'), [location])
 
   return (
     <TabContainer>
-      <TabItem isActive={isSwap} onClick={() => history.push('/swap')}>
+      <TabItem isActive={isSwap} as={Link} to="/swap">
         Swap
       </TabItem>
-      <TabItem isActive={!isSwap} onClick={() => history.push('/add')}>
+      <TabItem isActive={!isSwap} as={Link} to="/add">
         {t('liquidity')}
       </TabItem>
     </TabContainer>

@@ -13,6 +13,7 @@ import VotePage from './Vote/VotePage'
 import Earn from './Earn'
 import Manage from './Earn/Manage'
 import React from 'react'
+import Unstake from './Unstake'
 
 export default function Routing() {
   return (
@@ -26,6 +27,7 @@ export default function Routing() {
       <Route exact strict path="/my-account/withdraw/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
       <Route exact strict path="/my-account/withdraw/:currencyIdA/:currencyIdB" component={WithdrawLiquidity} />
       <Route exact strict path="/my-account/withdraw2/:currencyIdA/:currencyIdB" component={WithdrawLiquidity2} />
+      <Route exact strict path="/unstake" component={Unstake} />
       {/* Component PoolFinder để import Pool, hiện tại trong requirements của sone chưa có use-case này. */}
       <Route exact strict path="/find" component={PoolFinder} />
       {/* Nhưng route dưới đây là của uni, trong sone không có, nhưng nên giữ lại. */}

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import AppBody from '../AppBody'
+import { AppBody } from 'theme/components'
 import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
 import { TransactionType } from '../../state/transactions/types'
 import PanelSelectPair from '../../components/PanelSelectPair'
@@ -76,7 +76,7 @@ const RowAnalytics = styled(Row)`
 `
 
 const WithdrawAppBody = styled(AppBody)`
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-top: 0;

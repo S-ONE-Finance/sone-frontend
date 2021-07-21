@@ -137,19 +137,19 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
           <StyledCloseIcon />
         </StyledCloseAbsolute>
         <TYPE.black fontSize={14}>Address:</TYPE.black>
-        <TYPE.subText marginTop={'0.25rem'}>{account && shortenAddress(account, 14)}</TYPE.subText>
-        <RowBetween marginTop={'1rem'}>
+        <TYPE.subText marginTop="0.25rem">{account && shortenAddress(account, 14)}</TYPE.subText>
+        <RowBetween marginTop="1rem">
           <SoneAmount isSmall={true} />
           <TextBoxChangeAccount onClick={toggleWalletModal}>Change Account</TextBoxChangeAccount>
         </RowBetween>
       </Column>
       <Column>
         <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>S-ONE Wallet</StyledExternalLink>
-        <StyledNavLink to={'/swap'}>{t('swap')}</StyledNavLink>
-        <StyledNavLink to={'/pool'} isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
+        <StyledNavLink to="/swap">{t('swap')}</StyledNavLink>
+        <StyledNavLink to="/pool" isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
           Liquidity
         </StyledNavLink>
-        <StyledNavLink to={'/uni'}>Staking</StyledNavLink>
+        <StyledNavLink to="/staking">Staking</StyledNavLink>
         <StyledExternalLink href={S_ONE_SWAP_STATISTICS_URL}>Swap Stats</StyledExternalLink>
         <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>Staking Stats</StyledExternalLink>
         <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>White Paper</StyledExternalLink>
