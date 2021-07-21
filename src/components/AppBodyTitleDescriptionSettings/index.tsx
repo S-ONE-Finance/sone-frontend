@@ -53,7 +53,7 @@ export default function AppBodyTitleDescriptionSettings({ transactionType }: { t
       : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
       ? t('add_liquidity')
       : transactionType === TransactionType.WITHDRAW
-      ? `${t('withdraw')}  ${t('liquidity')}`
+      ? `${t('Withdraw Liquidity')}`
       : null
   const description =
     transactionType === TransactionType.SWAP
