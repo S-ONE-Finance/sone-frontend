@@ -458,7 +458,7 @@ export default function Header() {
         <HideExtraSmall>
           <HeaderRow>
             <Title href={S_ONE_TOP_PAGE_URL} target="_blank">
-              <img width={'100px'} src={darkMode ? LogoDark : Logo} alt="logo" />
+              <img width="100px" src={darkMode ? LogoDark : Logo} alt="logo" />
             </Title>
             <HeaderMenu>
               <HideSmall>
@@ -466,7 +466,7 @@ export default function Header() {
               </HideSmall>
               <MenuItem>
                 <StyledNavLink
-                  to={'/swap'}
+                  to="/swap"
                   isActive={(match, { pathname }) =>
                     Boolean(match) || pathname.startsWith('/swap') || pathname.startsWith('/add')
                   }
@@ -474,14 +474,14 @@ export default function Header() {
                   {t('swap')}
                 </StyledNavLink>
                 <SubMenu>
-                  <SubMenuItemNavLink to={'/swap'}>Swap</SubMenuItemNavLink>
-                  <SubMenuItemNavLink id={`pool-nav-link`} to={'/add'}>
+                  <SubMenuItemNavLink to="/swap">Swap</SubMenuItemNavLink>
+                  <SubMenuItemNavLink id="pool-nav-link" to="/add">
                     Liquidity
                   </SubMenuItemNavLink>
                 </SubMenu>
               </MenuItem>
               <MenuItem>
-                <StyledNavLink to={'/uni'}>Staking</StyledNavLink>
+                <StyledNavLink to="/staking">Staking</StyledNavLink>
               </MenuItem>
               <MenuItem>
                 <StyledExternalLink
@@ -526,7 +526,7 @@ export default function Header() {
               </AccountElement>
               {account && (
                 <HideExtraSmall>
-                  <ResponsiveBottomLeftSubMenu width={'fit-content'} borderRadius={'20px'}>
+                  <ResponsiveBottomLeftSubMenu width="fit-content" borderRadius="20px">
                     <PanelMyAccount />
                   </ResponsiveBottomLeftSubMenu>
                 </HideExtraSmall>

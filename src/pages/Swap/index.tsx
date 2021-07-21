@@ -43,7 +43,7 @@ import {
 import { LinkStyledButton, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
-import AppBody from '../AppBody'
+import { AppBody } from 'theme/components'
 import { ClickableText } from '../Pool/styleds'
 import Loader from '../../components/Loader'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -70,7 +70,7 @@ export const ResponsiveAutoColumn = styled(AutoColumn)`
   `}
 `
 
-export default function Swap({ history, match }: RouteComponentProps) {
+export default function Swap({ history }: RouteComponentProps) {
   const { t } = useTranslation()
 
   // For Styling Responsive.

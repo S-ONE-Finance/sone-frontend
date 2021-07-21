@@ -5,7 +5,7 @@ import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescri
 import { TransactionType } from '../../state/transactions/types'
 import { AddLiquidityModeEnum } from '../../state/user/actions'
 import { useAddLiquidityModeManager } from '../../state/user/hooks'
-import AppBody from '../AppBody'
+import { AppBody } from 'theme/components'
 import { StyledPadding } from '../Pool/styleds'
 import ModeOneToken from './ModeOneTokens'
 import ModeToggle from './ModeToggle'

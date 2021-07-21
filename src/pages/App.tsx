@@ -48,15 +48,14 @@ const BodyWrapper = styled.div`
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding-top: 20px;
-  padding-bottom: 45px;
+  padding: 0;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    padding: 22px 1rem 5rem 1rem;
+    padding: 0 1rem 5rem 1rem;
   `};
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    padding-bottom: 3rem;
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 0 1rem 3.5rem 1rem;
   `};
 
   z-index: 1;
@@ -72,9 +71,6 @@ const FooterWrapper = styled.div`
   bottom: 0;
   width: 100%;
   height: 45px;
-  // Khi data empty thì hidden footer.
-  // background: ${({ theme }) => theme.bg4Sone};
-  // box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
   z-index: 1;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`

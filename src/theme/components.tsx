@@ -12,6 +12,15 @@ import { ReactComponent as SortUpIconSvg } from 'assets/svg/sort_up_icon.svg'
 import useTheme from '../hooks/useTheme'
 import { useIsUpToExtraSmall } from '../hooks/useWindowSize'
 
+export const AppBody = styled.div`
+  position: relative;
+  max-width: 602px;
+  width: 100%;
+  background: ${({ theme }) => theme.bg1Sone};
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.15);
+  border-radius: 30px;
+`
+
 export const ButtonText = styled.button`
   outline: none;
   border: none;

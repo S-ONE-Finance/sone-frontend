@@ -270,7 +270,7 @@ export default function MyStakingItem({
               </RowReward>
               <RowButtons justify="center" gap="2rem">
                 {/* TODO: Specific pair. */}
-                <ButtonUnstake as={Link} to="/my-account/unstake">
+                <ButtonUnstake as={Link} to="/unstake">
                   {t('unstake')}
                 </ButtonUnstake>
                 {/* TODO: Specific pair. */}

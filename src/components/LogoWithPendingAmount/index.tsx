@@ -26,11 +26,11 @@ export default function LogoWithPendingAmount() {
 
   if (isUpToExtraSmall) {
     return (
-      <Row align="center" justify="center" style={{ height: '32px', marginBottom: '20px', position: 'relative' }}>
+      <Row align="center" justify="center" style={{ height: '2rem', position: 'relative' }}>
         <LogoResponsive />
         {noPendingTxs && (
           <LoaderSoneWrapper>
-            <LoaderSone size="32px" style={{ position: 'relative' }} valueInside={noPendingTxs} />
+            <LoaderSone size="2rem" style={{ position: 'relative' }} valueInside={noPendingTxs} />
           </LoaderSoneWrapper>
         )}
       </Row>
