@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { lighten } from 'polished'
 import { useWeb3React } from '@web3-react/core'
 import { useHistory } from 'react-router-dom'
-
+import { useTranslation } from 'react-i18next'
 // Hooks and Utils.
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { useActiveWeb3React } from '../../hooks'
@@ -73,6 +73,7 @@ const PaddingColumn = styled(Column)`
 `
 
 export default function PanelMyAccount() {
+  const { t } = useTranslation()
   const history = useHistory()
   const { account, connector } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
@@ -88,21 +89,21 @@ export default function PanelMyAccount() {
     <PanelMyAccountWrapper>
       <ColumnWrapper>
         <Column>
-          <TYPE.black fontSize={16}>Address:</TYPE.black>
+          <TYPE.black fontSize={16}>{t('adress')}:</TYPE.black>
           <TYPE.subText marginTop={'0.25rem'}>{account && shortenAddress(account, 14)}</TYPE.subText>
-          <TextBoxChangeAccount onClick={toggleWalletModal}>Change Account</TextBoxChangeAccount>
+          <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change_account')}</TextBoxChangeAccount>
           {connector !== injected && connector !== walletlink && (
             <TextBoxChangeAccount
               onClick={() => {
                 ;(connector as any).close()
               }}
             >
-              Disconnect
+              {t('Disconnect')}
             </TextBoxChangeAccount>
           )}
         </Column>
         <PaddingColumn>
-          <MyAccountButton onClick={() => history.push('/my-account')}>My Account</MyAccountButton>
+          <MyAccountButton onClick={() => history.push('/my-account')}>{t('my_account')}</MyAccountButton>
         </PaddingColumn>
         <RecentTransactions />
       </ColumnWrapper>

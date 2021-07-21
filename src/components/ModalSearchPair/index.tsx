@@ -104,7 +104,7 @@ export default function ModalSearchPair({
             <SearchInput
               type="text"
               id="pair-search-input"
-              placeholder="Search pair"
+              placeholder={t('Search pair')}
               autoComplete="off"
               value={searchQuery}
               ref={inputRef as RefObject<HTMLInputElement>}
@@ -117,7 +117,7 @@ export default function ModalSearchPair({
         {isLoading ? (
           <Column width="unset" style={{ margin: '20px', height: '100%' }}>
             <TYPE.main color={theme.text3} textAlign="center" mb="20px">
-              Loading...
+              {t('Loading')}...
             </TYPE.main>
           </Column>
         ) : sortedPairs?.length > 0 ? (
@@ -149,7 +149,7 @@ export default function ModalSearchPair({
         ) : (
           <Column width="unset" style={{ margin: '20px', height: '100%' }}>
             <TYPE.main color={theme.text3} textAlign="center" mb="20px">
-              No results found.
+              {t('No results found.')}
             </TYPE.main>
           </Column>
         )}

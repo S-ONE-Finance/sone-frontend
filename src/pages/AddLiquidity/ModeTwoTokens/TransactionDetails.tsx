@@ -85,7 +85,7 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
                     color={theme.text4Sone}
                     onClick={toggleSettings}
                   >
-                    Slippage Tolerance
+                    {t('slippage_tolerance')}
                   </ClickableText>
                   <QuestionHelper1416 text="Lorem ipsum" />
                 </RowFixed>
@@ -131,7 +131,7 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
                 color={theme.text4Sone}
                 onClick={toggleSettings}
               >
-                Slippage Tolerance
+                {t('slippage_tolerance')}
               </ClickableText>
               <QuestionHelper1416 text="Lorem ipsum" />
             </RowFixed>

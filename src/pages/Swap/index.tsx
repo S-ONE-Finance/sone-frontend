@@ -441,7 +441,7 @@ export default function Swap({ history }: RouteComponentProps) {
                           color={theme.text4Sone}
                           onClick={toggleSettings}
                         >
-                          {t('Slippage Tolerance')}
+                          {t('slippage_tolerance')}
                         </ClickableText>
                         <QuestionHelper1416 text="Lorem ipsum" />
                       </RowFixed>
@@ -509,11 +509,11 @@ export default function Swap({ history }: RouteComponentProps) {
                 <TYPE.main mb="4px">{t('Unsupported Asset')}</TYPE.main>
               </ButtonPrimary>
             ) : !account ? (
-              <ButtonPrimary onClick={toggleWalletModal}>{t('Connect Wallet')}</ButtonPrimary>
+              <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
             ) : showWrap ? (
               <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>
                 {wrapInputError ??
-                  (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
+                  (wrapType === WrapType.WRAP ? t('Wrap') : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
               </ButtonPrimary>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <ButtonError disabled>

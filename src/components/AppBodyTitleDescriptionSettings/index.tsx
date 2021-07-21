@@ -49,11 +49,11 @@ export default function AppBodyTitleDescriptionSettings({ transactionType }: { t
   const { t } = useTranslation()
   const title =
     transactionType === TransactionType.SWAP
-      ? t('Swap')
+      ? t('swap')
       : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
       ? t('add_liquidity')
       : transactionType === TransactionType.WITHDRAW
-      ? t('Withdraw Liquidity')
+      ? t('withdraw') + t('liquidity')
       : null
   const description =
     transactionType === TransactionType.SWAP

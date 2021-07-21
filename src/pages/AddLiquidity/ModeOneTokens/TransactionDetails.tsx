@@ -10,6 +10,7 @@ import { ClickableText } from 'pages/Pool/styleds'
 import React, { useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { Text } from 'rebass'
+import { useTranslation } from 'react-i18next'
 import { useToggleSettingsMenu } from 'state/application/hooks'
 import { useDerivedMintSimpleInfo } from 'state/mintSimple/hooks'
 import { useShowTransactionDetailsManager, useUserSlippageTolerance } from 'state/user/hooks'
@@ -27,6 +28,7 @@ export default function TransactionDetails({
   selectedPair,
   selectedCurrency
 }: TransactionDetailsProps) {
+  const { t } = useTranslation()
   const theme = useTheme()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
@@ -66,7 +68,7 @@ export default function TransactionDetails({
             color={theme.text5Sone}
             onClick={toggleIsShowTransactionDetails}
           >
-            Show more information <ChevronDown size={12} />
+            {t('show_more_information')} <ChevronDown size={12} />
           </ClickableText>
         </ColumnCenter>
       )}
@@ -76,7 +78,7 @@ export default function TransactionDetails({
             <RowBetween>
               <RowFixed>
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                  Price
+                  {t('price')}
                 </Text>
                 <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
               </RowFixed>
@@ -91,7 +93,7 @@ export default function TransactionDetails({
                     color={theme.text4Sone}
                     onClick={toggleSettings}
                   >
-                    Slippage Tolerance
+                    {t('slippage_tolerance')}
                   </ClickableText>
                   <QuestionHelper1416 text="Lorem ipsum" />
                 </RowFixed>
@@ -108,7 +110,7 @@ export default function TransactionDetails({
             <RowBetween>
               <RowFixed>
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                  Share of Pair
+                  {t('share_of_pair')}
                 </Text>
                 <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
               </RowFixed>
@@ -141,7 +143,7 @@ export default function TransactionDetails({
                 color={theme.text4Sone}
                 onClick={toggleSettings}
               >
-                Slippage Tolerance
+                {t('slippage_tolerance')}
               </ClickableText>
               <QuestionHelper1416 text="Lorem ipsum" />
             </RowFixed>
@@ -165,7 +167,7 @@ export default function TransactionDetails({
             color={theme.text5Sone}
             onClick={toggleIsShowTransactionDetails}
           >
-            Show less <ChevronUp size={12} />
+            {t('show_less')} <ChevronUp size={12} />
           </ClickableText>
         </ColumnCenter>
       )}

@@ -158,7 +158,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
           <>
             <PanelCurrencyInput
               id="add-liquidity-simple-input-tokena"
-              label="From"
+              label={t('from')}
               value={typedValue}
               onUserInput={onFieldInput}
               showMaxButton

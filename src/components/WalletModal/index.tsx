@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactGA from 'react-ga'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import MetamaskIcon from '../../assets/images/metamask.png'
 import { fortmatic, injected, portis } from '../../connectors'
 import { OVERLAY_READY } from '../../connectors/Fortmatic'
@@ -134,6 +135,7 @@ export default function WalletModal({
   confirmedTransactions: string[] // hashes of confirmed
   ENSName?: string
 }) {
+  const { t } = useTranslation()
   // important that these are destructed from the account-specific web3-react context
   const { active, account, connector, activate, error } = useWeb3React()
 
@@ -306,12 +308,12 @@ export default function WalletModal({
           <StyledCloseAbsolute onClick={toggleWalletModal}>
             <StyledCloseIcon />
           </StyledCloseAbsolute>
-          <HeaderRow>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error connecting'}</HeaderRow>
+          <HeaderRow>{error instanceof UnsupportedChainIdError ? t('Wrong Network') : t('Error connecting')}</HeaderRow>
           <ContentWrapper>
             {error instanceof UnsupportedChainIdError ? (
-              <h5>Please connect to the appropriate Ethereum network.</h5>
+              <h5>{t('Please connect to the appropriate Ethereum network.')}</h5>
             ) : (
-              'Error connecting. Try refreshing the page.'
+              t('Error connecting. Try refreshing the page.')
             )}
           </ContentWrapper>
         </UpperSection>
@@ -331,12 +333,12 @@ export default function WalletModal({
                 setWalletView(WALLET_VIEWS.OPTIONS)
               }}
             >
-              <Title>Back</Title>
+              <Title>{t('back')}</Title>
             </HoverText>
           </HeaderRow>
         ) : (
           <HeaderRow>
-            <Title>Connect to a wallet</Title>
+            <Title>{t('connect_to_wallet')}</Title>
           </HeaderRow>
         )}
         <ContentWrapper>
@@ -352,8 +354,7 @@ export default function WalletModal({
           )}
           {walletView !== WALLET_VIEWS.PENDING && (
             <Blurb>
-              <span>New to Ethereum?&nbsp;</span>{' '}
-              <StyledExternalLink href="https://ethereum.org/wallets/">Learn more about wallets</StyledExternalLink>
+              <StyledExternalLink href="https://ethereum.org/wallets/">{t('create_a_new_wallet')}</StyledExternalLink>
             </Blurb>
           )}
         </ContentWrapper>
