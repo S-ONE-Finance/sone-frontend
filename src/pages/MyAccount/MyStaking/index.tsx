@@ -1,65 +1,33 @@
-import { useActiveWeb3React } from 'hooks'
-import useClaimReward from 'hooks/farms/useClaimReward'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import useMyAccountStaked from 'hooks/masterfarmer/useMyAccountStaked'
+import { MyStakeItem } from './MyStakeItem'
+import { UserInfoSushi } from '@s-one-finance/sdk-core'
 
 export default function MyStaking() {
-  const { account } = useActiveWeb3React()
-
-  const { onClaimReward } = useClaimReward()
-
-  const [poolRequestPending, setPoolRequestPending] = useState<{ [farmId: string]: boolean }>()
+  const [netApy, setNetApy] = useState(0)
+  const myAccountStaked: UserInfoSushi[] = useMyAccountStaked()
 
   useEffect(() => {
-    console.log('account', account)
-  }, [account])
-
-  const claimReward = async (farmId: number) => {
-    setPoolRequestPending({
-      ...poolRequestPending,
-      [farmId.toString()]: true
+    let totalSoneHarvestUSD = 0
+    let totalLPStakeUSD = 0
+    myAccountStaked.forEach((user: UserInfoSushi) => {
+      totalSoneHarvestUSD += Number(user.sushiHarvestedUSD)
+      totalLPStakeUSD += (Number(user.amount) / 1e18) * Number(user.pool?.LPTokenPrice)
     })
-    const txaaaaa = await onClaimReward(farmId)
-    console.log('txaaaaa', txaaaaa)
-    setPoolRequestPending({
-      ...poolRequestPending,
-      [farmId.toString()]: false
-    })
-    console.log('farmId', farmId)
-  }
+    if (totalLPStakeUSD) {
+      setNetApy(totalSoneHarvestUSD / totalLPStakeUSD)
+    }
+  }, [myAccountStaked])
 
   return (
     <div>
       <Link to={`/staking`}>Stake</Link>
-      <div>NET APY: {14.79}%</div>
+      <div>NET APY: {netApy * 100}%</div>
       <hr />
-      <div>
-        <div>ETH-DAI LP TOKEN</div>
-        <div>My Staked LP Token: {22.3}</div>
-        <div>APY: {0.25}%</div>
-        <div>Rewarded SONE: {283.229}</div>
-        <div>Available Reward: {73.229}%</div>
-        <Link to={`/staking`}>Unstake</Link>
-        <br />
-        <Link to={`/staking/${1}`}>Stake more</Link>
-        <br />
-        <button disabled={poolRequestPending?.[1]} onClick={() => claimReward(1)}>
-          Request Reward
-        </button>
-      </div>
-      <hr />
-      <div>
-        <div>ETH-DAI LP TOKEN</div>
-        <div>My Staked LP Token: {22.3}</div>
-        <div>APY: {0.25}%</div>
-        <div>Rewarded SONE: {283.229}</div>
-        <div>Available Reward: {73.229}%</div>
-        <Link to={`/staking`}>Unstake</Link>
-        <br />
-        <Link to={`/staking/${1}`}>Stake more</Link>
-        <br />
-        <button onClick={() => claimReward(1)}>Request Reward</button>
-      </div>
+      {myAccountStaked.map((item, key) => {
+        return <MyStakeItem key={key} userInfo={item} />
+      })}
     </div>
   )
 }

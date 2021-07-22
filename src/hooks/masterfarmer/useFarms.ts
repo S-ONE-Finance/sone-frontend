@@ -5,14 +5,17 @@ import { useCallback, useEffect, useState } from 'react'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
-//import range from 'lodash/range'
-import { ChainId } from '@s-one-finance/sdk-core'
+import { calculateAPY } from '@s-one-finance/sdk-core'
 import { useActiveWeb3React } from 'hooks'
-import { Farm } from './interfaces'
+import useSonePrice from './useSonePrice'
+import { useBlockNumber } from 'state/application/hooks'
+import { Farm } from '@s-one-finance/sdk-core/'
 
 const useFarms = () => {
   const { account, chainId } = useActiveWeb3React()
   const [farms, setFarms] = useState<Farm[]>([])
+  const sushiPrice = useSonePrice()
+  const block = useBlockNumber()
 
   const fetchSLPFarms = useCallback(async () => {
     const results = await Promise.all([
@@ -24,7 +27,6 @@ const useFarms = () => {
         variables: { user: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd' }
       }),
       getAverageBlockTime()
-      // sushiData.sushi.priceUSD()
     ])
     const pools = results[0]?.data.pools
     const pairAddresses = pools
@@ -39,10 +41,6 @@ const useFarms = () => {
 
     const liquidityPositions = results[1]?.data.liquidityPositions
     const averageBlockTime = results[2]
-    // const sushiPrice = results[3]
-
-    // TODO_STAKING: remove fake data
-    const sushiPrice = 20
 
     const pairs = pairsQuery?.data.pairs
 
@@ -62,16 +60,13 @@ const useFarms = () => {
         const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
         const rewardPerBlock = ((pool.allocPoint / pool.owner.totalAllocPoint) * pool.owner.sushiPerBlock) / 1e18
 
-        // const roiPerBlock = (rewardPerBlock * sushiPrice) / balanceUSD
         const investedValue = 1000
         const LPTokenPrice = pair.reserveUSD / pair.totalSupply
         const LPTokenValue = investedValue / LPTokenPrice
-        const poolShare = LPTokenValue / (LPTokenValue + Number(pair.totalSupply))
+        const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
         const roiPerBlock = (rewardPerBlock * sushiPrice * poolShare) / investedValue
-        const roiPerHour = roiPerBlock * blocksPerHour
-        const roiPerDay = roiPerHour * 24
-        const roiPerMonth = roiPerDay * 30
-        const roiPerYear = roiPerMonth * 12
+        const multiplierYear = calculateAPY(Number(averageBlockTime), block || 0)
+        const roiPerYear = multiplierYear * roiPerBlock
 
         const rewardPerDay = rewardPerBlock * blocksPerHour * 24
         const sushiHarvested = pool.sushiHarvested > 0 ? pool.sushiHarvested : 0
@@ -87,18 +82,18 @@ const useFarms = () => {
           slpBalance: pool.balance,
           sushiRewardPerDay: rewardPerDay,
           liquidityPair: pair,
+          rewardPerBlock,
           roiPerBlock,
-          roiPerHour,
-          roiPerDay,
-          roiPerMonth,
           roiPerYear,
           sushiHarvested,
           multiplier,
           balanceUSD,
-          rewardPerThousand: 1 * roiPerDay * (1000 / sushiPrice),
           tvl: liquidityPosition?.liquidityTokenBalance
             ? (pair.reserveUSD / pair.totalSupply) * liquidityPosition.liquidityTokenBalance
-            : 0.1
+            : 0.1,
+          sushiPrice,
+          LPTokenPrice,
+          secondsPerBlock: Number(averageBlockTime)
         }
       })
       .filter((item: Farm | false) => {
@@ -107,18 +102,14 @@ const useFarms = () => {
 
     const sorted = orderBy(farms, ['pid'], ['desc'])
     return sorted
-  }, [])
+  }, [block, sushiPrice])
 
   useEffect(() => {
     const fetchData = async () => {
-      if (chainId === ChainId.MAINNET || !account) {
-        const results = await fetchSLPFarms()
-        const uniqResult = _.uniq(results)
-        const sorted = orderBy(uniqResult, ['pid'], ['desc'])
-        setFarms(sorted)
-      } else {
-        setFarms([])
-      }
+      const results = await fetchSLPFarms()
+      const uniqResult = _.uniq(results)
+      const sorted = orderBy(uniqResult, ['pid'], ['desc'])
+      setFarms(sorted)
     }
     fetchData()
   }, [account, chainId, fetchSLPFarms])

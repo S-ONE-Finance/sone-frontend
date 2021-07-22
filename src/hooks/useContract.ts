@@ -25,6 +25,7 @@ import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
 import SONE_MASTER_FARMER_ABI from '../constants/abis/SoneMasterFarmer.json'
 import SONE_TOKEN_ABI from '../constants/abis/SoneToken.json'
+import PAIR_ABI from '../constants/abis/UniswapV2Pair.json'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -140,4 +141,8 @@ export function useMasterFarmerContract(withSignerIfPossible?: boolean): Contrac
 export function useSoneContract(withSignerIfPossible = true): Contract | null {
   const { chainId } = useActiveWeb3React()
   return useContract(chainId && SONE[chainId].address, SONE_TOKEN_ABI.abi, withSignerIfPossible)
+}
+
+export function useLPContract(lpTokenAddress: string, withSignerIfPossible = true): Contract | null {
+  return useContract(lpTokenAddress, PAIR_ABI.abi, withSignerIfPossible)
 }

@@ -1,40 +1,36 @@
 import React, { useCallback, useState, useMemo } from 'react'
 import styled from 'styled-components'
-import useAllowance from '../../../hooks/farms/useAllowance'
-import useApprove from '../../../hooks/farms/useApprove'
-import useStake from '../../../hooks/farms/useStake'
-import useTokenBalance from '../../../hooks/farms/useTokenBalance'
+import useAllowance from '../../../hooks/masterfarmer/useAllowance'
+import useApprove from '../../../hooks/masterfarmer/useApprove'
+import useStake from '../../../hooks/masterfarmer/useStake'
+import useTokenBalance from '../../../hooks/masterfarmer/useTokenBalance'
 import TokenInput from '../../../components/TokenInput'
-import { getFullDisplayBalance } from '../../../sushi/format/formatBalance'
+import { getFullDisplayBalance } from '../../../hooks/masterfarmer/utils'
 interface StakeProps {
-  lpContract: any
+  pairAddress: string
   pid: number
-  tokenName: string
-  tokenSymbol: string
-  token2Symbol: string
+  symbol: string
   val: string
   setVal: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, token2Symbol, val, setVal }) => {
+const Stake: React.FC<StakeProps> = ({ pairAddress, pid, symbol, val, setVal }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [requestedApprovalSuccess, setRequestedApprovalSuccess] = useState(false)
   const [pendingStakeTx, setPendingStakeTx] = useState(false)
-  const [successStakeTx, setSuccessStakeTx] = useState(false)
 
-  const allowance = useAllowance(lpContract)
-  const { onApprove } = useApprove(lpContract)
+  const allowance = useAllowance(pairAddress)
+  const { onApprove } = useApprove(pairAddress)
 
-  const tokenBalance = useTokenBalance(lpContract.options.address)
+  const tokenBalance = useTokenBalance(pairAddress)
 
   const { onStake } = useStake(pid)
 
   const handleApprove = useCallback(
-    async tokenName => {
+    async symbol => {
       try {
         setRequestedApproval(true)
-        const txHash = await onApprove(tokenName)
-        // user rejected tx or didn't go thru
+        const txHash = await onApprove(symbol)
         if (!txHash) {
           setRequestedApproval(false)
         } else {
@@ -48,7 +44,7 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
   )
 
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(tokenBalance)
+    return getFullDisplayBalance(tokenBalance.toString())
   }, [tokenBalance])
 
   const handleSelectMax = useCallback(() => {
@@ -71,11 +67,11 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
               onSelectMax={handleSelectMax}
               onChange={handleChange}
               max={fullBalance}
-              symbol={tokenName}
+              symbol={symbol}
             />
-            {!allowance.toNumber() && !requestedApprovalSuccess ? (
-              <button disabled={requestedApproval} onClick={() => handleApprove(tokenName)}>
-                {requestedApproval ? 'Approving' : `Approve ${tokenName}`}
+            {!allowance.toString() && !requestedApprovalSuccess ? (
+              <button disabled={requestedApproval} onClick={() => handleApprove(symbol)}>
+                {requestedApproval ? 'Approving' : `Approve ${symbol} LP Token`}
               </button>
             ) : (
               <>
@@ -84,11 +80,8 @@ const Stake: React.FC<StakeProps> = ({ lpContract, pid, tokenName, tokenSymbol, 
                   onClick={async () => {
                     if (val && parseFloat(val) > 0) {
                       setPendingStakeTx(true)
-                      const tx: any = await onStake(val, tokenName)
-                      if (tx) {
-                        setPendingStakeTx(false)
-                        setSuccessStakeTx(true)
-                      }
+                      await onStake(val, symbol)
+                      setPendingStakeTx(false)
                     }
                   }}
                 >

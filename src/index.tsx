@@ -19,8 +19,6 @@ import TransactionUpdater from './state/transactions/updater'
 import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
-import FarmsProvider from './contexts/Farms'
-import SushiProvider from './contexts/SushiProvider'
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -73,15 +71,11 @@ ReactDOM.render(
             <Updaters />
             <ThemeProvider>
               <ThemedGlobalStyle />
-              <SushiProvider>
-                <FarmsProvider>
-                  <HashRouter>
-                    <Suspense fallback={null}>
-                      <App />
-                    </Suspense>
-                  </HashRouter>
-                </FarmsProvider>
-              </SushiProvider>
+              <HashRouter>
+                <Suspense fallback={null}>
+                  <App />
+                </Suspense>
+              </HashRouter>
             </ThemeProvider>
           </Provider>
         </Blocklist>

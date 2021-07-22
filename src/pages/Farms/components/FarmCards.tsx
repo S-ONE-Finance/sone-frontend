@@ -1,11 +1,11 @@
 import React from 'react'
 import { isEmpty } from 'lodash'
-import { Farm } from 'hooks/masterfarmer/interfaces'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import IconAPY from '../../../assets/images/icon_apy.svg'
 import IconLP from '../../../assets/images/icon_lp.svg'
 import Loader from '../../../components/Loader'
+import { Farm } from '@s-one-finance/sdk-core/'
 
 const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms = [] }) => {
   return (

@@ -1,67 +1,40 @@
-import React, { useEffect, useState, useMemo } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import useSushi from '../../../hooks/farms/useSushi'
-import { BigNumber } from '../../../sushi'
-import { getContract } from '../../../sushi/format/erc20'
-import { getBalanceNumber } from '../../../sushi/format/formatBalance'
-import { PoolInfo, UserInfo, JSBI } from '@s-one-finance/sdk-core/'
-
+import { Farm, PoolInfo, UserInfo } from '@s-one-finance/sdk-core/'
+import React, { useEffect, useState } from 'react'
+import BigNumber from 'bignumber.js'
+import { getBalanceNumber } from 'hooks/masterfarmer/utils'
+import { useBlockNumber } from 'state/application/hooks'
 interface ApyProps {
-  pid: number
-  lpTokenAddress: string
   val: string
+  farm: Farm | undefined
 }
 
-const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, val }) => {
-  const [totalStakedAfterStake, setTotalStakedAfterStake] = useState(new BigNumber(0))
-  const [earnedRewardAfterStake, setEarnedRewardAfterStake] = useState(new BigNumber(0))
+const Apy: React.FC<ApyProps> = ({ val, farm }) => {
+  const [totalStakedAfterStake, setTotalStakedAfterStake] = useState('0')
+  const [earnedRewardAfterStake, setEarnedRewardAfterStake] = useState('0')
+  const [apyAfterStake, setAPYAfterStake] = useState('0')
 
-  const sushi = useSushi()
-  const { chainId, library: ethereum } = useWeb3React()
-
-  const lpContract = useMemo(() => {
-    const e_provider = ethereum && ethereum.provider ? ethereum.provider : null
-    return getContract(e_provider as any, lpTokenAddress)
-  }, [ethereum, lpTokenAddress])
-
-  // fake data
-  const newReward = useMemo(() => new BigNumber(5000000000000000000), []) // 5 SONE per block
-  //
-
-  const [totalStake, setTotalStake] = useState<BigNumber>(new BigNumber(0))
+  const block = useBlockNumber()
 
   useEffect(() => {
-    async function fetchData() {
-      // TODO_STAKING: remove fake data
-      const data = new BigNumber(20000000000000000000) // 20 LP token
-      //
-      setTotalStake(data)
-    }
-    if (sushi && lpContract) {
-      fetchData()
-    }
-  }, [sushi, setTotalStake, lpContract, chainId])
-
-  useEffect(() => {
-    const poolInfo = new PoolInfo(
-      JSBI.BigInt(totalStake.toNumber()),
-      JSBI.BigInt(newReward.toNumber()),
-      JSBI.BigInt(20)
-    )
-    const userInfo = new UserInfo(poolInfo, JSBI.BigInt(8000000000000000000))
-    if (val) {
+    const poolInfo = new PoolInfo(farm)
+    if (val && farm?.userInfo) {
+      const userInfo = new UserInfo(poolInfo, farm.userInfo)
       const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
-        JSBI.BigInt(new BigNumber(val).times(new BigNumber(10).pow(18)).toNumber())
+        new BigNumber(val).times(new BigNumber(10).pow(18)).toString()
       )
+      setTotalStakedAfterStake(newTotalStaked)
       const newEarnedReward = userInfo.getEarnedRewardAfterStake(
-        JSBI.BigInt(20),
-        JSBI.BigInt(newReward.toNumber()),
-        JSBI.BigInt(new BigNumber(val).times(new BigNumber(10).pow(18)).toNumber())
+        new BigNumber(val).times(new BigNumber(10).pow(18)).toString(),
+        block || 0
       )
-      setTotalStakedAfterStake(new BigNumber(newTotalStaked.toString()))
-      setEarnedRewardAfterStake(new BigNumber(newEarnedReward.toString()))
+      setEarnedRewardAfterStake(newEarnedReward)
+      const newAPY = userInfo.getAPYAfterStake(
+        new BigNumber(val).times(new BigNumber(10).pow(18)).toString(),
+        block || 0
+      )
+      setAPYAfterStake(newAPY)
     }
-  }, [val, newReward, totalStake])
+  }, [val, farm, block])
 
   return (
     <div>
@@ -71,32 +44,23 @@ const Apy: React.FC<ApyProps> = ({ pid, lpTokenAddress, val }) => {
       </div>
       <div>
         <span>Earned reward</span>
-        <span>- {getBalanceNumber(earnedRewardAfterStake)}</span>
+        <span>- {earnedRewardAfterStake}</span>
       </div>
       <div>
         <span>APY</span>
-        <span>
-          {/* TODO_STAKING: remove fake data */}
-          {21212}
-        </span>
+        <span>- {Number(apyAfterStake) * 100}</span>
       </div>
       <div>
-        <span>Reward / block</span>
-        <span>{newReward ? getBalanceNumber(newReward).toFixed(3) : '~'} SONE</span>
+        <span>Reward / block -----</span>
+        <span>{farm ? farm.rewardPerBlock : '~'} SONE</span>
       </div>
       <div>
-        <span>Total liquidity</span>
-        <span>
-          ${/* TODO_STAKING: remove fake data */}
-          {21212}
-        </span>
+        <span>Total liquidity ----- </span>
+        <span>${farm ? farm.balanceUSD : '~'}</span>
       </div>
       <div>
-        <span>My Reward</span>
-        <span>
-          {/* TODO_STAKING: remove fake data */}
-          {21212} SONE
-        </span>
+        <span>My Reward ----- </span>
+        <span>{farm?.userInfo ? farm.userInfo.sushiHarvested : '~'} SONE</span>
       </div>
     </div>
   )

@@ -1,47 +1,33 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import { useActiveWeb3React } from 'hooks'
+import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useWeb3React } from '@web3-react/core'
-import { useWalletModalToggle } from '../../state/application/hooks'
-import PageHeader from '../../components/PageHeader'
-import useFarm from '../../hooks/farms/useFarm'
-import { getContract } from '../../sushi/format/erc20'
-import Apy from './components/Apy'
-import Stake from './components/Stake'
 import IconLP from '../../assets/images/icon_lp.svg'
 import StakeBackground from '../../assets/images/stake_background.svg'
-import { useActiveWeb3React } from 'hooks'
+import PageHeader from '../../components/PageHeader'
+import useFarm from '../../hooks/masterfarmer/useFarm'
+import { useWalletModalToggle } from '../../state/application/hooks'
+import Apy from './components/Apy'
+import Stake from './components/Stake'
+import { Farm } from '@s-one-finance/sdk-core/'
 
-const Farm: React.FC = () => {
-  // TODO_STAKING
-  // const { farmId } = useParams() as any
-  const farmId = 1
+const FarmDetail: React.FC = () => {
+  const { farmId } = useParams() as any
   const [val, setVal] = useState('')
 
-  const { pid, lpToken, lpTokenAddress, tokenSymbol, token2Symbol, name } = useFarm(+farmId) || {
-    pid: 0,
-    lpToken: '',
-    lpTokenAddress: '',
-    symbolShort: '',
-    tokenSymbol: '',
-    token2Symbol: '',
-    name: ''
+  const farm: Farm | undefined = useFarm('' + farmId)
+
+  const { pairAddress, symbol } = farm || {
+    pairAddress: '',
+    symbol: ''
   }
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
 
   const toggleWalletModal = useWalletModalToggle()
   const { account } = useActiveWeb3React()
-  const { library: ethereum } = useWeb3React()
-  const lpContract = useMemo(() => {
-    const e_provider = ethereum && ethereum.provider ? ethereum.provider : null
-    return getContract(e_provider as any, lpTokenAddress)
-  }, [ethereum, lpTokenAddress])
 
   return (
     <>
-      <PageHeader icon={IconLP} title={name} />
+      <PageHeader icon={IconLP} title={symbol} />
       <StyledFarm>
         <img src={StakeBackground} alt="" />
         <span>
@@ -52,11 +38,9 @@ const Farm: React.FC = () => {
           <StyledCardsWrapper>
             <StyledCardWrapper>
               <Stake
-                lpContract={lpContract}
-                pid={pid}
-                tokenName={lpToken.toUpperCase()}
-                tokenSymbol={tokenSymbol}
-                token2Symbol={token2Symbol}
+                pairAddress={pairAddress}
+                pid={Number(farmId)}
+                symbol={symbol.toUpperCase()}
                 val={val}
                 setVal={setVal}
               />
@@ -78,7 +62,7 @@ const Farm: React.FC = () => {
           </StyledCardsWrapper>
         )}
         <StyledApyWrap>
-          <Apy pid={pid} lpTokenAddress={lpTokenAddress} val={val} />
+          <Apy val={val} farm={farm} />
         </StyledApyWrap>
       </StyledFarm>
     </>
@@ -127,4 +111,4 @@ const StyledHeading = styled.h2`
   margin-bottom: 20px;
 `
 
-export default Farm
+export default FarmDetail

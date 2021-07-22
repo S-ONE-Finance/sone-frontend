@@ -99,6 +99,55 @@ export const poolsQuery = gql`
   }
 `
 
+export const poolsQueryDetail = gql`
+  query poolsQueryDetail(
+    $first: Int! = 1000
+    $skip: Int! = 0
+    $orderBy: String! = "timestamp"
+    $orderDirection: String! = "desc"
+    $id: String
+  ) {
+    pools(first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection, where: { id: $id }) {
+      id
+      pair
+      allocPoint
+      lastRewardBlock
+      accSushiPerShare
+      balance
+      userCount
+      sushiHarvested
+      owner {
+        id
+        sushiPerBlock
+        totalAllocPoint
+        bonusMultiplier
+      }
+    }
+  }
+`
+
+export const pairsQueryDetail = gql`
+  query pairsQueryDetail($token0: String, $token1: String) {
+    pairs(where: { token0: $token0, token1: $token1 }) {
+      id
+      reserve0
+      token0Price
+      reserve1
+      token1Price
+      token0 {
+        id
+        name
+        symbol
+      }
+      token1 {
+        id
+        name
+        symbol
+      }
+    }
+  }
+`
+
 const blockFieldsQuery = gql`
   fragment blockFields on Block {
     id
@@ -267,6 +316,54 @@ export const poolUserQuery = gql`
     }
   }
   ${poolUserFragment}
+`
+
+export const poolUserDetailQuery = gql`
+  query poolUserQuery($id: String!, $amount_gt: Int! = 0) {
+    users(where: { id: $id, amount_gt: $amount_gt }) {
+      id
+      address
+      pool {
+        id
+      }
+      amount
+      rewardDebt
+      entryUSD
+      exitUSD
+      sushiHarvested
+      sushiHarvestedUSD
+    }
+  }
+`
+export const poolUserWithPoolDetailQuery = gql`
+  query poolUserQuery($address: String!, $amount_gt: Int! = 0) {
+    users(where: { address: $address, amount_gt: $amount_gt }) {
+      id
+      address
+      pool {
+        id
+        pair
+        allocPoint
+        lastRewardBlock
+        accSushiPerShare
+        balance
+        userCount
+        sushiHarvested
+        owner {
+          id
+          sushiPerBlock
+          totalAllocPoint
+          bonusMultiplier
+        }
+      }
+      amount
+      rewardDebt
+      entryUSD
+      exitUSD
+      sushiHarvested
+      sushiHarvestedUSD
+    }
+  }
 `
 
 export const SUBGRAPH_HEALTH = gql`

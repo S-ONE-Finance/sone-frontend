@@ -27,7 +27,7 @@ export const masterchefv2 = new ApolloClient({
   }
 })
 
-export const minichefv2_matic = new ApolloClient({
+new ApolloClient({
   link: createHttpLink({
     uri: 'https://api.thegraph.com/subgraphs/name/sushiswap/matic-minichef'
   }),
@@ -54,7 +54,7 @@ export const exchange = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-export const exchange_matic = new ApolloClient({
+new ApolloClient({
   link: createHttpLink({
     uri: 'https://api.thegraph.com/subgraphs/name/sushiswap/matic-exchange'
   }),
@@ -81,7 +81,7 @@ export const blockClient = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-export const blockClient_matic = new ApolloClient({
+new ApolloClient({
   link: createHttpLink({
     uri: 'https://api.thegraph.com/subgraphs/name/matthewlilley/polygon-blocks'
   }),

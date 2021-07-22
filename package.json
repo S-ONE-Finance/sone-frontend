@@ -15,9 +15,7 @@
   },
   "dependencies": {
     "@uniswap/default-token-list": "^2.0.0",
-    "date-fns": "^2.22.1",
-    "web3": "1.2.11",
-    "web3-eth-contract": "^1.3.0"
+    "date-fns": "^2.22.1"
   },
   "devDependencies": {
     "@ethersproject/experimental": "^5.0.1",

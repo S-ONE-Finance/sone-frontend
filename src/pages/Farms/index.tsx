@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
+import { Farm, LiquidityPosition, UserInfoSushi } from '@s-one-finance/sdk-core'
 import _ from 'lodash'
-import { Farm, LiquidityPosition, MyStaked } from 'hooks/masterfarmer/interfaces'
 import useMyStaked from 'hooks/masterfarmer/useMyStaked'
 import useMyLPToken from 'hooks/masterfarmer/useMyLPToken'
 import Balances from './components/Balances'
@@ -20,7 +20,7 @@ export default function Farms() {
   const [circulatingSupplyValue, setCirculatingSupplyValue] = useState<BigNumber>(new BigNumber(0))
 
   const farms: Farm[] = useFarms()
-  const myStaked: MyStaked[] = useMyStaked()
+  const myStaked: UserInfoSushi[] = useMyStaked()
   const myLpToken: LiquidityPosition[] = useMyLPToken()
 
   const [sortBy, setSortBy] = useState('Bonus campaign')
@@ -99,6 +99,7 @@ export default function Farms() {
       farms.map((farm: Farm) => {
         totalLock = totalLock.plus(new BigNumber(farm.tvl | 0))
         circulatingSupply = circulatingSupply.plus(new BigNumber(farm.sushiHarvested | 0))
+        return farm
       })
       setTotalLockValue(totalLock)
       setCirculatingSupplyValue(circulatingSupply)
@@ -117,7 +118,7 @@ export default function Farms() {
           result = farms.filter((farm: Farm) => lpTokens.includes(farm.pairAddress))
           break
         case 'Staked':
-          const pairStaked = myStaked.map(pool => Number(pool.pool.id))
+          const pairStaked = myStaked.map(pool => Number(pool.pool?.id))
           result = farms.filter((farm: Farm) => pairStaked.includes(farm.pid))
           break
         default:
@@ -133,7 +134,7 @@ export default function Farms() {
 
   useEffect(() => {
     handlingFilterValue()
-  }, [farms, sortBy, filter])
+  }, [farms, sortBy, filter, myLpToken, myStaked])
 
   return (
     <>
