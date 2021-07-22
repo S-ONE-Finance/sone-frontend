@@ -22,7 +22,7 @@ const PaginationItem = styled.div<{ is_active?: 'yes'; no_border?: 'yes'; is_dis
       ? `1.5px solid ${theme.red1Sone}`
       : no_border
       ? 'unset'
-      : `1.5px solid ${theme.bg7Sone}`};
+      : `1.5px solid ${theme.bg11Sone}`};
   border-radius: 8px;
   cursor: ${({ no_border, is_disabled }) => (is_disabled ? 'not-allowed' : no_border ? 'normal' : 'pointer')};
 

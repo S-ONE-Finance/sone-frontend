@@ -34,7 +34,7 @@ const AbsoluteCenter = styled.div`
 const NetAPYField = styled.div`
   font-size: 20px;
   font-weight: 500;
-  color: ${({ theme }) => theme.text11Sone};
+  color: ${({ theme }) => theme.text13Sone};
 `
 
 const NetAPYValue = styled.div`

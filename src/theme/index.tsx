@@ -113,7 +113,7 @@ export function colors(darkMode: boolean): Colors {
     text8Sone: '#767676',
     text9Sone: '#C9C9C9',
     text10Sone: darkMode ? '#AAAAAA' : '#333333',
-    text11Sone: '#AAAAAA',
+    text13Sone: '#AAAAAA',
 
     red1Sone: '#F05359',
     green1Sone: '#7AC51B',
@@ -124,8 +124,8 @@ export function colors(darkMode: boolean): Colors {
     bg4Sone: darkMode ? '#111111' : '#F3F3F3',
     bg5Sone: '#DFDFDF',
     bg6Sone: darkMode ? '#05243B' : '#F2F2F2',
-    bg7Sone: '#C4C4C4',
-    bg8Sone: darkMode ? '#212429' : '#FAFAFA',
+    bg11Sone: '#C4C4C4',
+    bg12Sone: darkMode ? '#212429' : '#FAFAFA',
     bgPanels: darkMode ? 'transparent' : '#F3F3F3',
 
     border1Sone: darkMode ? '#AAAAAA' : '#C9C9C9',

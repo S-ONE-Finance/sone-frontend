@@ -60,7 +60,7 @@ export interface Colors {
   text8Sone: Color
   text9Sone: Color
   text10Sone: Color
-  text11Sone: Color
+  text13Sone: Color
 
   /* Background */
   bg1Sone: Color
@@ -69,8 +69,8 @@ export interface Colors {
   bg4Sone: Color
   bg5Sone: Color
   bg6Sone: Color
-  bg7Sone: Color
-  bg8Sone: Color
+  bg11Sone: Color
+  bg12Sone: Color
   bgPanels: Color
 
   /* Others */
