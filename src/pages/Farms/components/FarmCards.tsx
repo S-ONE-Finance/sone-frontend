@@ -83,21 +83,21 @@ const StyledCards = styled.div`
   @media (min-width: 768px) {
     column-gap: 25px;
     row-gap: 25px;
-    grid-template-columns: repeat(2, minmax(350px, 400px));
+    grid-template-columns: repeat(2, minmax(350px, 390px));
   }
 
   @media (min-width: 1024px) {
     padding: 10px 25px 25px;
     column-gap: 45px;
     row-gap: 45px;
-    grid-template-columns: repeat(2, minmax(350px, 400px));
+    grid-template-columns: repeat(2, minmax(350px, 390px));
   }
 
   @media (min-width: 1200px) {
     padding: 25px 25px 25px;
     column-gap: 50px;
     row-gap: 50px;
-    grid-template-columns: repeat(3, minmax(350px, 400px));
+    grid-template-columns: repeat(3, minmax(350px, 390px));
   }
 `
 
@@ -133,7 +133,7 @@ const StyledItemRow = styled.div`
   justify-content: space-between;
   box-sizing: border-box;
   border-radius: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   background: transparent;
   width: 100%;
   border: 0px solid #e6dcd5;

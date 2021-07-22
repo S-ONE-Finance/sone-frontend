@@ -72,6 +72,7 @@ const WrapFilter = styled.div`
 
 const FilterLabel = styled.div`
   display: flex;
+  align-items: center;
   flex-basis: 100px;
   & > span {
     margin-left: 5px;
@@ -100,6 +101,7 @@ const FilterItemDefault = styled.div`
 
 const FilterItems = styled.div`
   position: absolute;
+  width: 100%;
   top: -2px;
   right: 0px;
   padding: 15px;

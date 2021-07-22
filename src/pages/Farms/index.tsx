@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
+import _ from 'lodash'
+import { Farm, LiquidityPosition, MyStaked } from 'hooks/masterfarmer/interfaces'
+import useMyStaked from 'hooks/masterfarmer/useMyStaked'
+import useMyLPToken from 'hooks/masterfarmer/useMyLPToken'
 import Balances from './components/Balances'
 import FarmCards from './components/FarmCards'
 import StakingHeader from './components/StakingHeader'
 import useFarms from '../../hooks/masterfarmer/useFarms'
-import BigNumber from 'bignumber.js'
-import { Farm, LiquidityPosition, MyStaked } from 'hooks/masterfarmer/interfaces'
-import _ from 'lodash'
-import useMyStaked from 'hooks/masterfarmer/useMyStaked'
-import useMyLPToken from 'hooks/masterfarmer/useMyLPToken'
 import FilterC from './components/FilterC'
 import iconFilter from '../../assets/images/icon-filter.svg'
 import iconSort from '../../assets/images/icon-sort.svg'
@@ -18,6 +18,11 @@ export default function Farms() {
   const [farmData, setFarmData] = useState<Farm[] | undefined>([])
   const [totalLockValue, setTotalLockValue] = useState<BigNumber>(new BigNumber(0))
   const [circulatingSupplyValue, setCirculatingSupplyValue] = useState<BigNumber>(new BigNumber(0))
+
+  const farms: Farm[] = useFarms()
+  const myStaked: MyStaked[] = useMyStaked()
+  const myLpToken: LiquidityPosition[] = useMyLPToken()
+
   const [sortBy, setSortBy] = useState('Bonus campaign')
   const [filter, setFilter] = useState('Active pool')
   const [optionsSort] = useState([
@@ -58,15 +63,36 @@ export default function Farms() {
     }
   ])
 
-  const farms: Farm[] = useFarms()
-  const myStaked: MyStaked[] = useMyStaked()
-  const myLpToken: LiquidityPosition[] = useMyLPToken()
+  const orderBy: { [key: string]: any } = {
+    APY: {
+      condition: 'roiPerYear',
+      by: 'desc'
+    },
+    'Total liquidity': {
+      condition: 'balanceUSD',
+      by: 'desc'
+    },
+    'Bonus campaign': {
+      condition: 'multiplier',
+      by: 'desc'
+    },
+    'LP Name': {
+      condition: 'name',
+      by: 'desc'
+    }
+  }
+
+  const handlingSortBy = (results: Farm[], sortType: string) => {
+    const item = orderBy[sortType]
+    results = _.orderBy(results, [item.condition], [item.by])
+    return results || {}
+  }
 
   const handleChangeDropDown = (value: string, callback: (item: string) => void) => {
     callback(value)
   }
 
-  useEffect(() => {
+  const handlingFilterValue = () => {
     if (farms) {
       let totalLock: BigNumber = new BigNumber(0)
       let circulatingSupply: BigNumber = new BigNumber(0)
@@ -78,7 +104,7 @@ export default function Farms() {
       setCirculatingSupplyValue(circulatingSupply)
 
       // action filter
-      let result
+      let result: Farm[] = []
       switch (filter) {
         case 'Active pool':
           result = farms.filter((farm: Farm) => Number(farm.allocPoint) !== 0)
@@ -97,27 +123,17 @@ export default function Farms() {
         default:
           break
       }
-      // action sort
-      switch (sortBy) {
-        case 'APY':
-          result = _.orderBy(result, ['roiPerYear'], ['desc'])
-          break
-        case 'Total liquidity':
-          result = _.orderBy(result, ['balanceUSD'], ['desc'])
-          break
-        case 'Bonus campaign':
-          result = _.orderBy(result, ['multiplier'], ['desc'])
-          break
-        case 'LP Name':
-          result = _.orderBy(result, ['name'], ['desc'])
-          break
-        default:
-          break
-      }
-      result = result && result.filter(item => !isNaN(item.roiPerYear))
+
+      const resultsAfterSort = handlingSortBy(result, sortBy)
+
+      result = resultsAfterSort.filter(item => !isNaN(item.roiPerYear))
       setFarmData(result)
     }
-  }, [farms, setTotalLockValue, sortBy, filter, setFarmData])
+  }
+
+  useEffect(() => {
+    handlingFilterValue()
+  }, [farms, sortBy, filter])
 
   return (
     <>
@@ -176,7 +192,7 @@ const StyledCurrently = styled.div`
 const StyledFilterWrap = styled.div`
   width: 100%;
   min-width: 300px
-  max-width: 1200px
+  max-width: 1000px
   padding: 0 25px;
   @media (min-width: 1024px) {
     display: flex;

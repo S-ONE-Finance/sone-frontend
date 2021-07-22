@@ -31,7 +31,6 @@ const StakingHeader = () => {
     }
   ]
   const darkMode = useIsDarkMode()
-  console.log(darkMode, 'darkmode')
 
   return (
     <>
