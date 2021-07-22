@@ -20,12 +20,12 @@ const TabContainer = styled.div`
   `}
 `
 
-const TabItem = styled.div<{ isActive?: boolean }>`
+const TabItem = styled.div<{ is_active: 0 | 1 }>`
   width: 50%;
   height: 100%;
   border-radius: 26.5px;
-  background-color: ${({ theme, isActive }) => (isActive ? theme.tabBgActive : theme.tabBg)};
-  color: ${({ theme, isActive }) => (isActive ? theme.tabTextActive : theme.tabText)};
+  background-color: ${({ theme, is_active }) => (is_active ? theme.tabBgActive : theme.tabBg)};
+  color: ${({ theme, is_active }) => (is_active ? theme.tabTextActive : theme.tabText)};
   font-size: 18px;
   font-weight: 700;
   display: flex;
@@ -36,11 +36,11 @@ const TabItem = styled.div<{ isActive?: boolean }>`
 
   :hover,
   :focus {
-    color: ${({ theme, isActive }) => (isActive ? darken(0.05, theme.tabTextActive) : darken(0.05, theme.tabText))};
+    color: ${({ theme, is_active }) => (is_active ? darken(0.05, theme.tabTextActive) : darken(0.05, theme.tabText))};
   }
 
   :active {
-    color: ${({ theme, isActive }) => (isActive ? darken(0.1, theme.tabTextActive) : darken(0.1, theme.tabText))};
+    color: ${({ theme, is_active }) => (is_active ? darken(0.1, theme.tabTextActive) : darken(0.1, theme.tabText))};
   }
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -56,10 +56,10 @@ function TabSwapLiquidity() {
 
   return (
     <TabContainer>
-      <TabItem isActive={isSwap} as={Link} to="/swap">
+      <TabItem is_active={isSwap ? 1 : 0} as={Link} to="/swap">
         {t('swap')}
       </TabItem>
-      <TabItem isActive={!isSwap} as={Link} to="/add">
+      <TabItem is_active={isSwap ? 0 : 1} as={Link} to="/add">
         {t('liquidity')}
       </TabItem>
     </TabContainer>
