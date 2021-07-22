@@ -63,7 +63,7 @@ export function useDerivedMintSimpleInfo(
   const userInputParsedAmount = tryParseAmount(typedValue, selectedCurrency ?? undefined)
   const wrappedUserInputParsedAmount = wrappedCurrencyAmount(userInputParsedAmount, chainId)
   const [selectedTokenParsedAmount, theOtherTokenParsedAmount] =
-    (pair && wrappedUserInputParsedAmount && pair.getAmountsAddOneToken(wrappedUserInputParsedAmount)) ?? []
+    (pair && wrappedUserInputParsedAmount && pair.getAmountsOutAddOneToken(wrappedUserInputParsedAmount)) ?? []
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
