@@ -21,6 +21,15 @@ export const AppBody = styled.div`
   border-radius: 30px;
 `
 
+export const StyledPadding = styled.div`
+  position: relative;
+  padding: 0 30px 35px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 0 10px 25px;
+  `}
+`
+
 export const ButtonText = styled.button`
   outline: none;
   border: none;
@@ -281,6 +290,10 @@ export const TextPanelLabel = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 13px;
   `};
+`
+
+export const TextPanelLabelAccent = styled(TextPanelLabel)`
+  color: ${({ theme }) => theme.text6Sone};
 `
 
 export const CurrencySelect = styled.button<{ selected: boolean }>`

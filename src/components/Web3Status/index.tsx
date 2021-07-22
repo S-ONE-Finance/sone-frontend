@@ -18,6 +18,7 @@ import { TransactionDetails } from '../../state/transactions/reducer'
 import WalletModal from '../WalletModal'
 import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 const Text = styled.p`
   flex: 1 1 auto;
@@ -75,12 +76,14 @@ function Web3StatusInner() {
   const toggleWalletModal = useWalletModalToggle()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const history = useHistory()
+  const getLanguage = () => i18next.language || window.localStorage.i18nextLng
 
   if (account) {
     return (
       <ButtonMainRed
         id="web3-status-connected"
         cursor="normal"
+        style={{ fontSize: isUpToExtraSmall && getLanguage() === 'jp' ? '13px' : '16px' }}
         onClick={() => {
           // Trên small devices, click vào sẽ ra my account.
           if (isUpToExtraSmall) {

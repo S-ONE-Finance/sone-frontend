@@ -21,9 +21,10 @@ import TabSwapLiquidity from '../components/TabSwapLiquidity'
 import { useLocation } from 'react-router'
 import WeeklyRanking from '../components/WeeklyRanking'
 import { useTranslation } from 'react-i18next'
-import { HideLarge } from '../theme'
-import LogoWithPendingAmount from 'components/LogoWithPendingAmount'
+import { ExtraSmallOnly, HideLarge } from '../theme'
+import BrandIdentitySone from 'components/BrandInTopMobile'
 import Routing from './Routing'
+import AbsolutePendingTxs from '../components/AbsolutePendingTxs'
 
 const AppWrapper = styled.div`
   display: flex;
@@ -48,17 +49,20 @@ const BodyWrapper = styled.div`
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0;
+  z-index: 1;
+  padding: 0 1rem 3.75rem 1rem;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    padding: 0 1rem 5rem 1rem;
+    padding: 0 1rem 3.75rem 1rem;
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 0 1rem 2.75rem 1rem;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 0 1rem 3.5rem 1rem;
+    padding: 0 1rem 2.75rem 1rem;
   `};
-
-  z-index: 1;
 `
 
 const Marginer = styled.div`
@@ -115,7 +119,12 @@ export default function App() {
             <Polling />
           </HideLarge>
           <TopLevelModals />
-          <LogoWithPendingAmount />
+          <ExtraSmallOnly>
+            <AbsolutePendingTxs />
+            <OnlyShowAt paths={['/swap', '/add', '/my-account/withdraw']}>
+              <BrandIdentitySone />
+            </OnlyShowAt>
+          </ExtraSmallOnly>
           <OnlyShowAt paths={['/swap', '/add']}>
             <TabSwapLiquidity />
           </OnlyShowAt>

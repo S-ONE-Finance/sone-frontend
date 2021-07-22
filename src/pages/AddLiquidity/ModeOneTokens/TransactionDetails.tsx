@@ -74,7 +74,10 @@ export default function TransactionDetails({
       )}
       {parseSuccessfully && isShowTransactionDetails ? (
         <>
-          <AutoColumn gap={'15px'} style={{ width: '100%', padding: '17.5px 8px 0' }}>
+          <AutoColumn
+            gap={'15px'}
+            style={{ width: '100%', padding: isUpToExtraSmall ? '17.5px 8px 0' : '17.5px 14px 0' }}
+          >
             <RowBetween>
               <RowFixed>
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
@@ -135,7 +138,7 @@ export default function TransactionDetails({
       ) : (
         isShowTransactionDetails &&
         allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
-          <RowBetween align="center" padding="17.5px 8px 0">
+          <RowBetween align="center" padding={isUpToExtraSmall ? '17.5px 8px 0' : '17.5px 14px 0'}>
             <RowFixed>
               <ClickableText
                 fontWeight={500}

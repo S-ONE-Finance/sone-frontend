@@ -50,17 +50,21 @@ export default function AppBodyTitleDescriptionSettings({ transactionType }: { t
   const title =
     transactionType === TransactionType.SWAP
       ? t('swap')
-      : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
+      : transactionType === TransactionType.ADD_ONE_TOKEN || transactionType === TransactionType.ADD_TWO_TOKENS
       ? t('add_liquidity')
       : transactionType === TransactionType.WITHDRAW
-      ? `${t('Withdraw Liquidity')}`
+      ? t('Withdraw Liquidity')
+      : transactionType === TransactionType.UNSTAKE
+      ? t('Unstake')
       : null
   const description =
     transactionType === TransactionType.SWAP
       ? t('Trade tokens in an instant')
-      : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
+      : transactionType === TransactionType.ADD_ONE_TOKEN || transactionType === TransactionType.ADD_TWO_TOKENS
       ? t('add_liquidity_to_receive_lp_tokens')
       : transactionType === TransactionType.WITHDRAW
+      ? t('Lorem ipsum dolor sit amet.')
+      : transactionType === TransactionType.UNSTAKE
       ? t('Lorem ipsum dolor sit amet.')
       : null
 
@@ -72,7 +76,10 @@ export default function AppBodyTitleDescriptionSettings({ transactionType }: { t
           <Title>{title}</Title>
           <Description>{description}</Description>
         </TitleDescWrapper>
-        <Settings transactionType={transactionType} />
+        {(transactionType === TransactionType.SWAP ||
+          transactionType === TransactionType.ADD_ONE_TOKEN ||
+          transactionType === TransactionType.ADD_TWO_TOKENS ||
+          transactionType === TransactionType.WITHDRAW) && <Settings transactionType={transactionType} />}
       </RowBetween>
     </StyledHeader>
   )

@@ -6,7 +6,7 @@ import MyStaking from './MyStaking'
 import Referral from './Referral'
 import { useActiveWeb3React } from '../../hooks'
 import { Redirect } from 'react-router'
-import { MyAccountWrapper, Sections, PageTitle } from './components'
+import { MyAccountWrapper, Sections, PageTitleMobileOnly } from './components'
 import useAccountIsReferrer from '../../hooks/useAccountIsReferrer'
 import { useIsReferralWorksOnCurrentNetwork } from '../../state/referral/hooks'
 
@@ -20,7 +20,7 @@ export default function MyAccount() {
   if (account) {
     return (
       <MyAccountWrapper>
-        <PageTitle>{t('My Account')}</PageTitle>
+        <PageTitleMobileOnly>{t('My Account')}</PageTitleMobileOnly>
         <Sections>
           <MyBalance />
           <MyLiquidity />
