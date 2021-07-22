@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { AppBody } from 'theme/components'
+import { AppBody, StyledPadding } from 'theme/components'
 import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
 import { TransactionType } from '../../state/transactions/types'
 import PanelSelectPair from '../../components/PanelSelectPair'
 import useAddedLiquidityPairs from '../../hooks/useAddedLiquidityPairs'
-import { StyledPadding } from '../Pool/styleds'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
-import PanelWithdrawLiquidityInput from '../../components/PanelLpTokenInput'
+import PanelWithdrawLiquidityInput from '../../components/PanelCurrencyInputAndSelectPercentage'
 import { currencyEquals, ETHER, Pair, Percent, WETH } from '@s-one-finance/sdk-core'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { Dots, IconWrapper, TruncatedText } from '../../components/swap/styleds'
@@ -72,14 +71,6 @@ const RowAnalytics = styled(Row)`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-top: 13px;
-  `}
-`
-
-const WithdrawAppBody = styled(AppBody)`
-  margin-top: 1.5rem;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    margin-top: 0;
   `}
 `
 
@@ -402,7 +393,7 @@ export default function WithdrawLiquidity({
         )}
         pendingText={pendingText}
       />
-      <WithdrawAppBody>
+      <AppBody style={{ marginTop: isUpToExtraSmall ? '1.25rem' : '1.5rem' }}>
         <AppBodyTitleDescriptionSettings transactionType={TransactionType.WITHDRAW} />
         <StyledPadding>
           <AutoColumn gap="md">
@@ -494,7 +485,7 @@ export default function WithdrawLiquidity({
             )}
           </AutoColumn>
         </StyledPadding>
-      </WithdrawAppBody>
+      </AppBody>
     </>
   )
 }

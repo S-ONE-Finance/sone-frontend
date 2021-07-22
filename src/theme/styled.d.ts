@@ -125,5 +125,7 @@ declare module 'styled-components' {
 
     bgMyStaking: string
     bgMyStakingUpToExtraSmall: string
+
+    bgParty: string
   }
 }

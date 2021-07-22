@@ -15,7 +15,7 @@ import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
 import AdvancedSwapDetails from '../../components/swap/AdvancedSwapDetails'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
-import { IconWrapper, BottomGrouping, SwapCallbackError, Wrapper } from '../../components/swap/styleds'
+import { IconWrapper, BottomGrouping, SwapCallbackError } from '../../components/swap/styleds'
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
@@ -40,7 +40,7 @@ import {
   useUserSingleHopOnly,
   useUserSlippageTolerance
 } from '../../state/user/hooks'
-import { LinkStyledButton, TYPE } from '../../theme'
+import { LinkStyledButton, StyledPadding, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import { AppBody } from 'theme/components'
@@ -348,7 +348,7 @@ export default function Swap({ history }: RouteComponentProps) {
       />
       <AppBody>
         <AppBodyTitleDescriptionSettings transactionType={TransactionType.SWAP} />
-        <Wrapper id="swap-page">
+        <StyledPadding id="swap-page">
           <ConfirmSwapModal
             isOpen={showConfirm}
             trade={trade}
@@ -634,7 +634,7 @@ export default function Swap({ history }: RouteComponentProps) {
               </ClickableText>
             </ColumnCenter>
           )}
-        </Wrapper>
+        </StyledPadding>
       </AppBody>
       {swapIsUnsupported && (
         <UnsupportedCurrencyFooter show={swapIsUnsupported} currencies={[currencies.INPUT, currencies.OUTPUT]} />

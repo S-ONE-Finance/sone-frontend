@@ -38,7 +38,7 @@ export default function AppVector({
       ? isDarkMode
         ? AddLiquidityVectorDark
         : AddLiquidityVectorLight
-      : transactionType === TransactionType.WITHDRAW
+      : transactionType === TransactionType.WITHDRAW || transactionType === TransactionType.UNSTAKE
       ? isDarkMode
         ? WithdrawLiquidityVectorDark
         : WithdrawLiquidityVectorLight

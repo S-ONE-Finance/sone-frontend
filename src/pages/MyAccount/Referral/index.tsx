@@ -8,6 +8,7 @@ import { Text } from 'rebass'
 import useRequestReward from './hooks/useRequestReward'
 import useReferrerInformation from './hooks/useReferrerInformation'
 import { AutoColumn } from '../../../components/Column'
+import { useTranslation } from 'react-i18next'
 
 const CardReferral = styled(Card)`
   padding: 40px 40px 30px 40px;
@@ -71,6 +72,7 @@ export const FETCH_REFERRAL_DATA_INTERVAL = 15000
 export default function Referral() {
   // Ở đây dùng tạm hàm biến cờ "clicked" để set "Waiting for Approval"
   // ngay sau khi POST lệnh "request reward" thành công. Sau 5000ms (FETCH_DATA_REFERRAL_INTERVAL) sẽ nhả ra.
+  const { t } = useTranslation()
   const [clicked, requestReward] = useRequestReward()
   const { isRequestRewardPending, pendingAmount } = useReferrerInformation() || {}
   const isDisabled =
@@ -87,7 +89,7 @@ export default function Referral() {
         <Heading>Referral</Heading>
         <AutoColumn>
           <SectionButton onClick={requestReward} is_disabled={isDisabled ? 'yes' : undefined}>
-            <SectionText>Request Reward</SectionText>
+            <SectionText>{t('request_reward')}</SectionText>
           </SectionButton>
           {isDisabled && <PendingText>{disabledText}</PendingText>}
         </AutoColumn>

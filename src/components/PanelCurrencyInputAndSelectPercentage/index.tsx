@@ -60,7 +60,7 @@ interface PanelLpTokenInputProps {
   selectedPercentage: '25' | '50' | '75' | '100' | undefined
 }
 
-export default function PanelLpTokenInput({
+export default function PanelCurrencyInputAndSelectPercentage({
   value,
   onUserInput,
   label = 'Input',

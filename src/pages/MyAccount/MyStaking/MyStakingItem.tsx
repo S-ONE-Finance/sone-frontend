@@ -270,7 +270,7 @@ export default function MyStakingItem({
               </RowReward>
               <RowButtons justify="center" gap="2rem">
                 {/* TODO: Specific pair. */}
-                <ButtonUnstake as={Link} to="/unstake">
+                <ButtonUnstake as={Link} to="/my-account/unstake">
                   {t('unstake')}
                 </ButtonUnstake>
                 {/* TODO: Specific pair. */}
@@ -278,7 +278,9 @@ export default function MyStakingItem({
                   {t('stake_more')}
                 </ButtonStake>
                 {/* TODO: ??? */}
-                <ButtonRequestReward>{t('request_reward')}</ButtonRequestReward>
+                <ButtonRequestReward onClick={() => alert('Not implemented yet.')}>
+                  {t('request_reward')}
+                </ButtonRequestReward>
               </RowButtons>
             </Column>
           </MyStakingDetailedSection>

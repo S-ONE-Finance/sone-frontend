@@ -2,15 +2,6 @@ import { Text } from 'rebass'
 import styled from 'styled-components'
 import { darken } from 'polished'
 
-export const StyledPadding = styled.div`
-  position: relative;
-  padding: 0 30px 35px;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 0 10px 25px;
-  `}
-`
-
 export const ClickableText = styled(Text)<{ color?: string }>`
   color: ${({ color }) => color && color};
 

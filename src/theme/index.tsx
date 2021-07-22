@@ -20,6 +20,8 @@ import backgroundMyStaking from '../assets/images/background-my-staking-light.sv
 import backgroundMyStakingDark from '../assets/images/background-my-staking-dark.svg'
 import backgroundMyStakingUpToExtraSmall from '../assets/images/background-my-staking-light-uptoextrasmall.svg'
 import backgroundMyStakingUpToExtraSmallDark from '../assets/images/background-my-staking-dark-uptoextrasmall.svg'
+import Party from '../assets/images/party-light.svg'
+import PartyDark from '../assets/images/party-dark.svg'
 import { darken } from 'polished'
 
 export * from './components'
@@ -176,8 +178,11 @@ export function theme(darkMode: boolean): DefaultTheme {
     bgImageUpToLarge: darkMode ? backgroundImageUpToLargeDark : backgroundImageUpToLarge,
     bgImageUpToSmall: darkMode ? backgroundImageUpToSmallDark : backgroundImageUpToSmall,
     bgImageUpToExtraSmall: darkMode ? backgroundImageUpToExtraSmallDark : backgroundImageUpToExtraSmall,
+
     bgMyStaking: darkMode ? backgroundMyStakingDark : backgroundMyStaking,
-    bgMyStakingUpToExtraSmall: darkMode ? backgroundMyStakingUpToExtraSmallDark : backgroundMyStakingUpToExtraSmall
+    bgMyStakingUpToExtraSmall: darkMode ? backgroundMyStakingUpToExtraSmallDark : backgroundMyStakingUpToExtraSmall,
+
+    bgParty: darkMode ? PartyDark : Party
   }
 }
 

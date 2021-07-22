@@ -29,7 +29,6 @@ const StyledLogo = styled(Logo)<{ size: string; sizeMobile: string }>`
   min-width: ${({ size }) => size};
   height: auto;
   border-radius: ${({ size }) => size};
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.075);
   background-color: ${({ theme }) => theme.white};
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
@@ -42,8 +41,6 @@ const SoneLogo = styled.img<{ size: string; sizeMobile: string }>`
   width: ${({ size }) => size};
   min-width: ${({ size }) => size};
   height: auto;
-  border-radius: ${({ size }) => size};
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.075);
   background: transparent;
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`

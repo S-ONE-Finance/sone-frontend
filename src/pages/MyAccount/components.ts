@@ -18,11 +18,11 @@ export const MyAccountWrapper = styled.div`
   `}
 `
 
-export const PageTitle = styled.h1`
+export const PageTitleMobileOnly = styled.h1`
   text-align: center;
   font-size: 20px;
   font-weight: 700;
-  margin: 1rem 0;
+  margin: 0.375rem 0 1.75rem;
   display: none;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`

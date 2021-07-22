@@ -2,7 +2,8 @@ export enum TransactionType {
   SWAP = 'SWAP',
   ADD_ONE_TOKEN = 'ADD_ONE_TOKEN',
   ADD_TWO_TOKENS = 'ADD_TWO_TOKENS',
-  WITHDRAW = 'WITHDRAW'
+  WITHDRAW = 'WITHDRAW',
+  UNSTAKE = 'UNSTAKE'
 }
 
 export interface SummarySwap {

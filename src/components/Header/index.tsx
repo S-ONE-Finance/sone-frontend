@@ -543,7 +543,7 @@ export default function Header() {
               <StyledMenuButtonWithText>
                 <Globe size={20} />
                 {/* Only support 3 languages */}
-                <TYPE.language style={{ marginLeft: '5px' }}>
+                <TYPE.language style={{ marginLeft: '5px' }} fontSize="13px">
                   {language === 'en' ? 'EN' : language === 'jp' ? '日本語' : '中文'}
                 </TYPE.language>
               </StyledMenuButtonWithText>

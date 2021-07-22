@@ -20,6 +20,10 @@ export const InputRow = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     padding: 15px 15px 0;
   `};
+
+  > * + * + * {
+    margin-left: 0.625rem;
+  }
 `
 
 export const LabelRow = styled.div`
@@ -72,7 +76,6 @@ export const StyledBalanceMax = styled.button`
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  margin-right: 10px;
   color: ${({ theme }) => theme.textBlack};
   border: 0 none;
 
@@ -123,21 +126,21 @@ export enum SelectOrToggle {
 }
 
 interface PanelCurrencyInputProps {
+  id: string
   value: string
   onUserInput: (value: string) => void
   onMax?: () => void
   showMaxButton: boolean
   label?: string
   isCurrencySelectOrToggle?: SelectOrToggle
+  showCurrencySelect?: boolean
   onCurrencySelect?: (currency: Currency) => void
   onCurrencyToggle?: () => void
-  showCurrencySelect?: boolean
   currency?: Currency | null
+  otherCurrency?: Currency | null
   disableCurrencyChange?: boolean
   hideBalance?: boolean
   pair?: Pair | null
-  otherCurrency?: Currency | null
-  id: string
   showCommonBases?: boolean
   customBalanceText?: string
   showReceiveWETH?: boolean
@@ -145,21 +148,21 @@ interface PanelCurrencyInputProps {
 }
 
 export default function PanelCurrencyInput({
+  id,
   value,
   onUserInput,
   onMax,
   showMaxButton,
   label = 'Input',
   isCurrencySelectOrToggle = SelectOrToggle.SELECT,
+  showCurrencySelect = true,
   onCurrencySelect,
   onCurrencyToggle,
-  showCurrencySelect = true,
   currency,
+  otherCurrency,
   disableCurrencyChange = false,
   hideBalance = false,
   pair = null, // used for double token logo
-  otherCurrency,
-  id,
   showCommonBases,
   customBalanceText,
   showReceiveWETH = false,
@@ -197,18 +200,16 @@ export default function PanelCurrencyInput({
           </RowBetween>
         </LabelRow>
         <InputRow>
-          <>
-            <NumericalInput
-              className="token-amount-input"
-              value={value}
-              onUserInput={val => {
-                onUserInput(val)
-              }}
-            />
-            {account && currency && showMaxButton && label !== 'To' && (
-              <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
-            )}
-          </>
+          <NumericalInput
+            className="token-amount-input"
+            value={value}
+            onUserInput={val => {
+              onUserInput(val)
+            }}
+          />
+          {account && currency && showMaxButton && label !== 'To' && (
+            <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
+          )}
           {showCurrencySelect && (
             <CurrencySelect
               selected={!!currency}
