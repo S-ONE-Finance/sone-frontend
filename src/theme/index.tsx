@@ -22,6 +22,9 @@ import backgroundMyStakingUpToExtraSmall from '../assets/images/background-my-st
 import backgroundMyStakingUpToExtraSmallDark from '../assets/images/background-my-staking-dark-uptoextrasmall.svg'
 import Party from '../assets/images/party-light.svg'
 import PartyDark from '../assets/images/party-dark.svg'
+import stakingBgDark from '../assets/images/staking-bg-dark.svg'
+import stakingBgWhite from '../assets/images/staking-bg-white.svg'
+
 import { darken } from 'polished'
 
 export * from './components'
@@ -132,6 +135,11 @@ export function colors(darkMode: boolean): Colors {
     bg10Sone: darkMode ? '#0E2B4A' : 'linear-gradient(359.3deg, #ededed 26.78%, #ffffff 66.23%)',
     bg11Sone: '#C4C4C4',
     bg12Sone: darkMode ? '#212429' : '#FAFAFA',
+    bg13Sone: darkMode ? '#0E2B4A' : 'linear-gradient(180deg, #F3F3F3 0%, rgba(243, 243, 243, 0) 100%)',
+    bg14Sone: darkMode
+      ? 'linear-gradient(180deg, #204A76 0%, #0A1C29 100%)'
+      : 'linear-gradient(180deg, #F3F3F3 0%, rgba(243, 243, 243, 0) 100%)',
+    bg15Sone: darkMode ? '#0A1C29' : 'linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFF2EF;',
     bgPanels: darkMode ? 'transparent' : '#F3F3F3',
 
     border1Sone: darkMode ? '#AAAAAA' : '#C9C9C9',
@@ -187,6 +195,8 @@ export function theme(darkMode: boolean): DefaultTheme {
 
     bgMyStaking: darkMode ? backgroundMyStakingDark : backgroundMyStaking,
     bgMyStakingUpToExtraSmall: darkMode ? backgroundMyStakingUpToExtraSmallDark : backgroundMyStakingUpToExtraSmall,
+
+    bgStaking: darkMode ? stakingBgDark : stakingBgWhite,
 
     bgParty: darkMode ? PartyDark : Party
   }

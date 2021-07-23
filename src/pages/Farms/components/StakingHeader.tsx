@@ -45,7 +45,7 @@ const StakingHeader = () => {
           {headersOptions.map((option, opIndex) => (
             <StyledItem key={opIndex}>
               <StyledItemImage>
-                <img src={AddLiquidity} alt="" />
+                <img src={option.image} alt="" />
               </StyledItemImage>
               <StyledItemBody>
                 <StyledItemBodyNumberST>{option.numberST}</StyledItemBodyNumberST>

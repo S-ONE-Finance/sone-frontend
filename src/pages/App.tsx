@@ -65,7 +65,7 @@ const BodyWrapper = styled.div`
 `
 
 const Marginer = styled.div`
-  margin-top: 5rem;
+  margin-top: 2.5rem;
 `
 
 const FooterWrapper = styled.div`

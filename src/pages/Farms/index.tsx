@@ -137,7 +137,7 @@ export default function Farms() {
   }, [farms, sortBy, filter, myLpToken, myStaked])
 
   return (
-    <>
+    <StakingWrapper>
       <StakingHeader />
       <WrapTitle>
         <StyledCurrently>
@@ -146,51 +146,80 @@ export default function Farms() {
         <Balances circulatingSupplyValue={circulatingSupplyValue.toNumber()} />
       </WrapTitle>
       <StyledFilterWrap>
-        <FilterC
-          title="Sort by"
-          icon={iconSort}
-          options={optionsSort}
-          value={sortBy}
-          handleOnchange={e => handleChangeDropDown(e, setSortBy)}
-        />
-        <FilterC
-          title="Filter"
-          icon={iconFilter}
-          options={optionsFilter}
-          value={filter}
-          handleOnchange={e => handleChangeDropDown(e, setFilter)}
-        />
+        <StyledFilter>
+          <FilterC
+            title="Sort by"
+            icon={iconSort}
+            options={optionsSort}
+            value={sortBy}
+            handleOnchange={e => handleChangeDropDown(e, setSortBy)}
+          />
+          <FilterC
+            title="Filter"
+            icon={iconFilter}
+            options={optionsFilter}
+            value={filter}
+            handleOnchange={e => handleChangeDropDown(e, setFilter)}
+          />
+        </StyledFilter>
       </StyledFilterWrap>
       <Box>
         <FarmCards farms={farmData} />
       </Box>
-    </>
+    </StakingWrapper>
   )
 }
 
-const Box = styled.div``
+const StakingWrapper = styled.div`
+  width: 100%;
+  background: ${({ theme }) => theme.bg15Sone};
+`
+
+const Box = styled.div`
+  width: 100%;
+  @media (min-width: 1200px) {
+    background: url(${({ theme }) => theme.bgStaking});
+    background-repeat: no-repeat;
+  }
+`
+
 const WrapTitle = styled.div`
-  padding: 25px;
+  background: ${({ theme }) => theme.bg14Sone};
+  width: 100%;
+  padding: 25px 20px;
   font-size: 20px;
   @media (min-width: 1200px) {
+  background: ${({ theme }) => theme.bg13Sone};
+    height: 300px;
+    padding: 25px;
     font-size: 45px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
   }
 `
 
 const StyledCurrently = styled.div`
   margin-bottom: 20px;
+  line-height: 30px;
   & > span {
     color: #65bac5;
     font-weight: 700;
   }
+  @media (min-width: 768px) {
+    line-height: normal;
+  }
   @media (min-width: 1200px) {
+    margin-bottom: 30px;
     & > span {
       font-size: 45px;
     }
   }
 `
 
-const StyledFilterWrap = styled.div`
+const StyledFilter = styled.div`
   width: 100%;
   min-width: 300px
   max-width: 1000px
@@ -199,4 +228,14 @@ const StyledFilterWrap = styled.div`
     display: flex;
     align-items: center;
   }
+
+  @media (min-width: 1200px) {
+    margin-top: 50px;
+  }
+`
+
+const StyledFilterWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `
