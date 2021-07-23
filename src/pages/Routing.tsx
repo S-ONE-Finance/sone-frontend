@@ -18,7 +18,7 @@ import UnstakeUI from './UnstakeUI'
 
 import Farms from './Farms'
 import Farm from './Farm'
-import Unstake from './Unstake/components/Unstake'
+import Unstake from './Unstake'
 
 export default function Routing() {
   return (
