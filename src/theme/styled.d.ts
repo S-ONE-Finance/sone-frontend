@@ -111,7 +111,6 @@ export interface Grids {
 declare module 'styled-components' {
   export interface DefaultTheme extends Colors {
     grids: Grids
-
     // shadows
     shadow1: string
 

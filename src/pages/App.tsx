@@ -13,7 +13,6 @@ import AddressClaimModal from '../components/claim/AddressClaimModal'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Polling from '../components/Polling'
-import URLWarning from '../components/Header/URLWarning'
 import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
 import TabSwapLiquidity from '../components/TabSwapLiquidity'
@@ -25,7 +24,7 @@ import AbsolutePendingTxs from '../components/AbsolutePendingTxs'
 
 import Routing from './Routing'
 
-const AppWrapper = styled.div`
+const AppWrapper = styled.div<{ pathC?: string }>`
   display: flex;
   flex-flow: column;
   align-items: flex-start;
@@ -35,19 +34,19 @@ const AppWrapper = styled.div`
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url(${({ theme }) => theme.bgImage});
+  background-image: url(${({ theme, pathC }) => (pathC === '/staking' ? 'unset' : theme.bgImage)});
   background-size: cover;
 
-  ${({ theme }) => theme.mediaWidth.upToLarge`
-      background-image: url(${({ theme }) => theme.bgImageUpToLarge});
+  ${({ theme, pathC }) => theme.mediaWidth.upToLarge`
+      background-image: url(${({ theme }) => (pathC === '/staking' ? 'unset' : theme.bgImageUpToLarge)});
     `}
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-      background-image: url(${({ theme }) => theme.bgImageUpToSmall});
+  ${({ theme, pathC }) => theme.mediaWidth.upToSmall`
+      background-image: url(${({ theme }) => (pathC === '/staking' ? 'unset' : theme.bgImageUpToSmall)});
     `}
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      background-image: url(${({ theme }) => theme.bgImageUpToExtraSmall});
+  ${({ theme, pathC }) => theme.mediaWidth.upToExtraSmall`
+      background-image: url(${({ theme }) => (pathC === '/staking' ? 'unset' : theme.bgImageUpToExtraSmall)});
     `}
 `
 
@@ -57,24 +56,25 @@ const HeaderWrapper = styled.div`
   justify-content: space-between;
 `
 
-const BodyWrapper = styled.div`
+const BodyWrapper = styled.div<{ pathC?: string }>`
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
-  padding: 0 1rem 8.75rem 1rem;
+  padding: ${props => (props.pathC === '/staking' ? 'unset' : '0 1rem 8.75rem 1rem')};
 
-  ${({ theme }) => theme.mediaWidth.upToLarge`
-    padding: 0 1rem 8.75rem 1rem;
-  `};
+  ${({ theme, pathC }) => theme.mediaWidth.upToLarge`
+  padding: ${pathC === '/staking' ? 'unset' : '0 1rem 8.75rem 1rem'};
 
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    padding: 0 1rem 7.75rem 1rem;
-  `};
+`};
 
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 0 1rem 7.75rem 1rem;
-  `};
+  ${({ theme, pathC }) => theme.mediaWidth.upToSmall`
+  padding: ${pathC === '/staking' ? 'unset' : '0 1rem 7.75rem 1rem'};
+`};
+
+  ${({ theme, pathC }) => theme.mediaWidth.upToExtraSmall`
+  padding: ${pathC === '/staking' ? 'unset' : '0 1rem 7.75rem 1rem'};
+`}
 `
 
 const FooterWrapper = styled.div`
@@ -112,16 +112,18 @@ export default function App() {
   // Trigger i18next in entire app.
   useTranslation()
 
+  const location = useLocation()
+  const { pathname } = location
+
   return (
     <>
       <Route component={GoogleAnalyticsReporter} />
       <Route component={DarkModeQueryParamReader} />
       <AppWrapper>
-        <URLWarning />
         <HeaderWrapper>
           <Header />
         </HeaderWrapper>
-        <BodyWrapper>
+        <BodyWrapper pathC={pathname}>
           <Popups />
           <HideLarge>
             <Polling />

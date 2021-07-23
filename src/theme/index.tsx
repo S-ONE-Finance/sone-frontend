@@ -170,7 +170,6 @@ export function theme(darkMode: boolean): DefaultTheme {
       md: 12,
       lg: 24
     },
-
     //shadows
     shadow1: darkMode ? '#000' : '#2F80ED',
 

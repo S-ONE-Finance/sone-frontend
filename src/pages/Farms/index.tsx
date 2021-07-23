@@ -177,6 +177,7 @@ const StakingWrapper = styled.div`
 
 const Box = styled.div`
   width: 100%;
+  margin-bottom: 2.5rem;
   @media (min-width: 1200px) {
     background: url(${({ theme }) => theme.bgStaking});
     background-repeat: no-repeat;
