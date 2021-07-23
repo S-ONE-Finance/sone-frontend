@@ -317,26 +317,26 @@ export const ThemedGlobalStyle = createGlobalStyle`
   }
 
   body {
-    min-height: 100vh;
-    min-width: 100vw; // Bỏ qua width của scrollbar.
-    overflow-x: hidden;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: url(${({ theme }) => theme.bgImage});
-    background-size: cover;
-
-    ${({ theme }) => theme.mediaWidth.upToLarge`
-      background-image: url(${({ theme }) => theme.bgImageUpToLarge});
-    `}
-
-    ${({ theme }) => theme.mediaWidth.upToSmall`
-      background-image: url(${({ theme }) => theme.bgImageUpToSmall});
-    `}
-
-    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      background-image: url(${({ theme }) => theme.bgImageUpToExtraSmall});
-    `}
+    // min-height: 100vh;
+    // min-width: 100vw; // Bỏ qua width của scrollbar.
+    // overflow-x: hidden;
+    // background-attachment: fixed;
+    // background-position: center;
+    // background-repeat: no-repeat;
+    // background-image: url(${({ theme }) => theme.bgImage});
+    // background-size: cover;
+    //
+    // ${({ theme }) => theme.mediaWidth.upToLarge`
+    //   background-image: url(${({ theme }) => theme.bgImageUpToLarge});
+    // `}
+    //
+    // ${({ theme }) => theme.mediaWidth.upToSmall`
+    //   background-image: url(${({ theme }) => theme.bgImageUpToSmall});
+    // `}
+    //
+    // ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    //   background-image: url(${({ theme }) => theme.bgImageUpToExtraSmall});
+    // `}
   }
 
   /* width */

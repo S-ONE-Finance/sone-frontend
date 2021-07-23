@@ -32,6 +32,23 @@ const AppWrapper = styled.div`
   overflow-x: hidden;
   min-height: 100vh;
   position: relative;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url(${({ theme }) => theme.bgImage});
+  background-size: cover;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+      background-image: url(${({ theme }) => theme.bgImageUpToLarge});
+    `}
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+      background-image: url(${({ theme }) => theme.bgImageUpToSmall});
+    `}
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+      background-image: url(${({ theme }) => theme.bgImageUpToExtraSmall});
+    `}
 `
 
 const HeaderWrapper = styled.div`
@@ -45,27 +62,19 @@ const BodyWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  z-index: 1;
-  padding: 0 1rem 3.75rem 1rem;
+  padding: 0 1rem 8.75rem 1rem;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    padding: 0 1rem 3.75rem 1rem;
+    padding: 0 1rem 8.75rem 1rem;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    padding: 0 1rem 2.75rem 1rem;
+    padding: 0 1rem 7.75rem 1rem;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 0 1rem 2.75rem 1rem;
+    padding: 0 1rem 7.75rem 1rem;
   `};
-`
-
-const Marginer = styled.div`
-  margin-top: 2.5rem;
 `
 
 const FooterWrapper = styled.div`
@@ -134,7 +143,6 @@ export default function App() {
             <WeeklyRanking />
           </OnlyShowAt>
         </BodyWrapper>
-        <Marginer />
         <FooterWrapper>
           <Footer />
         </FooterWrapper>
