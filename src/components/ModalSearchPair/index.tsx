@@ -2,30 +2,38 @@ import { Pair } from '@s-one-finance/sdk-core'
 import Modal from 'components/Modal'
 import useDebounce from 'hooks/useDebounce'
 import useTheme from 'hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 import React, { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { TYPE } from '../../theme'
-import { StyledCloseIcon } from '../../theme/components'
+import { PanelSearchContentWrapper, SortDownIcon, SortUpIcon, StyledCloseIcon, TYPE } from '../../theme'
 import Column from '../Column'
 import { QuestionHelper1416 } from '../QuestionHelper'
 import Row, { RowBetween, RowFixed } from '../Row'
 import { filterPairs } from '../SearchModal/filtering'
 import { PaddedColumn, SearchInput } from '../SearchModal/styleds'
-import { PanelSearchContentWrapper, SortDownIcon, SortUpIcon } from 'theme'
 import PairList from './PairList'
-import { useGetPairFromSubgraphAndParse } from 'subgraph'
 
 type ModalSearchPairProps = {
   isOpen: boolean
   onDismiss: () => void
   selectedPair?: Pair | null
   onPairSelect: (pair: Pair) => void
+  isLoading: boolean
+  allPairs: Array<Pair>
 }
 
-export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPairSelect }: ModalSearchPairProps) {
+export default function ModalSearchPair({
+  isOpen,
+  onDismiss,
+  selectedPair,
+  onPairSelect,
+  isLoading,
+  allPairs
+}: ModalSearchPairProps) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
 
@@ -36,8 +44,6 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
   const debouncedQuery = useDebounce(searchQuery, 200)
 
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
-
-  const [isLoading, allPairs] = useGetPairFromSubgraphAndParse()
 
   const filteredPairs: Pair[] = useMemo(() => {
     return filterPairs(allPairs, debouncedQuery)
@@ -88,7 +94,7 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
           <RowBetween>
             <RowFixed>
               <Text fontWeight={700} fontSize={isUpToExtraSmall ? 20 : 28}>
-                Select a pair
+                {t('select_a_pair')}
               </Text>
               <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
             </RowFixed>
@@ -98,7 +104,7 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
             <SearchInput
               type="text"
               id="pair-search-input"
-              placeholder="Search pair"
+              placeholder={t('Search pair')}
               autoComplete="off"
               value={searchQuery}
               ref={inputRef as RefObject<HTMLInputElement>}
@@ -111,14 +117,14 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
         {isLoading ? (
           <Column width="unset" style={{ margin: '20px', height: '100%' }}>
             <TYPE.main color={theme.text3} textAlign="center" mb="20px">
-              Loading...
+              {t('Loading...')}
             </TYPE.main>
           </Column>
         ) : sortedPairs?.length > 0 ? (
           <>
             <RowBetween style={{ padding: isUpToExtraSmall ? '20px 1.25rem 0' : '20px 2rem 0' }}>
               <Text fontWeight={500} fontSize={16}>
-                Pair Name
+                {t('pair_name')}
               </Text>
               {invertSearchOrder === false ? (
                 <SortDownIcon onClick={handleSort} />
@@ -143,7 +149,7 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
         ) : (
           <Column width="unset" style={{ margin: '20px', height: '100%' }}>
             <TYPE.main color={theme.text3} textAlign="center" mb="20px">
-              No results found.
+              {t('No results found.')}
             </TYPE.main>
           </Column>
         )}

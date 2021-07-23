@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { Globe, Menu as MenuIcon, Moon, Sun } from 'react-feather'
 import { isMobile } from 'react-device-detect'
+import { useTranslation } from 'react-i18next'
 
 import Logo from '../../assets/svg/logo_text_sone.svg'
 import LogoDark from '../../assets/svg/logo_text_white_sone.svg'
@@ -21,6 +22,16 @@ import Web3Status from '../Web3Status'
 import Modal from '../Modal'
 import SoneAmount from '../SoneAmount'
 import MobileMenu from '../MobileMenu'
+import {
+  S_ONE_BLOG_URL,
+  S_ONE_DOCS_URL,
+  S_ONE_FAQ_URL,
+  S_ONE_TOP_PAGE_URL,
+  S_ONE_WALLET_INTRO_PAGE_URL,
+  S_ONE_WHITE_PAPER_URL,
+  S_ONE_STAKING_STATISTICS_URL,
+  S_ONE_SWAP_STATISTICS_URL
+} from '../../constants/urls'
 
 const activeClassName = 'ACTIVE'
 
@@ -61,11 +72,11 @@ const HeaderElement = styled.div`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     flex-direction: row-reverse;
     align-items: center;
-    
+
     & > *:last-child {
       margin-left: 0 !important;
     }
-    
+
     & > *:first-child {
       margin-left: 0.5rem !important;
     }
@@ -428,6 +439,7 @@ const ShowOnlyExtraSmall = styled.div`
 `
 
 export default function Header() {
+  const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [language, setLanguage] = useLanguage()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
@@ -445,55 +457,54 @@ export default function Header() {
         <ClaimModal />
         <HideExtraSmall>
           <HeaderRow>
-            <Title href="https://www.lipsum.com/" target="_blank">
-              <img width={'100px'} src={darkMode ? LogoDark : Logo} alt="logo" />
+            <Title href={S_ONE_TOP_PAGE_URL} target="_blank">
+              <img width="100px" src={darkMode ? LogoDark : Logo} alt="logo" />
             </Title>
             <HeaderMenu>
               <HideSmall>
-                <StyledExternalLink href={'https://www.lipsum.com/'}>S-ONE Wallet</StyledExternalLink>
+                <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>{t('sone_wallet')}</StyledExternalLink>
               </HideSmall>
               <MenuItem>
                 <StyledNavLink
-                  to={'/swap'}
+                  to="/swap"
                   isActive={(match, { pathname }) =>
                     Boolean(match) || pathname.startsWith('/swap') || pathname.startsWith('/add')
                   }
                 >
-                  Swap
+                  {t('swap')}
                 </StyledNavLink>
                 <SubMenu>
-                  <SubMenuItemNavLink to={'/swap'}>Swap</SubMenuItemNavLink>
-                  <SubMenuItemNavLink id={`pool-nav-link`} to={'/add'}>
-                    Liquidity
+                  <SubMenuItemNavLink to="/swap">{t('swap')}</SubMenuItemNavLink>
+                  <SubMenuItemNavLink id="pool-nav-link" to="/add">
+                    {t('liquidity')}
                   </SubMenuItemNavLink>
                 </SubMenu>
               </MenuItem>
               <MenuItem>
-                <StyledNavLink to={'/uni'}>Staking</StyledNavLink>
+                <StyledNavLink to="/staking">{t('staking')}</StyledNavLink>
               </MenuItem>
               <MenuItem>
                 <StyledExternalLink
-                  href={isMobile ? '' : 'https://www.lipsum.com/'}
+                  href={isMobile ? '' : S_ONE_SWAP_STATISTICS_URL}
                   target={isMobile ? '_self' : '_blank'}
                 >
-                  Stats
+                  {t('stats')}
                 </StyledExternalLink>
                 <SubMenu>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>Swap Stats</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>Staking Stats</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_STAKING_STATISTICS_URL}>
+                    {t('Staking Stats')}
+                  </SubMenuItemExternalLink>
                 </SubMenu>
               </MenuItem>
               <MenuItem>
-                <StyledExternalLink
-                  href={isMobile ? '' : 'https://docs.s-one.finance/'}
-                  target={isMobile ? '_self' : '_blank'}
-                >
-                  Docs
+                <StyledExternalLink href={isMobile ? '' : S_ONE_DOCS_URL} target={isMobile ? '_self' : '_blank'}>
+                  {t('docs')}
                 </StyledExternalLink>
                 <ResponsiveTopEndSubMenu>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>White Paper</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>FAQ</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={'https://www.lipsum.com/'}>Blog</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('swap_stats')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_FAQ_URL}>{t('faq')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_BLOG_URL}>{t('blog')}</SubMenuItemExternalLink>
                 </ResponsiveTopEndSubMenu>
               </MenuItem>
             </HeaderMenu>
@@ -517,7 +528,7 @@ export default function Header() {
               </AccountElement>
               {account && (
                 <HideExtraSmall>
-                  <ResponsiveBottomLeftSubMenu width={'fit-content'} borderRadius={'20px'}>
+                  <ResponsiveBottomLeftSubMenu width="fit-content" borderRadius="20px">
                     <PanelMyAccount />
                   </ResponsiveBottomLeftSubMenu>
                 </HideExtraSmall>
@@ -532,8 +543,8 @@ export default function Header() {
               <StyledMenuButtonWithText>
                 <Globe size={20} />
                 {/* Only support 3 languages */}
-                <TYPE.language style={{ marginLeft: '5px' }}>
-                  {language === 'en' ? 'EN' : language === 'jp' ? '日本語' : language === 'zh-CN' ? '中文' : 'EN'}
+                <TYPE.language style={{ marginLeft: '5px' }} fontSize="13px">
+                  {language === 'en' ? 'EN' : language === 'jp' ? '日本語' : '中文'}
                 </TYPE.language>
               </StyledMenuButtonWithText>
               <ResponsiveBottomRightSubMenu>

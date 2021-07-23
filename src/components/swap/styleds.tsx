@@ -45,7 +45,7 @@ export const BottomGrouping = styled.div<{ hasTrade: boolean }>`
   margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '35px 0 0 0')};
 
   ${({ theme, hasTrade }) => theme.mediaWidth.upToExtraSmall`
-    margin: ${hasTrade ? '17.5px 0' : '20px 0 0 0'};
+    margin: ${hasTrade ? '17.5px 0' : '17.5px 0 0 0'};
   `}
 `
 

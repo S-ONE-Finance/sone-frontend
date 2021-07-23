@@ -1,4 +1,5 @@
 import { Currency, Fraction, Percent } from '@s-one-finance/sdk-core'
+import { useTranslation } from 'react-i18next'
 import React, { useMemo, useState } from 'react'
 import { Text } from 'rebass'
 import { ButtonPrimary } from '../../../components/Button'
@@ -24,6 +25,7 @@ export default function ModalFooter({
   poolTokenPercentage?: Percent
   onAdd: () => void
 }) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = useMemo(() => (isUpToExtraSmall ? 13 : 16), [isUpToExtraSmall])
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -33,7 +35,7 @@ export default function ModalFooter({
       <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'}>
         <RowBetween align="center">
           <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-            Price
+            {t('price')}
           </Text>
           <Text
             fontWeight={700}
@@ -54,7 +56,7 @@ export default function ModalFooter({
         <RowBetween>
           <RowFixed>
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-              Share of pair
+              {t('share_of_pair')}
             </Text>
           </RowFixed>
           <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
@@ -65,7 +67,7 @@ export default function ModalFooter({
 
       <ButtonPrimary onClick={onAdd}>
         <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
-          Add Liquidity
+          {t('add_liquidity')}
         </Text>
       </ButtonPrimary>
     </>

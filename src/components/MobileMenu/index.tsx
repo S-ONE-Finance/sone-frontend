@@ -7,6 +7,7 @@ import React, { useCallback } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { lighten } from 'polished'
+import { useTranslation } from 'react-i18next'
 
 import { useActiveWeb3React } from '../../hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
@@ -18,9 +19,18 @@ import RecentTransactions from '../RecentTransactions'
 import Column from '../Column'
 import { RowBetween } from '../Row'
 import { StyledCloseAbsolute } from '../WalletModal'
-import { StyledCloseIcon } from '../../theme/components'
+import { StyledCloseIcon } from '../../theme'
+import {
+  S_ONE_WALLET_INTRO_PAGE_URL,
+  S_ONE_SWAP_STATISTICS_URL,
+  S_ONE_STAKING_STATISTICS_URL,
+  S_ONE_WHITE_PAPER_URL,
+  S_ONE_FAQ_URL,
+  S_ONE_BLOG_URL
+} from '../../constants/urls'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
+  position: relative;
   padding-top: 1rem;
   background-color: ${({ theme }) => theme.bg1Sone};
 
@@ -95,7 +105,7 @@ const StyledExternalLink = styled(ExternalLink).attrs({
 
   :hover,
   :focus {
-    color: ${({ theme }) => theme.red1Sone};
+    text-decoration: none;
   }
 
   ::after {
@@ -112,6 +122,7 @@ interface MobileMenuProps {
 }
 
 export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
+  const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
@@ -125,25 +136,25 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         <StyledCloseAbsolute>
           <StyledCloseIcon />
         </StyledCloseAbsolute>
-        <TYPE.black fontSize={14}>Address:</TYPE.black>
-        <TYPE.subText marginTop={'0.25rem'}>{account && shortenAddress(account, 14)}</TYPE.subText>
-        <RowBetween marginTop={'1rem'}>
+        <TYPE.black fontSize={14}>{t('Address')}:</TYPE.black>
+        <TYPE.subText marginTop="0.25rem">{account && shortenAddress(account, 14)}</TYPE.subText>
+        <RowBetween marginTop="1rem">
           <SoneAmount isSmall={true} />
-          <TextBoxChangeAccount onClick={toggleWalletModal}>Change Account</TextBoxChangeAccount>
+          <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change_account')}</TextBoxChangeAccount>
         </RowBetween>
       </Column>
       <Column>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>S-ONE Wallet</StyledExternalLink>
-        <StyledNavLink to={'/swap'}>Swap</StyledNavLink>
-        <StyledNavLink to={'/pool'} isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
-          Liquidity
+        <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>{t('sone_wallet')}</StyledExternalLink>
+        <StyledNavLink to="/swap">{t('swap')}</StyledNavLink>
+        <StyledNavLink to="/pool" isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
+          {t('liquidity')}
         </StyledNavLink>
-        <StyledNavLink to={'/uni'}>Staking</StyledNavLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>Swap Stats</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>Staking Stats</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>White Paper</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>FAQ</StyledExternalLink>
-        <StyledExternalLink href={'https://www.lipsum.com/'}>Blog</StyledExternalLink>
+        <StyledNavLink to="/staking">{t('staking')}</StyledNavLink>
+        <StyledExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>{t('Staking Stats')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('White Paper')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_FAQ_URL}>{t('faq')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_BLOG_URL}>{t('blog')}</StyledExternalLink>
       </Column>
       <RecentTransactions isSmall={true} />
     </ColumnWrapper>

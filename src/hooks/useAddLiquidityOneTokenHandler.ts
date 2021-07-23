@@ -1,16 +1,15 @@
+import React, { useCallback } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, ETHER, JSBI, Pair, Percent } from '@s-one-finance/sdk-core'
+import { Currency, ETHER, Pair } from '@s-one-finance/sdk-core'
+
 import { PairState } from 'data/Reserves'
-import React, { useCallback } from 'react'
 import { useDerivedMintSimpleInfo } from 'state/mintSimple/hooks'
 import { TransactionType } from 'state/transactions/types'
 import { useActiveWeb3React } from '.'
-import { BIPS_BASE } from '../constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { useUserSlippageTolerance } from '../state/user/hooks'
-import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from '../utils'
-import { useTradeExactIn } from './Trades'
+import { calculateGasMargin, getRouterContract } from '../utils'
 import useTransactionDeadline from './useTransactionDeadline'
 
 type UseAddLiquidityOneTokenHandlerProps = {
@@ -32,45 +31,52 @@ export default function useAddLiquidityOneTokenHandler({
 }: UseAddLiquidityOneTokenHandlerProps) {
   const { account, chainId, library } = useActiveWeb3React()
 
-  const { userInputParsedAmount, selectedTokenParsedAmount, theOtherTokenParsedAmount } = useDerivedMintSimpleInfo(
-    selectedPairState,
-    selectedPair,
-    selectedCurrency
-  )
+  const {
+    selectedTokenUserInputAmount,
+    selectedTokenParsedAmount,
+    theOtherTokenParsedAmount
+  } = useDerivedMintSimpleInfo(selectedPairState, selectedPair, selectedCurrency)
 
   const deadline = useTransactionDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()
 
   const addTransaction = useTransactionAdder()
 
-  // Lấy data bên swap.
-  const trade = useTradeExactIn(selectedTokenParsedAmount, theOtherCurrency)
-
-  const allowedSlippagePercent = new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE)
-  // amountIn = lượng currency người dùng nhập, để dạng raw string.
-  const amountIn = userInputParsedAmount?.raw.toString()
-  const amountOut: string | undefined = trade
-    ? trade.minimumAmountOut(allowedSlippagePercent).raw.toString()
-    : undefined
-
   const handler = useCallback(async () => {
-    if (!chainId || !library || !account) return
-    const router = getRouterContract(chainId, library, account)
-
     if (
+      !chainId ||
+      !library ||
+      !account ||
       !selectedTokenParsedAmount ||
-      !theOtherTokenParsedAmount ||
-      !selectedCurrency ||
       !selectedPair ||
+      !theOtherTokenParsedAmount ||
       !deadline ||
-      !amountIn ||
-      !amountOut
-    ) {
+      !selectedTokenUserInputAmount
+    )
       return
-    }
 
-    const selectedTokenMinAmount = calculateSlippageAmount(selectedTokenParsedAmount, allowedSlippage)[0]
-    const theOtherTokenMinAmount = calculateSlippageAmount(theOtherTokenParsedAmount, allowedSlippage)[0]
+    const router = getRouterContract(chainId, library, account)
+    const isSelectedToken0 = selectedTokenParsedAmount.token.equals(selectedPair.token0)
+    const [
+      selectedTokenUserInputAmountJSBI,
+      selectedTokenMinAmountJSBI,
+      theOtherTokenMinAmountJSBI,
+      theOtherTokenMinOutputAmountJSBI
+    ] = selectedPair.getAmountsAddOneToken(selectedTokenUserInputAmount, allowedSlippage)
+
+    const selectedTokenUserInputAmountJSBI2 = selectedPair.getAmountsAddOneToken(
+      selectedTokenUserInputAmount,
+      allowedSlippage
+    )[0]
+
+    console.log('sel', selectedTokenUserInputAmountJSBI2)
+
+    // TODO: Khi nào hiểu logic thì xoá chỗ này đi.
+    console.clear()
+    console.log('selectedTokenUserInputAmountJSBI', +selectedTokenUserInputAmountJSBI.toString() / 1e18)
+    console.log('selectedTokenMinAmountJSBI', +selectedTokenMinAmountJSBI.toString() / 1e18)
+    console.log('theOtherTokenMinAmountJSBI', +theOtherTokenMinAmountJSBI.toString() / 1e18)
+    console.log('theOtherTokenMinOutputAmountJSBI', +theOtherTokenMinOutputAmountJSBI.toString() / 1e18)
 
     let estimate,
       method: (...args: any) => Promise<TransactionResponse>,
@@ -78,50 +84,70 @@ export default function useAddLiquidityOneTokenHandler({
       value: BigNumber | null
 
     if (ETHER === selectedCurrency) {
-      // If user select ETHER.
+      /**
+       * If user select ETHER.
+       */
       estimate = router.estimateGas.addLiquidityOneTokenETHExactETH
       method = router.addLiquidityOneTokenETHExactETH
-      // amountTokenMin, amountETHMin, amountOutTokenMin, path, to, deadline
+      // args = [amountTokenMin, amountETHMin, amountOutTokenMin, path, to, deadline]
       args = [
-        theOtherTokenMinAmount.toString(),
-        selectedTokenMinAmount.toString(),
-        amountOut,
+        theOtherTokenMinAmountJSBI.toString(),
+        selectedTokenMinAmountJSBI.toString(),
+        theOtherTokenMinOutputAmountJSBI.toString(),
         [selectedTokenParsedAmount.token.address, theOtherTokenParsedAmount.token.address],
         account,
         deadline.toHexString()
       ]
-      value = BigNumber.from(amountIn)
+      value = BigNumber.from(theOtherTokenMinAmountJSBI.toString())
     } else if (ETHER === theOtherCurrency) {
-      // If user select a token, and the other currency is ETHER.
+      /**
+       * If user select a token, and the other currency is ETHER.
+       */
       estimate = router.estimateGas.addLiquidityOneTokenETHExactToken
       method = router.addLiquidityOneTokenETHExactToken
-      // amountIn, amountTokenMin, amountETHMin, amountOutETHMin, path, to, deadline
+      // args = [amountIn, amountTokenMin, amountETHMin, amountOutETHMin, path, to, deadline]
       args = [
-        amountIn,
-        selectedTokenMinAmount.toString(),
-        theOtherTokenMinAmount.toString(),
-        amountOut,
+        selectedTokenUserInputAmountJSBI.toString(),
+        selectedTokenMinAmountJSBI.toString(),
+        theOtherTokenMinAmountJSBI.toString(),
+        theOtherTokenMinOutputAmountJSBI.toString(),
         [selectedTokenParsedAmount.token.address, theOtherTokenParsedAmount.token.address],
         account,
         deadline.toHexString()
       ]
       value = null
     } else {
-      // If pair no contains ETHER, which means user select one of two tokens.
+      /**
+       * If pair no contains ETHER, which means user select one of two tokens.
+       */
+
+      /**
+       * Let this comment here for debugging in the future:
+       *
+       * Pair: SONE - DAI
+       *
+       * I. "amountIn = 20 SONE" -> 2 phần:
+       * Phần 1: "0.5*amountIn = 10 SONE" -> [swap("amountOutMin = "2.2216 DAI")] -> "amountOut = 2.24406 DAI"
+       * Phần 2: ("0.5*amountIn = 10 SONE", "amountOut = 2.24406 DAI") -> [add("amountAMin = 9.9 SONE", "amountBMin = 2.1994 DAI")] -> add successfully when:
+       *  - TH1: (0.5*amountIn, amountBMin <= X <= amountOut) ===> X < 2.1994 DAI
+       *  - TH2: (amountAMin <= X <= 0.5*amountIn, amountOut)
+       *
+       * II. "amountIn = 2 DAI" -> 2 phần:
+       * Phần 1: "0.5*amountIn = 1 DAI" -> [swap("amountOutMin = "42946.4 SONE")] -> "amountOut = 43380.2 SONE"
+       * Phần 2: ("0.5*amountIn = 1 DAI", "amountOut = 43380.2 SONE") -> [add("amountAMin = 42516.9 SONE", "amountBMin = 0.99 DAI")]
+       */
       estimate = router.estimateGas.addLiquidityOneToken
       method = router.addLiquidityOneToken
-      // amountIn, amountAMin, amountBMin, amountOutMin, path, to, deadline
-      // FIXME: vẫn đang bị oẳng ở đây do args sai.
+      // args = [amountIn, amountAMin, amountBMin, amountOutMin, path, to, deadline]
       args = [
-        amountIn,
-        selectedTokenMinAmount.toString(),
-        theOtherTokenMinAmount.toString(),
-        amountOut,
+        selectedTokenUserInputAmountJSBI.toString(),
+        isSelectedToken0 ? selectedTokenMinAmountJSBI.toString() : theOtherTokenMinAmountJSBI.toString(),
+        isSelectedToken0 ? theOtherTokenMinAmountJSBI.toString() : selectedTokenMinAmountJSBI.toString(),
+        theOtherTokenMinOutputAmountJSBI.toString(),
         [selectedTokenParsedAmount.token.address, theOtherTokenParsedAmount.token.address],
         account,
         deadline.toHexString()
       ]
-      console.log('args', args)
       value = null
     }
 
@@ -137,19 +163,12 @@ export default function useAddLiquidityOneTokenHandler({
           addTransaction(response, {
             summary: {
               type: TransactionType.ADD_ONE_TOKEN,
-              userInputAmount: userInputParsedAmount?.toSignificant(3),
-              userInputSymbol: userInputParsedAmount?.currency.symbol
+              userInputAmount: selectedTokenUserInputAmount?.toSignificant(3),
+              userInputSymbol: selectedTokenUserInputAmount?.currency.symbol
             }
           })
 
           setTxHash(response.hash)
-
-          // TODO: Xoá bỏ bọn ReactGA này sau khi confirm với team và khách.
-          // ReactGA.event({
-          //   category: 'Liquidity',
-          //   action: 'Add',
-          //   label: [currencies[Field.CURRENCY_A]?.symbol, currencies[Field.CURRENCY_B]?.symbol].join('/')
-          // })
         })
       )
       .catch(error => {
@@ -163,8 +182,6 @@ export default function useAddLiquidityOneTokenHandler({
     account,
     addTransaction,
     allowedSlippage,
-    amountIn,
-    amountOut,
     chainId,
     deadline,
     library,
@@ -175,7 +192,7 @@ export default function useAddLiquidityOneTokenHandler({
     setTxHash,
     theOtherCurrency,
     theOtherTokenParsedAmount,
-    userInputParsedAmount
+    selectedTokenUserInputAmount
   ])
 
   return handler

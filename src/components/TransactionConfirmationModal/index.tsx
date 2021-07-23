@@ -1,5 +1,6 @@
 import { ChainId, Currency } from '@s-one-finance/sdk-core'
 import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import Modal from '../Modal'
 import { ExternalLink } from '../../theme'
@@ -59,6 +60,13 @@ const AbsoluteVector = styled.div`
   position: absolute;
   top: 0;
   right: 2rem;
+  width: 119.2px;
+  height: 119.2px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    width: 67.8px;
+    height: 67.8px;
+  `};
 `
 
 const Spinner = styled.img`
@@ -70,6 +78,7 @@ const Spinner = styled.img`
 `
 
 function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () => void; pendingText: string }) {
+  const { t } = useTranslation()
   return (
     <Wrapper>
       <Section>
@@ -82,7 +91,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
         </ConfirmedIcon>
         <AutoColumn gap="20px" justify={'center'}>
           <Text fontWeight={700} fontSize={20}>
-            Waiting For Confirmation
+            {t('waiting_for_confirmation')}
           </Text>
           <AutoColumn gap="12px" justify={'center'}>
             <Text fontWeight={700} fontSize={16} color="" textAlign="center">
@@ -90,7 +99,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
             </Text>
           </AutoColumn>
           <Text fontWeight={400} fontSize={16} color="#565A69" textAlign="center">
-            Confirm this transaction in your wallet
+            {t('confirm_this_transaction_in_your_wallet')}
           </Text>
         </AutoColumn>
       </Section>
@@ -110,6 +119,7 @@ function TransactionSubmittedContent({
   chainId: ChainId
   currencyToAdd?: Currency | undefined
 }) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
   const history = useHistory()
@@ -127,12 +137,12 @@ function TransactionSubmittedContent({
         </ConfirmedIcon>
         <AutoColumn gap="20px" justify={'center'}>
           <Text fontWeight={700} fontSize={isUpToExtraSmall ? 16 : 18}>
-            Transaction Submitted
+            {t('transaction_submitted')}
           </Text>
           {chainId && hash && (
             <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>
               <Text fontWeight={700} fontSize={16} color={theme.text5Sone}>
-                View on Etherscan
+                {t('view_on_etherscan')}
               </Text>
             </ExternalLink>
           )}
@@ -145,7 +155,7 @@ function TransactionSubmittedContent({
               style={{ margin: '10px 0 0 0' }}
             >
               <Text fontWeight={700} fontSize={20}>
-                Add Liquidity
+                {t('add_liquidity')}
               </Text>
             </ButtonPrimary>
           )}
@@ -174,7 +184,7 @@ export function ConfirmationModalContent({
       <Section>
         <RowBetween style={{ position: 'relative' }}>
           <AbsoluteVector>
-            <AppVector transactionType={transactionType} size="119.27px" sizeMobile="67.84px" />
+            <AppVector transactionType={transactionType} size="119.2px" sizeMobile="67.8px" />
           </AbsoluteVector>
           <ModalTitle>{title}</ModalTitle>
           <StyledCloseIcon onClick={onDismiss} />
@@ -187,6 +197,7 @@ export function ConfirmationModalContent({
 }
 
 export function TransactionErrorContent({ message, onDismiss }: { message: string; onDismiss: () => void }) {
+  const { t } = useTranslation()
   const theme = useTheme()
   return (
     <Wrapper>
@@ -200,7 +211,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
             {message}
           </Text>
         </AutoColumn>
-        <ButtonPrimary onClick={onDismiss}>Dismiss</ButtonPrimary>
+        <ButtonPrimary onClick={onDismiss}>{t('Dismiss')}</ButtonPrimary>
       </Section>
     </Wrapper>
   )

@@ -1,4 +1,5 @@
 import { Pair, WETH } from '@s-one-finance/sdk-core'
+import { useTranslation } from 'react-i18next'
 import { AutoColumn } from 'components/Column'
 import PanelAddLiquidityOneTokenModeOutput from 'components/PanelAddLiquidityOneTokenModeOutput'
 import PanelCurrencyInput, { SelectOrToggle } from 'components/PanelCurrencyInput'
@@ -10,11 +11,8 @@ import { PairState, usePair } from 'data/Reserves'
 import { useActiveWeb3React } from 'hooks'
 import { useCurrency } from 'hooks/Tokens'
 import useAddLiquidityOneTokenHandler from 'hooks/useAddLiquidityOneTokenHandler'
-import useTheme from 'hooks/useTheme'
 import useToggle from 'hooks/useToggle'
-import { useIsUpToExtraSmall } from 'hooks/useWindowSize'
 import React, { useCallback, useEffect, useState } from 'react'
-import { ArrowDown } from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import { useDerivedMintSimpleInfo, useMintSimpleActionHandlers, useMintSimpleState } from 'state/mintSimple/hooks'
 import { TransactionType } from 'state/transactions/types'
@@ -24,6 +22,8 @@ import ButtonGrouping from './ButtonGrouping'
 import ModalFooter from './ModalFooter'
 import ModalHeader from './ModalHeader'
 import TransactionDetails from './TransactionDetails'
+import { useGetPairFromSubgraphAndParse } from '../../../subgraph'
+import { StyledArrowDown } from '../../../theme'
 
 type ModeOneTokenProps = {
   currencyIdA: string | undefined
@@ -31,9 +31,7 @@ type ModeOneTokenProps = {
 }
 
 export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenProps) {
-  const theme = useTheme()
-  const isUpToExtraSmall = useIsUpToExtraSmall()
-
+  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
 
   const history = useHistory()
@@ -50,8 +48,6 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
       onFieldInput('')
     }
   }, [onFieldInput, currencyIdA, currencyIdB])
-
-  // TODO: Chưa xử lý selectedPairState là NOT_EXISTS hoặc INVALID.
 
   // Đang chọn WETH mà switch sang one token mode thì đổi url thành eth.
   useEffect(() => {
@@ -72,7 +68,8 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
   const selectedCurrency = isSelectCurrencyA ? currencyA : currencyB
   const theOtherCurrency = isSelectCurrencyA ? currencyB : currencyA
 
-  // Chỉ select được ETH, ko cho select WETH
+  // Parse WETH sang ETH, khi select pair sẽ là chọn đồng ETH.
+  // Đồng nghĩa với việc không có use-case add liquidity one token mode với token WETH.
   const handlePairSelect = (pair: Pair) => {
     const { token0, token1 } = pair
     const currency0 = unwrappedToken(token0)
@@ -113,6 +110,8 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
     setTxHash
   })
 
+  const [isLoading, allPairs] = useGetPairFromSubgraphAndParse()
+
   return (
     <>
       <TransactionConfirmationModal
@@ -122,7 +121,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
         hash={txHash}
         content={() => (
           <ConfirmationModalContent
-            title="Confirm Add Liquidity"
+            title={t('confirm_add_liquidity')}
             onDismiss={handleDismissConfirmation}
             topContent={() =>
               ModalHeader({
@@ -149,12 +148,17 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
         currencyToAdd={selectedPair?.liquidityToken}
       />
       <AutoColumn gap="md">
-        <PanelSelectPair selectedPair={selectedPair} onPairSelect={handlePairSelect} />
+        <PanelSelectPair
+          selectedPair={selectedPair}
+          onPairSelect={handlePairSelect}
+          isLoading={isLoading}
+          allPairs={allPairs}
+        />
         {isPairExistAndNotNull && (
           <>
             <PanelCurrencyInput
               id="add-liquidity-simple-input-tokena"
-              label="From"
+              label={t('from')}
               value={typedValue}
               onUserInput={onFieldInput}
               showMaxButton
@@ -170,7 +174,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
               <>
                 <AutoRow justify="center">
                   <IconWrapper clickable={false}>
-                    <ArrowDown size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />
+                    <StyledArrowDown />
                   </IconWrapper>
                 </AutoRow>
                 <PanelAddLiquidityOneTokenModeOutput
@@ -186,10 +190,8 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
         selectedPairState={selectedPairState}
         selectedPair={selectedPair}
         selectedCurrency={selectedCurrency ?? undefined}
-        theOtherCurrency={theOtherCurrency ?? undefined}
-        setAttemptingTxn={setAttemptingTxn}
-        setTxHash={setTxHash}
         setShowConfirm={setShowConfirm}
+        onAdd={onAdd}
       />
       <TransactionDetails
         selectedPairState={selectedPairState}

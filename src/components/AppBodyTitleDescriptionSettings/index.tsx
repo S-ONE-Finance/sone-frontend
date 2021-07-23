@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import Settings from '../Settings'
 import { RowBetween } from '../Row'
 import Column from '../Column'
@@ -45,27 +46,40 @@ const TitleDescWrapper = styled(Column)`
 `
 
 export default function AppBodyTitleDescriptionSettings({ transactionType }: { transactionType: TransactionType }) {
+  const { t } = useTranslation()
+  const title =
+    transactionType === TransactionType.SWAP
+      ? t('swap')
+      : transactionType === TransactionType.ADD_ONE_TOKEN || transactionType === TransactionType.ADD_TWO_TOKENS
+      ? t('add_liquidity')
+      : transactionType === TransactionType.WITHDRAW
+      ? t('Withdraw Liquidity')
+      : transactionType === TransactionType.UNSTAKE
+      ? t('Unstake')
+      : null
+  const description =
+    transactionType === TransactionType.SWAP
+      ? t('Trade tokens in an instant')
+      : transactionType === TransactionType.ADD_ONE_TOKEN || transactionType === TransactionType.ADD_TWO_TOKENS
+      ? t('add_liquidity_to_receive_lp_tokens')
+      : transactionType === TransactionType.WITHDRAW
+      ? t('Lorem ipsum dolor sit amet.')
+      : transactionType === TransactionType.UNSTAKE
+      ? t('Lorem ipsum dolor sit amet.')
+      : null
+
   return (
     <StyledHeader>
       <RowBetween>
         <AppVector transactionType={transactionType} />
         <TitleDescWrapper>
-          <Title>
-            {transactionType === TransactionType.SWAP
-              ? 'Swap'
-              : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
-              ? 'Add Liquidity'
-              : null}
-          </Title>
-          <Description>
-            {transactionType === TransactionType.SWAP
-              ? 'Trade tokens in an instant'
-              : transactionType === TransactionType.ADD_TWO_TOKENS || transactionType === TransactionType.ADD_ONE_TOKEN
-              ? 'Add liquidity to receive LP tokens'
-              : null}
-          </Description>
+          <Title>{title}</Title>
+          <Description>{description}</Description>
         </TitleDescWrapper>
-        <Settings transactionType={transactionType} />
+        {(transactionType === TransactionType.SWAP ||
+          transactionType === TransactionType.ADD_ONE_TOKEN ||
+          transactionType === TransactionType.ADD_TWO_TOKENS ||
+          transactionType === TransactionType.WITHDRAW) && <Settings transactionType={transactionType} />}
       </RowBetween>
     </StyledHeader>
   )

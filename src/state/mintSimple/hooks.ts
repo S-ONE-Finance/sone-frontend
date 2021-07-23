@@ -7,9 +7,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { tryParseAmount } from 'state/swap/hooks'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import { wrappedCurrency, wrappedCurrencyAmount } from 'utils/wrappedCurrency'
+import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
 import { typeInput } from './actions'
+import { useTranslation } from 'react-i18next'
 
 const ZERO = JSBI.BigInt(0)
 
@@ -41,14 +42,24 @@ export function useDerivedMintSimpleInfo(
 ): {
   theOtherCurrency?: Currency
   maxAmount?: CurrencyAmount
-  userInputParsedAmount?: CurrencyAmount
+  /**
+   * Lượng selectedCurrency mà người dùng nhập vào.
+   */
+  selectedTokenUserInputAmount?: TokenAmount
+  /**
+   * Lượng selectedCurrency sau khi chia 2.
+   */
   selectedTokenParsedAmount?: TokenAmount
+  /**
+   * Lượng theOtherCurrency sau khi lấy selectedTokenParsedAmount ra để swap (chưa tính slippage).
+   */
   theOtherTokenParsedAmount?: TokenAmount
   noLiquidity: boolean
   price?: Price
   poolTokenPercentage?: Percent
   error?: string
 } {
+  const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
 
   const { typedValue } = useMintSimpleState()
@@ -57,19 +68,23 @@ export function useDerivedMintSimpleInfo(
 
   const maxAmount = maxAmountSpend(currencyBalance)
 
-  // userInputParsedAmount = lượng currency mà người dùng nhập vào.
-  // selectedTokenParsedAmount = lượng selected currency sau khi chia 2.
-  // theOtherTokenParsedAmount = lượng currency sau khi lấy selectedTokenParsedAmount ra để swap.
-  const userInputParsedAmount = tryParseAmount(typedValue, selectedCurrency ?? undefined)
-  const wrappedUserInputParsedAmount = wrappedCurrencyAmount(userInputParsedAmount, chainId)
+  const selectedToken = wrappedCurrency(selectedCurrency, chainId)
+
+  const selectedCurrencyUserInputAmount: CurrencyAmount | undefined = tryParseAmount(
+    typedValue,
+    selectedCurrency ?? undefined
+  )
+  const selectedTokenUserInputAmount: TokenAmount | undefined =
+    selectedToken &&
+    selectedCurrencyUserInputAmount &&
+    new TokenAmount(selectedToken, selectedCurrencyUserInputAmount.raw.toString())
   const [selectedTokenParsedAmount, theOtherTokenParsedAmount] =
-    (pair && wrappedUserInputParsedAmount && pair.getAmountsOutAddOneToken(wrappedUserInputParsedAmount)) ?? []
+    (pair && selectedTokenUserInputAmount && pair.getAmountsOutAddOneToken(selectedTokenUserInputAmount)) ?? []
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
   const noLiquidity = pairState === PairState.NOT_EXISTS || Boolean(totalSupply && JSBI.equal(totalSupply.raw, ZERO))
 
-  const selectedToken = wrappedCurrency(selectedCurrency, chainId)
   const price = useMemo(() => {
     if (noLiquidity) {
       if (selectedTokenParsedAmount && theOtherTokenParsedAmount) {
@@ -82,7 +97,7 @@ export function useDerivedMintSimpleInfo(
       }
       return undefined
     } else {
-      // FIXME: Chỗ này có thể bị ngược token0 token1, kiểm tra sau.
+      // TODO: Chỗ này có thể bị ngược token0 token1, kiểm tra sau.
       return pair && pair.token0 && pair.token1 && selectedToken
         ? pair.priceOf(pair.token0.equals(selectedToken) ? pair.token0 : pair.token1)
         : undefined
@@ -105,22 +120,34 @@ export function useDerivedMintSimpleInfo(
     }
   }, [liquidityMinted, totalSupply])
 
+  const isSelectedToken0 =
+    pair && pair.token0 && selectedTokenParsedAmount && selectedTokenParsedAmount.token.equals(pair.token0)
+
   // Error section.
   let error: string | undefined
 
   if (!account) {
-    error = 'Connect Wallet'
+    error = t('connect_wallet')
   } else if (pairState === PairState.INVALID) {
-    error = 'Invalid Pair'
+    error = t('invalid_pair')
   } else if (noLiquidity) {
-    error = 'Invalid Pair (No Liquidity)'
-  } else if (userInputParsedAmount && currencyBalance?.lessThan(userInputParsedAmount)) {
-    error = 'Insufficient' + selectedCurrency?.symbol + ' balance'
+    error = t('invalid_pair_no_liquidity')
+  } else if (selectedTokenUserInputAmount && currencyBalance?.lessThan(selectedTokenUserInputAmount)) {
+    // TODO: i18n.
+    error = 'Insufficient ' + selectedCurrency?.symbol + ' balance'
+  } else if (
+    typeof isSelectedToken0 === 'boolean' &&
+    pair &&
+    selectedTokenParsedAmount &&
+    selectedTokenParsedAmount.greaterThan(isSelectedToken0 ? pair.reserve0 : pair.reserve1)
+  ) {
+    // TODO: i18n.
+    error = `Insufficient ${isSelectedToken0 ? pair.token0.symbol : pair.token1.symbol} liquidity for swap`
   }
 
   return {
     maxAmount,
-    userInputParsedAmount,
+    selectedTokenUserInputAmount,
     selectedTokenParsedAmount,
     theOtherTokenParsedAmount,
     noLiquidity,

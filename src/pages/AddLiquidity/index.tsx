@@ -5,8 +5,7 @@ import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescri
 import { TransactionType } from '../../state/transactions/types'
 import { AddLiquidityModeEnum } from '../../state/user/actions'
 import { useAddLiquidityModeManager } from '../../state/user/hooks'
-import AppBody from '../AppBody'
-import { StyledPadding } from '../Pool/styleds'
+import { AppBody, StyledPadding } from 'theme/components'
 import ModeOneToken from './ModeOneTokens'
 import ModeToggle from './ModeToggle'
 import ModeTwoTokens from './ModeTwoTokens'
@@ -27,19 +26,17 @@ export default function AddLiquidity({
   const [addLiquidityMode] = useAddLiquidityModeManager()
 
   return (
-    <>
-      <AppBody>
-        {/* transactionType chỗ này chỉ để lấy ra vector, để ADD_ONE_TOKEN hay ADD_TWO_TOKENS đều giống nhau. */}
-        <AppBodyTitleDescriptionSettings transactionType={TransactionType.ADD_ONE_TOKEN} />
-        <ModeToggle />
-        <StyledPadding>
-          {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
-            <ModeOneToken currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
-          ) : (
-            <ModeTwoTokens currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
-          )}
-        </StyledPadding>
-      </AppBody>
-    </>
+    <AppBody>
+      {/* transactionType chỗ này chỉ để lấy ra vector, để ADD_ONE_TOKEN hay ADD_TWO_TOKENS đều giống nhau. */}
+      <AppBodyTitleDescriptionSettings transactionType={TransactionType.ADD_ONE_TOKEN} />
+      <ModeToggle />
+      <StyledPadding>
+        {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
+          <ModeOneToken currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
+        ) : (
+          <ModeTwoTokens currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
+        )}
+      </StyledPadding>
+    </AppBody>
   )
 }

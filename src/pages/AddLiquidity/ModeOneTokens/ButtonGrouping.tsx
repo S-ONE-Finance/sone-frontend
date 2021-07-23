@@ -5,10 +5,10 @@ import { RowBetween } from 'components/Row'
 import { PairState } from 'data/Reserves'
 import { useActiveWeb3React } from 'hooks'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import useAddLiquidityOneTokenHandler from 'hooks/useAddLiquidityOneTokenHandler'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { Dots } from 'pages/Pool/styleds'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useWalletModalToggle } from 'state/application/hooks'
 import { useDerivedMintSimpleInfo } from 'state/mintSimple/hooks'
 import { useIsExpertMode } from 'state/user/hooks'
@@ -20,21 +20,18 @@ type ButtonGroupingProps = {
   selectedPairState: PairState
   selectedPair: Pair | null
   selectedCurrency: Currency | undefined
-  theOtherCurrency: Currency | undefined
-  setAttemptingTxn: React.Dispatch<React.SetStateAction<boolean>>
-  setTxHash: React.Dispatch<React.SetStateAction<string>>
   setShowConfirm: React.Dispatch<React.SetStateAction<boolean>>
+  onAdd: () => void
 }
 
-export default function ButtonGroupping({
+export default function ButtonGrouping({
   selectedPairState,
   selectedPair,
   selectedCurrency,
-  theOtherCurrency,
-  setAttemptingTxn,
-  setTxHash,
-  setShowConfirm
+  setShowConfirm,
+  onAdd
 }: ButtonGroupingProps) {
+  const { t } = useTranslation()
   const { token0, token1 } = selectedPair ?? {}
   const { error, selectedTokenParsedAmount, theOtherTokenParsedAmount } = useDerivedMintSimpleInfo(
     selectedPairState,
@@ -62,23 +59,14 @@ export default function ButtonGroupping({
 
   const expertMode = useIsExpertMode()
 
-  const onAdd = useAddLiquidityOneTokenHandler({
-    selectedPairState,
-    selectedPair,
-    selectedCurrency,
-    theOtherCurrency,
-    setAttemptingTxn,
-    setTxHash
-  })
-
   return (
     <ButtonWrapper>
       {addIsUnsupported ? (
         <ButtonPrimary disabled={true}>
-          <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
+          <TYPE.main mb="4px">{t('Unsupported Asset')}</TYPE.main>
         </ButtonPrimary>
       ) : !account ? (
-        <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
+        <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
       ) : (
         <AutoColumn gap={'md'}>
           {/* FIXME: Có thể sẽ bug user auto click ở đây. */}
@@ -95,9 +83,11 @@ export default function ButtonGroupping({
                     width={approvalTheOtherToken !== ApprovalState.APPROVED ? '48%' : '100%'}
                   >
                     {approvalSelectedToken === ApprovalState.PENDING ? (
-                      <Dots>Approving {token0?.symbol}</Dots>
+                      <Dots>
+                        {t('Approving')} {token0?.symbol}
+                      </Dots>
                     ) : (
-                      'Approve ' + token0?.symbol
+                      t('Approve ') + token0?.symbol
                     )}
                   </ButtonPrimary>
                 )}
@@ -108,9 +98,11 @@ export default function ButtonGroupping({
                     width={approvalSelectedToken !== ApprovalState.APPROVED ? '48%' : '100%'}
                   >
                     {approvalTheOtherToken === ApprovalState.PENDING ? (
-                      <Dots>Approving {token1?.symbol}</Dots>
+                      <Dots>
+                        {t('Approving')} {token1?.symbol}
+                      </Dots>
                     ) : (
-                      'Approve ' + token1?.symbol
+                      t('Approve ') + token1?.symbol
                     )}
                   </ButtonPrimary>
                 )}
@@ -128,7 +120,7 @@ export default function ButtonGroupping({
             }
             error={!isValid && !!selectedTokenParsedAmount && !!theOtherTokenParsedAmount}
           >
-            {error ?? 'Add Liquidity'}
+            {error ?? t('add_liquidity')}
           </ButtonError>
         </AutoColumn>
       )}

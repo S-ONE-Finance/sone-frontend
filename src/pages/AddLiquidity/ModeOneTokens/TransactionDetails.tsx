@@ -2,7 +2,6 @@ import { Currency, Pair } from '@s-one-finance/sdk-core'
 import { AutoColumn, ColumnCenter } from 'components/Column'
 import { QuestionHelper1416 } from 'components/QuestionHelper'
 import { RowBetween, RowFixed } from 'components/Row'
-import { InfoLink } from 'components/swap/AdvancedSwapDetailsContent'
 import TradePrice from 'components/swap/TradePrice'
 import { PairState } from 'data/Reserves'
 import useTheme from 'hooks/useTheme'
@@ -11,11 +10,12 @@ import { ClickableText } from 'pages/Pool/styleds'
 import React, { useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { Text } from 'rebass'
+import { useTranslation } from 'react-i18next'
 import { useToggleSettingsMenu } from 'state/application/hooks'
 import { useDerivedMintSimpleInfo } from 'state/mintSimple/hooks'
 import { useShowTransactionDetailsManager, useUserSlippageTolerance } from 'state/user/hooks'
-import { unwrappedToken } from 'utils/wrappedCurrency'
 import { INITIAL_ALLOWED_SLIPPAGE, ONE_BIPS } from '../../../constants'
+import ViewPairAnalytics from '../../../components/ViewPairAnalytics'
 
 type TransactionDetailsProps = {
   selectedPairState: PairState
@@ -28,12 +28,13 @@ export default function TransactionDetails({
   selectedPair,
   selectedCurrency
 }: TransactionDetailsProps) {
+  const { t } = useTranslation()
   const theme = useTheme()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
 
   const {
-    userInputParsedAmount,
+    selectedTokenUserInputAmount,
     selectedTokenParsedAmount,
     theOtherTokenParsedAmount,
     noLiquidity,
@@ -53,8 +54,8 @@ export default function TransactionDetails({
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
 
   const parseSuccessfully = useMemo(
-    () => !!(userInputParsedAmount && selectedTokenParsedAmount && theOtherTokenParsedAmount),
-    [userInputParsedAmount, selectedTokenParsedAmount, theOtherTokenParsedAmount]
+    () => !!(selectedTokenUserInputAmount && selectedTokenParsedAmount && theOtherTokenParsedAmount),
+    [selectedTokenUserInputAmount, selectedTokenParsedAmount, theOtherTokenParsedAmount]
   )
 
   return (
@@ -67,17 +68,20 @@ export default function TransactionDetails({
             color={theme.text5Sone}
             onClick={toggleIsShowTransactionDetails}
           >
-            Show more information <ChevronDown size={12} />
+            {t('show_more_information')} <ChevronDown size={12} />
           </ClickableText>
         </ColumnCenter>
       )}
       {parseSuccessfully && isShowTransactionDetails ? (
         <>
-          <AutoColumn gap={'15px'} style={{ width: '100%', padding: '17.5px 8px 0' }}>
+          <AutoColumn
+            gap={'15px'}
+            style={{ width: '100%', padding: isUpToExtraSmall ? '17.5px 8px 0' : '17.5px 14px 0' }}
+          >
             <RowBetween>
               <RowFixed>
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                  Price
+                  {t('price')}
                 </Text>
                 <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
               </RowFixed>
@@ -92,7 +96,7 @@ export default function TransactionDetails({
                     color={theme.text4Sone}
                     onClick={toggleSettings}
                   >
-                    Slippage Tolerance
+                    {t('slippage_tolerance')}
                   </ClickableText>
                   <QuestionHelper1416 text="Lorem ipsum" />
                 </RowFixed>
@@ -109,7 +113,7 @@ export default function TransactionDetails({
             <RowBetween>
               <RowFixed>
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                  Share of Pair
+                  {t('share_of_pair')}
                 </Text>
                 <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
               </RowFixed>
@@ -123,17 +127,18 @@ export default function TransactionDetails({
           </AutoColumn>
           {selectedPair?.liquidityToken.address && (
             <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '35px' }}>
-              <InfoLink href={'https://info.uniswap.org/pair/' + selectedPair.liquidityToken.address} target="_blank">
-                View {unwrappedToken(selectedPair.token0).symbol} - {unwrappedToken(selectedPair.token1).symbol}{' '}
-                analytics
-              </InfoLink>
+              <ViewPairAnalytics
+                pairAddress={selectedPair.liquidityToken.address}
+                tokenA={selectedPair.token0}
+                tokenB={selectedPair.token1}
+              />
             </ColumnCenter>
           )}
         </>
       ) : (
         isShowTransactionDetails &&
         allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
-          <RowBetween align="center" padding="17.5px 8px 0">
+          <RowBetween align="center" padding={isUpToExtraSmall ? '17.5px 8px 0' : '17.5px 14px 0'}>
             <RowFixed>
               <ClickableText
                 fontWeight={500}
@@ -141,7 +146,7 @@ export default function TransactionDetails({
                 color={theme.text4Sone}
                 onClick={toggleSettings}
               >
-                Slippage Tolerance
+                {t('slippage_tolerance')}
               </ClickableText>
               <QuestionHelper1416 text="Lorem ipsum" />
             </RowFixed>
@@ -165,7 +170,7 @@ export default function TransactionDetails({
             color={theme.text5Sone}
             onClick={toggleIsShowTransactionDetails}
           >
-            Show less <ChevronUp size={12} />
+            {t('show_less')} <ChevronUp size={12} />
           </ClickableText>
         </ColumnCenter>
       )}

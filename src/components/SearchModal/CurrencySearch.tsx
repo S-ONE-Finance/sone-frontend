@@ -3,6 +3,7 @@ import React, { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRe
 import ReactGA from 'react-ga'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
+import { useTranslation } from 'react-i18next'
 import { useActiveWeb3React } from '../../hooks'
 import { useAllTokens, useToken, useIsUserAddedToken, useFoundOnInactiveList } from '../../hooks/Tokens'
 import { TYPE, ButtonText } from '../../theme'
@@ -66,6 +67,7 @@ export function CurrencySearch({
   showImportView,
   setImportToken
 }: CurrencySearchProps) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
 
@@ -184,7 +186,7 @@ export function CurrencySearch({
         <RowBetween>
           <RowFixed>
             <Text fontWeight={700} fontSize={isUpToExtraSmall ? 20 : 28}>
-              Select a token
+              {t('select_a_token')}
             </Text>
             <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
           </RowFixed>
@@ -194,7 +196,7 @@ export function CurrencySearch({
           <SearchInput
             type="text"
             id="token-search-input"
-            placeholder="Search name or paste address"
+            placeholder={t('search_name_or_paste_address')}
             autoComplete="off"
             value={searchQuery}
             ref={inputRef as RefObject<HTMLInputElement>}
@@ -215,7 +217,7 @@ export function CurrencySearch({
         <>
           <RowBetween style={{ padding: isUpToExtraSmall ? '20px 1.25rem 0' : '20px 2rem 0' }}>
             <Text fontWeight={500} fontSize={16}>
-              Token Name
+              {t('token_name')}
             </Text>
             {invertSearchOrder === false ? <SortDownIcon onClick={handleSort} /> : <SortUpIcon onClick={handleSort} />}
           </RowBetween>
@@ -243,7 +245,7 @@ export function CurrencySearch({
       ) : (
         <Column width="unset" style={{ margin: '20px', height: '100%' }}>
           <TYPE.main color={theme.text3} textAlign="center" mb="20px">
-            No results found.
+            {t('No results found.')}
           </TYPE.main>
         </Column>
       )}
@@ -266,7 +268,7 @@ export function CurrencySearch({
             <TYPE.main color={theme.text8Sone}></TYPE.main>
           )}
           <ButtonText onClick={showManageView} color={theme.text5Sone} className="list-token-manage-button">
-            <TYPE.main color={theme.text5Sone}>Change List</TYPE.main>
+            <TYPE.main color={theme.text5Sone}>{t('change_list')}</TYPE.main>
           </ButtonText>
         </RowBetween>
       </Footer>

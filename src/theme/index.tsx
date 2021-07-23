@@ -16,6 +16,12 @@ import backgroundImageUpToSmall from '../assets/images/background-light-uptosmal
 import backgroundImageUpToSmallDark from '../assets/images/background-dark-uptosmall.svg'
 import backgroundImageUpToExtraSmall from '../assets/images/background-light-uptoextrasmall.svg'
 import backgroundImageUpToExtraSmallDark from '../assets/images/background-dark-uptoextrasmall.svg'
+import backgroundMyStaking from '../assets/images/background-my-staking-light.svg'
+import backgroundMyStakingDark from '../assets/images/background-my-staking-dark.svg'
+import backgroundMyStakingUpToExtraSmall from '../assets/images/background-my-staking-light-uptoextrasmall.svg'
+import backgroundMyStakingUpToExtraSmallDark from '../assets/images/background-my-staking-dark-uptoextrasmall.svg'
+import Party from '../assets/images/party-light.svg'
+import PartyDark from '../assets/images/party-dark.svg'
 import { darken } from 'polished'
 
 export * from './components'
@@ -107,8 +113,9 @@ export function colors(darkMode: boolean): Colors {
     text8Sone: '#767676',
     text9Sone: '#C9C9C9',
     text10Sone: darkMode ? '#AAAAAA' : '#333333',
-    text11Sone: darkMode ? '#fff' : '#000',
+    text11Sone: darkMode ? '#FFFFFF' : '#000000', // NOTE: dùng uppcase 6 ký tự, không dùng "#fff".
     text12Sone: darkMode ? '#263F59' : '#F2F2F2',
+    text13Sone: '#AAAAAA',
 
     red1Sone: '#F05359',
     green1Sone: '#7AC51B',
@@ -123,6 +130,8 @@ export function colors(darkMode: boolean): Colors {
     bg8Sone: darkMode ? '#0A1C29' : '#fff',
     bg9Sone: darkMode ? '#3B5183' : 'linear-gradient(180deg, #ffefef 48.7%, #f8f8f8 100%)',
     bg10Sone: darkMode ? '#0E2B4A' : 'linear-gradient(359.3deg, #ededed 26.78%, #ffffff 66.23%)',
+    bg11Sone: '#C4C4C4',
+    bg12Sone: darkMode ? '#212429' : '#FAFAFA',
     bgPanels: darkMode ? 'transparent' : '#F3F3F3',
 
     border1Sone: darkMode ? '#AAAAAA' : '#C9C9C9',
@@ -174,7 +183,12 @@ export function theme(darkMode: boolean): DefaultTheme {
     bgImage: darkMode ? backgroundImageDark : backgroundImage,
     bgImageUpToLarge: darkMode ? backgroundImageUpToLargeDark : backgroundImageUpToLarge,
     bgImageUpToSmall: darkMode ? backgroundImageUpToSmallDark : backgroundImageUpToSmall,
-    bgImageUpToExtraSmall: darkMode ? backgroundImageUpToExtraSmallDark : backgroundImageUpToExtraSmall
+    bgImageUpToExtraSmall: darkMode ? backgroundImageUpToExtraSmallDark : backgroundImageUpToExtraSmall,
+
+    bgMyStaking: darkMode ? backgroundMyStakingDark : backgroundMyStaking,
+    bgMyStakingUpToExtraSmall: darkMode ? backgroundMyStakingUpToExtraSmallDark : backgroundMyStakingUpToExtraSmall,
+
+    bgParty: darkMode ? PartyDark : Party
   }
 }
 
@@ -303,16 +317,16 @@ export const ThemedGlobalStyle = createGlobalStyle`
     background-size: cover;
 
     ${({ theme }) => theme.mediaWidth.upToLarge`
-    background-image: url(${({ theme }) => theme.bgImageUpToLarge});
-  `}
+      background-image: url(${({ theme }) => theme.bgImageUpToLarge});
+    `}
 
     ${({ theme }) => theme.mediaWidth.upToSmall`
-    background-image: url(${({ theme }) => theme.bgImageUpToSmall});
-  `}
+      background-image: url(${({ theme }) => theme.bgImageUpToSmall});
+    `}
 
     ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    background-image: url(${({ theme }) => theme.bgImageUpToExtraSmall});
-  `}
+      background-image: url(${({ theme }) => theme.bgImageUpToExtraSmall});
+    `}
   }
 
   /* width */

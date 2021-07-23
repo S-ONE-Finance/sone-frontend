@@ -1,5 +1,6 @@
 import { Trade, TradeType } from '@s-one-finance/sdk-core'
 import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ArrowDown, AlertTriangle } from 'react-feather'
 import { Text } from 'rebass'
 import { Field } from '../../state/swap/actions'
@@ -27,6 +28,7 @@ export default function SwapModalHeader({
   showAcceptChanges: boolean
   onAcceptChanges: () => void
 }) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile20Desktop28 = isUpToExtraSmall ? 20 : 28
   const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
@@ -52,7 +54,7 @@ export default function SwapModalHeader({
         </RowFixed>
         {/* zIndex để hiển thị đè lên SwapVector. */}
         <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align={'center'}>
-          <CurrencyLogo currency={trade.inputAmount.currency} size={'24px'} style={{ marginRight: '5px' }} />
+          <CurrencyLogo currency={trade.inputAmount.currency} size="24px" style={{ marginRight: '5px' }} />
           <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
             {trade.inputAmount.currency.symbol}
           </Text>
@@ -89,13 +91,13 @@ export default function SwapModalHeader({
           <RowBetween>
             <RowFixed>
               <AlertTriangle size={20} style={{ marginRight: '8px', minWidth: 24 }} />
-              <TYPE.main color={theme.primary1}> Price Updated</TYPE.main>
+              <TYPE.main color={theme.primary1}> {t('Price Updated')}</TYPE.main>
             </RowFixed>
             <ButtonPrimary
               style={{ padding: '.5rem', width: 'fit-content', fontSize: '0.825rem', borderRadius: '12px' }}
               onClick={onAcceptChanges}
             >
-              Accept
+              {t('Accept')}
             </ButtonPrimary>
           </RowBetween>
         </SwapShowAcceptChanges>
@@ -122,7 +124,7 @@ export default function SwapModalHeader({
       {recipient !== null ? (
         <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
           <TYPE.main>
-            Output will be sent to{' '}
+            {t('Output will be sent to')}{' '}
             <b title={recipient}>{isAddress(recipient) ? shortenAddress(recipient) : recipient}</b>
           </TYPE.main>
         </AutoColumn>

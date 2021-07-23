@@ -1,11 +1,8 @@
-import { useWeb3React } from '@web3-react/core'
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { NetworkContextName } from '../../constants'
-import { isTransactionRecent, useAllTransactions } from '../../state/transactions/hooks'
-import { TransactionDetails } from '../../state/transactions/reducer'
-
+import { useTranslation } from 'react-i18next'
 import LoaderSone from '../LoaderSone'
+import useNoPendingTxs from '../../hooks/useNoPendingTxs'
 
 const PendingBox = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -33,44 +30,20 @@ const Text = styled.p`
   font-weight: 500;
 `
 
-// we want the latest one to come first, so return negative if a is after b
-function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
-  return b.addedTime - a.addedTime
-}
+export default function PendingStatus() {
+  const { t } = useTranslation()
+  const noPendingTxs = useNoPendingTxs()
 
-function Web3StatusInner() {
-  const { account } = useWeb3React()
-
-  const allTransactions = useAllTransactions()
-
-  const sortedRecentTransactions = useMemo(() => {
-    const txs = Object.values(allTransactions)
-    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
-  }, [allTransactions])
-
-  const pending = sortedRecentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash)
-
-  const hasPendingTransactions = !!pending.length
-
-  if (account && hasPendingTransactions) {
+  if (noPendingTxs) {
     return (
       <PendingBox>
-        <LoaderSone size={'18px'} />
-        <Text>{pending?.length} pending</Text>
+        <LoaderSone size="19px" />
+        <Text>
+          {noPendingTxs} {t('pending')}
+        </Text>
       </PendingBox>
     )
-  } else {
-    return null
-  }
-}
-
-export default function Web3Status() {
-  const { active } = useWeb3React()
-  const contextNetwork = useWeb3React(NetworkContextName)
-
-  if (!contextNetwork.active && !active) {
-    return null
   }
 
-  return <Web3StatusInner />
+  return null
 }

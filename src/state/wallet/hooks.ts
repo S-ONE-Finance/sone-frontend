@@ -141,6 +141,7 @@ export function useAggregateSoneBalance(): TokenAmount | undefined {
   const sone = chainId ? SONE[chainId] : undefined
 
   const soneBalance: TokenAmount | undefined = useTokenBalance(account ?? undefined, sone)
+  // TODO: 2 hàm dưới vẫn của uni.
   const soneUnclaimed: TokenAmount | undefined = useUserUnclaimedAmount(account)
   const soneUnHarvested: TokenAmount | undefined = useTotalUniEarned()
 

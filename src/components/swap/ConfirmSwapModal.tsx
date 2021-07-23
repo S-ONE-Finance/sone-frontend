@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { currencyEquals, Trade } from '@s-one-finance/sdk-core'
 import React, { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent
@@ -48,6 +50,7 @@ export default function ConfirmSwapModal({
   swapErrorMessage: string | undefined
   onDismiss: () => void
 }) {
+  const { t } = useTranslation()
   const showAcceptChanges = useMemo(
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
     [originalTrade, trade]
@@ -90,7 +93,7 @@ export default function ConfirmSwapModal({
       ) : (
         <ConfirmationModalContent
           transactionType={TransactionType.SWAP}
-          title={'Confirm Swap'}
+          title={t('confirm_swap')}
           onDismiss={onDismiss}
           topContent={modalHeader}
           bottomContent={modalBottom}

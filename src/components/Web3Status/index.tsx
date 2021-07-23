@@ -17,6 +17,8 @@ import { TransactionDetails } from '../../state/transactions/reducer'
 
 import WalletModal from '../WalletModal'
 import { darken } from 'polished'
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 const Text = styled.p`
   flex: 1 1 auto;
@@ -58,7 +60,8 @@ export const ButtonMainRed = styled.div<{ cursor?: string; padding?: string }>`
   }
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-      width: 140px;
+    min-width: fit-content;
+    width: fit-content;
   `}
 `
 
@@ -68,16 +71,19 @@ function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
 }
 
 function Web3StatusInner() {
+  const { t } = useTranslation()
   const { account, error } = useWeb3React()
   const toggleWalletModal = useWalletModalToggle()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const history = useHistory()
+  const getLanguage = () => i18next.language || window.localStorage.i18nextLng
 
   if (account) {
     return (
       <ButtonMainRed
         id="web3-status-connected"
         cursor="normal"
+        style={{ fontSize: isUpToExtraSmall && getLanguage() === 'jp' ? '13px' : '16px' }}
         onClick={() => {
           // Trên small devices, click vào sẽ ra my account.
           if (isUpToExtraSmall) {
@@ -85,20 +91,20 @@ function Web3StatusInner() {
           }
         }}
       >
-        My Account
+        {t('my_account')}
       </ButtonMainRed>
     )
   } else if (error) {
     return (
       <ButtonMainRed onClick={toggleWalletModal}>
         <NetworkIcon />
-        <Text>{error instanceof UnsupportedChainIdError ? 'Wrong Network' : 'Error'}</Text>
+        <Text>{error instanceof UnsupportedChainIdError ? t('Wrong Network') : t('Error')}</Text>
       </ButtonMainRed>
     )
   } else {
     return (
       <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
-        Connect Wallet
+        {t('connect_wallet')}
       </ButtonMainRed>
     )
   }

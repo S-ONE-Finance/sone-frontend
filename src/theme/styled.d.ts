@@ -62,6 +62,7 @@ export interface Colors {
   text10Sone: Color
   text11Sone: Color
   text12Sone: Color
+  text13Sone: Color
 
   /* Background */
   bg1Sone: Color
@@ -74,6 +75,8 @@ export interface Colors {
   bg8Sone: Color
   bg9Sone: Color
   bg10Sone: Color
+  bg11Sone: Color
+  bg12Sone: Color
   bgPanels: Color
 
   /* Others */
@@ -125,5 +128,10 @@ declare module 'styled-components' {
     bgImageUpToLarge: string
     bgImageUpToSmall: string
     bgImageUpToExtraSmall: string
+
+    bgMyStaking: string
+    bgMyStakingUpToExtraSmall: string
+
+    bgParty: string
   }
 }

@@ -21,12 +21,10 @@ export const StyledClose = styled(X)`
 export const Popup = styled.div`
   display: inline-block;
   width: 100%;
-  padding: 1em;
-  background-color: ${({ theme }) => theme.bg1};
+  background-color: ${({ theme }) => theme.bg12Sone};
   position: relative;
   border-radius: 10px;
-  padding: 20px;
-  padding-right: 35px;
+  padding: 20px 35px 20px 20px;
   overflow: hidden;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
@@ -38,10 +36,10 @@ export const Popup = styled.div`
 `
 const Fader = styled.div`
   position: absolute;
-  bottom: 0px;
-  left: 0px;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  height: 2px;
+  height: 3px;
   background-color: ${({ theme }) => theme.bg3};
 `
 

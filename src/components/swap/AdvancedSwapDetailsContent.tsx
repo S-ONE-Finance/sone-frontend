@@ -1,9 +1,8 @@
-import { Trade, TradeType } from '@s-one-finance/sdk-core'
 import React from 'react'
-import styled from 'styled-components'
+import { Trade, TradeType } from '@s-one-finance/sdk-core'
+import { useTranslation } from 'react-i18next'
 import { Field } from '../../state/swap/actions'
 import { useUserSlippageTolerance } from '../../state/user/hooks'
-import { ExternalLink } from '../../theme'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from '../../utils/prices'
 import { AutoColumn, ColumnCenter } from '../Column'
 import { QuestionHelper1416 } from '../QuestionHelper'
@@ -11,49 +10,18 @@ import Row, { RowBetween, RowFixed } from '../Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import SwapRoute from './SwapRoute'
 import { Text } from 'rebass'
-import { darken } from 'polished'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import useTheme from '../../hooks/useTheme'
-
-export const InfoLink = styled(ExternalLink)`
-  width: fit-content;
-  font-size: 16px;
-  padding: 10px 35px;
-  border-radius: 20px;
-  font-weight: 500;
-  color: ${({ theme }) => theme.text5Sone};
-  background-color: ${({ theme }) => theme.f3f3f3};
-
-  :hover,
-  :active,
-  :focus {
-    outline: none;
-    text-decoration: unset;
-  }
-
-  :hover {
-    background-color: ${({ theme }) => darken(0.1, theme.f3f3f3)};
-  }
-
-  ::after {
-    font-family: 'Inter var', sans-serif;
-    content: ' ↗';
-    font-size: 14px;
-    margin-left: 0.25rem;
-    margin-top: -0.25rem;
-  }
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    font-size: 13px;
-    padding: 6px 20px;
-    border-radius: 20px;
-  `}
-`
+import ViewPairAnalytics from '../ViewPairAnalytics'
+import { wrappedCurrency } from '../../utils/wrappedCurrency'
+import { useActiveWeb3React } from '../../hooks'
 
 function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippage: number }) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
   const theme = useTheme()
+
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
   const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
   const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
@@ -64,7 +32,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         <RowBetween>
           <RowFixed>
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-              {isExactIn ? 'Minimum received' : 'Maximum sold'}
+              {isExactIn ? t('minimum_received') : 'Maximum sold'}
             </Text>
             <QuestionHelper1416 text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />
           </RowFixed>
@@ -81,7 +49,7 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         <RowBetween>
           <RowFixed>
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-              Price Impact
+              {t('price_impact')}
             </Text>
             <QuestionHelper1416 text="The difference between the market price and estimated price due to trade size." />
           </RowFixed>
@@ -97,10 +65,14 @@ export interface AdvancedSwapDetailsProps {
 }
 
 export function AdvancedSwapDetailsContent({ trade }: AdvancedSwapDetailsProps) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
 
   const [allowedSlippage] = useUserSlippageTolerance()
+  const { chainId } = useActiveWeb3React()
+  const tokenInput = trade && chainId && wrappedCurrency(trade.route.input, chainId)
+  const tokenOutput = trade && chainId && wrappedCurrency(trade.route.output, chainId)
 
   const showRoute = Boolean(trade && trade.route.path.length > 2)
 
@@ -115,7 +87,7 @@ export function AdvancedSwapDetailsContent({ trade }: AdvancedSwapDetailsProps) 
                 <RowBetween>
                   <RowFixed>
                     <Text fontWeight={500} fontSize={16} color={theme.text4Sone}>
-                      Route
+                      {t('route')}
                     </Text>
                     <QuestionHelper1416 text="Routing through these tokens resulted in the best price for your trade." />
                   </RowFixed>
@@ -127,12 +99,11 @@ export function AdvancedSwapDetailsContent({ trade }: AdvancedSwapDetailsProps) 
             </Row>
           )}
           <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '35px' }}>
-            <InfoLink
-              href={'https://info.uniswap.org/pair/' + trade.route.pairs[0].liquidityToken.address}
-              target="_blank"
-            >
-              View {trade.route.input.symbol} - {trade.route.output.symbol} analytics
-            </InfoLink>
+            <ViewPairAnalytics
+              pairAddress={trade.route.pairs[0].liquidityToken.address}
+              tokenA={tokenInput}
+              tokenB={tokenOutput}
+            />
           </ColumnCenter>
         </>
       )}

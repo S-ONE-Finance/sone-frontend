@@ -1,25 +1,28 @@
+import React, { forwardRef, useRef } from 'react'
+import { Currency } from '@s-one-finance/sdk-core'
+import { CountUp } from 'use-count-up'
+import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import Row from '../../../components/Row'
 import CurrencyLogo from '../../../components/CurrencyLogo'
-import React, { forwardRef, useRef } from 'react'
-import { Card, Heading } from '../components'
-import { Currency } from '@s-one-finance/sdk-core'
+import { Card, Heading, Section } from '../components'
 import { useAggregateSoneBalance, useCurrencyBalance } from '../../../state/wallet/hooks'
 import { MouseoverTooltip } from '../../../components/Tooltip'
 import { useActiveWeb3React } from '../../../hooks'
 import usePrevious from '../../../hooks/usePrevious'
-import { CountUp } from 'use-count-up'
 import SoneBigImage from './SoneBigImage'
-import styled from 'styled-components'
 
 const CardBalance = styled(Card)`
   padding: 51px 99px;
+  border-radius: 40px;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    padding: 51px 39px;    
+    padding: 51px 39px;
   `}
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    padding: 20px 32px;    
+    padding: 20px 32px;
+    border-radius: 25px;
   `}
 `
 
@@ -57,17 +60,6 @@ const TextBalanceSymbol = styled.div`
   `}
 `
 
-const MyBalanceWrapper = styled.div`
-  display: grid;
-  grid-auto-rows: auto;
-  grid-row-gap: 2rem;
-  justify-items: center;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    grid-row-gap: 10px;
-  `}
-`
-
 const BalanceSection = styled.div`
   display: grid;
   grid-auto-rows: auto;
@@ -95,7 +87,6 @@ const BalanceCountUp = forwardRef<HTMLDivElement, { balance: string | undefined 
   const formattedBalance = balance === undefined ? 0 : +balance
   const prevFormattedBalance = usePrevious(formattedBalance)
   const prevFormattedBalanceReset = prevFormattedBalance === formattedBalance ? 0 : prevFormattedBalance
-
   return (
     <MouseoverTooltip text={balance ?? '--'}>
       <TextBalanceAmount ref={ref}>
@@ -113,6 +104,7 @@ const BalanceCountUp = forwardRef<HTMLDivElement, { balance: string | undefined 
 })
 
 export default function MyBalance() {
+  const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 
   const soneBalance: string | undefined = useAggregateSoneBalance()?.toFixed(2)
@@ -122,26 +114,26 @@ export default function MyBalance() {
   const soneBalanceRef = useRef<HTMLDivElement>(null)
 
   return (
-    <MyBalanceWrapper>
-      <Heading>My Balance</Heading>
+    <Section>
+      <Heading>{t('my_balance')}</Heading>
       <CardBalance>
         <Row>
           <BalanceSection>
-            <TextBalance>Your Available Balance</TextBalance>
+            <TextBalance>{t('your_available_balance')}</TextBalance>
             <RowBaseLine>
               <SoneLogo />
               <BalanceCountUp balance={soneBalance} ref={soneBalanceRef} />
-              <TextBalanceSymbol>SONE</TextBalanceSymbol>
+              <TextBalanceSymbol>{t('SONE')}</TextBalanceSymbol>
             </RowBaseLine>
             <RowBaseLine>
               <EthLogo />
               <BalanceCountUp balance={ethBalance} ref={ethBalanceRef} />
-              <TextBalanceSymbol>ETH</TextBalanceSymbol>
+              <TextBalanceSymbol>{t('ETH')}</TextBalanceSymbol>
             </RowBaseLine>
           </BalanceSection>
           <SoneBigImage ethBalanceRef={ethBalanceRef} soneBalanceRef={soneBalanceRef} />
         </Row>
       </CardBalance>
-    </MyBalanceWrapper>
+    </Section>
   )
 }

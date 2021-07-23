@@ -17,10 +17,6 @@ const StyledPolling = styled.div`
   :hover {
     opacity: 1;
   }
-
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    display: none;
-  `}
 `
 const StyledPollingDot = styled.div`
   width: 19px;

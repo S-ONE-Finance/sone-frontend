@@ -3,12 +3,32 @@ import ReactGA from 'react-ga'
 import { Link } from 'react-router-dom'
 import styled, { keyframes } from 'styled-components'
 import { darken } from 'polished'
-import { ArrowLeft } from 'react-feather'
+import { ArrowDown, ArrowLeft, Plus } from 'react-feather'
 import { ReactComponent as DropDown } from 'assets/images/dropdown.svg'
 import { ReactComponent as Close } from '../assets/images/x.svg'
 import Column from 'components/Column'
 import { ReactComponent as SortDownIconSvg } from 'assets/svg/sort_down_icon.svg'
 import { ReactComponent as SortUpIconSvg } from 'assets/svg/sort_up_icon.svg'
+import useTheme from '../hooks/useTheme'
+import { useIsUpToExtraSmall } from '../hooks/useWindowSize'
+
+export const AppBody = styled.div`
+  position: relative;
+  max-width: 602px;
+  width: 100%;
+  background: ${({ theme }) => theme.bg1Sone};
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.15);
+  border-radius: 30px;
+`
+
+export const StyledPadding = styled.div`
+  position: relative;
+  padding: 0 30px 35px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 0 10px 25px;
+  `}
+`
 
 export const ButtonText = styled.button`
   outline: none;
@@ -138,8 +158,8 @@ export const StyledInternalLink = styled(Link)`
 const StyledLink = styled.a`
   text-decoration: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.primary1};
-  font-weight: 500;
+  color: ${({ theme }) => theme.blue1};
+  font-weight: 400;
 
   :hover {
     text-decoration: underline;
@@ -231,6 +251,18 @@ export const CustomLightSpinner = styled(Spinner)<{ size: string }>`
   width: ${({ size }) => size};
 `
 
+export const HideLarge = styled.span`
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    display: none;
+  `};
+`
+
+export const HideMedium = styled.span`
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: none;
+  `};
+`
+
 export const HideSmall = styled.span`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     display: none;
@@ -260,9 +292,13 @@ export const TextPanelLabel = styled.div`
   `};
 `
 
+export const TextPanelLabelAccent = styled(TextPanelLabel)`
+  color: ${({ theme }) => theme.text6Sone};
+`
+
 export const CurrencySelect = styled.button<{ selected: boolean }>`
   align-items: center;
-  height: 40px;
+  height: 41px;
   font-size: 20px;
   font-weight: 500;
   background-color: ${({ theme }) => theme.white};
@@ -321,3 +357,17 @@ export const PanelSearchContentWrapper = styled(Column)`
   position: relative;
   background-color: ${({ theme }) => theme.bg1Sone};
 `
+
+export const StyledArrowDown = () => {
+  const theme = useTheme()
+  const isUpToExtraSmall = useIsUpToExtraSmall()
+
+  return <ArrowDown size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />
+}
+
+export const StyledPlus = () => {
+  const theme = useTheme()
+  const isUpToExtraSmall = useIsUpToExtraSmall()
+
+  return <Plus size={isUpToExtraSmall ? '14' : '22'} color={theme.text1Sone} />
+}
