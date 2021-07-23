@@ -27,7 +27,7 @@ export const MyStakeItem: React.FC<{ userInfo: UserInfoSushi }> = ({ userInfo })
       <div>APY: {Number(userInfo.pool?.roiPerYear) * 100}%</div>
       <div>Rewarded SONE: {userInfo.sushiHarvested}</div>
       <div>Available Reward: {pendingReward?.toString()}</div>
-      <Link to={`/unstake/${userInfo.pool?.pid}`}>Unstake</Link>
+      <Link to={`/my-account/unstake/${userInfo.pool?.pid}`}>Unstake</Link>
       <br />
       <Link to={`/staking/${userInfo.pool?.pid}`}>Stake more</Link>
       <br />
