@@ -178,8 +178,10 @@ const StakingWrapper = styled.div`
 const Box = styled.div`
   width: 100%;
   margin-bottom: 2.5rem;
+  // TODO: refactor hết đống này sử dụng mediaWith.
   @media (min-width: 1200px) {
-    background: url(${({ theme }) => theme.bgStaking});
+    background-image: url(${({ theme }) => theme.bgStakingPage});
+    background-size: 100%;
     background-repeat: no-repeat;
   }
 `
@@ -189,8 +191,9 @@ const WrapTitle = styled.div`
   width: 100%;
   padding: 25px 20px;
   font-size: 20px;
+  // TODO: refactor hết đống này sử dụng mediaWith.
   @media (min-width: 1200px) {
-  background: ${({ theme }) => theme.bg13Sone};
+    background: ${({ theme }) => theme.bg13Sone};
     height: 300px;
     padding: 25px;
     font-size: 45px;
@@ -198,17 +201,19 @@ const WrapTitle = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
   }
+}
 `
 
 const StyledCurrently = styled.div`
   margin-bottom: 20px;
   line-height: 30px;
+
   & > span {
     color: #65bac5;
     font-weight: 700;
   }
+
   @media (min-width: 768px) {
     line-height: normal;
   }
