@@ -37,6 +37,7 @@ import ViewPairAnalytics from '../../components/ViewPairAnalytics'
 import useWithdrawLiquidityCallback from '../../hooks/useWithdrawLiquidityCallback'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import BrandIdentitySoneForMobile from '../../components/BrandIdentitySoneForMobile'
 
 const TextPrice = styled(Text)`
   font-weight: 500;
@@ -393,6 +394,7 @@ export default function WithdrawLiquidity({
         )}
         pendingText={pendingText}
       />
+      <BrandIdentitySoneForMobile />
       <AppBody style={{ marginTop: isUpToExtraSmall ? '1.25rem' : '1.5rem' }}>
         <AppBodyTitleDescriptionSettings transactionType={TransactionType.WITHDRAW} />
         <StyledPadding>
