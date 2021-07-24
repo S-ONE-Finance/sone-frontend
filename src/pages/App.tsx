@@ -15,11 +15,6 @@ import Footer from '../components/Footer'
 import Polling from '../components/Polling'
 import Popups from '../components/Popups'
 import Web3ReactManager from '../components/Web3ReactManager'
-import TabSwapLiquidity from '../components/TabSwapLiquidity'
-import WeeklyRanking from '../components/WeeklyRanking'
-
-import { ExtraSmallOnly, HideLarge } from '../theme'
-import BrandIdentitySone from 'components/BrandInTopMobile'
 import AbsolutePendingTxs from '../components/AbsolutePendingTxs'
 
 import Routing from './Routing'
@@ -125,25 +120,12 @@ export default function App() {
         </HeaderWrapper>
         <BodyWrapper pathC={pathname}>
           <Popups />
-          <HideLarge>
-            <Polling />
-          </HideLarge>
+          <Polling />
           <TopLevelModals />
-          <ExtraSmallOnly>
-            <AbsolutePendingTxs />
-            <OnlyShowAt paths={['/swap', '/add', '/my-account/withdraw']}>
-              <BrandIdentitySone />
-            </OnlyShowAt>
-          </ExtraSmallOnly>
-          <OnlyShowAt paths={['/swap', '/add']}>
-            <TabSwapLiquidity />
-          </OnlyShowAt>
+          <AbsolutePendingTxs />
           <Web3ReactManager>
             <Routing />
           </Web3ReactManager>
-          <OnlyShowAt paths={['/swap', '/add']}>
-            <WeeklyRanking />
-          </OnlyShowAt>
         </BodyWrapper>
         <FooterWrapper>
           <Footer />

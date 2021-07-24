@@ -134,7 +134,7 @@ declare module 'styled-components' {
     bgMyStaking: string
     bgMyStakingUpToExtraSmall: string
 
-    bgStaking: string
+    bgStakingPage: string
 
     bgParty: string
   }
