@@ -181,6 +181,7 @@ const Box = styled.div`
   @media (min-width: 1200px) {
     background: url(${({ theme }) => theme.bgStaking});
     background-repeat: no-repeat;
+    background-position: top center;
   }
 `
 

@@ -77,7 +77,7 @@ const StyledCards = styled.div`
   justify-content: center;
   width: 100%;
   padding: 0 25px;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(340px, 396px));
   column-gap: 20px;
   row-gap: 20px;
 

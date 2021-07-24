@@ -73,11 +73,16 @@ const WrapFilter = styled.div`
 const FilterLabel = styled.div`
   display: flex;
   align-items: center;
-  flex-basis: 100px;
+  flex-basis: 130px;
   & > span {
     margin-left: 5px;
     font-size: 13px;
     color: ${({ theme }) => theme.text4Sone};
+  }
+  @media (min-width: 1200px) {
+    & > span {
+      font-size: 20px;
+    }
   }
 `
 const FilterItemsWrap = styled.div`
