@@ -20,10 +20,7 @@ const StakingHeader = () => {
             <StyledItemTitle>01</StyledItemTitle>
             <StyledContent>
               <StyledTitle>Add Liquidity</StyledTitle>
-              <StyledDescription>
-                Explain how to add liquidity. <br />
-                Explain how to add liquidity.
-              </StyledDescription>
+              <StyledDescription>Explain how to add liquidity.</StyledDescription>
             </StyledContent>
           </StyledItemBody>
         </StyledItem>
@@ -34,11 +31,8 @@ const StakingHeader = () => {
           <StyledItemBody>
             <StyledItemTitle>02</StyledItemTitle>
             <StyledContent>
-              <StyledTitle>Stake</StyledTitle>
-              <StyledDescription>
-                Explain how to stake here. <br />
-                Explain how to stake here.
-              </StyledDescription>
+              <StyledTitle>Staking</StyledTitle>
+              <StyledDescription>Explain how to stake here.</StyledDescription>
             </StyledContent>
           </StyledItemBody>
         </StyledItem>
@@ -50,7 +44,7 @@ const StakingHeader = () => {
             <StyledItemTitle>03</StyledItemTitle>
             <StyledContent>
               <StyledTitle>Get Your Rewards</StyledTitle>
-              <StyledDescription>Get your rewards after the steps. Get your rewards after the steps.</StyledDescription>
+              <StyledDescription>Get your rewards after the steps.</StyledDescription>
             </StyledContent>
           </StyledItemBody>
         </StyledItem>

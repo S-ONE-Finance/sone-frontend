@@ -32,18 +32,18 @@ const FilterC: React.FC<Filter> = function({ options, icon, title, value, handle
     <>
       <WrapFilter ref={node as any}>
         <FilterLabel>
-          <img src={icon} />
+          <img src={icon} alt="icon" />
           <span>{title}:</span>
         </FilterLabel>
         <FilterItemsWrap>
           <FilterSelected onClick={() => setToggleOpen(!toggleOpen)}>
-            {value} <img src={iconArrowDown} />
+            {value} <img src={iconArrowDown} alt="icon-arrow-down" />
           </FilterSelected>
           {toggleOpen && (
             <FilterItems>
               <FilterItemDefault>
                 {title}
-                <img src={iconArrowDown} />
+                <img src={iconArrowDown} alt="icon-arrow-down" />
               </FilterItemDefault>
               {options.map((option, opKey) => (
                 <FilterItem key={opKey} onClick={() => onClickItem(option.value)}>

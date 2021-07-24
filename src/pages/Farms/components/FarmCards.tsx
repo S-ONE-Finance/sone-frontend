@@ -74,30 +74,31 @@ const CardWrap = styled.div`
 
 const StyledCards = styled.div`
   display: grid;
+  justify-content: center;
   width: 100%;
   padding: 0 25px;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  column-gap: 13px;
-  row-gap: 13px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  column-gap: 20px;
+  row-gap: 20px;
 
   @media (min-width: 768px) {
     column-gap: 25px;
     row-gap: 25px;
-    grid-template-columns: repeat(2, minmax(350px, 390px));
+    grid-template-columns: repeat(2, minmax(340px, 396px));
   }
 
   @media (min-width: 1024px) {
     padding: 10px 25px 25px;
     column-gap: 45px;
     row-gap: 45px;
-    grid-template-columns: repeat(2, minmax(350px, 390px));
+    grid-template-columns: repeat(2, minmax(340px, 396px));
   }
 
   @media (min-width: 1200px) {
     padding: 25px 25px 25px;
     column-gap: 50px;
     row-gap: 50px;
-    grid-template-columns: repeat(3, minmax(350px, 390px));
+    grid-template-columns: repeat(3, minmax(340px, 396px));
   }
 `
 
@@ -133,12 +134,16 @@ const StyledItemRow = styled.div`
   justify-content: space-between;
   box-sizing: border-box;
   border-radius: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   background: transparent;
   width: 100%;
   border: 0px solid #e6dcd5;
   @media (min-width: 1024px) {
     font-size: 16px;
+  }
+
+  @media (min-width: 1200px) {
+    margin-bottom: 30px;
   }
 
   & > span {
@@ -173,15 +178,21 @@ const StyledMultiplier = styled.div`
 const StyledCardHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 25px;
+  padding: 25px 20px;
   background: ${({ theme }) => theme.bg9Sone};
   width: 100%;
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
+  @media (min-width: 1200px) {
+    padding: 30px 25px;
+  }
 `
 
 const StyledCardBody = styled.div`
-  padding: 28px 25px;
+  padding: 25px 20px;
+  @media (min-width: 1200px) {
+    padding: 30px 25px;
+  }
 `
 const StyledCardHeaderTitle = styled.div`
   max-width: 60%;
@@ -201,7 +212,8 @@ const StyledButton = styled.div`
     font-weight: 700;
     margin: 20px auto 0;
     @media (min-width: 1024px) {
-      margin: 36px auto 0;
+      margin: 30px auto 0;
+      font-size: 24px;
     }
   }
 `

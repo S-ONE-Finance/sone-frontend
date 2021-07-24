@@ -4,15 +4,19 @@ import LoaderSone from '../LoaderSone'
 import useNoPendingTxs from '../../hooks/useNoPendingTxs'
 
 const LoaderSoneWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  right: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: none;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `}
 `
 
-export default function AbsolutePendingTxs() {
+export default function AbsolutePendingTxsForMobile() {
   const noPendingTxs = useNoPendingTxs() || 10
 
   if (noPendingTxs) {

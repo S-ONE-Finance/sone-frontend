@@ -22,6 +22,9 @@ import backgroundMyStakingUpToExtraSmall from '../assets/images/background-my-st
 import backgroundMyStakingUpToExtraSmallDark from '../assets/images/background-my-staking-dark-uptoextrasmall.svg'
 import Party from '../assets/images/party-light.svg'
 import PartyDark from '../assets/images/party-dark.svg'
+import backgroundStakingPageDark from '../assets/images/background-staking-page-dark.svg'
+import backgroundStakingPage from '../assets/images/background-staking-page-light.svg'
+
 import { darken } from 'polished'
 
 export * from './components'
@@ -113,7 +116,7 @@ export function colors(darkMode: boolean): Colors {
     text8Sone: '#767676',
     text9Sone: '#C9C9C9',
     text10Sone: darkMode ? '#AAAAAA' : '#333333',
-    text11Sone: darkMode ? '#FFFFFF' : '#000000', // NOTE: dùng uppcase 6 ký tự, không dùng "#fff".
+    text11Sone: darkMode ? '#FFFFFF' : '#000000',
     text12Sone: darkMode ? '#263F59' : '#F2F2F2',
     text13Sone: '#AAAAAA',
 
@@ -132,6 +135,11 @@ export function colors(darkMode: boolean): Colors {
     bg10Sone: darkMode ? '#0E2B4A' : 'linear-gradient(359.3deg, #ededed 26.78%, #ffffff 66.23%)',
     bg11Sone: '#C4C4C4',
     bg12Sone: darkMode ? '#212429' : '#FAFAFA',
+    bg13Sone: darkMode ? '#0E2B4A' : 'linear-gradient(180deg, #F3F3F3 0%, rgba(243, 243, 243, 0) 100%)',
+    bg14Sone: darkMode
+      ? 'linear-gradient(180deg, #204A76 0%, #0A1C29 100%)'
+      : 'linear-gradient(180deg, #F3F3F3 0%, rgba(243, 243, 243, 0) 100%)',
+    bg15Sone: darkMode ? '#0A1C29' : 'linear-gradient(0deg, #FFFFFF, #FFFFFF), #FFF2EF;',
     bgPanels: darkMode ? 'transparent' : '#F3F3F3',
 
     border1Sone: darkMode ? '#AAAAAA' : '#C9C9C9',
@@ -162,7 +170,6 @@ export function theme(darkMode: boolean): DefaultTheme {
       md: 12,
       lg: 24
     },
-
     //shadows
     shadow1: darkMode ? '#000' : '#2F80ED',
 
@@ -187,6 +194,8 @@ export function theme(darkMode: boolean): DefaultTheme {
 
     bgMyStaking: darkMode ? backgroundMyStakingDark : backgroundMyStaking,
     bgMyStakingUpToExtraSmall: darkMode ? backgroundMyStakingUpToExtraSmallDark : backgroundMyStakingUpToExtraSmall,
+
+    bgStakingPage: darkMode ? backgroundStakingPageDark : backgroundStakingPage,
 
     bgParty: darkMode ? PartyDark : Party
   }
@@ -304,29 +313,6 @@ export const ThemedGlobalStyle = createGlobalStyle`
   html {
     color: ${({ theme }) => theme.text1};
     background-color: ${({ theme }) => theme.bg2};
-  }
-
-  body {
-    // min-height: 100vh;
-    // min-width: 100vw; // Bỏ qua width của scrollbar.
-    // overflow-x: hidden;
-    // background-attachment: fixed;
-    // background-position: center;
-    // background-repeat: no-repeat;
-    // background-image: url(${({ theme }) => theme.bgImage});
-    // background-size: cover;
-    //
-    // ${({ theme }) => theme.mediaWidth.upToLarge`
-    //   background-image: url(${({ theme }) => theme.bgImageUpToLarge});
-    // `}
-    //
-    // ${({ theme }) => theme.mediaWidth.upToSmall`
-    //   background-image: url(${({ theme }) => theme.bgImageUpToSmall});
-    // `}
-    //
-    // ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    //   background-image: url(${({ theme }) => theme.bgImageUpToExtraSmall});
-    // `}
   }
 
   /* width */

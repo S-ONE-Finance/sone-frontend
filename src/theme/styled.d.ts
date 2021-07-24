@@ -77,6 +77,9 @@ export interface Colors {
   bg10Sone: Color
   bg11Sone: Color
   bg12Sone: Color
+  bg13Sone: Color
+  bg14Sone: Color
+  bg15Sone: Color
   bgPanels: Color
 
   /* Others */
@@ -108,7 +111,6 @@ export interface Grids {
 declare module 'styled-components' {
   export interface DefaultTheme extends Colors {
     grids: Grids
-
     // shadows
     shadow1: string
 
@@ -131,6 +133,8 @@ declare module 'styled-components' {
 
     bgMyStaking: string
     bgMyStakingUpToExtraSmall: string
+
+    bgStakingPage: string
 
     bgParty: string
   }

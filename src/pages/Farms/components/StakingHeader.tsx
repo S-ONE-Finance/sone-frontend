@@ -13,23 +13,22 @@ const StakingHeader = () => {
       image: AddLiquidity,
       numberST: '01',
       contentTitle: 'Add Liquidity',
-      contentDescription: `Explain how to add liquidity. <br />
-      Explain how to add liquidity.`
+      contentDescription: `Lorem ipsum dolor sit amet.`
     },
     {
       image: Stake,
       numberST: '02',
-      contentTitle: 'Stake',
-      contentDescription: ` Explain how to stake here. <br />
-      Explain how to stake here.`
+      contentTitle: 'Staking',
+      contentDescription: `Lorem ipsum dolor sit amet.`
     },
     {
       image: GetReward,
       numberST: '03',
-      contentTitle: 'Get Your Rewards',
-      contentDescription: `Get your rewards after the steps. Get your rewards after the steps.`
+      contentTitle: 'Get Rewards',
+      contentDescription: `Lorem ipsum dolor sit amet.`
     }
   ]
+
   const darkMode = useIsDarkMode()
 
   return (
@@ -45,7 +44,7 @@ const StakingHeader = () => {
           {headersOptions.map((option, opIndex) => (
             <StyledItem key={opIndex}>
               <StyledItemImage>
-                <img src={AddLiquidity} alt="" />
+                <img src={option.image} alt="" />
               </StyledItemImage>
               <StyledItemBody>
                 <StyledItemBodyNumberST>{option.numberST}</StyledItemBodyNumberST>
@@ -117,9 +116,8 @@ const StyledItem = styled.div`
   padding: 18px 10px;
   margin-left: 20px;
   background: ${({ theme }) => theme.bg8Sone};
-  box-shadow: 0px 0px 50px rgba(92, 36, 38, 0.15);
+  box-shadow: 0 0 50px rgba(92, 36, 38, 0.15);
   border-radius: 5px;
-  min-width: 270px;
   min-width: 270px;
   flex-grow: 1;
   flex-basis: 0;

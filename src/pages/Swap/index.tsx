@@ -60,6 +60,9 @@ import useTheme from '../../hooks/useTheme'
 import { TransactionType } from '../../state/transactions/types'
 import { useIsAccountReferred, useIsReferralWorksOnCurrentNetwork, useReferral } from '../../state/referral/hooks'
 import useAccountIsReferrer from '../../hooks/useAccountIsReferrer'
+import WeeklyRanking from '../../components/WeeklyRanking'
+import TabSwapLiquidity from '../../components/TabSwapLiquidity'
+import BrandIdentitySoneForMobile from '../../components/BrandIdentitySoneForMobile'
 
 export const ResponsiveAutoColumn = styled(AutoColumn)`
   padding: 23px 14px 0;
@@ -346,6 +349,8 @@ export default function Swap({ history }: RouteComponentProps) {
         onConfirm={handleConfirmTokenWarning}
         onDismiss={handleDismissTokenWarning}
       />
+      <BrandIdentitySoneForMobile />
+      <TabSwapLiquidity />
       <AppBody>
         <AppBodyTitleDescriptionSettings transactionType={TransactionType.SWAP} />
         <StyledPadding id="swap-page">
@@ -636,6 +641,7 @@ export default function Swap({ history }: RouteComponentProps) {
           )}
         </StyledPadding>
       </AppBody>
+      <WeeklyRanking />
       {swapIsUnsupported && (
         <UnsupportedCurrencyFooter show={swapIsUnsupported} currencies={[currencies.INPUT, currencies.OUTPUT]} />
       )}
