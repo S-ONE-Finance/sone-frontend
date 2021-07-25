@@ -97,12 +97,6 @@ function TopLevelModals() {
   return <AddressClaimModal isOpen={open} onDismiss={toggle} />
 }
 
-function OnlyShowAt({ children, paths }: { children?: React.ReactNode; paths: Array<string> }) {
-  const location = useLocation()
-  const { pathname } = location
-  return children && paths.some(path => pathname.startsWith(path)) ? <>{children}</> : null
-}
-
 export default function App() {
   // Trigger i18next in entire app.
   useTranslation()

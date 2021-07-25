@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import { useActiveWeb3React } from '../../../hooks'
 import { useAggregateSoneBalance, useCurrencyBalance } from '../../../state/wallet/hooks'
 import { Currency } from '@s-one-finance/sdk-core'
@@ -30,7 +30,9 @@ export default function SoneBigImage({
   const [isShowBigImage, setShowBigImage] = useState(false)
   const { width: windowWidth } = useWindowSize()
 
-  useEffect(() => {
+  // "useLayoutEffect: If you need to mutate the DOM and/or do need to perform measurements"
+  // https://kentcdodds.com/blog/useeffect-vs-uselayouteffect
+  useLayoutEffect(() => {
     setShowBigImage(
       !!(
         ethBalanceRef?.current &&
