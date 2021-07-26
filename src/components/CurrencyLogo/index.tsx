@@ -51,16 +51,16 @@ const SoneLogo = styled.img<{ size: string; sizeMobile: string }>`
 
 export default function CurrencyLogo({
   currency,
+  address,
   size = '24px',
   sizeMobile = '16px',
-  style,
-  address
+  style
 }: {
   currency?: Currency
+  address?: string
   size?: string
   sizeMobile?: string
   style?: CSSProperties
-  address?: string
 }) {
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
 

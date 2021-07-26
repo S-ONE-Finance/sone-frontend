@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react'
-import { Pair } from '@s-one-finance/sdk-core'
+import React, { useMemo, useState } from 'react'
+import { UserInfoSushi } from '@s-one-finance/sdk-core'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { darken } from 'polished'
@@ -10,18 +10,17 @@ import CurrencyLogoDouble from '../../../components/CurrencyLogoDouble'
 import Column from '../../../components/Column'
 import { useIsUpToExtraSmall, useIsUpToSmall } from '../../../hooks/useWindowSize'
 import useTheme from '../../../hooks/useTheme'
-import { unwrappedToken } from '../../../utils/wrappedCurrency'
 import {
   DownIcon,
   FlexibleRow,
-  Watermark,
   MyLiquidityAndStakingContainer,
+  MyStakingDetailedSection,
   PairName,
   SummarySection,
   TextAPY,
   TextLpTokens,
   TextPercentage,
-  MyStakingDetailedSection
+  Watermark
 } from '../components'
 import EscalationDark from '../../../assets/images/escalation-dark.svg'
 import EscalationLight from '../../../assets/images/escalation-light.svg'
@@ -29,6 +28,9 @@ import { useIsDarkMode } from '../../../state/user/hooks'
 import SoneLogoSvg from '../../../assets/images/logo_token_sone.svg'
 import TickIconSvg from '../../../assets/images/tick-icon.svg'
 import { HideExtraSmall } from '../../../theme'
+import usePendingReward from '../../../hooks/masterfarmer/usePendingReward'
+import { getBalanceNumber } from '../../../hooks/masterfarmer/utils'
+import useClaimReward from '../../../hooks/masterfarmer/useClaimReward'
 
 const DetailedSectionIcon = styled.img`
   width: 90px;
@@ -51,6 +53,7 @@ const RewardedSone = styled(Text)`
 const RewardedSoneValue = styled(Text)`
   font-weight: 700;
   color: ${({ theme }) => theme.text5Sone};
+  word-break: break-all;
 `
 
 const MyStakingButton = styled.button`
@@ -83,13 +86,16 @@ const MyStakingButton = styled.button`
 const ButtonUnstake = styled(MyStakingButton)`
   background-color: ${({ theme }) => theme.text9Sone};
   color: #333333;
+
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.text9Sone)};
     background-color: ${({ theme }) => darken(0.05, theme.text9Sone)};
   }
+
   &:hover {
     background-color: ${({ theme }) => darken(0.05, theme.text9Sone)};
   }
+
   &:active {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.text9Sone)};
     background-color: ${({ theme }) => darken(0.1, theme.text9Sone)};
@@ -99,13 +105,16 @@ const ButtonUnstake = styled(MyStakingButton)`
 const ButtonStake = styled(MyStakingButton)`
   background-color: ${({ theme }) => theme.red1Sone};
   color: white;
+
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.red1Sone)};
     background-color: ${({ theme }) => darken(0.05, theme.red1Sone)};
   }
+
   &:hover {
     background-color: ${({ theme }) => darken(0.05, theme.red1Sone)};
   }
+
   &:active {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.red1Sone)};
     background-color: ${({ theme }) => darken(0.1, theme.red1Sone)};
@@ -115,13 +124,16 @@ const ButtonStake = styled(MyStakingButton)`
 const ButtonRequestReward = styled(MyStakingButton)`
   background-color: ${({ theme }) => theme.text5Sone};
   color: white;
+
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.text5Sone)};
     background-color: ${({ theme }) => darken(0.05, theme.text5Sone)};
   }
+
   &:hover {
     background-color: ${({ theme }) => darken(0.05, theme.text5Sone)};
   }
+
   &:active {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.text5Sone)};
     background-color: ${({ theme }) => darken(0.1, theme.text5Sone)};
@@ -172,16 +184,15 @@ const RowButtons = styled(Row)`
   `}
 `
 
-export default function MyStakingItem({
-  pair,
-  isShowDetailedSection,
-  setDetailPair
-}: {
-  pair: Pair
+type MyStakingItemProps = {
+  userInfo: UserInfoSushi
   isShowDetailedSection: boolean
-  setDetailPair: React.Dispatch<React.SetStateAction<string | undefined>>
-}) {
+  setDetailUserInfo: React.Dispatch<React.SetStateAction<string | undefined>>
+}
+
+export default function MyStakingItem({ userInfo, isShowDetailedSection, setDetailUserInfo }: MyStakingItemProps) {
   const { t } = useTranslation()
+
   // Style.
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const isUpToSmall = useIsUpToSmall()
@@ -189,15 +200,31 @@ export default function MyStakingItem({
   const isDark = useIsDarkMode()
 
   // Data.
-  const currency0 = unwrappedToken(pair.token0)
-  const currency1 = unwrappedToken(pair.token1)
+  const symbol = userInfo.pool?.symbol ?? '--'
+  const token0Address = userInfo.pool?.liquidityPair.token0.id ?? undefined
+  const token1Address = userInfo.pool?.liquidityPair.token1.id ?? undefined
 
-  const _8e8 = '888,888,888.888'
-  const _8e5 = '888,888.888'
+  const rewardedSone = isNaN(+userInfo.sushiHarvested) ? '--' : (+userInfo.sushiHarvested).toFixed(6)
+  // TODO: Kiểm tra lại chỗ này, tại sao availableRewardRaw có thể undefined?
+  const availableRewardRaw = usePendingReward(Number(userInfo.pool?.pid))
+  const availableReward = availableRewardRaw === undefined ? '0' : availableRewardRaw.toNumber().toFixed(6)
 
-  const rewardedSone = _8e5
-  const availableReward = _8e5
+  const myStakedLpToken = getBalanceNumber(userInfo.amount).toFixed(9)
+  const apy = userInfo.pool?.roiPerYear === undefined ? '--' : `${userInfo.pool.roiPerYear * 100}%`
 
+  const [poolRequestPending, setPoolRequestPending] = useState(false)
+  const { onClaimReward } = useClaimReward()
+  const claimReward = async (farmId: number | undefined) => {
+    console.log('farmId', farmId)
+    // TODO: Đoạn này đang xử lý tạm à? True -> Progressing -> False (forever luôn).
+    if (farmId !== undefined) {
+      setPoolRequestPending(true)
+      await onClaimReward(farmId)
+      setPoolRequestPending(false)
+    }
+  }
+
+  // Dynamic style.
   const isLongNumber = useMemo(() => rewardedSone.toString().length + availableReward.toString().length >= 20, [
     rewardedSone,
     availableReward
@@ -219,32 +246,32 @@ export default function MyStakingItem({
           flexDirection={isUpToExtraSmall ? 'column' : 'row'}
           align={isUpToExtraSmall ? 'flex-start' : 'center'}
         >
-          <CurrencyLogoDouble currency0={currency0} currency1={currency1} size={22} />
+          <CurrencyLogoDouble token0Address={token0Address} token1Address={token1Address} size={22} />
           <PairName
             style={{
               marginLeft: isUpToExtraSmall ? '0' : '20px'
             }}
             text={t('LP Token')}
-          >{`${currency0.symbol}-${currency1.symbol}`}</PairName>
+          >
+            {symbol}
+          </PairName>
         </RowFitContent>
         <FlexibleRow gap={isUpToExtraSmall ? '0' : '10px'} justify="center">
           <Column width="fit-content" align="center">
             <Text color={theme.text8Sone} fontSize={isUpToSmall ? '13px' : '16px'}>
               {t('my_staked_lp_token')}
             </Text>
-            <TextLpTokens>{_8e8}</TextLpTokens>
+            <TextLpTokens>{myStakedLpToken}</TextLpTokens>
           </Column>
         </FlexibleRow>
         <Row gap="10px" justify="flex-end">
           <Column width="fit-content" justify="center" align="center">
-            <TextPercentage onClick={() => alert('Not implemented yet!')}>88.88%</TextPercentage>
+            <TextPercentage onClick={() => alert('Not implemented yet!')}>{apy}</TextPercentage>
             <TextAPY>{t('apy')}</TextAPY>
           </Column>
           <DownIcon
             active={isShowDetailedSection ? 0 : 1}
-            onClick={() =>
-              setDetailPair(prev => (prev === pair.liquidityToken.address ? undefined : pair.liquidityToken.address))
-            }
+            onClick={() => setDetailUserInfo(prev => (prev === userInfo.id ? undefined : userInfo.id))}
           />
         </Row>
       </SummarySection>
@@ -270,15 +297,15 @@ export default function MyStakingItem({
               </RowReward>
               <RowButtons justify="center" gap="2rem">
                 {/* TODO: Specific pair. */}
-                <ButtonUnstake as={Link} to="/my-account/unstake">
+                <ButtonUnstake as={Link} to={`/unstake/${userInfo.pool?.pid}`}>
                   {t('unstake')}
                 </ButtonUnstake>
                 {/* TODO: Specific pair. */}
-                <ButtonStake as={Link} to="/staking">
+                <ButtonStake as={Link} to={`/staking/${userInfo.pool?.pid}`}>
                   {t('stake_more')}
                 </ButtonStake>
                 {/* TODO: ??? */}
-                <ButtonRequestReward onClick={() => alert('Not implemented yet.')}>
+                <ButtonRequestReward disabled={poolRequestPending} onClick={() => claimReward(userInfo.pool?.pid)}>
                   {t('request_reward')}
                 </ButtonRequestReward>
               </RowButtons>

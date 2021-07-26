@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Currency, Pair } from '@s-one-finance/sdk-core'
+import { Pair } from '@s-one-finance/sdk-core'
 import { useTranslation } from 'react-i18next'
 
-import { PairSelect, TextPanelLabel, StyledTokenName, StyledDropDown } from '../../theme'
+import { PairSelect, StyledDropDown, StyledTokenName, TextPanelLabel } from '../../theme'
 import { RowBetween } from '../Row'
 import CurrencyLogoDouble from '../CurrencyLogoDouble'
 import ModalSearchPair from '../ModalSearchPair'
@@ -39,8 +39,8 @@ export default function PanelSelectPair({ selectedPair, onPairSelect, isLoading,
     setModalOpen(false)
   }
 
-  const currency0: Currency | null = selectedPair?.token0 ? unwrappedToken(selectedPair.token0) : null
-  const currency1: Currency | null = selectedPair?.token1 ? unwrappedToken(selectedPair.token1) : null
+  const currency0 = selectedPair?.token0 ? unwrappedToken(selectedPair.token0) : undefined
+  const currency1 = selectedPair?.token1 ? unwrappedToken(selectedPair.token1) : undefined
 
   return (
     <PanelWrapper>

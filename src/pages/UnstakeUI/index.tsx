@@ -55,7 +55,8 @@ export default function Unstake() {
     setTypedValue(lpTokenBalance.toString())
   }
 
-  const [isLoading, allPairs] = useAddedLiquidityPairs()
+  // All pairs lấy tạm thôi.
+  const [, allPairs] = useAddedLiquidityPairs()
 
   const showDetails = true
 

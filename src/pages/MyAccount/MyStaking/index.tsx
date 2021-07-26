@@ -1,33 +1,53 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import useMyAccountStaked from 'hooks/masterfarmer/useMyAccountStaked'
-import { MyStakeItem } from './MyStakeItem'
-import { UserInfoSushi } from '@s-one-finance/sdk-core'
+import { useTranslation } from 'react-i18next'
+import { Heading, Section, SectionButton, SectionText, PlusIcon, CardStaking, StakingList } from '../components'
+import { RowBetween, RowFitContent } from '../../../components/Row'
+import MyStakingItem from './MyStakingItem'
+import useAddedLiquidityPairs from '../../../hooks/useAddedLiquidityPairs'
+import OverallNetAPY from './OverallNetAPY'
+import useApyAndMyAccountStaked from './useApyAndMyAccountStaked'
 
 export default function MyStaking() {
-  const [netApy, setNetApy] = useState(0)
-  const myAccountStaked: UserInfoSushi[] = useMyAccountStaked()
+  const { t } = useTranslation()
+  // TODO: Not thí isLoading.
+  const [isLoading] = useAddedLiquidityPairs()
+  const [detailUserInfo, setDetailUserInfo] = useState<string | undefined>()
 
-  useEffect(() => {
-    let totalSoneHarvestUSD = 0
-    let totalLPStakeUSD = 0
-    myAccountStaked.forEach((user: UserInfoSushi) => {
-      totalSoneHarvestUSD += Number(user.sushiHarvestedUSD)
-      totalLPStakeUSD += (Number(user.amount) / 1e18) * Number(user.pool?.LPTokenPrice)
-    })
-    if (totalLPStakeUSD) {
-      setNetApy(totalSoneHarvestUSD / totalLPStakeUSD)
-    }
-  }, [myAccountStaked])
+  const [, myAccountStaked] = useApyAndMyAccountStaked()
 
   return (
-    <div>
-      <Link to={`/staking`}>Stake</Link>
-      <div>NET APY: {netApy * 100}%</div>
-      <hr />
-      {myAccountStaked.map((item, key) => {
-        return <MyStakeItem key={key} userInfo={item} />
-      })}
-    </div>
+    <Section>
+      <RowBetween>
+        <Heading>{t('my_staking')}</Heading>
+        <SectionButton as={Link} to="/staking">
+          <RowFitContent gap="8px">
+            <PlusIcon />
+            <SectionText>{t('stake')}</SectionText>
+          </RowFitContent>
+        </SectionButton>
+      </RowBetween>
+      <CardStaking>
+        {isLoading ? (
+          t('Loading...')
+        ) : myAccountStaked.length ? (
+          <>
+            <OverallNetAPY />
+            <StakingList>
+              {myAccountStaked.map(userInfo => (
+                <MyStakingItem
+                  key={userInfo.id}
+                  userInfo={userInfo}
+                  isShowDetailedSection={detailUserInfo === userInfo.id}
+                  setDetailUserInfo={setDetailUserInfo}
+                />
+              ))}
+            </StakingList>
+          </>
+        ) : (
+          t('No item to show.')
+        )}
+      </CardStaking>
+    </Section>
   )
 }

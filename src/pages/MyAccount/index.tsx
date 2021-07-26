@@ -1,31 +1,26 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import MyBalance from './MyBalance'
-import MyLiquidity from './MyLiquidity'
-import MyStaking from './MyStakingUI'
-import Referral from './Referral'
+import MyStaking from './MyStaking'
 import { useActiveWeb3React } from '../../hooks'
 import { Redirect } from 'react-router'
-import { MyAccountWrapper, Sections, PageTitleMobileOnly } from './components'
-import useAccountIsReferrer from '../../hooks/useAccountIsReferrer'
-import { useIsReferralWorksOnCurrentNetwork } from '../../state/referral/hooks'
+import { MyAccountWrapper, PageTitleMobileOnly, Sections } from './components'
 
 export default function MyAccount() {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 
-  const accountIsReferrer = useAccountIsReferrer()
-  const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
+  // const accountIsReferrer = useAccountIsReferrer()
+  // const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
 
   if (account) {
     return (
       <MyAccountWrapper>
         <PageTitleMobileOnly>{t('My Account')}</PageTitleMobileOnly>
         <Sections>
-          <MyBalance />
-          <MyLiquidity />
+          {/*<MyBalance />*/}
+          {/*<MyLiquidity />*/}
           <MyStaking />
-          {isReferralWorksOnCurrentNetwork && accountIsReferrer && <Referral />}
+          {/*{isReferralWorksOnCurrentNetwork && accountIsReferrer && <Referral />}*/}
         </Sections>
       </MyAccountWrapper>
     )
