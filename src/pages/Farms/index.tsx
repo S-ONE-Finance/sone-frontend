@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Farm, LiquidityPosition, UserInfoSushi } from '@s-one-finance/sdk-core'
 import _ from 'lodash'
+import { useTranslation } from 'react-i18next'
 import useMyStaked from 'hooks/masterfarmer/useMyStaked'
 import useMyLPToken from 'hooks/masterfarmer/useMyLPToken'
 import Balances from './components/Balances'
@@ -14,7 +15,13 @@ import FilterC from './components/FilterC'
 import iconFilter from '../../assets/images/icon-filter.svg'
 import iconSort from '../../assets/images/icon-sort.svg'
 
+type Options = {
+  value: string
+  label: string
+}
+
 export default function Farms() {
+  const { t } = useTranslation()
   const [farmData, setFarmData] = useState<Farm[] | undefined>([])
   const [totalLockValue, setTotalLockValue] = useState<BigNumber>(new BigNumber(0))
   const [circulatingSupplyValue, setCirculatingSupplyValue] = useState<BigNumber>(new BigNumber(0))
@@ -23,64 +30,72 @@ export default function Farms() {
   const myStaked: UserInfoSushi[] = useMyStaked()
   const myLpToken: LiquidityPosition[] = useMyLPToken()
 
-  const [sortBy, setSortBy] = useState('Bonus campaign')
-  const [filter, setFilter] = useState('Active pool')
-  const [optionsSort] = useState([
-    {
-      label: 'APY',
-      value: 'APY'
-    },
-    {
-      label: 'Total liquidity',
-      value: 'Total liquidity'
-    },
-    {
-      label: 'Bonus campaign',
-      value: 'Bonus campaign'
-    },
-    {
-      label: 'LP Name',
-      value: 'LP Name'
-    }
-  ])
-
-  const [optionsFilter] = useState([
-    {
-      label: 'Active pool',
-      value: 'Active pool'
-    },
-    {
-      label: 'Inactive',
-      value: 'Inactive'
-    },
-    {
-      label: 'My LP tokens',
-      value: 'My LP tokens'
-    },
-    {
-      label: 'Staked',
-      value: 'Staked'
-    }
-  ])
+  const [sortBy, setSortBy] = useState(t('bonus_campaign'))
+  const [filter, setFilter] = useState(t('active_pool'))
+  const [optionsSort, setOptionsSort] = useState<Options[]>([])
+  const [optionsFilter, setOptionsFilter] = useState<Options[]>([])
 
   const orderBy: { [key: string]: any } = {
-    APY: {
+    [t('apy')]: {
       condition: 'roiPerYear',
       by: 'desc'
     },
-    'Total liquidity': {
+    [t('total_liquidity')]: {
       condition: 'balanceUSD',
       by: 'desc'
     },
-    'Bonus campaign': {
+    [t('bonus_campaign')]: {
       condition: 'multiplier',
       by: 'desc'
     },
-    'LP Name': {
+    [t('lp_name')]: {
       condition: 'name',
       by: 'desc'
     }
   }
+
+  useEffect(() => {
+    setSortBy(t('bonus_campaign'))
+    setFilter(t('active_pool'))
+
+    setOptionsSort([
+      {
+        label: t('apy'),
+        value: t('apy')
+      },
+      {
+        label: t('total_liquidity'),
+        value: t('total_liquidity')
+      },
+      {
+        label: t('bonus_campaign'),
+        value: t('bonus_campaign')
+      },
+      {
+        label: t('lp_name'),
+        value: t('lp_name')
+      }
+    ])
+
+    setOptionsFilter([
+      {
+        label: t('active_pool'),
+        value: t('active_pool')
+      },
+      {
+        label: t('inactive'),
+        value: t('inactive')
+      },
+      {
+        label: t('my_lp_tokens'),
+        value: t('my_lp_tokens')
+      },
+      {
+        label: t('staked'),
+        value: t('staked')
+      }
+    ])
+  }, [t])
 
   const handlingSortBy = (results: Farm[], sortType: string) => {
     const item = orderBy[sortType]
@@ -107,17 +122,17 @@ export default function Farms() {
       // action filter
       let result: Farm[] = []
       switch (filter) {
-        case 'Active pool':
+        case t('active_pool'):
           result = farms.filter((farm: Farm) => Number(farm.allocPoint) !== 0)
           break
-        case 'Inactive':
+        case t('inactive'):
           result = farms.filter((farm: Farm) => Number(farm.allocPoint) === 0)
           break
-        case 'My LP tokens':
+        case t('my_lp_tokens'):
           const lpTokens = myLpToken.map((lp: LiquidityPosition) => lp.pair.id)
           result = farms.filter((farm: Farm) => lpTokens.includes(farm.pairAddress))
           break
-        case 'Staked':
+        case t('staked'):
           const pairStaked = myStaked.map(pool => Number(pool.pool?.id))
           result = farms.filter((farm: Farm) => pairStaked.includes(farm.pid))
           break
@@ -127,7 +142,7 @@ export default function Farms() {
 
       const resultsAfterSort = handlingSortBy(result, sortBy)
 
-      result = resultsAfterSort.filter(item => !isNaN(item.roiPerYear))
+      result = _.filter(resultsAfterSort, item => !isNaN(item.roiPerYear))
       setFarmData(result)
     }
   }
@@ -140,22 +155,27 @@ export default function Farms() {
     <StakingWrapper>
       <StakingHeader />
       <WrapTitle>
-        <StyledCurrently>
-          <b>S-ONE Finance</b> Currently Has <span>${totalLockValue.toNumber()}</span> Of Total Locked Value
-        </StyledCurrently>
+        <StyledCurrently
+          dangerouslySetInnerHTML={{
+            __html: t('sone_finance_currently_has_$2,189,400_of_total_locked_value', {
+              soneFinance: '<b>S-ONE Finance</b>',
+              lockValue: `<span>$${totalLockValue.toNumber()}</span>`
+            })
+          }}
+        />
         <Balances circulatingSupplyValue={circulatingSupplyValue.toNumber()} />
       </WrapTitle>
       <StyledFilterWrap>
         <StyledFilter>
           <FilterC
-            title="Sort by"
+            title={t('sort_by')}
             icon={iconSort}
             options={optionsSort}
             value={sortBy}
             handleOnchange={e => handleChangeDropDown(e, setSortBy)}
           />
           <FilterC
-            title="Filter"
+            title={t('filter')}
             icon={iconFilter}
             options={optionsFilter}
             value={filter}
@@ -190,13 +210,13 @@ const Box = styled.div`
 const WrapTitle = styled.div`
   background: ${({ theme }) => theme.bg14Sone};
   width: 100%;
-  padding: 25px 20px;
+  padding: 23px 21px 34px 36px;
   font-size: 20px;
   // TODO: refactor hết đống này sử dụng mediaWith.
   @media (min-width: 1200px) {
     background: ${({ theme }) => theme.bg13Sone};
-    height: 300px;
-    padding: 25px;
+    // height: 300px;
+    padding: 59px 0 71px 0;
     font-size: 45px;
     text-align: center;
     display: flex;
@@ -207,8 +227,8 @@ const WrapTitle = styled.div`
 `
 
 const StyledCurrently = styled.div`
-  margin-bottom: 20px;
-  line-height: 30px;
+  margin-bottom: 18px;
+  line-height: 24px;
 
   & > span {
     color: #65bac5;
@@ -230,14 +250,16 @@ const StyledFilter = styled.div`
   width: 100%;
   min-width: 300px
   max-width: 1000px
-  padding: 0 25px;
+  padding: 0 21px 0 25px;
+  margin-bottom: 25px;
   @media (min-width: 1024px) {
     display: flex;
     align-items: center;
   }
 
   @media (min-width: 1200px) {
-    margin-top: 50px;
+    padding: 0;
+    margin-bottom: 50px;
   }
 `
 

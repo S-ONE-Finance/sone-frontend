@@ -68,12 +68,20 @@ const WrapFilter = styled.div`
     flex: 1;
     padding: 0 15px;
   }
+  @media (min-width: 1200px) {
+    margin-top: 9px;
+    margin-bottom: 0px;
+    padding 0;
+    &:first-child {
+      margin-right: 80px;
+    }
+  }
 `
 
 const FilterLabel = styled.div`
   display: flex;
   align-items: center;
-  flex-basis: 130px;
+  flex-basis: 145px;
   & > span {
     margin-left: 5px;
     font-size: 13px;
@@ -130,7 +138,7 @@ const FilterSelected = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 25px;
+  padding: 17px 23px;
   background: #efefef;
   border: 1px solid #dfdfdf;
   border-radius: 38px;

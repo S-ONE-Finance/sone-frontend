@@ -3,11 +3,13 @@ import React, { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Contract } from '@ethersproject/contracts'
 import { BigNumber } from 'ethers'
+import { useTranslation } from 'react-i18next'
 interface BalanceProps {
   circulatingSupplyValue: number
 }
 
 const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
+  const { t } = useTranslation()
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
 
   const soneContract: Contract | null = useSoneContract()
@@ -24,11 +26,11 @@ const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
     <>
       <StyledWrapper>
         <StyledItem>
-          SONE Circulating Supply <span>&nbsp;{circulatingSupplyValue} SONE</span>
+          {t('sone_circulating_supply')} <span>&nbsp;{circulatingSupplyValue} SONE</span>
         </StyledItem>
         <StyledSticky />
         <StyledItem>
-          Total Supply <span>&nbsp;{totalSupply?.toString()} SONE</span>
+          {t('total_supply')} <span>&nbsp;{totalSupply?.toString()} SONE</span>
         </StyledItem>
       </StyledWrapper>
     </>

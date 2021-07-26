@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { useIsDarkMode } from '../../../state/user/hooks'
 import AddLiquidity from '../../../assets/images/add_liquid.svg'
 import Stake from '../../../assets/images/stake.svg'
@@ -8,24 +9,25 @@ import iconMobile from '../../../assets/images/icon-sone-mobile.svg'
 import iconDarkMobile from '../../../assets/images/icon-dark-sone-mobile.svg'
 
 const StakingHeader = () => {
+  const { t } = useTranslation()
   const headersOptions = [
     {
       image: AddLiquidity,
       numberST: '01',
-      contentTitle: 'Add Liquidity',
-      contentDescription: `Lorem ipsum dolor sit amet.`
+      contentTitle: t('liquidity'),
+      contentDescription: t('add_liquidity_and_get_lp_token')
     },
     {
       image: Stake,
       numberST: '02',
-      contentTitle: 'Staking',
-      contentDescription: `Lorem ipsum dolor sit amet.`
+      contentTitle: t('stake'),
+      contentDescription: t('stake_lp_token')
     },
     {
       image: GetReward,
       numberST: '03',
-      contentTitle: 'Get Rewards',
-      contentDescription: `Lorem ipsum dolor sit amet.`
+      contentTitle: t('get_your_rewards'),
+      contentDescription: t('get_sone_on_my_account')
     }
   ]
 
@@ -37,9 +39,9 @@ const StakingHeader = () => {
         <StyledHeadingLogo>
           {darkMode ? <img src={iconDarkMobile} alt="" /> : <img src={iconMobile} alt="" />}
         </StyledHeadingLogo>
-        <StyledHeadingText>
-          ONLY 3 STEPS TO EARN <span>SONE</span>
-        </StyledHeadingText>
+        <StyledHeadingText
+          dangerouslySetInnerHTML={{ __html: t('only_3_steps_to_earn_sone', { sone: '<span>SONE</span>' }) }}
+        />
         <StyledItemsWrapper>
           {headersOptions.map((option, opIndex) => (
             <StyledItem key={opIndex}>
@@ -97,7 +99,8 @@ const StyledItemsWrapper = styled.div`
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  padding: 20px 0;
+  padding: 10px 0 36px 0;
+  background: ${({ theme }) => theme.bg8Sone};
   box-sizing: content-box;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -110,10 +113,13 @@ const StyledItemsWrapper = styled.div`
     box-shadow: none;
     padding: 0;
   }
+  @media (min-width: 1200px) {
+    padding: 0 124px;
+  }
 `
 
 const StyledItem = styled.div`
-  padding: 18px 10px;
+  padding: 18px 12px 32px 8px;
   margin-left: 20px;
   background: ${({ theme }) => theme.bg8Sone};
   box-shadow: 0 0 50px rgba(92, 36, 38, 0.15);
@@ -125,12 +131,15 @@ const StyledItem = styled.div`
     box-shadow: none;
     margin-left: 0;
   }
+  @media (min-width: 1200px) {
+    padding: 16px 0 129px 0;
+  }
 `
 
 const StyledItemImage = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 22px;
   & > img {
     width: 127px;
     height: 127px;
@@ -161,7 +170,7 @@ const StyledItemBodyNumberST = styled.div`
 const StyledItemBodyContent = styled.div`
   margin-left: 10px;
   @media (min-width: 1200px) {
-    margin-left: 30px;
+    margin-left: 34px;
   }
 `
 const StyledItemBodyContentTitle = styled.div`

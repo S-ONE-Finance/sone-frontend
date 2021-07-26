@@ -2,10 +2,11 @@ import React from 'react'
 import { isEmpty } from 'lodash'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
+import { Farm } from '@s-one-finance/sdk-core/'
 import IconAPY from '../../../assets/images/icon_apy.svg'
 import IconLP from '../../../assets/images/icon_lp.svg'
 import Loader from '../../../components/Loader'
-import { Farm } from '@s-one-finance/sdk-core/'
 
 const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms = [] }) => {
   return (
@@ -30,6 +31,7 @@ interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
+  const { t } = useTranslation()
   return (
     <>
       <CardWrap>
@@ -38,28 +40,28 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             <StyledTitle>{farm.symbol}</StyledTitle>
             <StyledMultiplier>{farm.multiplier}X</StyledMultiplier>
           </StyledCardHeaderTitle>
-          <div>
-            <img src={IconLP} alt="" height="84" width="84" />
-          </div>
+          <StyledCardHeaderIcon>
+            <img src={IconLP} alt="" />
+          </StyledCardHeaderIcon>
         </StyledCardHeader>
         <StyledCardBody>
           <StyledItemRow>
-            Earn
+            {t('earn')}
             <span>SONE</span>
           </StyledItemRow>
           <StyledItemRow>
-            APY
+            {t('apy')}
             <StyledItemRowImage>
               <img src={IconAPY} alt="" />
               <div>&nbsp;{`${farm.roiPerYear * 100}%`}</div>
             </StyledItemRowImage>
           </StyledItemRow>
           <StyledLastItemRow>
-            Total liquidity
+            {t('total_liquidity')}
             <span>${farm.balanceUSD && farm.balanceUSD}</span>
           </StyledLastItemRow>
           <StyledButton>
-            <NavLink to={`/staking/${farm.id}`}>Select</NavLink>
+            <NavLink to={`/staking/${farm.id}`}>{t('select')}</NavLink>
           </StyledButton>
         </StyledCardBody>
       </CardWrap>
@@ -76,29 +78,29 @@ const StyledCards = styled.div`
   display: grid;
   justify-content: center;
   width: 100%;
-  padding: 0 25px;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 396px));
-  column-gap: 20px;
-  row-gap: 20px;
+  padding: 0 21px 0 15px;
+  grid-template-columns: repeat(auto-fill, minmax(339px, 396px));
+  column-gap: 15px;
+  row-gap: 15px;
 
   @media (min-width: 768px) {
     column-gap: 25px;
     row-gap: 25px;
-    grid-template-columns: repeat(2, minmax(340px, 396px));
+    grid-template-columns: repeat(2, minmax(339px, 396px));
   }
 
   @media (min-width: 1024px) {
     padding: 10px 25px 25px;
     column-gap: 45px;
     row-gap: 45px;
-    grid-template-columns: repeat(2, minmax(340px, 396px));
+    grid-template-columns: repeat(2, minmax(339px, 396px));
   }
 
   @media (min-width: 1200px) {
     padding: 25px 25px 25px;
     column-gap: 50px;
     row-gap: 50px;
-    grid-template-columns: repeat(3, minmax(340px, 396px));
+    grid-template-columns: repeat(3, minmax(339px, 396px));
   }
 `
 
@@ -118,12 +120,16 @@ const StyledTitle = styled.h4`
   font-size: 20px;
   line-height: 30px;
   font-weight: bold;
-  margin: 10px 0 12px 0;
+  margin: 0 0 12px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   @media (min-width: 1024px) {
     font-size: 26px;
+  }
+
+  @media (min-width: 1200px) {
+    margin: 0 0 12px 0;
   }
 `
 
@@ -134,7 +140,8 @@ const StyledItemRow = styled.div`
   justify-content: space-between;
   box-sizing: border-box;
   border-radius: 8px;
-  margin-bottom: 20px;
+  padding: 0 20px 0 32px;
+  margin-bottom: 15px;
   background: transparent;
   width: 100%;
   border: 0px solid #e6dcd5;
@@ -143,7 +150,8 @@ const StyledItemRow = styled.div`
   }
 
   @media (min-width: 1200px) {
-    margin-bottom: 30px;
+    padding: 0 39px 0 32px;
+    margin-bottom: 25px;
   }
 
   & > span {
@@ -168,34 +176,56 @@ const StyledItemRowImage = styled.div`
 const StyledMultiplier = styled.div`
   border: 2px solid #3faab0;
   border-radius: 19px;
-  display: inline;
+  display: inline-block;
   color: #3faab0;
   padding: 5px 14px;
-  margin-top: 12px;
   font-size: 16px;
 `
 
 const StyledCardHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 25px 20px;
+  padding: 21px 29px 20px 34px;
   background: ${({ theme }) => theme.bg9Sone};
   width: 100%;
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
   @media (min-width: 1200px) {
-    padding: 30px 25px;
+    padding: 33px 38px 23px 32px;
   }
 `
 
 const StyledCardBody = styled.div`
-  padding: 25px 20px;
+  padding: 15px 0 29px;
   @media (min-width: 1200px) {
-    padding: 30px 25px;
+    padding: 28px 0 46px;
   }
 `
 const StyledCardHeaderTitle = styled.div`
   max-width: 60%;
+`
+
+const StyledCardHeaderIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${({ theme }) => theme.bg1Sone};
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  & > img {
+    width: 38px;
+    height: 40px;
+  }
+
+  @media (min-width: 1200px) {
+    width: 84px;
+    height: 84px;
+    & > img {
+      width: 50px;
+      height: 65px;
+    }
+  }
 `
 
 const StyledButton = styled.div`
@@ -207,13 +237,14 @@ const StyledButton = styled.div`
     color: white;
     border-radius: 52px;
     font-size: 13px;
-    padding: 15px 0;
+    padding: 14px 46px 12px 48px;
     text-decoration: none;
     font-weight: 700;
-    margin: 20px auto 0;
-    @media (min-width: 1024px) {
-      margin: 30px auto 0;
+    margin: 17px 22px 0 25px;
+    @media (min-width: 1200px) {
+      margin: 36px 25px 0;
       font-size: 24px;
+      padding: 21px 74px 32px;
     }
   }
 `
