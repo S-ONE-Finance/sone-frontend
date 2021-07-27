@@ -79,7 +79,7 @@ const StyledFarm = styled.div`
   display: flex;
   flex-direction: column;
   @media (max-width: 767px) {
-    padding 0 15px;
+    padding: 0 15px;
   }
 `
 

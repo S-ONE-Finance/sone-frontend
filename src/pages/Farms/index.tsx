@@ -215,7 +215,7 @@ const WrapTitle = styled.div`
   // TODO: refactor hết đống này sử dụng mediaWith.
   @media (min-width: 1200px) {
     background: ${({ theme }) => theme.bg13Sone};
-    padding: 59px 0 71px 0;
+    padding: 76px 0 51px 0;
     font-size: 45px;
     text-align: center;
     display: flex;

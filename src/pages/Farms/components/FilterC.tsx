@@ -69,9 +69,9 @@ const WrapFilter = styled.div`
     padding: 0 15px;
   }
   @media (min-width: 1200px) {
-    margin-top: 9px;
-    margin-bottom: 0px;
-    padding 0;
+    margin-top: 43px;
+    margin-bottom: 0;
+    padding: 0;
     &:first-child {
       margin-right: 80px;
     }
