@@ -87,7 +87,6 @@ export const SearchInput = styled.input<{ borderRadius?: string }>`
   width: 100%;
   white-space: nowrap;
   background: none;
-  border: none;
   outline: none;
   border-radius: ${({ borderRadius }) => borderRadius || '20px'};
   color: ${({ theme }) => theme.text1};

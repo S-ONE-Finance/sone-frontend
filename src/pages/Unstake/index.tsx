@@ -78,7 +78,7 @@ export default function Unstake() {
   const showDetails = error === undefined || error === t('Unstake')
 
   const { symbol } = farm || {
-    symbol: ''
+    symbol: '--'
   }
 
   const { onUnstake: _onUnstake } = useUnstake(Number(farmId))
@@ -109,7 +109,7 @@ export default function Unstake() {
             <CurrencyLogo address="SONE" size="3rem" sizeMobile="2rem" />
             <Heading>{t('LP TOKEN')}</Heading>
           </RowFixed>
-          <SubHeading>ETH-DAI LP</SubHeading>
+          <SubHeading>{symbol} LP</SubHeading>
         </HeadingSection>
       )}
       <AutoColumn gap={isUpToExtraSmall ? '1.25rem' : '35px'} style={{ width: '100%' }} justify="center">
