@@ -297,7 +297,7 @@ export default function MyStakingItem({ userInfo, isShowDetailedSection, setDeta
               </RowReward>
               <RowButtons justify="center" gap="2rem">
                 {/* TODO: Specific pair. */}
-                <ButtonUnstake as={Link} to={`/unstake/${userInfo.pool?.pid}`}>
+                <ButtonUnstake as={Link} to={`/my-account/unstake/${userInfo.pool?.pid}`}>
                   {t('unstake')}
                 </ButtonUnstake>
                 {/* TODO: Specific pair. */}

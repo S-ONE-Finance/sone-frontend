@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { RowFixed } from '../Row'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import { numberWithCommas } from '../../subgraph/utils/formatter'
 
 const MyRewardContainer = styled.div`
   padding: 1.5rem 0 1.5rem 2.5rem;
@@ -73,9 +74,11 @@ const PartyBackground = styled.div`
   `}
 `
 
-export default function MyReward() {
+export default function MyReward({ myReward }: { myReward?: number }) {
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
+
+  const myRewardFormatted = myReward === undefined ? '--' : numberWithCommas(myReward)
 
   return (
     <MyRewardContainer style={{ position: 'relative' }}>
@@ -91,7 +94,7 @@ export default function MyReward() {
           })`
         }}
       >
-        <MyRewardValue>888,888,888.888</MyRewardValue>
+        <MyRewardValue>{myRewardFormatted}</MyRewardValue>
         <MyRewardUnit>SONE</MyRewardUnit>
       </RowFixed>
       <PartyBackground />

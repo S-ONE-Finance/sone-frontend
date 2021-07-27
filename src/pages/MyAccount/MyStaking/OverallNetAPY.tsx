@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import useApyAndMyAccountStaked from './useApyAndMyAccountStaked'
+import useNetApy from './useNetApy'
 
 const StakingBackground = styled.div`
   width: 100%;
@@ -47,7 +47,7 @@ const NetAPYValue = styled.div`
 
 export default function OverallNetAPY() {
   const { t } = useTranslation()
-  const [apy] = useApyAndMyAccountStaked()
+  const apy = useNetApy()
   const apyRender = (apy < 10 ? apy.toFixed(3) : apy.toFixed(2)) + '%'
 
   return (

@@ -14,11 +14,10 @@ import Vote from './Vote'
 import VotePage from './Vote/VotePage'
 import Earn from './Earn'
 import Manage from './Earn/Manage'
-import UnstakeUI from './UnstakeUI'
+import Unstake from './Unstake'
 
 import Farms from './Farms'
 import Farm from './Farm'
-import Unstake from './Unstake'
 
 export default function Routing() {
   return (
@@ -30,12 +29,12 @@ export default function Routing() {
       <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
       <Route exact strict path="/staking" component={Farms} />
       <Route exact strict path="/staking/:farmId" component={Farm} />
-      <Route exact strict path="/unstake/:farmId" component={Unstake} />
       <Route exact strict path="/my-account" component={MyAccountPage} />
       <Route exact strict path="/my-account/withdraw/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
       <Route exact strict path="/my-account/withdraw/:currencyIdA/:currencyIdB" component={WithdrawLiquidity} />
+      {/* TODO: withdraw2 là source uniswap, xoá đi nếu cần thiết. */}
       <Route exact strict path="/my-account/withdraw2/:currencyIdA/:currencyIdB" component={WithdrawLiquidity2} />
-      <Route exact strict path="/my-account/unstake" component={UnstakeUI} />
+      <Route exact strict path="/my-account/unstake/:farmId" component={Unstake} />
       {/* Component PoolFinder để import Pool, hiện tại trong requirements của sone chưa có use-case này. */}
       <Route exact strict path="/find" component={PoolFinder} />
       {/* Nhưng route dưới đây là của uni, trong sone không có, nhưng nên giữ lại. */}

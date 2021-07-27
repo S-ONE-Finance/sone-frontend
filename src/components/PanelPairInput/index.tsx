@@ -2,7 +2,6 @@
  * This panel serves for staking and unstake pages.
  */
 
-import { Pair } from '@s-one-finance/sdk-core'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { RowBetween } from '../Row'
@@ -14,17 +13,15 @@ import { numberWithCommas } from '../../subgraph/utils/formatter'
 import CurrencyLogo from '../CurrencyLogo'
 
 interface PanelPairInputProps {
-  pair?: Pair
   value: string
   onUserInput: (value: string) => void
-  balance: number
+  balance?: number
   onMax: () => void
   label: string
   customBalanceText: string
 }
 
 export default function PanelPairInput({
-  pair,
   value,
   onUserInput,
   balance,
@@ -45,7 +42,7 @@ export default function PanelPairInput({
               <RowBalance onClick={onMax} gap="0.25rem">
                 <CurrencyLogo address="SONE" size="22px" style={{ marginRight: '0.35rem' }} />
                 <TextPanelLabel>{customBalanceText}</TextPanelLabel>
-                <TextPanelLabelAccent>{balance ? numberWithCommas(balance) : ''}</TextPanelLabelAccent>
+                <TextPanelLabelAccent>{balance !== undefined ? numberWithCommas(balance) : '--'}</TextPanelLabelAccent>
               </RowBalance>
             )}
           </RowBetween>
