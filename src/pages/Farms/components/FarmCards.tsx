@@ -196,9 +196,9 @@ const StyledCardHeader = styled.div`
 `
 
 const StyledCardBody = styled.div`
-  padding: 15px 0 29px;
+  padding: 15px 0 21px;
   @media (min-width: 1200px) {
-    padding: 28px 0 46px;
+    padding: 28px 0 33px;
   }
 `
 const StyledCardHeaderTitle = styled.div`
@@ -237,14 +237,14 @@ const StyledButton = styled.div`
     color: white;
     border-radius: 52px;
     font-size: 13px;
-    padding: 14px 46px 12px 48px;
+    padding: 14px 46px 14px 48px;
     text-decoration: none;
     font-weight: 700;
     margin: 17px 22px 0 25px;
     @media (min-width: 1200px) {
       margin: 36px 25px 0;
       font-size: 24px;
-      padding: 21px 74px 32px;
+      padding: 21px 74px;
     }
   }
 `
