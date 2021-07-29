@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Contract } from '@ethersproject/contracts'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
+
 interface BalanceProps {
   circulatingSupplyValue: number
 }

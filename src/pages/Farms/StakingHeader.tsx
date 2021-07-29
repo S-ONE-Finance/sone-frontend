@@ -1,15 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useIsDarkMode } from '../../../state/user/hooks'
-import AddLiquidity from '../../../assets/images/add_liquid.svg'
-import Stake from '../../../assets/images/stake.svg'
-import GetReward from '../../../assets/images/get_reward.svg'
-import iconMobile from '../../../assets/images/icon-sone-mobile.svg'
-import iconDarkMobile from '../../../assets/images/icon-dark-sone-mobile.svg'
+import { useIsDarkMode } from '../../state/user/hooks'
+import AddLiquidity from '../../assets/images/add_liquid.svg'
+import Stake from '../../assets/images/stake.svg'
+import GetReward from '../../assets/images/get_reward.svg'
+import iconMobile from '../../assets/images/icon-sone-mobile.svg'
+import iconDarkMobile from '../../assets/images/icon-dark-sone-mobile.svg'
 
 const StakingHeader = () => {
   const { t } = useTranslation()
+  const darkMode = useIsDarkMode()
+
   const headersOptions = [
     {
       image: AddLiquidity,
@@ -31,8 +33,6 @@ const StakingHeader = () => {
     }
   ]
 
-  const darkMode = useIsDarkMode()
-
   return (
     <>
       <StyledHeadingWrapper>
@@ -52,7 +52,7 @@ const StakingHeader = () => {
                 <StyledItemBodyNumberST>{option.numberST}</StyledItemBodyNumberST>
                 <StyledItemBodyContent>
                   <StyledItemBodyContentTitle>{option.contentTitle}</StyledItemBodyContentTitle>
-                  <StyledItemBodyContentDescription dangerouslySetInnerHTML={{ __html: option.contentDescription }} />
+                  <StyledItemBodyContentDescription>{option.contentDescription}</StyledItemBodyContentDescription>
                 </StyledItemBodyContent>
               </StyledItemBody>
             </StyledItem>
@@ -69,30 +69,34 @@ const StyledHeadingWrapper = styled.div`
   overflow: hidden;
 `
 const StyledHeadingLogo = styled.div`
-  display: flex;
   justify-content: center;
+  display: none;
+
   & > img {
     width: 100%;
     height: 100%;
   }
-  @media (min-width: 576px) {
-    display: none;
-  }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    display: flex;
+  `}
 `
 
 const StyledHeadingText = styled.div`
   font-weight: 700;
   font-size: 60px;
   text-align: center;
-  margin: 80px 0;
-  @media (max-width: 768px) {
+  margin: 5.5rem 0 5rem; // 88px 0 80px.
+
+  & > span {
+    color: ${({ theme }) => theme.red1Sone};
+  }
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: 20px;
     margin-top: 0;
     margin-bottom: 60px;
-  }
-  & > span {
-    color: #f05359;
-  }
+  `}
 `
 
 const StyledItemsWrapper = styled.div`
@@ -104,15 +108,18 @@ const StyledItemsWrapper = styled.div`
   box-sizing: content-box;
   -ms-overflow-style: none;
   scrollbar-width: none;
+
   &::-webkit-scrollbar {
     width: 0;
     background: transparent;
     display: none;
   }
+
   @media (min-width: 1024px) {
     box-shadow: none;
     padding: 0;
   }
+
   @media (min-width: 1200px) {
     padding: 0 124px;
   }
@@ -127,10 +134,12 @@ const StyledItem = styled.div`
   min-width: 270px;
   flex-grow: 1;
   flex-basis: 0;
+
   @media (min-width: 1024px) {
     box-shadow: none;
     margin-left: 0;
   }
+
   @media (min-width: 1200px) {
     padding: 16px 0 129px 0;
   }
@@ -140,6 +149,7 @@ const StyledItemImage = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 22px;
+
   & > img {
     width: 127px;
     height: 127px;
@@ -155,20 +165,29 @@ const StyledItemImage = styled.div`
 const StyledItemBody = styled.div`
   display: flex;
   align-items: center;
+
   @media (min-width: 1024px) {
     justify-content: center;
   }
 `
+
 const StyledItemBodyNumberST = styled.div`
   font-size: 60px;
   font-weight: 700;
   color: ${({ theme }) => theme.text12Sone};
+
   @media (min-width: 1200px) {
     font-size: 130px;
   }
 `
+
 const StyledItemBodyContent = styled.div`
   margin-left: 10px;
+
+  > * + * {
+    margin-top: 0.25rem; // 4px.
+  }
+
   @media (min-width: 1200px) {
     margin-left: 34px;
   }
@@ -177,14 +196,17 @@ const StyledItemBodyContentTitle = styled.div`
   font-size: 20px;
   font-weight: 700;
   color: ${({ theme }) => theme.text11Sone};
+
   @media (min-width: 1200px) {
     font-size: 40px;
   }
 `
+
 const StyledItemBodyContentDescription = styled.div`
   font-size: 13px;
   font-weight: 400;
   color: ${({ theme }) => theme.text4Sone};
+
   @media (min-width: 1200px) {
     font-size: 20px;
   }

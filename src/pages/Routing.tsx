@@ -15,7 +15,6 @@ import VotePage from './Vote/VotePage'
 import Earn from './Earn'
 import Manage from './Earn/Manage'
 import Unstake from './Unstake'
-
 import Farms from './Farms'
 import Farm from './Farm'
 

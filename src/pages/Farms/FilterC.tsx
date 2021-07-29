@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
-import iconArrowDown from '../../../assets/images/icon-arrow-down.svg'
-import { useOnClickOutside } from '../../../hooks/useOnClickOutside'
+import iconArrowDown from '../../assets/images/icon-arrow-down.svg'
+import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 
 interface Filter {
   options: Option[]
@@ -64,12 +64,14 @@ const WrapFilter = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 18px;
+
   @media (min-width: 1024px) {
     flex: 1;
     padding: 0 15px;
   }
+
   @media (min-width: 1200px) {
-    margin-top: 43px;
+    margin-top: 52px;
     margin-bottom: 0;
     padding: 0;
     &:first-child {
@@ -82,11 +84,13 @@ const FilterLabel = styled.div`
   display: flex;
   align-items: center;
   flex-basis: 145px;
+
   & > span {
     margin-left: 5px;
     font-size: 13px;
     color: ${({ theme }) => theme.text4Sone};
   }
+
   @media (min-width: 1200px) {
     & > span {
       font-size: 20px;
@@ -98,10 +102,12 @@ const FilterItemsWrap = styled.div`
   width: 100%;
   font-size: 13px;
   color: #4f4f4f;
+
   @media (min-width: 1200px) {
     font-size: 20px;
   }
 `
+
 const FilterItemDefault = styled.div`
   display: flex;
   justify-content: space-between;
@@ -116,16 +122,17 @@ const FilterItems = styled.div`
   position: absolute;
   width: 100%;
   top: -2px;
-  right: 0px;
+  right: 0;
   padding: 15px;
   z-index: 1000;
   background: #f8f8f8;
   border-radius: 31px;
-  box-shadow: 0px 0px 7px 5px rgba(79, 79, 79, 0.42);
+  box-shadow: 0 0 7px 5px rgba(79, 79, 79, 0.42);
 `
 
 const FilterItem = styled.div`
   padding: 15px 10px;
+
   &:hover,
   &:active,
   &:focus {
