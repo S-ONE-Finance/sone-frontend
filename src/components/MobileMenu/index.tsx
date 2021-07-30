@@ -136,7 +136,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         <StyledCloseAbsolute>
           <StyledCloseIcon />
         </StyledCloseAbsolute>
-        <TYPE.black fontSize={14}>{t('Address')}:</TYPE.black>
+        <TYPE.black fontSize={14}>{t('address')}:</TYPE.black>
         <TYPE.subText marginTop="0.25rem">{account && shortenAddress(account, 14)}</TYPE.subText>
         <RowBetween marginTop="1rem">
           <SoneAmount isSmall={true} />

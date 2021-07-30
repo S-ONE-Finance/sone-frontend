@@ -6,15 +6,16 @@ import { RowBetween, RowFitContent } from '../../../components/Row'
 import MyStakingItem from './MyStakingItem'
 import useAddedLiquidityPairs from '../../../hooks/useAddedLiquidityPairs'
 import OverallNetAPY from './OverallNetAPY'
-import useApyAndMyAccountStaked from './useApyAndMyAccountStaked'
+import { UserInfoSushi } from '@s-one-finance/sdk-core'
+import useMyAccountStaked from '../../../hooks/masterfarmer/useMyAccountStaked'
 
 export default function MyStaking() {
   const { t } = useTranslation()
-  // TODO: Not thí isLoading.
+  // TODO: This loading is fake.
   const [isLoading] = useAddedLiquidityPairs()
   const [detailUserInfo, setDetailUserInfo] = useState<string | undefined>()
 
-  const [, myAccountStaked] = useApyAndMyAccountStaked()
+  const myAccountStaked: UserInfoSushi[] = useMyAccountStaked()
 
   return (
     <Section>
@@ -29,7 +30,7 @@ export default function MyStaking() {
       </RowBetween>
       <CardStaking>
         {isLoading ? (
-          t('Loading...')
+          t('Fake loading...')
         ) : myAccountStaked.length ? (
           <>
             <OverallNetAPY />

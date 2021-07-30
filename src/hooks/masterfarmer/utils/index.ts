@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import { numberWithCommas } from '../../../subgraph/utils/formatter'
 
 export const getBalanceNumber = (balance: string, decimals = 18) => {
   const displayBalance = new BigNumber(balance).dividedBy(new BigNumber(10).pow(decimals))
@@ -16,4 +17,9 @@ export const getDisplayBalance = (balance: BigNumber, decimals = 18) => {
 
 export const getFullDisplayBalance = (balance: string, decimals = 18) => {
   return new BigNumber(balance).dividedBy(new BigNumber(10).pow(decimals)).toString()
+}
+
+export const getFullDisplayBalanceWithComma = (balance: string, decimals = 18) => {
+  const val = getBalanceNumber(balance, decimals)
+  return numberWithCommas(val)
 }

@@ -268,7 +268,7 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
             </AbsoluteVector>
             <TitleBodyMarginer>
               <RowBetween>
-                <Title>{t('swap_setteing')}</Title>
+                <Title>{t('swap_setting')}</Title>
                 <StyledCloseIcon onClick={toggle} />
               </RowBetween>
               <SectionWrapper>

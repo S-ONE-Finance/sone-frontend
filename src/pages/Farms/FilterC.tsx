@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
-import iconArrowDown from '../../../assets/images/icon-arrow-down.svg'
-import { useOnClickOutside } from '../../../hooks/useOnClickOutside'
+import iconArrowDown from '../../assets/images/icon-arrow-down.svg'
+import { useOnClickOutside } from '../../hooks/useOnClickOutside'
+import { PxToRem } from '../../utils/PxToRem'
 
 interface Filter {
   options: Option[]
@@ -63,17 +64,19 @@ export default FilterC
 const WrapFilter = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 18px;
+  margin-bottom: ${PxToRem(18)};
+
   @media (min-width: 1024px) {
     flex: 1;
-    padding: 0 15px;
+    padding: 0 ${PxToRem(15)};
   }
+
   @media (min-width: 1200px) {
-    margin-top: 9px;
-    margin-bottom: 0px;
-    padding 0;
+    margin-top: ${PxToRem(52)};
+    margin-bottom: 0;
+    padding: 0;
     &:first-child {
-      margin-right: 80px;
+      margin-right: ${PxToRem(80)};
     }
   }
 `
@@ -81,56 +84,59 @@ const WrapFilter = styled.div`
 const FilterLabel = styled.div`
   display: flex;
   align-items: center;
-  flex-basis: 145px;
+  flex-basis: ${PxToRem(145)};
   font-weight: 500;
-  margin-right: 14px;
+  margin-right: ${PxToRem(14)};
   & > span {
     width: max-content;
-    margin-left: 5px;
-    font-size: 13px;
+    margin-left: ${PxToRem(5)};
+    font-size: ${PxToRem(13)};
     color: ${({ theme }) => theme.text4Sone};
   }
   @media (min-width: 1024px) {
     flex-basis: unset;
-    margin-right: 10px;
+    margin-right: ${PxToRem(10)};
     & > span {
-      font-size: 20px;
+      font-size: ${PxToRem(20)};
     }
   }
 `
 const FilterItemsWrap = styled.div`
   position: relative;
   width: 100%;
-  font-size: 13px;
+  font-size: ${PxToRem(13)};
   color: #4f4f4f;
+
   @media (min-width: 1200px) {
-    font-size: 20px;
+    font-size: ${PxToRem(20)};
   }
 `
+
 const FilterItemDefault = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  min-width: 220px;
+  min-width: ${PxToRem(220)};
   color: #c9c9c9;
-  padding: 15px 10px;
+  padding: ${PxToRem(15)} ${PxToRem(10)};
 `
 
 const FilterItems = styled.div`
   position: absolute;
   width: 100%;
-  top: -2px;
-  right: 0px;
-  padding: 15px;
+  top: ${PxToRem(-2)};
+  right: 0;
+  padding: ${PxToRem(15)};
   z-index: 1000;
   background: #f8f8f8;
-  border-radius: 31px;
-  box-shadow: 0px 0px 7px 5px rgba(79, 79, 79, 0.42);
+  border-radius: ${PxToRem(31)};
+  box-shadow: 0 0 ${PxToRem(7)} ${PxToRem(5)} rgba(79, 79, 79, 0.42);
 `
 
 const FilterItem = styled.div`
-  padding: 15px 10px;
+  padding: ${PxToRem(15)} ${PxToRem(10)};
+
   &:hover,
   &:active,
   &:focus {
@@ -144,11 +150,11 @@ const FilterSelected = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 17px 23px;
+  padding: ${PxToRem(17)} ${PxToRem(23)};
   background: #efefef;
   border: 1px solid #dfdfdf;
-  border-radius: 38px;
+  border-radius: ${PxToRem(38)};
   @media (min-width: 1200px) {
-    width: 315px;
+    width: ${PxToRem(315)};
   }
 `

@@ -108,12 +108,14 @@ const Title = styled.a`
   pointer-events: auto;
   justify-self: flex-start;
   margin-right: 1rem;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    justify-self: center;
-  `};
+
   :hover {
     cursor: pointer;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    justify-self: center;
+  `};
 `
 
 const StyledNavLink = styled(NavLink).attrs({

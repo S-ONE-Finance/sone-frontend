@@ -7,11 +7,12 @@ import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import useMyStaked from 'hooks/masterfarmer/useMyStaked'
 import useMyLPToken from 'hooks/masterfarmer/useMyLPToken'
-import Balances from './components/Balances'
-import FarmCards from './components/FarmCards'
-import StakingHeader from './components/StakingHeader'
+import Balances from './Balances'
+import FarmCards from './FarmCards'
+import StakingHeader from './StakingHeader'
 import useFarms from '../../hooks/masterfarmer/useFarms'
-import FilterC from './components/FilterC'
+import FilterC from './FilterC'
+import { PxToRem } from '../../utils/PxToRem'
 import iconFilter from '../../assets/images/icon-filter.svg'
 import iconSort from '../../assets/images/icon-sort.svg'
 
@@ -197,63 +198,77 @@ const StakingWrapper = styled.div`
 
 const Box = styled.div`
   width: 100%;
-  margin-bottom: 8rem;
-  // TODO: refactor hết đống này sử dụng mediaWith.
-  @media (min-width: 1200px) {
-    background-image: url(${({ theme }) => theme.bgStakingPage});
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: top center;
-  }
-  @media (min-width: 1400px) {
-    margin-bottom: 4rem;
-  }
+  margin-bottom: 4.75rem;
+  background-image: url(${({ theme }) => theme.bgStakingPage});
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: top center;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    background-image: unset;
+    margin-bottom: 8.75rem;
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    margin-bottom: 7.75rem;
+  `}
 `
 
 const WrapTitle = styled.div`
-  background: ${({ theme }) => theme.bg14Sone};
   width: 100%;
-  padding: 23px 21px 34px 36px;
-  font-size: 20px;
-  // TODO: refactor hết đống này sử dụng mediaWith.
-  @media (min-width: 1200px) {
-    background: ${({ theme }) => theme.bg13Sone};
-    padding: 59px 0 71px 0;
-    font-size: 45px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+  background: ${({ theme }) => theme.bg13Sone};
+  padding: ${PxToRem(76)} 0 ${PxToRem(51)} 0;
+  font-size: ${PxToRem(45)};
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    background: ${({ theme }) => theme.bg14Sone};
+    padding: ${PxToRem(23)} ${PxToRem(21)} ${PxToRem(34)} ${PxToRem(36)};
+    font-size: 20px;
+  `}
 }
 `
 
 const StyledCurrently = styled.div`
-  margin-bottom: 18px;
-  line-height: 24px;
-
+  margin-bottom: ${PxToRem(40)};
+  text-align: center;
+  font-size: ${PxToRem(45)};
   & > span {
     color: #65bac5;
     font-weight: 700;
+    font-size: 3.75rem; // 60px;
   }
 
-  @media (min-width: 768px) {
-    line-height: normal;
-  }
-  @media (min-width: 1200px) {
-    margin-bottom: 30px;
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+  font-size: ${PxToRem(30)};
     & > span {
-      font-size: 45px;
+      font-size: 1.875rem; // 35px.
     }
-  }
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+  font-size: ${PxToRem(20)};
+  text-align: left;
+  margin-bottom: ${PxToRem(18)};
+    & > span {
+      font-size: 1.875rem; // 30px.
+    }
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    margin-bottom: ${PxToRem(18)};
+  `}
 `
 
 const StyledFilter = styled.div`
   width: 100%;
-  min-width: 300px
-  max-width: 1000px
-  padding: 0 21px 0 25px;
-  margin-bottom: 25px;
+  min-width: ${PxToRem(300)};
+  max-width: ${PxToRem(1000)};
+  padding: 0 ${PxToRem(21)} 0 ${PxToRem(25)};
+  margin-bottom: ${PxToRem(25)};
   @media (min-width: 1024px) {
     display: flex;
     align-items: center;
@@ -261,7 +276,7 @@ const StyledFilter = styled.div`
 
   @media (min-width: 1200px) {
     padding: 0;
-    margin-bottom: 50px;
+    margin-bottom: ${PxToRem(50)};
   }
 `
 

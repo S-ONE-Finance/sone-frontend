@@ -6,7 +6,7 @@ import useMyAccountStaked from '../../../hooks/masterfarmer/useMyAccountStaked'
  * Need refactor file name and code.
  */
 
-export default function useApyAndMyAccountStaked(): [number, UserInfoSushi[]] {
+export default function useNetApy() {
   const [netApy, setNetApy] = useState(0)
   const myAccountStaked: UserInfoSushi[] = useMyAccountStaked()
 
@@ -22,5 +22,5 @@ export default function useApyAndMyAccountStaked(): [number, UserInfoSushi[]] {
     }
   }, [myAccountStaked])
 
-  return [netApy, myAccountStaked]
+  return netApy
 }

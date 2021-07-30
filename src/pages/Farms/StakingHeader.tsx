@@ -1,15 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useIsDarkMode } from '../../../state/user/hooks'
-import AddLiquidity from '../../../assets/images/add_liquid.svg'
-import Stake from '../../../assets/images/stake.svg'
-import GetReward from '../../../assets/images/get_reward.svg'
-import iconMobile from '../../../assets/images/icon-sone-mobile.svg'
-import iconDarkMobile from '../../../assets/images/icon-dark-sone-mobile.svg'
+import { useIsDarkMode } from '../../state/user/hooks'
+import { PxToRem } from '../../utils/PxToRem'
+import AddLiquidity from '../../assets/images/add_liquid.svg'
+import Stake from '../../assets/images/stake.svg'
+import GetReward from '../../assets/images/get_reward.svg'
+import iconMobile from '../../assets/images/icon-sone-mobile.svg'
+import iconDarkMobile from '../../assets/images/icon-dark-sone-mobile.svg'
 
 const StakingHeader = () => {
   const { t } = useTranslation()
+  const darkMode = useIsDarkMode()
+
   const headersOptions = [
     {
       image: AddLiquidity,
@@ -31,8 +34,6 @@ const StakingHeader = () => {
     }
   ]
 
-  const darkMode = useIsDarkMode()
-
   return (
     <>
       <StyledHeadingWrapper>
@@ -52,7 +53,7 @@ const StakingHeader = () => {
                 <StyledItemBodyNumberST>{option.numberST}</StyledItemBodyNumberST>
                 <StyledItemBodyContent>
                   <StyledItemBodyContentTitle>{option.contentTitle}</StyledItemBodyContentTitle>
-                  <StyledItemBodyContentDescription dangerouslySetInnerHTML={{ __html: option.contentDescription }} />
+                  <StyledItemBodyContentDescription>{option.contentDescription}</StyledItemBodyContentDescription>
                 </StyledItemBodyContent>
               </StyledItemBody>
             </StyledItem>
@@ -69,36 +70,38 @@ const StyledHeadingWrapper = styled.div`
   overflow: hidden;
 `
 const StyledHeadingLogo = styled.div`
-  display: flex;
   justify-content: center;
+  display: none;
+
   & > img {
     width: 100%;
     height: 100%;
   }
-  @media (min-width: 500px) {
-    display: none;
-  }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    display: flex;
+  `}
 `
 
 const StyledHeadingText = styled.div`
   font-weight: 700;
-  font-size: 60px;
+  font-size: ${PxToRem(60)};
   text-align: center;
-  margin: 80px 0;
+  margin: ${PxToRem(78)} 0 ${PxToRem(97)};
   ${({ theme }) => theme.mediaWidth.upToLarge`
-  font-size: 40px;
-  margin: 60px 0;
+  font-size: ${PxToRem(40)};
+  margin: ${PxToRem(60)} 0;
   `}
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-  font-size: 20px;
-  margin: 60px 0;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+  font-size: ${PxToRem(20)};
+  margin: ${PxToRem(60)} 0;
   `}
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-top: 0;
-    margin-bottom: 60px;
+    margin-bottom: ${PxToRem(60)};
   `}
   & > span {
-    color: #f05359;
+    color: ${({ theme }) => theme.red1Sone};
   }
 `
 
@@ -106,110 +109,128 @@ const StyledItemsWrapper = styled.div`
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  padding: 10px 0 36px 0;
+  padding: ${PxToRem(10)} 0 ${PxToRem(36)} 0;
   background: ${({ theme }) => theme.bg8Sone};
   box-sizing: content-box;
   -ms-overflow-style: none;
   scrollbar-width: none;
+
   &::-webkit-scrollbar {
     width: 0;
     background: transparent;
     display: none;
   }
+
   @media (min-width: 1024px) {
     box-shadow: none;
     padding: 0;
   }
+
   @media (min-width: 1200px) {
-    padding: 0 124px;
+    padding: 0 ${PxToRem(124)};
   }
 `
 
 const StyledItem = styled.div`
-  padding: 18px 12px 32px 8px;
-  margin-left: 20px;
+  padding: ${PxToRem(18)} ${PxToRem(12)} ${PxToRem(32)} ${PxToRem(8)};
+  margin-left: ${PxToRem(20)};
   background: ${({ theme }) => theme.bg8Sone};
-  box-shadow: 0 0 50px rgba(92, 36, 38, 0.15);
-  border-radius: 5px;
-  min-width: 270px;
+  box-shadow: 0 0 ${PxToRem(50)} rgba(92, 36, 38, 0.15);
+  border-radius: ${PxToRem(5)};
+  min-width: ${PxToRem(270)};
   flex-grow: 1;
   flex-basis: 0;
+
   @media (min-width: 1024px) {
     box-shadow: none;
     margin-left: 0;
   }
+
   @media (min-width: 1200px) {
-    padding: 16px 0 129px 0;
+    padding: ${PxToRem(16)} 0 ${PxToRem(129)} 0;
   }
 `
 
 const StyledItemImage = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 22px;
+  margin-bottom: ${PxToRem(22)};
+
   & > img {
-    width: 127px;
-    height: 127px;
+    width: ${PxToRem(127)};
+    height: ${PxToRem(127)};
   }
 
   @media (min-width: 1200px) {
     & > img {
-      width: 158px;
-      height: 158px;
+      width: ${PxToRem(158)};
+      height: ${PxToRem(158)};
     }
   }
 
   @media (min-width: 1920px) {
     & > img {
-      width: 188px;
-      height: 188px;
+      width: ${PxToRem(188)};
+      height: ${PxToRem(188)};
     }
   }
 `
 const StyledItemBody = styled.div`
   display: flex;
   align-items: center;
+
   @media (min-width: 1024px) {
     justify-content: center;
   }
 `
+
 const StyledItemBodyNumberST = styled.div`
-  font-size: 60px;
+  font-size: ${PxToRem(60)};
   font-weight: 700;
   color: ${({ theme }) => theme.text12Sone};
+
   @media (min-width: 1200px) {
-    font-size: 110px;
+    font-size: ${PxToRem(110)};
   }
   @media (min-width: 1920px) {
-    font-size: 130px;
+    font-size: ${PxToRem(130)};
   }
 `
+
 const StyledItemBodyContent = styled.div`
-  margin-left: 10px;
+  margin-left: ${PxToRem(10)};
+
+  > * + * {
+    margin-top: 0.25rem; // 4px.
+  }
+
   @media (min-width: 1200px) {
-    margin-left: 34px;
+    margin-left: ${PxToRem(34)};
   }
 `
 const StyledItemBodyContentTitle = styled.div`
-  font-size: 20px;
+  font-size: ${PxToRem(20)};
   font-weight: 700;
   color: ${({ theme }) => theme.text11Sone};
+
   @media (min-width: 1200px) {
-    font-size: 23px;
+    font-size: ${PxToRem(23)};
   }
   @media (min-width: 1920px) {
-    font-size: 40px;
+    font-size: ${PxToRem(40)};
   }
 `
+
 const StyledItemBodyContentDescription = styled.div`
-  font-size: 13px;
+  font-size: ${PxToRem(13)};
   font-weight: 400;
   color: ${({ theme }) => theme.text4Sone};
+
   @media (min-width: 1200px) {
-    font-size: 16px;
+    font-size: ${PxToRem(16)};
   }
   @media (min-width: 1920px) {
-    font-size: 20px;
+    font-size: ${PxToRem(20)};
   }
 `
 
