@@ -151,7 +151,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         </StyledNavLink>
         <StyledNavLink to="/staking">{t('staking')}</StyledNavLink>
         <StyledExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</StyledExternalLink>
-        <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>{t('Staking Stats')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>{t('Stake Stats')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('White Paper')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_FAQ_URL}>{t('faq')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_BLOG_URL}>{t('blog')}</StyledExternalLink>

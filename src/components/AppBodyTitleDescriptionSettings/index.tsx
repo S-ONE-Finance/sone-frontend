@@ -54,8 +54,10 @@ export default function AppBodyTitleDescriptionSettings({ transactionType }: { t
       ? t('add_liquidity')
       : transactionType === TransactionType.WITHDRAW
       ? t('Withdraw Liquidity')
+      : transactionType === TransactionType.STAKE
+      ? t('stake')
       : transactionType === TransactionType.UNSTAKE
-      ? t('Unstake')
+      ? t('unstake')
       : null
   const description =
     transactionType === TransactionType.SWAP
@@ -63,6 +65,8 @@ export default function AppBodyTitleDescriptionSettings({ transactionType }: { t
       : transactionType === TransactionType.ADD_ONE_TOKEN || transactionType === TransactionType.ADD_TWO_TOKENS
       ? t('add_liquidity_to_receive_lp_tokens')
       : transactionType === TransactionType.WITHDRAW
+      ? t('Lorem ipsum dolor sit amet.')
+      : transactionType === TransactionType.STAKE
       ? t('Lorem ipsum dolor sit amet.')
       : transactionType === TransactionType.UNSTAKE
       ? t('Lorem ipsum dolor sit amet.')
