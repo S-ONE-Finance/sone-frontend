@@ -77,7 +77,7 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   // SONE.
-  if (address === 'SONE') {
+  if (address && address.toLowerCase() === 'sone') {
     return <SoneLogo size={size} sizeMobile={sizeMobile} src={SoneLogoSvg} style={style} />
   }
 

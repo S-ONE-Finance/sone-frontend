@@ -50,8 +50,6 @@ export const Aligner = styled.span`
   justify-content: space-between;
 `
 
-export const InputPanel = styled.div``
-
 export const Container = styled.div<{ height?: string; height_mobile?: string }>`
   ${({ theme }) => theme.flexColumnNoWrap}
   position: relative;
@@ -181,10 +179,10 @@ export default function PanelCurrencyInput({
   }, [setModalOpen])
 
   return (
-    <InputPanel id={id}>
-      <Container>
+    <>
+      <Container id={id}>
         <LabelRow>
-          <RowBetween align={'flex-end'}>
+          <RowBetween align="center">
             <TextPanelLabel>{label}</TextPanelLabel>
             {account && (
               <RowBalance onClick={onMax}>
@@ -264,6 +262,6 @@ export default function PanelCurrencyInput({
           showCommonBases={showCommonBases}
         />
       )}
-    </InputPanel>
+    </>
   )
 }

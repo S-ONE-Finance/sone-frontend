@@ -1,23 +1,38 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch } from 'react-router-dom'
 
 import Swap from './Swap'
 import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, RedirectToSwap } from './Swap/redirects'
+
 import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './AddLiquidity/redirects'
+
+import Farms from './Farms'
+import Farm from './Farm'
+import Stake from './Stake'
+
 import MyAccountPage from './MyAccount'
-import { RedirectOldRemoveLiquidityPathStructure } from './WithdrawLiquidity/redirects'
 import WithdrawLiquidity from './WithdrawLiquidity'
-import WithdrawLiquidity2 from './WithdrawLiquidity2'
+import { RedirectOldRemoveLiquidityPathStructure } from './WithdrawLiquidity/redirects'
+import Unstake from './Unstake'
+
 import PoolFinder from './PoolFinder'
 import Vote from './Vote'
 import VotePage from './Vote/VotePage'
 import Earn from './Earn'
 import Manage from './Earn/Manage'
-import Unstake from './Unstake'
 
-import Farms from './Farms'
-import Farm from './Farm'
+import { useActiveWeb3React } from '../hooks'
+
+function AuthorizedRoute({ path, component }: any) {
+  const { account } = useActiveWeb3React()
+
+  if (account) {
+    return <Route exact strict path={path} component={component} />
+  }
+
+  return <Redirect to={{ pathname: '/swap' }} />
+}
 
 export default function Routing() {
   return (
@@ -29,12 +44,21 @@ export default function Routing() {
       <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
       <Route exact strict path="/staking" component={Farms} />
       <Route exact strict path="/staking/:farmId" component={Farm} />
-      <Route exact strict path="/my-account" component={MyAccountPage} />
-      <Route exact strict path="/my-account/withdraw/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
-      <Route exact strict path="/my-account/withdraw/:currencyIdA/:currencyIdB" component={WithdrawLiquidity} />
-      {/* TODO: withdraw2 là source uniswap, xoá đi nếu cần thiết. */}
-      <Route exact strict path="/my-account/withdraw2/:currencyIdA/:currencyIdB" component={WithdrawLiquidity2} />
-      <Route exact strict path="/my-account/unstake/:farmId" component={Unstake} />
+      <Route exact strict path="/staking-ui/:farmId" component={Stake} />
+      <AuthorizedRoute exact strict path="/my-account" component={MyAccountPage} />
+      <AuthorizedRoute
+        exact
+        strict
+        path="/my-account/withdraw/:tokens"
+        component={RedirectOldRemoveLiquidityPathStructure}
+      />
+      <AuthorizedRoute
+        exact
+        strict
+        path="/my-account/withdraw/:currencyIdA/:currencyIdB"
+        component={WithdrawLiquidity}
+      />
+      <AuthorizedRoute exact strict path="/my-account/unstake/:farmId" component={Unstake} />
       {/* Component PoolFinder để import Pool, hiện tại trong requirements của sone chưa có use-case này. */}
       <Route exact strict path="/find" component={PoolFinder} />
       {/* Nhưng route dưới đây là của uni, trong sone không có, nhưng nên giữ lại. */}

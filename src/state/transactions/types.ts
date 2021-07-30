@@ -3,6 +3,7 @@ export enum TransactionType {
   ADD_ONE_TOKEN = 'ADD_ONE_TOKEN',
   ADD_TWO_TOKENS = 'ADD_TWO_TOKENS',
   WITHDRAW = 'WITHDRAW',
+  STAKE = 'STAKE',
   UNSTAKE = 'UNSTAKE'
 }
 

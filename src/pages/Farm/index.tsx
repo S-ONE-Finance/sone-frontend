@@ -7,11 +7,11 @@ import StakeBackground from '../../assets/images/stake_background.svg'
 import PageHeader from '../../components/PageHeader'
 import useFarm from '../../hooks/masterfarmer/useFarm'
 import { useWalletModalToggle } from '../../state/application/hooks'
-import Apy from './components/Apy'
-import Stake from './components/Stake'
+import Apy from './Apy'
+import Stake from './Stake'
 import { Farm } from '@s-one-finance/sdk-core/'
 
-const FarmDetail: React.FC = () => {
+export default function FarmDetail() {
   const { farmId } = useParams() as any
   const [val, setVal] = useState('')
 
@@ -71,14 +71,17 @@ const FarmDetail: React.FC = () => {
 
 const StyledApyWrap = styled.div`
   width: 600px;
+
   @media (max-width: 767px) {
     width: 100%;
   }
 `
+
 const StyledFarm = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
+
   @media (max-width: 767px) {
     padding: 0 15px;
   }
@@ -87,6 +90,7 @@ const StyledFarm = styled.div`
 const StyledCardsWrapper = styled.div`
   display: flex;
   width: 600px;
+
   @media (max-width: 767px) {
     width: 100%;
     flex-flow: column nowrap;
@@ -98,6 +102,7 @@ const StyledCardWrapper = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+
   @media (max-width: 767px) {
     width: 80%;
   }
@@ -110,5 +115,3 @@ const StyledHeading = styled.h2`
   text-align: center;
   margin-bottom: 20px;
 `
-
-export default FarmDetail

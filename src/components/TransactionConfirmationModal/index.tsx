@@ -176,9 +176,10 @@ export function ConfirmationModalContent({
   onDismiss: () => void
   topContent: () => React.ReactNode
   bottomContent: () => React.ReactNode
-  transactionType: TransactionType
+  transactionType: TransactionType | undefined
 }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
+
   return (
     <Wrapper>
       <Section>

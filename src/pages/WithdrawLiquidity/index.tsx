@@ -38,6 +38,7 @@ import useWithdrawLiquidityCallback from '../../hooks/useWithdrawLiquidityCallba
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import BrandIdentitySoneForMobile from '../../components/BrandIdentitySoneForMobile'
+import { useTranslation } from 'react-i18next'
 
 const TextPrice = styled(Text)`
   font-weight: 500;
@@ -97,6 +98,7 @@ export default function WithdrawLiquidity({
     chainId
   ])
 
+  const { t } = useTranslation()
   const theme = useTheme()
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
@@ -344,7 +346,7 @@ export default function WithdrawLiquidity({
           disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)}
         >
           <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
-            Confirm
+            {t('Withdraw Liquidity')}
           </Text>
         </ButtonPrimary>
       </>
@@ -470,7 +472,7 @@ export default function WithdrawLiquidity({
                         }
                       }}
                     >
-                      Withdraw Liquidity
+                      {t('Withdraw Liquidity')}
                     </ButtonPrimary>
                   ) : (
                     <ButtonPrimary onClick={onAttemptToApprove} disabled={approval !== ApprovalState.NOT_APPROVED}>

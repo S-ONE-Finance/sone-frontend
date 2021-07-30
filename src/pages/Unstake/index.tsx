@@ -6,7 +6,7 @@ import { AutoColumn } from '../../components/Column'
 import { useTranslation } from 'react-i18next'
 import PanelPairInput from '../../components/PanelPairInput'
 import { ButtonPrimary } from '../../components/Button'
-import Row, { RowFixed } from '../../components/Row'
+import Row, { RowBetween, RowFixed } from '../../components/Row'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import CurrencyLogo from '../../components/CurrencyLogo'
@@ -18,12 +18,15 @@ import { useParams } from 'react-router-dom'
 import { Farm } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/masterfarmer/useFarm'
 import useUnstake from '../../hooks/masterfarmer/useUnstake'
+import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
+import { TruncatedText } from '../../components/swap/styleds'
+import useTheme from '../../hooks/useTheme'
 
-const HeadingSection = styled(AutoColumn)`
+export const HeadingSection = styled(AutoColumn)`
   margin: 30px 0;
 `
 
-const Heading = styled(Text)`
+export const Heading = styled(Text)`
   color: ${({ theme }) => theme.text6Sone};
   font-size: 2.5rem;
   font-weight: 700;
@@ -33,7 +36,7 @@ const Heading = styled(Text)`
   `}
 `
 
-const SubHeading = styled(Text)`
+export const SubHeading = styled(Text)`
   color: ${({ theme }) => theme.text4Sone};
   font-size: 1.125rem;
   font-weight: 400;
@@ -72,10 +75,10 @@ export default function Unstake() {
       : fullBalance !== undefined && +typedValue > fullBalance
       ? t('Insufficient LP Token')
       : pendingUnstakeTx
-      ? t('Unstake')
+      ? t('Unstaking...')
       : undefined
 
-  const showDetails = error === undefined || error === t('Unstake')
+  const showDetails = error === undefined || error === t('Unstaking...')
 
   const { symbol } = farm || {
     symbol: '--'
@@ -91,15 +94,125 @@ export default function Unstake() {
     }
   }
 
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [attemptingTxn, setAttemptingTxn] = useState(false) // Clicked confirm.
+  const [txHash, setTxHash] = useState('')
+
+  const handleDismissConfirmation = () => {
+    setShowConfirm(false)
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      setTypedValue('')
+    }
+    setTxHash('')
+  }
+
+  const ModalHeader = () => {
+    return (
+      <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>
+        <RowBetween align="flex-end">
+          <RowFixed gap="0">
+            <TruncatedText fontSize={isUpToExtraSmall ? '20px' : '28px'} fontWeight={600} style={{ zIndex: 1 }}>
+              888,888,888.888888888
+            </TruncatedText>
+          </RowFixed>
+          {/* zIndex để hiển thị đè lên SwapVector. */}
+          <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align="center">
+            <CurrencyLogo address="SONE" size="24px" style={{ marginRight: '5px' }} />
+            <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
+              LP
+            </Text>
+          </RowFixed>
+        </RowBetween>
+      </AutoColumn>
+    )
+  }
+
+  const ModalFooter = () => {
+    const theme = useTheme()
+    const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
+
+    return (
+      <>
+        <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'}>
+          <RowBetween>
+            <RowFixed>
+              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+                {t('After unstaking, you will have')}
+              </Text>
+            </RowFixed>
+          </RowBetween>
+          <RowBetween>
+            <RowFixed>
+              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                {t('Total LP Token')}
+              </Text>
+            </RowFixed>
+            <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+              10,000,000 LP
+            </Text>
+          </RowBetween>
+          <RowBetween>
+            <RowFixed>
+              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                {t('Remain Staked LP')}
+              </Text>
+            </RowFixed>
+            <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+              10,000,000 LP
+            </Text>
+          </RowBetween>
+          <RowBetween>
+            <RowFixed>
+              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                {t('available_reward')}
+              </Text>
+            </RowFixed>
+            <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+              10,000,000 SONE
+            </Text>
+          </RowBetween>
+        </AutoColumn>
+
+        <ButtonPrimary onClick={onUnstake}>
+          <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
+            {t('Unstake')}
+          </Text>
+        </ButtonPrimary>
+      </>
+    )
+  }
+
+  // Not show AppVector ==> `transactionType={undefined}`.
+  const modalContent = () => (
+    <ConfirmationModalContent
+      title={t('You will receive')}
+      onDismiss={handleDismissConfirmation}
+      topContent={ModalHeader}
+      bottomContent={ModalFooter}
+      transactionType={undefined}
+    />
+  )
+
+  const pendingText = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, quos.'
+
   return (
     <>
+      <TransactionConfirmationModal
+        isOpen={showConfirm}
+        onDismiss={handleDismissConfirmation}
+        hash={txHash}
+        content={modalContent}
+        attemptingTxn={attemptingTxn}
+        pendingText={pendingText}
+      />
       {isUpToExtraSmall ? (
         <Row justify="center" gap="0.75rem" style={{ marginBottom: '1.75rem' }}>
           <RowFixed gap="0.75rem">
             <CurrencyLogo address="SONE" size="3rem" sizeMobile="2rem" />
             <AutoColumn justify="center">
               <Heading>{t('LP TOKEN')}</Heading>
-              <SubHeading>ETH-DAI LP</SubHeading>
+              <SubHeading>{symbol} LP</SubHeading>
             </AutoColumn>
           </RowFixed>
         </Row>
@@ -112,34 +225,38 @@ export default function Unstake() {
           <SubHeading>{symbol} LP</SubHeading>
         </HeadingSection>
       )}
-      <AutoColumn gap={isUpToExtraSmall ? '1.25rem' : '35px'} style={{ width: '100%' }} justify="center">
-        <AppBody>
-          <AppBodyTitleDescriptionSettings transactionType={TransactionType.UNSTAKE} />
-          <StyledPadding>
-            <AutoColumn gap={isUpToExtraSmall ? '1.5rem' : '35px'}>
-              <PanelPairInput
-                value={typedValue}
-                onUserInput={onUserInput}
-                balance={fullBalance}
-                onMax={onMax}
-                label={t('Input')}
-                customBalanceText={t('Staked') + ':'}
-              />
-              {error ? (
-                <ButtonPrimary disabled={true}>{error}</ButtonPrimary>
-              ) : (
-                <ButtonPrimary onClick={onUnstake}>{t('Unstake')}</ButtonPrimary>
-              )}
-              {showDetails && <UnstakeTxSectionDetails unstakeAmount={+typedValue} farm={farm} />}
-            </AutoColumn>
-          </StyledPadding>
-        </AppBody>
-        <MyReward
-          myReward={
-            farm?.userInfo?.sushiHarvested === undefined ? undefined : +(+farm.userInfo.sushiHarvested).toFixed(3)
-          }
-        />
-      </AutoColumn>
+      <AppBody>
+        <AppBodyTitleDescriptionSettings transactionType={TransactionType.UNSTAKE} />
+        <StyledPadding>
+          <AutoColumn gap={isUpToExtraSmall ? '1.5rem' : '35px'}>
+            <PanelPairInput
+              value={typedValue}
+              onUserInput={onUserInput}
+              balance={fullBalance}
+              onMax={onMax}
+              label={t('input')}
+              customBalanceText={t('staked') + ':'}
+            />
+            {error ? (
+              <ButtonPrimary disabled={true}>{error}</ButtonPrimary>
+            ) : (
+              <ButtonPrimary
+                onClick={() => {
+                  setShowConfirm(true)
+                }}
+              >
+                {t('unstake')}
+              </ButtonPrimary>
+            )}
+            {showDetails && <UnstakeTxSectionDetails unstakeAmount={+typedValue} farm={farm} />}
+          </AutoColumn>
+        </StyledPadding>
+      </AppBody>
+      <MyReward
+        myReward={
+          farm?.userInfo?.sushiHarvested === undefined ? undefined : +(+farm.userInfo.sushiHarvested).toFixed(3)
+        }
+      />
     </>
   )
 }

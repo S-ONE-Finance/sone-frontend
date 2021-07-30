@@ -108,12 +108,14 @@ const Title = styled.a`
   pointer-events: auto;
   justify-self: flex-start;
   margin-right: 1rem;
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    justify-self: center;
-  `};
+
   :hover {
     cursor: pointer;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    justify-self: center;
+  `};
 `
 
 const StyledNavLink = styled(NavLink).attrs({
@@ -493,7 +495,7 @@ export default function Header() {
                 <SubMenu>
                   <SubMenuItemExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</SubMenuItemExternalLink>
                   <SubMenuItemExternalLink href={S_ONE_STAKING_STATISTICS_URL}>
-                    {t('Staking Stats')}
+                    {t('Stake Stats')}
                   </SubMenuItemExternalLink>
                 </SubMenu>
               </MenuItem>

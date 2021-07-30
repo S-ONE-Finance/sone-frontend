@@ -27,7 +27,10 @@ async function getPairIds(chainId?: number) {
 
 /**
  * Use Subgraph to query bulk data for pairs.
- * Interval every 15s after new block created
+ * Interval every 15s after new block created.
+ * FIXME: Đang có 2 vấn đề với hooks này:
+ * 1. Nếu có từ 2 hooks hoặc components gọi hàm này thì sẽ fetch data liên tục, điều này là không cần thiết.
+ * 2. Nếu trong hooks hoặc components gọi hook này mounted, gọi hook, và unmount trước khi data trả về thì sẽ bị lỗi `Can't perform a React state update on an unmounted component.`.
  */
 export function useBulkPairDataInterval() {
   const [subgraphData, setSubgraphData] = useState<any>({})
@@ -54,6 +57,7 @@ export function useBulkPairDataInterval() {
 
   // Query data the first time.
   useEffect(() => {
+    console.log(`I'm here: 1`)
     getData(chainId)
   }, [chainId, getData])
 

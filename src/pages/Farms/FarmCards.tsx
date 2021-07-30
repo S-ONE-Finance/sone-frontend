@@ -4,9 +4,9 @@ import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Farm } from '@s-one-finance/sdk-core/'
-import IconAPY from '../../../assets/images/icon_apy.svg'
-import IconLP from '../../../assets/images/icon_lp.svg'
-import Loader from '../../../components/Loader'
+import IconAPY from '../../assets/images/icon_apy.svg'
+import IconLP from '../../assets/images/icon_lp.svg'
+import Loader from '../../components/Loader'
 
 const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms = [] }) => {
   return (
@@ -241,6 +241,7 @@ const StyledButton = styled.div`
     text-decoration: none;
     font-weight: 700;
     margin: 17px 22px 0 25px;
+
     @media (min-width: 1200px) {
       margin: 36px 25px 0;
       font-size: 24px;

@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Text } from 'rebass'
 import useTheme from '../../hooks/useTheme'
 
-const TextDetailsField = styled(Text)`
+export const TextDetailsField = styled(Text)`
   font-weight: 400;
   font-size: 1rem;
   color: ${({ theme }) => theme.text4Sone};
@@ -15,7 +15,7 @@ const TextDetailsField = styled(Text)`
   `}
 `
 
-const TextDetailsValue = styled(Text)`
+export const TextDetailsValue = styled(Text)`
   font-weight: 700;
   font-size: 1rem;
   color: ${({ theme }) => theme.text6Sone};

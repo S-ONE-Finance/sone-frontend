@@ -5,16 +5,20 @@ import AddLiquidityVectorDark from '../../assets/images/add-liquidity-vector-dar
 import AddLiquidityVectorLight from '../../assets/images/add-liquidity-vector-light.svg'
 import WithdrawLiquidityVectorDark from '../../assets/images/withdraw-liquidity-vector-dark.svg'
 import WithdrawLiquidityVectorLight from '../../assets/images/withdraw-liquidity-vector-light.svg'
+import StakeVectorDark from '../../assets/images/stake-vector-dark.svg'
+import StakeVectorLight from '../../assets/images/stake-vector-light.svg'
 import { useIsDarkMode } from '../../state/user/hooks'
 import styled from 'styled-components'
 import { TransactionType } from '../../state/transactions/types'
 
 const Vector = styled.img<{ size?: string; sizeMobile?: string }>`
-  width: ${({ size }) => size || '82px'};
-  height: auto;
+  height: ${({ size }) => size || '82px'};
+  min-height: ${({ size }) => size || '82px'};
+  width: auto;
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
-    width: ${sizeMobile || '39.59px'};
+    height: ${sizeMobile || '39.59px'};
+    min-height: ${sizeMobile || '39.59px'};
   `};
 `
 
@@ -23,7 +27,7 @@ export default function AppVector({
   size,
   sizeMobile
 }: {
-  transactionType: TransactionType
+  transactionType: TransactionType | undefined
   size?: string
   sizeMobile?: string
 }) {
@@ -42,6 +46,10 @@ export default function AppVector({
       ? isDarkMode
         ? WithdrawLiquidityVectorDark
         : WithdrawLiquidityVectorLight
+      : transactionType === TransactionType.STAKE
+      ? isDarkMode
+        ? StakeVectorDark
+        : StakeVectorLight
       : null
   }, [isDarkMode, transactionType])
 

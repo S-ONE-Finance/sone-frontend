@@ -14,7 +14,7 @@ import BigNumber from 'bignumber.js'
 import { Farm } from '@s-one-finance/sdk-core/'
 import { getFullDisplayBalanceWithComma } from '../../hooks/masterfarmer/utils'
 
-const SectionDetails = styled(AutoColumn)`
+export const SectionDetails = styled(AutoColumn)`
   padding: 0 14px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -55,7 +55,7 @@ export default function UnstakeTxSectionDetails({ unstakeAmount, farm }: { unsta
     <SectionDetails gap={isUpToExtraSmall ? '10px' : '15px'}>
       <Row>
         <Text fontSize={isUpToExtraSmall ? 13 : 16} fontWeight={500}>
-          {t('After unstaking, you will have') + ':'}
+          {t('After unstaking, you will have')}
         </Text>
       </Row>
       <UnstakeTxDetailRow
@@ -71,7 +71,7 @@ export default function UnstakeTxSectionDetails({ unstakeAmount, farm }: { unsta
         unit="LP"
       />
       <UnstakeTxDetailRow
-        fieldName={t('Available Reward')}
+        fieldName={t('available_reward')}
         qhText={t('Lorem ipsum dolor sit amet.')}
         value={getFullDisplayBalanceWithComma(availableReward)}
         unit="SONE"

@@ -56,20 +56,11 @@ const BodyWrapper = styled.div<{ pathC?: string }>`
   flex-direction: column;
   width: 100%;
   align-items: center;
-  padding: ${props => (props.pathC === '/staking' ? 'unset' : '0 1rem 8.75rem 1rem')};
-
-  ${({ theme, pathC }) => theme.mediaWidth.upToLarge`
-  padding: ${pathC === '/staking' ? 'unset' : '0 1rem 8.75rem 1rem'};
-
-`};
+  padding: ${({ pathC }) => (pathC === '/staking' ? 'unset' : '0 1rem 8.75rem 1rem')};
 
   ${({ theme, pathC }) => theme.mediaWidth.upToSmall`
-  padding: ${pathC === '/staking' ? 'unset' : '0 1rem 7.75rem 1rem'};
-`};
-
-  ${({ theme, pathC }) => theme.mediaWidth.upToExtraSmall`
-  padding: ${pathC === '/staking' ? 'unset' : '0 1rem 7.75rem 1rem'};
-`}
+    padding: ${pathC === '/staking' ? 'unset' : '0 1rem 7.75rem 1rem'};
+  `};
 `
 
 const FooterWrapper = styled.div`
@@ -81,7 +72,7 @@ const FooterWrapper = styled.div`
   z-index: 1;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    bottom: 72px;
+    bottom: 4.5rem; // 72px
     border-radius: 12px 12px 0 0;
   `};
 
