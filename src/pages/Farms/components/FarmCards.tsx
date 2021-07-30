@@ -136,6 +136,7 @@ const StyledTitle = styled.h4`
 const StyledItemRow = styled.div`
   color: ${({ theme }) => theme.text4Sone};
   display: flex;
+  align-items: center;
   font-size: 13px;
   justify-content: space-between;
   box-sizing: border-box;
@@ -155,6 +156,7 @@ const StyledItemRow = styled.div`
   }
 
   & > span {
+    font-size: 16px;
     color: ${({ theme }) => theme.text6Sone};
     font-weight: 700;
   }
@@ -180,6 +182,7 @@ const StyledMultiplier = styled.div`
   color: #3faab0;
   padding: 5px 14px;
   font-size: 16px;
+  font-weight: bold;
 `
 
 const StyledCardHeader = styled.div`

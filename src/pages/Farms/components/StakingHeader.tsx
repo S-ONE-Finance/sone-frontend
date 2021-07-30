@@ -75,7 +75,7 @@ const StyledHeadingLogo = styled.div`
     width: 100%;
     height: 100%;
   }
-  @media (min-width: 576px) {
+  @media (min-width: 500px) {
     display: none;
   }
 `
@@ -85,11 +85,18 @@ const StyledHeadingText = styled.div`
   font-size: 60px;
   text-align: center;
   margin: 80px 0;
-  @media (max-width: 768px) {
-    font-size: 20px;
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+  font-size: 40px;
+  margin: 60px 0;
+  `}
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+  font-size: 20px;
+  margin: 60px 0;
+  `}
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-top: 0;
     margin-bottom: 60px;
-  }
+  `}
   & > span {
     color: #f05359;
   }
@@ -145,7 +152,14 @@ const StyledItemImage = styled.div`
     height: 127px;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1200px) {
+    & > img {
+      width: 158px;
+      height: 158px;
+    }
+  }
+
+  @media (min-width: 1920px) {
     & > img {
       width: 188px;
       height: 188px;
@@ -164,6 +178,9 @@ const StyledItemBodyNumberST = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.text12Sone};
   @media (min-width: 1200px) {
+    font-size: 110px;
+  }
+  @media (min-width: 1920px) {
     font-size: 130px;
   }
 `
@@ -178,6 +195,9 @@ const StyledItemBodyContentTitle = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.text11Sone};
   @media (min-width: 1200px) {
+    font-size: 23px;
+  }
+  @media (min-width: 1920px) {
     font-size: 40px;
   }
 `
@@ -186,6 +206,9 @@ const StyledItemBodyContentDescription = styled.div`
   font-weight: 400;
   color: ${({ theme }) => theme.text4Sone};
   @media (min-width: 1200px) {
+    font-size: 16px;
+  }
+  @media (min-width: 1920px) {
     font-size: 20px;
   }
 `

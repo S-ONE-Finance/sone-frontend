@@ -40,14 +40,17 @@ const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
 const StyledItem = styled.div`
   display: flex;
   align-items: baseline;
-  margin-bottom: 15px;
   color: ${({ theme }) => theme.text4Sone};
+  &:nth-child(1) {
+    margin-bottom: 15px;
+  }
   & > span {
     font-size: 20px;
     font-weight: 700;
     color: ${({ theme }) => theme.text6Sone};
   }
   @media (min-width: 1200px) {
+    margin-bottom: 0px;
     padding: 0 10px;
     & > span {
       font-size: 30px;

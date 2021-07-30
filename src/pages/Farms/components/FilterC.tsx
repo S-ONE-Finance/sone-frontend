@@ -82,12 +82,17 @@ const FilterLabel = styled.div`
   display: flex;
   align-items: center;
   flex-basis: 145px;
+  font-weight: 500;
+  margin-right: 14px;
   & > span {
+    width: max-content;
     margin-left: 5px;
     font-size: 13px;
     color: ${({ theme }) => theme.text4Sone};
   }
-  @media (min-width: 1200px) {
+  @media (min-width: 1024px) {
+    flex-basis: unset;
+    margin-right: 10px;
     & > span {
       font-size: 20px;
     }
@@ -138,8 +143,12 @@ const FilterSelected = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
   padding: 17px 23px;
   background: #efefef;
   border: 1px solid #dfdfdf;
   border-radius: 38px;
+  @media (min-width: 1200px) {
+    width: 315px;
+  }
 `

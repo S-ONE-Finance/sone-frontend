@@ -197,13 +197,16 @@ const StakingWrapper = styled.div`
 
 const Box = styled.div`
   width: 100%;
-  margin-bottom: 2.5rem;
+  margin-bottom: 8rem;
   // TODO: refactor hết đống này sử dụng mediaWith.
   @media (min-width: 1200px) {
     background-image: url(${({ theme }) => theme.bgStakingPage});
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: top center;
+  }
+  @media (min-width: 1400px) {
+    margin-bottom: 4rem;
   }
 `
 
