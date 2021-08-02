@@ -9,7 +9,7 @@ import { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../hooks'
 import { TextPanelLabel } from 'theme'
-import { Container, InputPanel, InputRow, LabelRow, RowBalance, TextSmaller } from '../PanelCurrencyInput'
+import { Container, InputRow, LabelRow, RowBalance, TextSmaller } from '../PanelCurrencyInput'
 import styled from 'styled-components'
 import { darken } from 'polished'
 import { Field } from '../../state/burn/actions'
@@ -74,69 +74,67 @@ export default function PanelCurrencyInputAndSelectPercentage({
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, lpToken ?? undefined)
 
   return (
-    <InputPanel id={id}>
-      <Container height="175px" height_mobile="132px">
-        <LabelRow>
-          <RowBetween align={'flex-end'}>
-            <TextPanelLabel>{label}</TextPanelLabel>
-            {account && (
-              // TODO: onClick
-              <RowBalance onClick={() => {}}>
-                <TextPanelLabel>
-                  {!hideBalance && !!lpToken && selectedCurrencyBalance
-                    ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
-                    : ''}
-                </TextPanelLabel>
-                {lpToken && lpToken.symbol && <TextSmaller>&nbsp;{lpToken.symbol}</TextSmaller>}
-              </RowBalance>
-            )}
-          </RowBetween>
-        </LabelRow>
-        <InputRow>
-          <NumericalInput
-            className="token-amount-input"
-            value={value}
-            onUserInput={val => {
-              onUserInput(Field.LIQUIDITY, val)
-            }}
-          />
-        </InputRow>
-        <RowPercentage>
-          <ButtonPercentage
-            active={selectedPercentage === '25'}
-            onClick={() => {
-              onUserInput(Field.LIQUIDITY_PERCENT, '25')
-            }}
-          >
-            25%
-          </ButtonPercentage>
-          <ButtonPercentage
-            active={selectedPercentage === '50'}
-            onClick={() => {
-              onUserInput(Field.LIQUIDITY_PERCENT, '50')
-            }}
-          >
-            50%
-          </ButtonPercentage>
-          <ButtonPercentage
-            active={selectedPercentage === '75'}
-            onClick={() => {
-              onUserInput(Field.LIQUIDITY_PERCENT, '75')
-            }}
-          >
-            75%
-          </ButtonPercentage>
-          <ButtonPercentage
-            active={selectedPercentage === '100'}
-            width="105px"
-            onClick={() => {
-              onUserInput(Field.LIQUIDITY_PERCENT, '100')
-            }}
-          >
-            MAX
-          </ButtonPercentage>
-        </RowPercentage>
-      </Container>
-    </InputPanel>
+    <Container id={id} height="175px" height_mobile="132px">
+      <LabelRow>
+        <RowBetween align="center">
+          <TextPanelLabel>{label}</TextPanelLabel>
+          {account && (
+            // TODO: onClick
+            <RowBalance onClick={() => {}}>
+              <TextPanelLabel>
+                {!hideBalance && !!lpToken && selectedCurrencyBalance
+                  ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
+                  : ''}
+              </TextPanelLabel>
+              {lpToken && lpToken.symbol && <TextSmaller>&nbsp;{lpToken.symbol}</TextSmaller>}
+            </RowBalance>
+          )}
+        </RowBetween>
+      </LabelRow>
+      <InputRow>
+        <NumericalInput
+          className="token-amount-input"
+          value={value}
+          onUserInput={val => {
+            onUserInput(Field.LIQUIDITY, val)
+          }}
+        />
+      </InputRow>
+      <RowPercentage>
+        <ButtonPercentage
+          active={selectedPercentage === '25'}
+          onClick={() => {
+            onUserInput(Field.LIQUIDITY_PERCENT, '25')
+          }}
+        >
+          25%
+        </ButtonPercentage>
+        <ButtonPercentage
+          active={selectedPercentage === '50'}
+          onClick={() => {
+            onUserInput(Field.LIQUIDITY_PERCENT, '50')
+          }}
+        >
+          50%
+        </ButtonPercentage>
+        <ButtonPercentage
+          active={selectedPercentage === '75'}
+          onClick={() => {
+            onUserInput(Field.LIQUIDITY_PERCENT, '75')
+          }}
+        >
+          75%
+        </ButtonPercentage>
+        <ButtonPercentage
+          active={selectedPercentage === '100'}
+          width="105px"
+          onClick={() => {
+            onUserInput(Field.LIQUIDITY_PERCENT, '100')
+          }}
+        >
+          MAX
+        </ButtonPercentage>
+      </RowPercentage>
+    </Container>
   )
 }

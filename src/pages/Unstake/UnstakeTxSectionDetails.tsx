@@ -71,7 +71,7 @@ export default function UnstakeTxSectionDetails({ unstakeAmount, farm }: { unsta
         unit="LP"
       />
       <UnstakeTxDetailRow
-        fieldName={t('Available Reward')}
+        fieldName={t('available_reward')}
         qhText={t('Lorem ipsum dolor sit amet.')}
         value={getFullDisplayBalanceWithComma(availableReward)}
         unit="SONE"

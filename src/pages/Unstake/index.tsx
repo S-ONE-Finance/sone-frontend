@@ -19,11 +19,11 @@ import { Farm } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/masterfarmer/useFarm'
 import useUnstake from '../../hooks/masterfarmer/useUnstake'
 
-const HeadingSection = styled(AutoColumn)`
+export const HeadingSection = styled(AutoColumn)`
   margin: 30px 0;
 `
 
-const Heading = styled(Text)`
+export const Heading = styled(Text)`
   color: ${({ theme }) => theme.text6Sone};
   font-size: 2.5rem;
   font-weight: 700;
@@ -33,7 +33,7 @@ const Heading = styled(Text)`
   `}
 `
 
-const SubHeading = styled(Text)`
+export const SubHeading = styled(Text)`
   color: ${({ theme }) => theme.text4Sone};
   font-size: 1.125rem;
   font-weight: 400;
@@ -99,7 +99,7 @@ export default function Unstake() {
             <CurrencyLogo address="SONE" size="3rem" sizeMobile="2rem" />
             <AutoColumn justify="center">
               <Heading>{t('LP TOKEN')}</Heading>
-              <SubHeading>ETH-DAI LP</SubHeading>
+              <SubHeading>{symbol} LP</SubHeading>
             </AutoColumn>
           </RowFixed>
         </Row>
@@ -122,13 +122,13 @@ export default function Unstake() {
                 onUserInput={onUserInput}
                 balance={fullBalance}
                 onMax={onMax}
-                label={t('Input')}
-                customBalanceText={t('Staked') + ':'}
+                label={t('input')}
+                customBalanceText={t('staked') + ':'}
               />
               {error ? (
                 <ButtonPrimary disabled={true}>{error}</ButtonPrimary>
               ) : (
-                <ButtonPrimary onClick={onUnstake}>{t('Unstake')}</ButtonPrimary>
+                <ButtonPrimary onClick={onUnstake}>{t('unstake')}</ButtonPrimary>
               )}
               {showDetails && <UnstakeTxSectionDetails unstakeAmount={+typedValue} farm={farm} />}
             </AutoColumn>

@@ -17,7 +17,7 @@ const LoaderSoneWrapper = styled.div`
 `
 
 export default function AbsolutePendingTxsForMobile() {
-  const noPendingTxs = useNoPendingTxs() || 10
+  const noPendingTxs = useNoPendingTxs()
 
   if (noPendingTxs) {
     return (

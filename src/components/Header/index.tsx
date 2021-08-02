@@ -495,7 +495,7 @@ export default function Header() {
                 <SubMenu>
                   <SubMenuItemExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</SubMenuItemExternalLink>
                   <SubMenuItemExternalLink href={S_ONE_STAKING_STATISTICS_URL}>
-                    {t('Staking Stats')}
+                    {t('Stake Stats')}
                   </SubMenuItemExternalLink>
                 </SubMenu>
               </MenuItem>
