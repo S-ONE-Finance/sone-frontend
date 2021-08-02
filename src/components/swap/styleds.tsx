@@ -90,7 +90,6 @@ export const StyledBalanceMaxMini = styled.button`
 
 export const TruncatedText = styled(Text)`
   text-overflow: ellipsis;
-  max-width: 335px;
   overflow: hidden;
 `
 

@@ -57,7 +57,6 @@ export function useBulkPairDataInterval() {
 
   // Query data the first time.
   useEffect(() => {
-    console.log(`I'm here: 1`)
     getData(chainId)
   }, [chainId, getData])
 

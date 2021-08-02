@@ -10,8 +10,8 @@ import { useActiveWeb3React } from '../../hooks'
 import { TextPanelLabel, TextPanelLabelAccent } from 'theme'
 import { Container, InputRow, LabelRow, RowBalance, StyledBalanceMax } from '../PanelCurrencyInput'
 import { numberWithCommas } from '../../subgraph/utils/formatter'
-import CurrencyLogo from '../CurrencyLogo'
 import styled from 'styled-components'
+import LiquidityProviderTokenLogo from '../LiquidityProviderTokenLogo'
 
 const PanelPairLabelRow = styled(LabelRow)`
   padding: 18px 30px 0 30px;
@@ -40,6 +40,8 @@ interface PanelPairInputProps {
   onMax: () => void
   label: string
   customBalanceText: string
+  address0?: string
+  address1?: string
 }
 
 export default function PanelPairInput({
@@ -48,7 +50,9 @@ export default function PanelPairInput({
   balance,
   onMax,
   label,
-  customBalanceText
+  customBalanceText,
+  address0,
+  address1
 }: PanelPairInputProps) {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
@@ -60,7 +64,14 @@ export default function PanelPairInput({
           <TextPanelLabel>{label}</TextPanelLabel>
           {account && (
             <RowBalance onClick={onMax} gap="0.25rem">
-              <CurrencyLogo address="SONE" size="25px" style={{ marginRight: '0.35rem' }} />
+              <LiquidityProviderTokenLogo
+                address0={address0}
+                address1={address1}
+                size={22}
+                sizeMobile={14}
+                main={false}
+                style={{ marginRight: '0.25rem' }}
+              />
               <TextPanelLabel>{customBalanceText}</TextPanelLabel>
               <TextPanelLabelAccent>{balance !== undefined ? numberWithCommas(balance) : '--'}</TextPanelLabelAccent>
             </RowBalance>

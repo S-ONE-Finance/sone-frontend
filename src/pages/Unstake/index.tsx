@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { AppBody, StyledPadding } from '../../theme'
 import { TransactionType } from '../../state/transactions/types'
 import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
@@ -9,18 +9,25 @@ import { ButtonPrimary } from '../../components/Button'
 import Row, { RowBetween, RowFixed } from '../../components/Row'
 import { Text } from 'rebass'
 import styled from 'styled-components'
-import CurrencyLogo from '../../components/CurrencyLogo'
 import UnstakeTxSectionDetails from './UnstakeTxSectionDetails'
 import MyReward from 'components/MyReward'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { getBalanceNumber } from '../../hooks/masterfarmer/utils'
+import { getBalanceNumber, getFullDisplayBalanceWithComma } from '../../hooks/masterfarmer/utils'
 import { useParams } from 'react-router-dom'
-import { Farm } from '@s-one-finance/sdk-core'
+import { Farm, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/masterfarmer/useFarm'
 import useUnstake from '../../hooks/masterfarmer/useUnstake'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import { TruncatedText } from '../../components/swap/styleds'
 import useTheme from '../../hooks/useTheme'
+import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenLogo'
+import { numberWithCommas } from '../../subgraph/utils/formatter'
+import useTokenBalance from '../../hooks/masterfarmer/useTokenBalance'
+import usePendingReward from '../../hooks/masterfarmer/usePendingReward'
+import { useBlockNumber } from '../../state/application/hooks'
+import BigNumber from 'bignumber.js'
+import { tryParseAmount } from '../../state/swap/hooks'
+import { useActiveWeb3React } from '../../hooks'
 
 export const HeadingSection = styled(AutoColumn)`
   margin: 30px 0;
@@ -49,6 +56,7 @@ export const SubHeading = styled(Text)`
 export default function Unstake() {
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
+  const { chainId } = useActiveWeb3React()
 
   const { farmId } = useParams() as any
   const farm: Farm | undefined = useFarm('' + farmId)
@@ -69,8 +77,13 @@ export default function Unstake() {
 
   const [pendingUnstakeTx, setPendingUnstakeTx] = useState(false)
 
+  const { token0, token1 } = farm?.liquidityPair || {}
+
+  // Đã fix cứng lp token decimals = 18
+  const tryParse = tryParseAmount(typedValue, farm && chainId && new Token(chainId, farm.pairAddress, 18))
+
   const error: string | undefined =
-    typedValue === '' || +typedValue === 0
+    typedValue === '' || +typedValue === 0 || tryParse === undefined
       ? t('Enter an amount')
       : fullBalance !== undefined && +typedValue > fullBalance
       ? t('Insufficient LP Token')
@@ -84,13 +97,37 @@ export default function Unstake() {
     symbol: '--'
   }
 
+  const [totalLpToken, setTotalLpToken] = useState('0')
+  const [remainStakedLp, setRemainStakedLp] = useState('0')
+  const [availableReward, setAvailableReward] = useState('0')
+
+  const tokenBalance = useTokenBalance(farm?.pairAddress)
+  const pendingReward = usePendingReward(Number(farm?.id))
+  const block = useBlockNumber()
+
+  useEffect(() => {
+    const poolInfo = new PoolInfo(farm)
+    if (typedValue && farm?.userInfo) {
+      const userInfo = new UserInfo(poolInfo, farm.userInfo)
+      const newTotalLPToken = userInfo.getTotalLPTokenAfterUnstake(
+        tokenBalance.toString(),
+        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString()
+      )
+      setTotalLpToken(newTotalLPToken)
+      const newTotalStaked = userInfo.getRemainStakedValueAfterUnstake(
+        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString()
+      )
+      setRemainStakedLp(newTotalStaked)
+      setAvailableReward(pendingReward.toString())
+    }
+  }, [typedValue, farm, block, tokenBalance, pendingReward])
+
   const [showConfirm, setShowConfirm] = useState(false)
   const [attemptingTxn, setAttemptingTxn] = useState(false) // Clicked confirm.
   const [txHash, setTxHash] = useState('')
 
   const handleDismissConfirmation = () => {
     setShowConfirm(false)
-    // if there was a tx hash, we want to clear the input
     if (txHash) {
       setTypedValue('')
     }
@@ -101,9 +138,15 @@ export default function Unstake() {
   const onUnstake = async () => {
     if (typedValue && parseFloat(typedValue) > 0) {
       setPendingUnstakeTx(true)
-      await _onUnstake(typedValue, symbol)
+      setAttemptingTxn(true)
+      const tx = await _onUnstake(typedValue, symbol)
       setPendingUnstakeTx(false)
-      setShowConfirm(false)
+      setAttemptingTxn(false)
+      if (tx) {
+        setTxHash(tx.hash)
+      } else {
+        setTxHash('')
+      }
     }
   }
 
@@ -113,12 +156,19 @@ export default function Unstake() {
         <RowBetween align="flex-end">
           <RowFixed gap="0">
             <TruncatedText fontSize={isUpToExtraSmall ? '20px' : '28px'} fontWeight={600} style={{ zIndex: 1 }}>
-              888,888,888.888888888
+              {numberWithCommas(typedValue)}
             </TruncatedText>
           </RowFixed>
           {/* zIndex để hiển thị đè lên SwapVector. */}
           <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align="center">
-            <CurrencyLogo address="SONE" size="24px" style={{ marginRight: '5px' }} />
+            <LiquidityProviderTokenLogo
+              address0={token0 && token0.id}
+              address1={token1 && token1.id}
+              size={28}
+              sizeMobile={14}
+              main={false}
+              style={{ marginRight: '0.625rem' }}
+            />
             <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
               LP
             </Text>
@@ -149,7 +199,7 @@ export default function Unstake() {
               </Text>
             </RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-              10,000,000 LP
+              {getFullDisplayBalanceWithComma(totalLpToken)} LP
             </Text>
           </RowBetween>
           <RowBetween>
@@ -159,7 +209,7 @@ export default function Unstake() {
               </Text>
             </RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-              10,000,000 LP
+              {getFullDisplayBalanceWithComma(remainStakedLp)} LP
             </Text>
           </RowBetween>
           <RowBetween>
@@ -169,7 +219,7 @@ export default function Unstake() {
               </Text>
             </RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-              10,000,000 SONE
+              {getFullDisplayBalanceWithComma(availableReward)} SONE
             </Text>
           </RowBetween>
         </AutoColumn>
@@ -198,7 +248,7 @@ export default function Unstake() {
     />
   )
 
-  const pendingText = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt, quos.'
+  const pendingText = `Unstaking ${typedValue} LP`
 
   return (
     <>
@@ -206,14 +256,20 @@ export default function Unstake() {
         isOpen={showConfirm}
         onDismiss={handleDismissConfirmation}
         hash={txHash}
-        content={modalContent}
         attemptingTxn={attemptingTxn}
         pendingText={pendingText}
+        content={modalContent}
       />
       {isUpToExtraSmall ? (
         <Row justify="center" gap="0.75rem" style={{ marginBottom: '1.75rem' }}>
           <RowFixed gap="0.75rem">
-            <CurrencyLogo address="SONE" size="3rem" sizeMobile="2rem" />
+            <LiquidityProviderTokenLogo
+              address0={token0 && token0.id}
+              address1={token1 && token1.id}
+              size={44}
+              sizeMobile={28}
+              main={false}
+            />
             <AutoColumn justify="center">
               <Heading>{t('LP TOKEN')}</Heading>
               <SubHeading>{symbol} LP</SubHeading>
@@ -223,7 +279,13 @@ export default function Unstake() {
       ) : (
         <HeadingSection justify="center" gap="0.125rem">
           <RowFixed gap="1.25rem">
-            <CurrencyLogo address="SONE" size="3rem" sizeMobile="2rem" />
+            <LiquidityProviderTokenLogo
+              address0={token0 && token0.id}
+              address1={token1 && token1.id}
+              size={44}
+              sizeMobile={28}
+              main={false}
+            />
             <Heading>{t('LP TOKEN')}</Heading>
           </RowFixed>
           <SubHeading>{symbol} LP</SubHeading>
@@ -240,6 +302,8 @@ export default function Unstake() {
               onMax={onMax}
               label={t('input')}
               customBalanceText={t('staked') + ':'}
+              address0={token0 && token0.id}
+              address1={token1 && token1.id}
             />
             {error ? (
               <ButtonPrimary disabled={true}>{error}</ButtonPrimary>
@@ -252,7 +316,13 @@ export default function Unstake() {
                 {t('unstake')}
               </ButtonPrimary>
             )}
-            {showDetails && <UnstakeTxSectionDetails unstakeAmount={+typedValue} farm={farm} />}
+            {showDetails && (
+              <UnstakeTxSectionDetails
+                totalLpToken={totalLpToken}
+                remainStakedLp={remainStakedLp}
+                availableReward={availableReward}
+              />
+            )}
           </AutoColumn>
         </StyledPadding>
       </AppBody>

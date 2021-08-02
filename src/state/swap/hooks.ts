@@ -18,6 +18,7 @@ import { SwapState } from './reducer'
 import useToggledVersion from '../../hooks/useToggledVersion'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { computeSlippageAdjustedAmounts } from '../../utils/prices'
+import { useTranslation } from 'react-i18next'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>(state => state.swap)
@@ -115,6 +116,7 @@ export function useDerivedSwapInfo(): {
   inputError?: string
   v1Trade: Trade | undefined
 } {
+  const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 
   const toggledVersion = useToggledVersion()
@@ -160,15 +162,15 @@ export function useDerivedSwapInfo(): {
 
   let inputError: string | undefined
   if (!account) {
-    inputError = 'Connect Wallet'
+    inputError = t('connect_wallet')
   }
 
   if (!parsedAmount) {
-    inputError = inputError ?? 'Enter an amount'
+    inputError = inputError ?? t('Enter an amount')
   }
 
   if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? 'Select a token'
+    inputError = inputError ?? t('select_a_token')
   }
 
   const formattedTo = isAddress(to)

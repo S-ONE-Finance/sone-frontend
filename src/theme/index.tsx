@@ -300,7 +300,6 @@ export const FixedGlobalStyle = createGlobalStyle`
   }
 
   html {
-    font-size: 16px;
     font-variant: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
