@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useIsDarkMode } from '../../state/user/hooks'
-import { PxToRem } from '../../utils/PxToRem'
+import { pxToRem } from '../../utils/PxToRem'
 import AddLiquidity from '../../assets/images/add_liquid.svg'
 import Stake from '../../assets/images/stake.svg'
 import GetReward from '../../assets/images/get_reward.svg'
@@ -85,20 +85,20 @@ const StyledHeadingLogo = styled.div`
 
 const StyledHeadingText = styled.div`
   font-weight: 700;
-  font-size: ${PxToRem(60)};
+  font-size: ${pxToRem(60)};
   text-align: center;
-  margin: ${PxToRem(78)} 0 ${PxToRem(97)};
+  margin: ${pxToRem(78)} 0 ${pxToRem(97)};
   ${({ theme }) => theme.mediaWidth.upToLarge`
-  font-size: ${PxToRem(40)};
-  margin: ${PxToRem(60)} 0;
+  font-size: ${pxToRem(40)};
+  margin: ${pxToRem(60)} 0;
   `}
   ${({ theme }) => theme.mediaWidth.upToMedium`
-  font-size: ${PxToRem(20)};
-  margin: ${PxToRem(60)} 0;
+  font-size: ${pxToRem(20)};
+  margin: ${pxToRem(60)} 0;
   `}
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-top: 0;
-    margin-bottom: ${PxToRem(60)};
+    margin-bottom: ${pxToRem(60)};
   `}
   & > span {
     color: ${({ theme }) => theme.red1Sone};
@@ -108,8 +108,8 @@ const StyledHeadingText = styled.div`
 const StyledItemsWrapper = styled.div`
   display: flex;
   flex-wrap: nowrap;
-  overflow-x: auto;
-  padding: ${PxToRem(10)} 0 ${PxToRem(36)} 0;
+  overflow-x: hidden;
+  padding: 0 ${pxToRem(124)};
   background: ${({ theme }) => theme.bg8Sone};
   box-sizing: content-box;
   -ms-overflow-style: none;
@@ -121,117 +121,114 @@ const StyledItemsWrapper = styled.div`
     display: none;
   }
 
-  @media (min-width: 1024px) {
-    box-shadow: none;
-    padding: 0;
-  }
-
-  @media (min-width: 1200px) {
-    padding: 0 ${PxToRem(124)};
-  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    overflow-x: auto;
+    padding: ${pxToRem(10)} 0 ${pxToRem(36)} 0;
+  `}
 `
 
 const StyledItem = styled.div`
-  padding: ${PxToRem(18)} ${PxToRem(12)} ${PxToRem(32)} ${PxToRem(8)};
-  margin-left: ${PxToRem(20)};
+  margin-left: 0;
+  padding: ${pxToRem(16)} 0 ${pxToRem(129)} 0;
   background: ${({ theme }) => theme.bg8Sone};
-  box-shadow: 0 0 ${PxToRem(50)} rgba(92, 36, 38, 0.15);
-  border-radius: ${PxToRem(5)};
-  min-width: ${PxToRem(270)};
+  border-radius: ${pxToRem(5)};
+  min-width: ${pxToRem(270)};
   flex-grow: 1;
   flex-basis: 0;
 
-  @media (min-width: 1024px) {
-    box-shadow: none;
-    margin-left: 0;
-  }
-
-  @media (min-width: 1200px) {
-    padding: ${PxToRem(16)} 0 ${PxToRem(129)} 0;
-  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    padding: 1.125rem 0.75rem 2rem 0.5rem;
+    box-shadow: 0 0 ${pxToRem(50)} rgba(92, 36, 38, 0.15);
+    margin-left: ${pxToRem(20)};
+  `}
 `
 
 const StyledItemImage = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: ${PxToRem(22)};
-
+  margin-bottom: ${pxToRem(22)};
   & > img {
-    width: ${PxToRem(127)};
-    height: ${PxToRem(127)};
+    width: ${pxToRem(188)};
+    height: ${pxToRem(188)};
   }
 
-  @media (min-width: 1200px) {
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     & > img {
-      width: ${PxToRem(158)};
-      height: ${PxToRem(158)};
-    }
-  }
+        width: ${pxToRem(158)};
+        height: ${pxToRem(158)};
+      }
+  `}
 
-  @media (min-width: 1920px) {
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin-bottom: ${pxToRem(6)};
     & > img {
-      width: ${PxToRem(188)};
-      height: ${PxToRem(188)};
+      width: ${pxToRem(127)};
+      height: ${pxToRem(127)};
     }
-  }
+  `}
 `
+
 const StyledItemBody = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 
-  @media (min-width: 1024px) {
-    justify-content: center;
-  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    justify-content: unset;
+  `}
 `
 
 const StyledItemBodyNumberST = styled.div`
-  font-size: ${PxToRem(60)};
+  font-size: ${pxToRem(130)};
   font-weight: 700;
   color: ${({ theme }) => theme.text12Sone};
 
-  @media (min-width: 1200px) {
-    font-size: ${PxToRem(110)};
-  }
-  @media (min-width: 1920px) {
-    font-size: ${PxToRem(130)};
-  }
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    font-size: ${pxToRem(110)};
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+  font-size: ${pxToRem(60)};
+  `}
 `
 
 const StyledItemBodyContent = styled.div`
-  margin-left: ${PxToRem(10)};
+  margin-left: ${pxToRem(34)};
 
   > * + * {
     margin-top: 0.25rem; // 4px.
   }
 
-  @media (min-width: 1200px) {
-    margin-left: ${PxToRem(34)};
-  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin-left: ${pxToRem(10)};
+  `}
 `
 const StyledItemBodyContentTitle = styled.div`
-  font-size: ${PxToRem(20)};
+  font-size: ${pxToRem(40)};
   font-weight: 700;
   color: ${({ theme }) => theme.text11Sone};
 
-  @media (min-width: 1200px) {
-    font-size: ${PxToRem(23)};
-  }
-  @media (min-width: 1920px) {
-    font-size: ${PxToRem(40)};
-  }
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    font-size: ${pxToRem(21)};
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    font-size: ${pxToRem(20)};
+  `}
 `
 
 const StyledItemBodyContentDescription = styled.div`
-  font-size: ${PxToRem(13)};
+  font-size: ${pxToRem(20)};
   font-weight: 400;
   color: ${({ theme }) => theme.text4Sone};
 
-  @media (min-width: 1200px) {
-    font-size: ${PxToRem(16)};
-  }
-  @media (min-width: 1920px) {
-    font-size: ${PxToRem(20)};
-  }
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    font-size: ${pxToRem(15)};
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    font-size: ${pxToRem(13)};
+  `}
 `
 
 export default StakingHeader

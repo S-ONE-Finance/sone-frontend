@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Contract } from '@ethersproject/contracts'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
-import { PxToRem } from '../../utils/PxToRem'
+import { pxToRem } from '../../utils/PxToRem'
 
 interface BalanceProps {
   circulatingSupplyValue: number
@@ -51,21 +51,21 @@ const StyledWrapper = styled.div`
 
 const StyledItem = styled.div`
   margin-bottom: 0px;
-  padding: 0 ${PxToRem(10)};
-  font-size: ${PxToRem(20)};
+  padding: 0 ${pxToRem(10)};
+  font-size: ${pxToRem(20)};
   color: ${({ theme }) => theme.text4Sone};
   & > span {
-    font-size: ${PxToRem(30)};
+    font-size: ${pxToRem(30)};
     font-weight: 700;
     color: ${({ theme }) => theme.text6Sone};
     ${({ theme }) => theme.mediaWidth.upToMedium`
-      font-size: ${PxToRem(20)}
+      font-size: ${pxToRem(20)}
     `}
   }
 
   &:nth-child(1) {
     ${({ theme }) => theme.mediaWidth.upToMedium`
-      margin-bottom: ${PxToRem(15)};
+      margin-bottom: ${pxToRem(15)};
     `}
   }
 
@@ -74,13 +74,13 @@ const StyledItem = styled.div`
     align-items: baseline;
     justify-content: left;
     padding: 0;
-    font-size: ${PxToRem(13)};
+    font-size: ${pxToRem(13)};
   `}
 `
 
 const StyledSticky = styled.div`
-  border-left: ${PxToRem(3)} solid ${({ theme }) => theme.text10Sone};
-  height: ${PxToRem(35)};
+  border-left: ${pxToRem(3)} solid ${({ theme }) => theme.text10Sone};
+  height: ${pxToRem(35)};
   ${({ theme }) => theme.mediaWidth.upToMedium`
     display: none;
   `}

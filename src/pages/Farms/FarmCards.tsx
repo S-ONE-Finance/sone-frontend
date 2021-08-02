@@ -78,30 +78,23 @@ const StyledCards = styled.div`
   display: grid;
   justify-content: center;
   width: 100%;
-  padding: 0 21px 0 15px;
-  grid-template-columns: repeat(auto-fill, minmax(339px, 396px));
-  column-gap: 15px;
-  row-gap: 15px;
+  padding: 0 25px 25px;
+  grid-template-columns: repeat(3, minmax(339px, 396px));
+  column-gap: 50px;
+  row-gap: 50px;
 
-  @media (min-width: 768px) {
-    column-gap: 25px;
-    row-gap: 25px;
-    grid-template-columns: repeat(2, minmax(339px, 396px));
-  }
-
-  @media (min-width: 1024px) {
-    padding: 10px 25px 25px;
-    column-gap: 45px;
-    row-gap: 45px;
-    grid-template-columns: repeat(2, minmax(339px, 396px));
-  }
-
-  @media (min-width: 1400px) {
-    padding: 25px 25px 25px;
+  ${({ theme }) => theme.mediaWidth.upToLarge`
     column-gap: 50px;
     row-gap: 50px;
-    grid-template-columns: repeat(3, minmax(339px, 396px));
-  }
+    grid-template-columns: repeat(2, minmax(339px, 396px));
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    padding: 0 21px 0 15px;
+    grid-template-columns: repeat(auto-fill, minmax(339px, 396px));
+    column-gap: 15px;
+    row-gap: 15px;
+  `}
 `
 
 const StyledLoadingWrapper = styled.div`
@@ -117,43 +110,37 @@ const StyledLoadingWrapper = styled.div`
 `
 
 const StyledTitle = styled.h4`
-  font-size: 20px;
-  line-height: 30px;
+  font-size: 26px;
   font-weight: bold;
   margin: 0 0 12px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  @media (min-width: 1024px) {
-    font-size: 26px;
-  }
 
-  @media (min-width: 1200px) {
-    margin: 0 0 12px 0;
-  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    font-size: 20px;
+  `}
 `
 
 const StyledItemRow = styled.div`
   color: ${({ theme }) => theme.text4Sone};
   display: flex;
   align-items: center;
-  font-size: 13px;
+  font-size: 16px;
   justify-content: space-between;
   box-sizing: border-box;
   border-radius: 8px;
-  padding: 0 20px 0 32px;
-  margin-bottom: 15px;
+  padding: 0 39px 0 32px;
+  margin-bottom: 25px;
   background: transparent;
   width: 100%;
   border: 0px solid #e6dcd5;
-  @media (min-width: 1024px) {
-    font-size: 16px;
-  }
 
-  @media (min-width: 1200px) {
-    padding: 0 39px 0 32px;
-    margin-bottom: 25px;
-  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    font-size: 13px;
+    padding: 0 20px 0 32px;
+    margin-bottom: 15px;
+  `}
 
   & > span {
     font-size: 16px;
@@ -188,21 +175,22 @@ const StyledMultiplier = styled.div`
 const StyledCardHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 21px 29px 20px 34px;
+  padding: 33px 38px 23px 32px;
   background: ${({ theme }) => theme.bg9Sone};
   width: 100%;
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
-  @media (min-width: 1200px) {
-    padding: 33px 38px 23px 32px;
-  }
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    padding: 21px 29px 20px 34px;
+  `}
 `
 
 const StyledCardBody = styled.div`
+  padding: 28px 0 33px;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
   padding: 15px 0 21px;
-  @media (min-width: 1200px) {
-    padding: 28px 0 33px;
-  }
+  `}
 `
 const StyledCardHeaderTitle = styled.div`
   max-width: 60%;
@@ -214,21 +202,21 @@ const StyledCardHeaderIcon = styled.div`
   justify-content: center;
   background: ${({ theme }) => theme.bg1Sone};
   border-radius: 50%;
-  width: 65px;
-  height: 65px;
+  width: 84px;
+  height: 84px;
   & > img {
-    width: 38px;
-    height: 40px;
+    width: 50px;
+    height: 65px;
   }
 
-  @media (min-width: 1200px) {
-    width: 84px;
-    height: 84px;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    width: 65px;
+    height: 65px;
     & > img {
-      width: 50px;
-      height: 65px;
+      width: 38px;
+      height: 40px;
     }
-  }
+  `}
 `
 
 const StyledButton = styled.div`
@@ -239,17 +227,18 @@ const StyledButton = styled.div`
     background: linear-gradient(90deg, #f05359 27.06%, #f58287 111.99%);
     color: white;
     border-radius: 52px;
-    font-size: 13px;
-    padding: 14px 46px 14px 48px;
     text-decoration: none;
     font-weight: 700;
-    margin: 17px 22px 0 25px;
+    margin: 36px 25px 0;
+    font-size: 24px;
+    padding: 21px 74px;
 
-    @media (min-width: 1200px) {
-      margin: 36px 25px 0;
-      font-size: 24px;
-      padding: 21px 74px;
-    }
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+    margin: 17px 22px 0 25px;
+    font-size: 13px;
+    padding: 14px 46px 14px 48px;
+
+    `}
   }
 `
 

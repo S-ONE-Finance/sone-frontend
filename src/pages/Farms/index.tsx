@@ -12,7 +12,7 @@ import FarmCards from './FarmCards'
 import StakingHeader from './StakingHeader'
 import useFarms from '../../hooks/masterfarmer/useFarms'
 import FilterC from './FilterC'
-import { PxToRem } from '../../utils/PxToRem'
+import { pxToRem } from '../../utils/PxToRem'
 import iconFilter from '../../assets/images/icon-filter.svg'
 import iconSort from '../../assets/images/icon-sort.svg'
 
@@ -217,8 +217,8 @@ const Box = styled.div`
 const WrapTitle = styled.div`
   width: 100%;
   background: ${({ theme }) => theme.bg13Sone};
-  padding: ${PxToRem(76)} 0 ${PxToRem(51)} 0;
-  font-size: ${PxToRem(45)};
+  padding: ${pxToRem(76)} 0 ${pxToRem(51)} 0;
+  font-size: ${pxToRem(45)};
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -226,16 +226,16 @@ const WrapTitle = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     background: ${({ theme }) => theme.bg14Sone};
-    padding: ${PxToRem(23)} ${PxToRem(21)} ${PxToRem(34)} ${PxToRem(36)};
+    padding: 1.4375rem 1.3125rem 2.125rem 2.25rem;
     font-size: 20px;
   `}
 }
 `
 
 const StyledCurrently = styled.div`
-  margin-bottom: ${PxToRem(40)};
+  margin-bottom: ${pxToRem(40)};
   text-align: center;
-  font-size: ${PxToRem(45)};
+  font-size: ${pxToRem(45)};
   & > span {
     color: #65bac5;
     font-weight: 700;
@@ -243,41 +243,41 @@ const StyledCurrently = styled.div`
   }
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-  font-size: ${PxToRem(30)};
+  font-size: ${pxToRem(30)};
     & > span {
       font-size: 1.875rem; // 35px.
     }
   `}
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
-  font-size: ${PxToRem(20)};
+  font-size: ${pxToRem(20)};
   text-align: left;
-  margin-bottom: ${PxToRem(18)};
+  margin-bottom: ${pxToRem(18)};
     & > span {
       font-size: 1.875rem; // 30px.
     }
   `}
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    margin-bottom: ${PxToRem(18)};
+    margin-bottom: ${pxToRem(18)};
   `}
 `
 
 const StyledFilter = styled.div`
   width: 100%;
-  min-width: ${PxToRem(300)};
-  max-width: ${PxToRem(1000)};
-  padding: 0 ${PxToRem(21)} 0 ${PxToRem(25)};
-  margin-bottom: ${PxToRem(25)};
-  @media (min-width: 1024px) {
-    display: flex;
-    align-items: center;
-  }
+  min-width: ${pxToRem(300)};
+  max-width: ${pxToRem(1000)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-bottom: ${pxToRem(50)};
 
-  @media (min-width: 1200px) {
-    padding: 0;
-    margin-bottom: ${PxToRem(50)};
-  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    flex-direction: column;
+    margin-bottom: ${pxToRem(25)};
+    padding: 0 1.3125rem 0 1.5625rem;
+  `}
 `
 
 const StyledFilterWrap = styled.div`
