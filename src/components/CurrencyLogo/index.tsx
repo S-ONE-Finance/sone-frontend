@@ -16,7 +16,7 @@ const StyledEthereumLogo = styled.img<{ size: string; sizeMobile: string }>`
   min-width: ${({ size }) => size};
   height: auto;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.075);
-  border-radius: 24px;
+  border-radius: ${({ size }) => size};
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
     width: ${sizeMobile};
@@ -49,6 +49,37 @@ const SoneLogo = styled.img<{ size: string; sizeMobile: string }>`
   `};
 `
 
+const SoneLogoBoundedWrapper = styled.div<{ size: string; sizeMobile: string }>`
+  width: ${({ size }) => size};
+  min-width: ${({ size }) => size};
+  height: ${({ size }) => size};
+  min-height: ${({ size }) => size};
+  background-color: ${({ theme }) => theme.white};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+
+  ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
+    width: ${sizeMobile};
+    min-width: ${sizeMobile};
+    height: ${sizeMobile};
+    min-height: ${sizeMobile};
+  `};
+`
+
+const SoneLogoBounded = styled.img<{ size: number; sizeMobile: number }>`
+  width: ${({ size }) => size * 0.75 + 'px'};
+  min-width: ${({ size }) => size * 0.75 + 'px'};
+  height: auto;
+  background-color: transparent;
+
+  ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
+    width: ${sizeMobile * 0.75 + 'px'};
+    min-width: ${sizeMobile * 0.75 + 'px'};
+  `};
+`
+
 export default function CurrencyLogo({
   currency,
   address,
@@ -77,8 +108,22 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   // SONE.
-  if (address === 'SONE') {
+  if (address && address.toLowerCase() === 'sone') {
     return <SoneLogo size={size} sizeMobile={sizeMobile} src={SoneLogoSvg} style={style} />
+  }
+
+  // SONE BOUNDED.
+  if (address && address.toLowerCase() === 'sone_bounded') {
+    return (
+      <SoneLogoBoundedWrapper size={size} sizeMobile={sizeMobile}>
+        <SoneLogoBounded
+          size={Number.parseInt(size)}
+          sizeMobile={Number.parseInt(sizeMobile)}
+          src={SoneLogoSvg}
+          style={style}
+        />
+      </SoneLogoBoundedWrapper>
+    )
   }
 
   // Nếu truyền vào address thì đơn giản return luôn.

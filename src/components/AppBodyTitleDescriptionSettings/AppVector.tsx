@@ -27,7 +27,7 @@ export default function AppVector({
   size,
   sizeMobile
 }: {
-  transactionType: TransactionType
+  transactionType: TransactionType | undefined
   size?: string
   sizeMobile?: string
 }) {

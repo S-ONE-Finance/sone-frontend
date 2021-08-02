@@ -7,7 +7,7 @@ export const getFormatNumber = (num: number, digits: number): string => {
     .toLocaleUpperCase()
 }
 
-export function numberWithCommas(x: number) {
+export function numberWithCommas(x: number | string) {
   const parts = x.toString().split('.')
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   return parts.join('.')

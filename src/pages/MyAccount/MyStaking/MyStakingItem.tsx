@@ -6,7 +6,6 @@ import { darken } from 'polished'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Row, { RowFitContent, RowFixed } from '../../../components/Row'
-import CurrencyLogoDouble from '../../../components/CurrencyLogoDouble'
 import Column from '../../../components/Column'
 import { useIsUpToExtraSmall, useIsUpToSmall } from '../../../hooks/useWindowSize'
 import useTheme from '../../../hooks/useTheme'
@@ -31,6 +30,7 @@ import { HideExtraSmall } from '../../../theme'
 import usePendingReward from '../../../hooks/masterfarmer/usePendingReward'
 import { getBalanceNumber } from '../../../hooks/masterfarmer/utils'
 import useClaimReward from '../../../hooks/masterfarmer/useClaimReward'
+import LiquidityProviderTokenLogo from '../../../components/LiquidityProviderTokenLogo'
 
 const DetailedSectionIcon = styled.img`
   width: 90px;
@@ -246,7 +246,7 @@ export default function MyStakingItem({ userInfo, isShowDetailedSection, setDeta
           flexDirection={isUpToExtraSmall ? 'column' : 'row'}
           align={isUpToExtraSmall ? 'flex-start' : 'center'}
         >
-          <CurrencyLogoDouble token0Address={token0Address} token1Address={token1Address} size={22} />
+          <LiquidityProviderTokenLogo address0={token0Address} address1={token1Address} size={23} sizeMobile={23} />
           <PairName
             style={{
               marginLeft: isUpToExtraSmall ? '0' : '20px'

@@ -12,8 +12,10 @@ const MyRewardContainer = styled.div`
   border-radius: 25px;
   box-shadow: 0 4px 40px rgba(0, 0, 0, 0.15);
   background-color: ${({ theme }) => theme.bg1Sone};
+  margin-top: 35px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    margin-top: 1.25rem;
     padding: 1.25rem 0 1rem 1.25rem;
   `}
 `

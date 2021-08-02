@@ -164,7 +164,7 @@ export default function Footer() {
       }}
     >
       <div>
-        <RowFixed height={'100%'}>
+        <RowFixed height="100%">
           {data.slice(0).map((pair: any) => (
             <PairInfo
               key={pair.id}

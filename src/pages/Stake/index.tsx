@@ -7,15 +7,18 @@ import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescri
 import { TransactionType } from '../../state/transactions/types'
 import PanelPairInput from '../../components/PanelPairInput'
 import { ButtonPrimary } from '../../components/Button'
-import UnstakeTxSectionDetails from '../Unstake/UnstakeTxSectionDetails'
 import MyReward from '../../components/MyReward'
 import { useTranslation } from 'react-i18next'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { Heading, HeadingSection, SubHeading } from '../Unstake'
+import StakeTxSectionDetails from './StakeTxSectionDetails'
+// import { useShowTransactionDetailsManager } from '../../state/user/hooks'
 
 export default function Staking() {
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
+
+  // const [isShowTransactionDetails, toggleIsShowTransactionDetails] = useShowTransactionDetailsManager()
 
   const typedValue = ''
   const onUserInput = () => {}
@@ -66,7 +69,7 @@ export default function Staking() {
               ) : (
                 <ButtonPrimary onClick={onStake}>{t('stake')}</ButtonPrimary>
               )}
-              {showDetails && <UnstakeTxSectionDetails unstakeAmount={+typedValue} farm={farm} />}
+              {showDetails && <StakeTxSectionDetails />}
             </AutoColumn>
           </StyledPadding>
         </AppBody>

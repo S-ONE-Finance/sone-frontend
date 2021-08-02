@@ -300,7 +300,6 @@ export const FixedGlobalStyle = createGlobalStyle`
   }
 
   html {
-    font-size: 16px;
     font-variant: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -313,6 +312,12 @@ export const ThemedGlobalStyle = createGlobalStyle`
   html {
     color: ${({ theme }) => theme.text1};
     background-color: ${({ theme }) => theme.bg2};
+  }
+  
+  body {
+    min-height: 100vh;
+    min-width: 100vw; // Bỏ qua width của scrollbar, đảm bảo modal center.
+    overflow-x: hidden;
   }
 
   /* width */

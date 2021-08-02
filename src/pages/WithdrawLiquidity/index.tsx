@@ -346,7 +346,7 @@ export default function WithdrawLiquidity({
           disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)}
         >
           <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
-            Confirm
+            {t('Withdraw Liquidity')}
           </Text>
         </ButtonPrimary>
       </>

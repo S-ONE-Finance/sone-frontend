@@ -55,7 +55,7 @@ const Title = styled.div`
 `
 
 // Ranking theo volume.
-function WeeklyRanking() {
+export default function WeeklyRanking() {
   const { t } = useTranslation()
   const ranking = useWeeklyRankingData()
   const isUpToExtraSmall = useIsUpToExtraSmall()
@@ -89,5 +89,3 @@ function WeeklyRanking() {
     </Container>
   )
 }
-
-export default WeeklyRanking

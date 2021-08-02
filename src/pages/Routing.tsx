@@ -23,6 +23,7 @@ import Earn from './Earn'
 import Manage from './Earn/Manage'
 
 import { useActiveWeb3React } from '../hooks'
+import LiquidityProviderTokenLogo from '../components/LiquidityProviderTokenLogo'
 
 function AuthorizedRoute({ path, component }: any) {
   const { account } = useActiveWeb3React()
@@ -61,12 +62,13 @@ export default function Routing() {
       <AuthorizedRoute exact strict path="/my-account/unstake/:farmId" component={Unstake} />
       {/* Component PoolFinder để import Pool, hiện tại trong requirements của sone chưa có use-case này. */}
       <Route exact strict path="/find" component={PoolFinder} />
-      {/* Nhưng route dưới đây là của uni, trong sone không có, nhưng nên giữ lại. */}
+      {/* Những route dưới đây là của uni, trong sone không có, nhưng nên giữ lại. */}
       <Route exact strict path="/claim" component={OpenClaimAddressModalAndRedirectToSwap} />
       <Route exact strict path="/vote" component={Vote} />
       <Route exact strict path="/vote/:id" component={VotePage} />
       <Route exact strict path="/uni" component={Earn} />
       <Route exact strict path="/uni/:currencyIdA/:currencyIdB" component={Manage} />
+      <Route exact strict path="/test" component={LiquidityProviderTokenLogo} />
       <Route component={RedirectPathToSwapOnly} />
     </Switch>
   )

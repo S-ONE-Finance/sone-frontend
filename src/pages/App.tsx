@@ -69,7 +69,7 @@ const FooterWrapper = styled.div`
   bottom: 0;
   width: 100%;
   height: 45px;
-  z-index: 1;
+  z-index: 2147483647;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     bottom: 4.5rem; // 72px
