@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import iconArrowDown from '../../assets/images/icon-arrow-down.svg'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
+import { pxToRem } from '../../utils/PxToRem'
 
 interface Filter {
   options: Option[]
@@ -63,49 +64,53 @@ export default FilterC
 const WrapFilter = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 18px;
-
-  @media (min-width: 1024px) {
-    flex: 1;
-    padding: 0 15px;
+  justify-content: center;
+  margin-top: ${pxToRem(52)};
+  &:first-child {
+    margin-right: ${pxToRem(80)};
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      margin-right: 0;
+      margin-bottom: ${pxToRem(18)};
+    `}
   }
 
-  @media (min-width: 1200px) {
-    margin-top: 52px;
-    margin-bottom: 0;
-    padding: 0;
-    &:first-child {
-      margin-right: 80px;
-    }
-  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    width: 100%;
+    margin-top: 0;
+  `}
 `
 
 const FilterLabel = styled.div`
   display: flex;
   align-items: center;
-  flex-basis: 145px;
+  font-weight: 500;
+  margin-right: ${pxToRem(10)};
 
   & > span {
-    margin-left: 5px;
-    font-size: 13px;
+    width: max-content;
+    margin-left: ${pxToRem(5)};
+    font-size: ${pxToRem(20)};
     color: ${({ theme }) => theme.text4Sone};
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      font-size: ${pxToRem(13)};
+    `}
   }
 
-  @media (min-width: 1200px) {
-    & > span {
-      font-size: 20px;
-    }
-  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    flex-basis: ${pxToRem(135)};
+    margin-right: ${pxToRem(14)};
+  `}
 `
 const FilterItemsWrap = styled.div`
   position: relative;
-  width: 100%;
-  font-size: 13px;
+  font-size: ${pxToRem(20)};
   color: #4f4f4f;
+  font-weight: 500;
 
-  @media (min-width: 1200px) {
-    font-size: 20px;
-  }
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    width: 100%;
+    font-size: ${pxToRem(13)};
+  `}
 `
 
 const FilterItemDefault = styled.div`
@@ -113,25 +118,29 @@ const FilterItemDefault = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  min-width: 220px;
+  min-width: ${pxToRem(200)};
   color: #c9c9c9;
-  padding: 15px 10px;
+  padding: ${pxToRem(15)} ${pxToRem(10)};
 `
 
 const FilterItems = styled.div`
   position: absolute;
   width: 100%;
-  top: -2px;
-  right: 0;
-  padding: 15px;
+  max-width: ${pxToRem(315)};
+  top: ${pxToRem(-2)};
+  padding: ${pxToRem(15)};
   z-index: 1000;
   background: #f8f8f8;
-  border-radius: 31px;
-  box-shadow: 0 0 7px 5px rgba(79, 79, 79, 0.42);
+  border-radius: ${pxToRem(31)};
+  box-shadow: 0 0 ${pxToRem(7)} ${pxToRem(5)} rgba(79, 79, 79, 0.42);
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    max-width: unset;
+  `}
 `
 
 const FilterItem = styled.div`
-  padding: 15px 10px;
+  padding: ${pxToRem(15)} ${pxToRem(10)};
 
   &:hover,
   &:active,
@@ -143,10 +152,15 @@ const FilterItem = styled.div`
 const FilterSelected = styled.div`
   color: #4f4f4f;
   display: flex;
+  font-weight: 500;
   align-items: center;
   justify-content: space-between;
-  padding: 17px 23px;
+  width: ${pxToRem(315)};
+  padding: ${pxToRem(17)} ${pxToRem(23)};
   background: #efefef;
   border: 1px solid #dfdfdf;
-  border-radius: 38px;
+  border-radius: ${pxToRem(38)};
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    width: 100%;
+  `}
 `

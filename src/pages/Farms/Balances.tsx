@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Contract } from '@ethersproject/contracts'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
+import { pxToRem } from '../../utils/PxToRem'
 
 interface BalanceProps {
   circulatingSupplyValue: number
@@ -38,44 +39,51 @@ const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
   )
 }
 
-const StyledItem = styled.div`
+const StyledWrapper = styled.div`
   display: flex;
-  align-items: baseline;
-  margin-bottom: 15px;
+  justify-content: center;
+  color: #767676;
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: block;
+    text-align: left;
+  `}
+`
+
+const StyledItem = styled.div`
+  margin-bottom: 0px;
+  padding: 0 ${pxToRem(10)};
+  font-size: ${pxToRem(20)};
   color: ${({ theme }) => theme.text4Sone};
   & > span {
-    font-size: 20px;
+    font-size: ${pxToRem(30)};
     font-weight: 700;
     color: ${({ theme }) => theme.text6Sone};
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      font-size: ${pxToRem(20)}
+    `}
   }
-  @media (min-width: 1200px) {
-    padding: 0 10px;
-    & > span {
-      font-size: 30px;
-    }
+
+  &:nth-child(1) {
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      margin-bottom: ${pxToRem(15)};
+    `}
   }
-`
-const StyledWrapper = styled.div`
-  font-size: 13px;
-  font-weight: 500;
-  color: #767676;
-  ${StyledItem}:nth-child (1) {
-    margin-bottom: 15px;
-  }
-  @media (min-width: 1200px) {
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
     display: flex;
-    justify-content: center;
-    font-size: 20px;
-  }
+    align-items: baseline;
+    justify-content: left;
+    padding: 0;
+    font-size: ${pxToRem(13)};
+  `}
 `
 
 const StyledSticky = styled.div`
-  border-left: 3px solid ${({ theme }) => theme.text10Sone};
-  height: 35px;
-  display: none;
-  @media (min-width: 1200px) {
-    display: inline-block;
-  }
+  border-left: ${pxToRem(3)} solid ${({ theme }) => theme.text10Sone};
+  height: ${pxToRem(35)};
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    display: none;
+  `}
 `
 
 export default Balances
