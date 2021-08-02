@@ -1,6 +1,10 @@
+/* eslint @typescript-eslint/no-unused-vars: 0 */ // --> OFF
+
 import React from 'react'
 import LpTokenSrc from '../../assets/svg/lp_token.svg'
+import { ReactComponent as LpToken } from '../../assets/svg/lp_token.svg'
 import LpTokenRedSrc from '../../assets/svg/lp_token_red.svg'
+import { ReactComponent as LpTokenRed } from '../../assets/svg/lp_token_red.svg'
 import CurrencyLogo from '../CurrencyLogo'
 import styled from 'styled-components'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
@@ -58,7 +62,7 @@ type LiquidityProviderTokenLogoProps = {
 export default function LiquidityProviderTokenLogo({
   address0,
   address1,
-  size = 44,
+  size = 440,
   sizeMobile = 28,
   main = true,
   style
@@ -66,6 +70,15 @@ export default function LiquidityProviderTokenLogo({
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const currencySize = size * 0.45
   const currencySizeMobile = sizeMobile * 0.45
+  const lpTokenStyle: React.CSSProperties = {
+    width: isUpToExtraSmall ? sizeMobile : size + 'px',
+    minWidth: isUpToExtraSmall ? sizeMobile : size + 'px',
+    height: 'auto',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: 3
+  }
 
   return (
     <LiquidityProviderTokenLogoWrapper size={size} sizeMobile={sizeMobile} style={style}>
@@ -85,12 +98,14 @@ export default function LiquidityProviderTokenLogo({
           style={{ position: 'absolute' }}
         />
       </CurrencyRight>
-      <img
-        src={main ? LpTokenRedSrc : LpTokenSrc}
-        alt="lp-token"
-        width={isUpToExtraSmall ? sizeMobile : size + 'px'}
-        style={{ position: 'absolute', top: 0, left: 0, zIndex: 3 }}
-      />
+      {main ? <LpTokenRed style={lpTokenStyle} /> : <LpToken style={lpTokenStyle} />}
+      {/* Backup cho trường hợp render svg bị lỗi or something. */}
+      {/*<img*/}
+      {/*  src={main ? LpTokenRedSrc : LpTokenSrc}*/}
+      {/*  alt="lp-token"*/}
+      {/*  width={isUpToExtraSmall ? sizeMobile : size + 'px'}*/}
+      {/*  style={{ position: 'absolute', top: 0, left: 0, zIndex: 3 }}*/}
+      {/*/>*/}
     </LiquidityProviderTokenLogoWrapper>
   )
 }

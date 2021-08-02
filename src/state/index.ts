@@ -14,6 +14,7 @@ import multicall from './multicall/reducer'
 import referral from './referral/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'referral']
+// const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'referral', 'application']
 
 const store = configureStore({
   reducer: {

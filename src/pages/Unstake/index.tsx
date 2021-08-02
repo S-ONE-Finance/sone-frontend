@@ -229,7 +229,7 @@ export default function Unstake() {
         ) : (
           <ButtonPrimary onClick={onUnstake}>
             <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
-              {t('Unstake')}
+              {t('unstake')}
             </Text>
           </ButtonPrimary>
         )}
