@@ -24,7 +24,7 @@ export const Popup = styled.div`
   background-color: ${({ theme }) => theme.bg12Sone};
   position: relative;
   border-radius: 10px;
-  padding: 20px 35px 20px 20px;
+  padding: 20px 2.1875rem 20px 20px;
   overflow: hidden;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`

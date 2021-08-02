@@ -7,7 +7,7 @@ import { AutoColumn } from '../Column'
 
 export const Wrapper = styled.div`
   position: relative;
-  padding: 0 30px 35px;
+  padding: 0 30px 2.1875rem;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     padding: 0 10px 25px;
@@ -42,7 +42,7 @@ export const SectionBreak = styled.div`
 `
 
 export const BottomGrouping = styled.div<{ hasTrade: boolean }>`
-  margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '35px 0 0 0')};
+  margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '2.1875rem 0 0 0')};
 
   ${({ theme, hasTrade }) => theme.mediaWidth.upToExtraSmall`
     margin: ${hasTrade ? '17.5px 0' : '17.5px 0 0 0'};

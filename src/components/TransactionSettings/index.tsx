@@ -31,7 +31,7 @@ const FancyButton = styled.button`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     width: 56px;
-    height: 35px;
+    height: 2.1875rem;
   `};
 `
 
@@ -78,7 +78,7 @@ const OptionCustom = styled(FancyButton)<{ active?: boolean; warning?: boolean }
   }
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    height: 35px;
+    height: 2.1875rem;
     width: 129px;
   `};
 `

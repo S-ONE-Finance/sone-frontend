@@ -98,7 +98,7 @@ export function AdvancedSwapDetailsContent({ trade }: AdvancedSwapDetailsProps) 
               </AutoColumn>
             </Row>
           )}
-          <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '35px' }}>
+          <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '2.1875rem' }}>
             <ViewPairAnalytics
               pairAddress={trade.route.pairs[0].liquidityToken.address}
               tokenA={tokenInput}

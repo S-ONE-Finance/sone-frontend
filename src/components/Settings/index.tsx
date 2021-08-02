@@ -134,7 +134,7 @@ const Title = styled.div`
 `
 
 export const SectionWrapper = styled(AutoColumn)`
-  grid-row-gap: 35px;
+  grid-row-gap: 2.1875rem;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     grid-row-gap: 20px;

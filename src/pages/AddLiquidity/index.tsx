@@ -14,7 +14,7 @@ import WeeklyRanking from '../../components/WeeklyRanking'
 import BrandIdentitySoneForMobile from '../../components/BrandIdentitySoneForMobile'
 
 export const ButtonWrapper = styled.div<{ hasTrade?: boolean }>`
-  margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '35px 0 0 0')};
+  margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '2.1875rem 0 0 0')};
 
   ${({ theme, hasTrade }) => theme.mediaWidth.upToExtraSmall`
     margin: ${hasTrade ? '17.5px 0' : '20px 0 0 0'};

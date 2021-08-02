@@ -44,7 +44,7 @@ export const ButtonMainRed = styled.div<{ cursor?: string; padding?: string }>`
   min-width: 154px;
   padding: ${({ padding }) => (padding ? padding : '0.5rem')};
   // Nếu truyền vào padding thì không set height nữa.
-  height: ${({ padding }) => (padding ? 'unset' : '35px')};
+  height: ${({ padding }) => (padding ? 'unset' : '2.1875rem')};
   border-radius: 31px;
   display: flex;
   justify-content: center;

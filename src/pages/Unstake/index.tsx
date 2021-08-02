@@ -294,7 +294,7 @@ export default function Unstake() {
       <AppBody>
         <AppBodyTitleDescriptionSettings transactionType={TransactionType.UNSTAKE} />
         <StyledPadding>
-          <AutoColumn gap={isUpToExtraSmall ? '1.5rem' : '35px'}>
+          <AutoColumn gap={isUpToExtraSmall ? '1.5rem' : '2.1875rem'}>
             <PanelPairInput
               value={typedValue}
               onUserInput={onUserInput}

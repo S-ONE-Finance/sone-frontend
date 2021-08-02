@@ -23,7 +23,7 @@ export const AppBody = styled.div`
 
 export const StyledPadding = styled.div`
   position: relative;
-  padding: 0 30px 35px;
+  padding: 0 30px 2.1875rem;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     padding: 0 10px 25px;

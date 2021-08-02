@@ -58,11 +58,11 @@ export default function Staking() {
           <SubHeading>{symbol} LP</SubHeading>
         </HeadingSection>
       )}
-      <AutoColumn gap={isUpToExtraSmall ? '1.25rem' : '35px'} style={{ width: '100%' }} justify="center">
+      <AutoColumn gap={isUpToExtraSmall ? '1.25rem' : '2.1875rem'} style={{ width: '100%' }} justify="center">
         <AppBody>
           <AppBodyTitleDescriptionSettings transactionType={TransactionType.STAKE} />
           <StyledPadding>
-            <AutoColumn gap={isUpToExtraSmall ? '1.5rem' : '35px'}>
+            <AutoColumn gap={isUpToExtraSmall ? '1.5rem' : '2.1875rem'}>
               <PanelPairInput
                 value={typedValue}
                 onUserInput={onUserInput}

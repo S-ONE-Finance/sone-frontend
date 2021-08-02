@@ -126,7 +126,7 @@ export default function TransactionDetails({
             </RowBetween>
           </AutoColumn>
           {selectedPair?.liquidityToken.address && (
-            <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '35px' }}>
+            <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '2.1875rem' }}>
               <ViewPairAnalytics
                 pairAddress={selectedPair.liquidityToken.address}
                 tokenA={selectedPair.token0}

@@ -236,6 +236,7 @@ const StyledCurrently = styled.div`
   margin-bottom: ${pxToRem(40)};
   text-align: center;
   font-size: ${pxToRem(45)};
+  
   & > span {
     color: #65bac5;
     font-weight: 700;
@@ -243,16 +244,17 @@ const StyledCurrently = styled.div`
   }
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-  font-size: ${pxToRem(30)};
+    font-size: ${pxToRem(30)};
     & > span {
-      font-size: 1.875rem; // 35px.
+      font-size: 1.875rem; // 30px.
     }
   `}
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
-  font-size: ${pxToRem(20)};
-  text-align: left;
-  margin-bottom: ${pxToRem(18)};
+    font-size: ${pxToRem(20)};
+    text-align: left;
+    margin-bottom: ${pxToRem(18)};
+    
     & > span {
       font-size: 1.875rem; // 30px.
     }

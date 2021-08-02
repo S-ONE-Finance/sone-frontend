@@ -118,7 +118,7 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
             </RowBetween>
           </AutoColumn>
           {pair?.liquidityToken.address && (
-            <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '35px' }}>
+            <ColumnCenter style={{ marginTop: isUpToExtraSmall ? '25px' : '2.1875rem' }}>
               <ViewPairAnalytics pairAddress={pair.liquidityToken.address} tokenA={pair.token0} tokenB={pair.token1} />
             </ColumnCenter>
           )}

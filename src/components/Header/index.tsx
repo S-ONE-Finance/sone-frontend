@@ -300,7 +300,7 @@ export const StyledMenuButton = styled.button<{ cursor?: string; primary?: boole
   width: max-content;
   border: none;
   background-color: ${({ theme, primary }) => (primary ? theme.red1Sone : theme.bg3Sone)};
-  height: 35px;
+  height: 2.1875rem;
   margin: 0 0 0 1rem;
   padding: 0.15rem 1rem;
   border-radius: 20px;

@@ -116,7 +116,7 @@ export const SectionButton = styled(Button)<{ is_disabled?: 'yes' }>`
   `}
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    height: 35px;
+    height: 2.1875rem;
     max-width: 142px;
     font-size: 13px;
   `}
@@ -338,7 +338,7 @@ export const ButtonRemove = styled(Button)`
   `}
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    height: 35px;
+    height: 2.1875rem;
     max-width: 122px;
     font-size: 13px;
   `}

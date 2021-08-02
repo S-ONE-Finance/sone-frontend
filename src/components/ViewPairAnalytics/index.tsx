@@ -9,7 +9,7 @@ import { unwrappedToken } from '../../utils/wrappedCurrency'
 const InfoLink = styled(ExternalLink)`
   width: fit-content;
   font-size: 16px;
-  padding: 10px 35px;
+  padding: 10px 2.1875rem;
   border-radius: 20px;
   font-weight: 500;
   color: ${({ theme }) => theme.text5Sone};

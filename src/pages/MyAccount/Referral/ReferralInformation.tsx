@@ -114,7 +114,7 @@ const QrCodeShareSection = styled(ColumnCenter)`
   ${({ theme }) => theme.mediaWidth.upToSmall`
     min-width: fit-content;
     width: fit-content;
-    margin-top: 35px;
+    margin-top: 2.1875rem;
     align-self: center;
   `}
 `

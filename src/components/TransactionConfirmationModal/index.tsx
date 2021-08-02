@@ -32,7 +32,7 @@ const Section = styled(AutoColumn)`
 `
 
 const BottomSection = styled(Section)`
-  padding: 25px 57px 35px;
+  padding: 25px 57px 2.1875rem;
   border-top: ${({ theme }) => `1px solid ${theme.border3Sone}`};
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -192,7 +192,7 @@ export function ConfirmationModalContent({
         </RowBetween>
         {topContent()}
       </Section>
-      <BottomSection gap={isUpToExtraSmall ? '25px' : '35px'}>{bottomContent()}</BottomSection>
+      <BottomSection gap={isUpToExtraSmall ? '25px' : '2.1875rem'}>{bottomContent()}</BottomSection>
     </Wrapper>
   )
 }

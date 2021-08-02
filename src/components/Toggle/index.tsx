@@ -27,7 +27,7 @@ const StyledToggle = styled.button<{ isActive?: boolean; activeElement?: boolean
   padding: 0;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    height: 35px;
+    height: 2.1875rem;
   `};
 `
 
