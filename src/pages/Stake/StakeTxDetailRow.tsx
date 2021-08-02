@@ -9,7 +9,7 @@ type StakeTxDetailsProps = {
   // Question helper text.
   qhText: string
   value: string
-  unit: string
+  unit?: string
   valueColorPrimary?: boolean
 }
 
@@ -26,9 +26,11 @@ export default function StakeTxDetailRow({ fieldName, qhText, value, unit, value
       </RowFixed>
       <RowFixed align="baseline">
         <TextDetailsValue color={color}>{value}</TextDetailsValue>
-        <TextDetailsValue fontSize={unitFontSize} color={color} marginLeft={unit === '%' ? '0' : '0.25rem'}>
-          {unit}
-        </TextDetailsValue>
+        {value !== '--' && value !== undefined && unit !== undefined && (
+          <TextDetailsValue fontSize={unitFontSize} color={color} marginLeft={unit === '%' ? '0' : '0.25rem'}>
+            {unit}
+          </TextDetailsValue>
+        )}
       </RowFixed>
     </RowBetween>
   )

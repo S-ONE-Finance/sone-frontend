@@ -5,8 +5,15 @@ import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { useTranslation } from 'react-i18next'
 import { SectionDetails } from '../Unstake/UnstakeTxSectionDetails'
 import StakeTxDetailRow from './StakeTxDetailRow'
+import { getNumberCommas } from '../../subgraph/utils/formatter'
 
-export default function StakeTxSectionDetails() {
+export default function StakeTxSectionDetails2({
+  rewardPerBlock,
+  totalLiquidity
+}: {
+  rewardPerBlock?: number
+  totalLiquidity?: number
+}) {
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
@@ -14,27 +21,20 @@ export default function StakeTxSectionDetails() {
     <SectionDetails gap={isUpToExtraSmall ? '10px' : '15px'}>
       <Row>
         <Text fontSize={isUpToExtraSmall ? 13 : 16} fontWeight={500}>
-          {t('after_staking_you_will_have')}
+          {t('reward_information')}
         </Text>
       </Row>
       <StakeTxDetailRow
-        fieldName={t('Total Staked Value')}
+        fieldName={t('reward_block')}
         qhText={t('Lorem ipsum dolor sit amet.')}
-        value={'888,888,888.888'}
-        unit="LP"
-      />
-      <StakeTxDetailRow
-        fieldName={t('Earned Reward')}
-        qhText={t('Lorem ipsum dolor sit amet.')}
-        value={'888,888,888.888'}
+        value={rewardPerBlock === undefined ? '--' : getNumberCommas(rewardPerBlock)}
         unit="SONE"
       />
       <StakeTxDetailRow
-        fieldName={t('apy')}
+        fieldName={t('total_liquidity')}
         qhText={t('Lorem ipsum dolor sit amet.')}
-        value={'888,888,888.888'}
-        unit="%"
-        valueColorPrimary
+        value={totalLiquidity === undefined ? '--' : '$' + getNumberCommas(totalLiquidity)}
+        unit={undefined}
       />
     </SectionDetails>
   )

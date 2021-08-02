@@ -1,6 +1,5 @@
-import React from 'react'
-import Row, { RowFixed } from '../../components/Row'
-import CurrencyLogo from '../../components/CurrencyLogo'
+import React, { useEffect, useState } from 'react'
+import Row, { RowBetween, RowFixed } from '../../components/Row'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import { AppBody, StyledPadding } from '../../theme'
 import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
@@ -11,12 +10,26 @@ import MyReward from '../../components/MyReward'
 import { useTranslation } from 'react-i18next'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { Heading, HeadingSection, SubHeading } from '../Unstake'
-import StakeTxSectionDetails from './StakeTxSectionDetails'
+import StakeTxSectionDetails1 from './StakeTxSectionDetails1'
 import { useShowTransactionDetailsManager } from '../../state/user/hooks'
 import { ClickableText } from '../Pool/styleds'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import useTheme from '../../hooks/useTheme'
 import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenLogo'
+import StakeTxSectionDetails2 from './StakeTxSectionDetails2'
+import { useParams } from 'react-router-dom'
+import { Farm, PoolInfo, UserInfo } from '@s-one-finance/sdk-core'
+import useFarm from '../../hooks/masterfarmer/useFarm'
+import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
+import { useActiveWeb3React } from '../../hooks'
+import useTokenBalance from '../../hooks/masterfarmer/useTokenBalance'
+import { getBalanceNumber, getBalanceStringCommas } from '../../hooks/masterfarmer/utils'
+import BigNumber from 'bignumber.js'
+import useStake from '../../hooks/masterfarmer/useStake'
+import { TruncatedText } from '../../components/swap/styleds'
+import { getNumberCommas } from '../../subgraph/utils/formatter'
+import { Text } from 'rebass'
+import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 
 export default function Staking() {
   const { t } = useTranslation()
@@ -24,38 +37,245 @@ export default function Staking() {
   const mobile13Desktop16 = isUpToExtraSmall ? '13px' : '16px'
   const theme = useTheme()
 
-  const [isShowTransactionDetails, toggleIsShowTransactionDetails] = useShowTransactionDetailsManager()
+  const [isShowRewardInformation, toggleIsShowRewardInformation] = useShowTransactionDetailsManager()
 
-  const typedValue = ''
-  const onUserInput = () => {}
-  const lpBalance = 888888888.888
-  const onMax = () => {}
-  const error = false
-  const onStake = () => {}
-  const farm: any = 1
-  const symbol = 'ETH-DAI'
+  const { farmId } = useParams() as any
+  const farm: Farm | undefined = useFarm(farmId)
+
+  const [typedValue, setTypedValue] = useState('')
+
+  const { pairAddress, symbol } = farm || {}
+  const lpBalanceRaw = useTokenBalance(pairAddress)
+  const lpBalance = pairAddress && lpBalanceRaw ? getBalanceNumber(lpBalanceRaw.toString()) : undefined
+
+  const toggleWalletModal = useWalletModalToggle()
+  const { account } = useActiveWeb3React()
+
+  const error = !account
+    ? t('connect_wallet')
+    : +typedValue === 0
+    ? t('Enter an amount')
+    : !lpBalance || !farm
+    ? t('stake')
+    : undefined
+
+  const { token0, token1 } = farm?.liquidityPair || {}
+
+  const [totalStakedAfterStake, setTotalStakedAfterStake] = useState<string>()
+  const [earnedRewardAfterStake, setEarnedRewardAfterStake] = useState<string>()
+  const [apyAfterStake, setApyAfterStake] = useState<string>()
+  const totalStakedAfterStakeRender =
+    totalStakedAfterStake === undefined ? '--' : getBalanceStringCommas(totalStakedAfterStake)
+  const earnedRewardAfterStakeRender =
+    earnedRewardAfterStake === undefined ? '--' : getBalanceStringCommas(earnedRewardAfterStake)
+  const apyAfterStakeRender = apyAfterStake === undefined ? '--' : getBalanceStringCommas(apyAfterStake)
+
+  const rewardPerBlock = farm && farm.rewardPerBlock
+  const totalLiquidity = farm && +farm.balanceUSD
+
+  const block = useBlockNumber()
+
+  useEffect(() => {
+    if (typedValue === '') {
+      setTotalStakedAfterStake(undefined)
+      setEarnedRewardAfterStake(undefined)
+      setApyAfterStake(undefined)
+      return
+    }
+    const poolInfo = new PoolInfo(farm)
+    if (typedValue && farm?.userInfo) {
+      const userInfo = new UserInfo(poolInfo, farm.userInfo)
+      const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
+        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString()
+      )
+      setTotalStakedAfterStake(newTotalStaked)
+      const newEarnedReward = userInfo.getEarnedRewardAfterStake(
+        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString(),
+        block || 0
+      )
+      setEarnedRewardAfterStake(newEarnedReward)
+      const newAPY = userInfo.getAPYAfterStake(
+        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString(),
+        block || 0
+      )
+      setApyAfterStake(newAPY)
+    }
+  }, [typedValue, farm, block])
+
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [attemptingTxn, setAttemptingTxn] = useState(false) // Clicked confirm.
+  const [txHash, setTxHash] = useState('')
+
+  const handleDismissConfirmation = () => {
+    setShowConfirm(false)
+    if (txHash) {
+      setTypedValue('')
+    }
+    setTxHash('')
+  }
+
+  const { onStake: _onStake } = useStake(Number(farmId))
+  const onStake = async () => {
+    if (!error && symbol) {
+      setAttemptingTxn(true)
+      const tx = await _onStake(typedValue, symbol)
+      setAttemptingTxn(false)
+      if (tx) {
+        setTxHash(tx.hash)
+      } else {
+        setTxHash('')
+      }
+    }
+  }
+
+  const onUserInput = (theNewOne: string) => {
+    setTypedValue(theNewOne)
+  }
+
+  const onMax = () => {
+    if (lpBalance) {
+      setTypedValue(lpBalance.toString())
+    }
+  }
+
+  const ModalHeader = () => {
+    return (
+      <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>
+        <RowBetween align="flex-end">
+          <RowFixed gap="0">
+            <TruncatedText fontSize={isUpToExtraSmall ? '20px' : '28px'} fontWeight={600} style={{ zIndex: 1 }}>
+              {getNumberCommas(typedValue)}
+            </TruncatedText>
+          </RowFixed>
+          {/* zIndex để hiển thị đè lên SwapVector. */}
+          <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align="center">
+            <LiquidityProviderTokenLogo
+              address0={token0 && token0.id}
+              address1={token1 && token1.id}
+              size={28}
+              sizeMobile={14}
+              main={false}
+              style={{ marginRight: '0.625rem' }}
+            />
+            <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
+              LP
+            </Text>
+          </RowFixed>
+        </RowBetween>
+      </AutoColumn>
+    )
+  }
+
+  const ModalFooter = () => {
+    const theme = useTheme()
+    const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
+
+    return (
+      <>
+        <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'}>
+          <RowBetween>
+            <RowFixed>
+              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+                {t('after_staking_you_will_have')}
+              </Text>
+            </RowFixed>
+          </RowBetween>
+          <RowBetween>
+            <RowFixed>
+              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                {t('Total Staked Value')}
+              </Text>
+            </RowFixed>
+            <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+              {totalStakedAfterStakeRender} LP
+            </Text>
+          </RowBetween>
+          <RowBetween>
+            <RowFixed>
+              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                {t('Earned Reward')}
+              </Text>
+            </RowFixed>
+            <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+              {earnedRewardAfterStakeRender} LP
+            </Text>
+          </RowBetween>
+          <RowBetween>
+            <RowFixed>
+              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                {t('apy')}
+              </Text>
+            </RowFixed>
+            <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text5Sone}>
+              {apyAfterStakeRender}%
+            </Text>
+          </RowBetween>
+        </AutoColumn>
+
+        {error ? (
+          <ButtonPrimary disabled>{error}</ButtonPrimary>
+        ) : (
+          <ButtonPrimary onClick={onStake}>
+            <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
+              {t('stake')}
+            </Text>
+          </ButtonPrimary>
+        )}
+      </>
+    )
+  }
+
+  const modalContent = () => (
+    <ConfirmationModalContent
+      title={t('Stake Confirmation')}
+      onDismiss={handleDismissConfirmation}
+      topContent={ModalHeader}
+      bottomContent={ModalFooter}
+      transactionType={undefined}
+    />
+  )
+
+  const pendingText = `Staking ${typedValue} LP`
 
   return (
     <>
+      <TransactionConfirmationModal
+        isOpen={showConfirm}
+        onDismiss={handleDismissConfirmation}
+        hash={txHash}
+        attemptingTxn={attemptingTxn}
+        pendingText={pendingText}
+        content={modalContent}
+      />
       {isUpToExtraSmall ? (
         <Row justify="center" gap="0.75rem" style={{ marginBottom: '1.75rem' }}>
           <RowFixed gap="0.75rem">
-            {/* TODO: address0 & address1. */}
-            <LiquidityProviderTokenLogo size={44} sizeMobile={28} main={false} />
+            <LiquidityProviderTokenLogo
+              address0={token0 && token0.id}
+              address1={token1 && token1.id}
+              size={44}
+              sizeMobile={28}
+              main={false}
+            />
             <AutoColumn justify="center">
               <Heading>{t('LP TOKEN')}</Heading>
-              <SubHeading>{symbol} LP</SubHeading>
+              <SubHeading>{symbol ? `${symbol} LP` : '--'}</SubHeading>
             </AutoColumn>
           </RowFixed>
         </Row>
       ) : (
         <HeadingSection justify="center" gap="0.125rem">
           <RowFixed gap="1.25rem">
-            {/* TODO: address0 & address1. */}
-            <LiquidityProviderTokenLogo size={44} sizeMobile={28} main={false} />
+            <LiquidityProviderTokenLogo
+              address0={token0 && token0.id}
+              address1={token1 && token1.id}
+              size={44}
+              sizeMobile={28}
+              main={false}
+            />
             <Heading>{t('LP TOKEN')}</Heading>
           </RowFixed>
-          <SubHeading>{symbol} LP</SubHeading>
+          <SubHeading>{symbol ? `${symbol} LP` : '--'}</SubHeading>
         </HeadingSection>
       )}
       <AutoColumn gap={isUpToExtraSmall ? '1.25rem' : '2.1875rem'} style={{ width: '100%' }} justify="center">
@@ -71,31 +291,50 @@ export default function Staking() {
                 label={t('input')}
                 customBalanceText={t('LP Balance') + ':'}
               />
-              {error ? (
+              {error === t('connect_wallet') ? (
+                <ButtonPrimary onClick={toggleWalletModal}>{error}</ButtonPrimary>
+              ) : error ? (
                 <ButtonPrimary disabled={true}>{error}</ButtonPrimary>
               ) : (
-                <ButtonPrimary onClick={onStake}>{t('stake')}</ButtonPrimary>
+                <ButtonPrimary
+                  onClick={() => {
+                    setShowConfirm(true)
+                  }}
+                >
+                  {t('stake')}
+                </ButtonPrimary>
               )}
-              {farm && <StakeTxSectionDetails />}
-              {farm && !isShowTransactionDetails && (
+
+              {!error && (
+                <StakeTxSectionDetails1
+                  totalStakedAfterStake={totalStakedAfterStakeRender}
+                  earnedRewardAfterStake={earnedRewardAfterStakeRender}
+                  apyAfterStake={apyAfterStakeRender}
+                />
+              )}
+
+              {!error && !isShowRewardInformation && (
                 <ColumnCenter>
                   <ClickableText
                     fontSize={mobile13Desktop16}
                     fontWeight={500}
                     color={theme.text5Sone}
-                    onClick={toggleIsShowTransactionDetails}
+                    onClick={toggleIsShowRewardInformation}
                   >
                     {t('show_more_information')} <ChevronDown size={12} />
                   </ClickableText>
                 </ColumnCenter>
               )}
-              {farm && isShowTransactionDetails && (
+              {!error && isShowRewardInformation && (
+                <StakeTxSectionDetails2 rewardPerBlock={rewardPerBlock} totalLiquidity={totalLiquidity} />
+              )}
+              {!error && isShowRewardInformation && (
                 <ColumnCenter>
                   <ClickableText
                     fontSize={mobile13Desktop16}
                     fontWeight={500}
                     color={theme.text5Sone}
-                    onClick={toggleIsShowTransactionDetails}
+                    onClick={toggleIsShowRewardInformation}
                   >
                     {t('show_less')} <ChevronUp size={12} />
                   </ClickableText>
@@ -106,7 +345,9 @@ export default function Staking() {
         </AppBody>
         <MyReward
           myReward={
-            farm?.userInfo?.sushiHarvested === undefined ? undefined : +(+farm.userInfo.sushiHarvested).toFixed(3)
+            !account || farm?.userInfo?.sushiHarvested === undefined
+              ? undefined
+              : +(+farm.userInfo.sushiHarvested).toFixed(3)
           }
         />
       </AutoColumn>

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { ColumnCenter } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
-import { getFormatNumber } from '../../subgraph/utils/formatter'
+import { getFormattedNumber } from '../../subgraph/utils/formatter'
 import styled from 'styled-components'
 import Row from '../Row'
 import { ExternalLink } from '../../theme'
@@ -71,7 +71,7 @@ export default function WeeklyRankingItem({
             <CurrencyLogo size="24px" sizeMobile="24px" address={address0} />
             <CurrencyLogo size="24px" sizeMobile="24px" address={address1} />
           </CurrencyLogoContainer>
-          <TextChange>{getFormatNumber(volume || 0, 3)}</TextChange>
+          <TextChange>{getFormattedNumber(volume || 0, 3)}</TextChange>
         </ColumnCenter>
       </StyledExternalLink>
     </Tooltip>

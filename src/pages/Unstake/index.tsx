@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import UnstakeTxSectionDetails from './UnstakeTxSectionDetails'
 import MyReward from 'components/MyReward'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { getBalanceNumber, getFullDisplayBalanceWithComma } from '../../hooks/masterfarmer/utils'
+import { getBalanceNumber, getBalanceStringCommas } from '../../hooks/masterfarmer/utils'
 import { useParams } from 'react-router-dom'
 import { Farm, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/masterfarmer/useFarm'
@@ -21,7 +21,7 @@ import TransactionConfirmationModal, { ConfirmationModalContent } from '../../co
 import { TruncatedText } from '../../components/swap/styleds'
 import useTheme from '../../hooks/useTheme'
 import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenLogo'
-import { numberWithCommas } from '../../subgraph/utils/formatter'
+import { getNumberCommas } from '../../subgraph/utils/formatter'
 import useTokenBalance from '../../hooks/masterfarmer/useTokenBalance'
 import usePendingReward from '../../hooks/masterfarmer/usePendingReward'
 import { useBlockNumber } from '../../state/application/hooks'
@@ -59,7 +59,7 @@ export default function Unstake() {
   const { chainId } = useActiveWeb3React()
 
   const { farmId } = useParams() as any
-  const farm: Farm | undefined = useFarm('' + farmId)
+  const farm: Farm | undefined = useFarm(farmId)
   const amountStaked = farm?.userInfo?.amount
   const fullBalance = useMemo(() => {
     return amountStaked === undefined ? undefined : getBalanceNumber(amountStaked)
@@ -72,10 +72,10 @@ export default function Unstake() {
   }
 
   const onMax = () => {
-    setTypedValue((fullBalance ?? 0).toString())
+    if (fullBalance) {
+      setTypedValue(fullBalance.toString())
+    }
   }
-
-  const [pendingUnstakeTx, setPendingUnstakeTx] = useState(false)
 
   const { token0, token1 } = farm?.liquidityPair || {}
 
@@ -87,11 +87,7 @@ export default function Unstake() {
       ? t('Enter an amount')
       : fullBalance !== undefined && +typedValue > fullBalance
       ? t('Insufficient LP Token')
-      : pendingUnstakeTx
-      ? t('Unstaking...')
       : undefined
-
-  const showDetails = error === undefined || error === t('Unstaking...')
 
   const { symbol } = farm || {
     symbol: '--'
@@ -110,7 +106,7 @@ export default function Unstake() {
     if (typedValue && farm?.userInfo) {
       const userInfo = new UserInfo(poolInfo, farm.userInfo)
       const newTotalLPToken = userInfo.getTotalLPTokenAfterUnstake(
-        tokenBalance.toString(),
+        tokenBalance ? tokenBalance.toString() : '0',
         new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString()
       )
       setTotalLpToken(newTotalLPToken)
@@ -136,11 +132,9 @@ export default function Unstake() {
 
   const { onUnstake: _onUnstake } = useUnstake(Number(farmId))
   const onUnstake = async () => {
-    if (typedValue && parseFloat(typedValue) > 0) {
-      setPendingUnstakeTx(true)
+    if (!error) {
       setAttemptingTxn(true)
       const tx = await _onUnstake(typedValue, symbol)
-      setPendingUnstakeTx(false)
       setAttemptingTxn(false)
       if (tx) {
         setTxHash(tx.hash)
@@ -156,7 +150,7 @@ export default function Unstake() {
         <RowBetween align="flex-end">
           <RowFixed gap="0">
             <TruncatedText fontSize={isUpToExtraSmall ? '20px' : '28px'} fontWeight={600} style={{ zIndex: 1 }}>
-              {numberWithCommas(typedValue)}
+              {getNumberCommas(typedValue)}
             </TruncatedText>
           </RowFixed>
           {/* zIndex để hiển thị đè lên SwapVector. */}
@@ -199,7 +193,7 @@ export default function Unstake() {
               </Text>
             </RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-              {getFullDisplayBalanceWithComma(totalLpToken)} LP
+              {getBalanceStringCommas(totalLpToken)} LP
             </Text>
           </RowBetween>
           <RowBetween>
@@ -209,7 +203,7 @@ export default function Unstake() {
               </Text>
             </RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-              {getFullDisplayBalanceWithComma(remainStakedLp)} LP
+              {getBalanceStringCommas(remainStakedLp)} LP
             </Text>
           </RowBetween>
           <RowBetween>
@@ -219,7 +213,7 @@ export default function Unstake() {
               </Text>
             </RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-              {getFullDisplayBalanceWithComma(availableReward)} SONE
+              {getBalanceStringCommas(availableReward)} SONE
             </Text>
           </RowBetween>
         </AutoColumn>
@@ -316,7 +310,7 @@ export default function Unstake() {
                 {t('unstake')}
               </ButtonPrimary>
             )}
-            {showDetails && (
+            {!error && (
               <UnstakeTxSectionDetails
                 totalLpToken={totalLpToken}
                 remainStakedLp={remainStakedLp}

@@ -16,7 +16,7 @@ const useUnstake = (pid: number) => {
           ?.withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
           .then((txResponse: TransactionResponse) => {
             addTransaction(txResponse, {
-              summary: `Unstaked ${amount} ${symbol} LP Token`
+              summary: `Unstake ${amount} ${symbol} LP Token`
             })
             return txResponse
           })

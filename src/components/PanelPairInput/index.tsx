@@ -9,7 +9,7 @@ import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../hooks'
 import { TextPanelLabel, TextPanelLabelAccent } from 'theme'
 import { Container, InputRow, LabelRow, RowBalance, StyledBalanceMax } from '../PanelCurrencyInput'
-import { numberWithCommas } from '../../subgraph/utils/formatter'
+import { getNumberCommas } from '../../subgraph/utils/formatter'
 import styled from 'styled-components'
 import LiquidityProviderTokenLogo from '../LiquidityProviderTokenLogo'
 
@@ -73,7 +73,7 @@ export default function PanelPairInput({
                 style={{ marginRight: '0.25rem' }}
               />
               <TextPanelLabel>{customBalanceText}</TextPanelLabel>
-              <TextPanelLabelAccent>{balance !== undefined ? numberWithCommas(balance) : '--'}</TextPanelLabelAccent>
+              <TextPanelLabelAccent>{balance !== undefined ? getNumberCommas(balance) : '--'}</TextPanelLabelAccent>
             </RowBalance>
           )}
         </RowBetween>

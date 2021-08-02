@@ -15,7 +15,7 @@ export default function FarmDetail() {
   const { farmId } = useParams() as any
   const [val, setVal] = useState('')
 
-  const farm: Farm | undefined = useFarm('' + farmId)
+  const farm: Farm | undefined = useFarm(farmId)
 
   const { pairAddress, symbol } = farm || {
     pairAddress: '',

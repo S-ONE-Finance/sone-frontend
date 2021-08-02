@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { AutoColumn } from '../../components/Column'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { useTranslation } from 'react-i18next'
-import { getFullDisplayBalanceWithComma } from '../../hooks/masterfarmer/utils'
+import { getBalanceStringCommas } from '../../hooks/masterfarmer/utils'
 
 export const SectionDetails = styled(AutoColumn)`
   padding: 0 14px;
@@ -38,19 +38,19 @@ export default function UnstakeTxSectionDetails({
       <UnstakeTxDetailRow
         fieldName={t('Total LP Token')}
         qhText={t('Lorem ipsum dolor sit amet.')}
-        value={getFullDisplayBalanceWithComma(totalLpToken)}
+        value={getBalanceStringCommas(totalLpToken)}
         unit="LP"
       />
       <UnstakeTxDetailRow
         fieldName={t('Remain Staked LP')}
         qhText={t('Lorem ipsum dolor sit amet.')}
-        value={getFullDisplayBalanceWithComma(remainStakedLp)}
+        value={getBalanceStringCommas(remainStakedLp)}
         unit="LP"
       />
       <UnstakeTxDetailRow
         fieldName={t('available_reward')}
         qhText={t('Lorem ipsum dolor sit amet.')}
-        value={getFullDisplayBalanceWithComma(availableReward)}
+        value={getBalanceStringCommas(availableReward)}
         unit="SONE"
       />
     </SectionDetails>

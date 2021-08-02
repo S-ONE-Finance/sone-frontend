@@ -5,7 +5,7 @@ import { RowFixed } from '../Row'
 import { TYPE } from '../../theme'
 import { ArrowDown, ArrowUp } from 'react-feather'
 
-import { getFormatNumber } from '../../subgraph/utils/formatter'
+import { getFormattedNumber } from '../../subgraph/utils/formatter'
 
 interface PairInfoProps {
   pairName: string
@@ -77,9 +77,9 @@ const ResponsiveArrowDown = styled(ArrowDown)`
 `
 
 export default function PairInfo({ pairName, tokenPrice, tokenPriceChange }: PairInfoProps) {
-  const formattedTokenPrice = getFormatNumber(tokenPrice, 6)
+  const formattedTokenPrice = getFormattedNumber(tokenPrice, 6)
   const formattedTokenPriceChange =
-    tokenPriceChange > 0 ? getFormatNumber(tokenPriceChange, 2) : getFormatNumber(tokenPriceChange * -1, 2)
+    tokenPriceChange > 0 ? getFormattedNumber(tokenPriceChange, 2) : getFormattedNumber(tokenPriceChange * -1, 2)
 
   return (
     <PairInfoWrapper>

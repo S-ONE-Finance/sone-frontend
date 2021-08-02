@@ -5,7 +5,7 @@ import useApprove from '../../hooks/masterfarmer/useApprove'
 import useStake from '../../hooks/masterfarmer/useStake'
 import useTokenBalance from '../../hooks/masterfarmer/useTokenBalance'
 import TokenInput from '../../components/TokenInput'
-import { getFullDisplayBalance } from '../../hooks/masterfarmer/utils'
+import { getBalanceString } from '../../hooks/masterfarmer/utils'
 
 interface StakeProps {
   pairAddress: string
@@ -45,7 +45,7 @@ const Stake: React.FC<StakeProps> = ({ pairAddress, pid, symbol, val, setVal }) 
   )
 
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(tokenBalance.toString())
+    return getBalanceString(tokenBalance ? tokenBalance.toString() : '0')
   }, [tokenBalance])
 
   const handleSelectMax = useCallback(() => {

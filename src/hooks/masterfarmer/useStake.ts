@@ -16,7 +16,7 @@ const useStake = (pid: number) => {
           ?.deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
           .then((txResponse: TransactionResponse) => {
             addTransaction(txResponse, {
-              summary: `Staked ${amount} ${symbol} LP Token`
+              summary: `Stake (Staking??) ${amount} ${symbol} LP Token`
             })
             return txResponse
           })
