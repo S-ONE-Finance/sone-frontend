@@ -8,7 +8,6 @@ import AddLiquidity from './AddLiquidity'
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './AddLiquidity/redirects'
 
 import Farms from './Farms'
-import Farm from './Farm'
 import Stake from './Stake'
 
 import MyAccountPage from './MyAccount'
@@ -44,8 +43,7 @@ export default function Routing() {
       <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
       <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
       <Route exact strict path="/staking" component={Farms} />
-      <Route exact strict path="/staking/:farmId" component={Farm} />
-      <Route exact strict path="/staking-ui/:farmId" component={Stake} />
+      <Route exact strict path="/staking/:farmId" component={Stake} />
       <AuthorizedRoute exact strict path="/my-account" component={MyAccountPage} />
       <AuthorizedRoute
         exact
