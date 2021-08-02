@@ -84,16 +84,6 @@ export default function Unstake() {
     symbol: '--'
   }
 
-  const { onUnstake: _onUnstake } = useUnstake(Number(farmId))
-
-  const onUnstake = async () => {
-    if (typedValue && parseFloat(typedValue) > 0) {
-      setPendingUnstakeTx(true)
-      await _onUnstake(typedValue, symbol)
-      setPendingUnstakeTx(false)
-    }
-  }
-
   const [showConfirm, setShowConfirm] = useState(false)
   const [attemptingTxn, setAttemptingTxn] = useState(false) // Clicked confirm.
   const [txHash, setTxHash] = useState('')
@@ -105,6 +95,16 @@ export default function Unstake() {
       setTypedValue('')
     }
     setTxHash('')
+  }
+
+  const { onUnstake: _onUnstake } = useUnstake(Number(farmId))
+  const onUnstake = async () => {
+    if (typedValue && parseFloat(typedValue) > 0) {
+      setPendingUnstakeTx(true)
+      await _onUnstake(typedValue, symbol)
+      setPendingUnstakeTx(false)
+      setShowConfirm(false)
+    }
   }
 
   const ModalHeader = () => {
@@ -174,11 +174,15 @@ export default function Unstake() {
           </RowBetween>
         </AutoColumn>
 
-        <ButtonPrimary onClick={onUnstake}>
-          <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
-            {t('Unstake')}
-          </Text>
-        </ButtonPrimary>
+        {error ? (
+          <ButtonPrimary disabled>{error}</ButtonPrimary>
+        ) : (
+          <ButtonPrimary onClick={onUnstake}>
+            <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
+              {t('Unstake')}
+            </Text>
+          </ButtonPrimary>
+        )}
       </>
     )
   }

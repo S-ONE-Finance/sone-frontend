@@ -314,6 +314,12 @@ export const ThemedGlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.text1};
     background-color: ${({ theme }) => theme.bg2};
   }
+  
+  body {
+    min-height: 100vh;
+    min-width: 100vw; // Bỏ qua width của scrollbar, đảm bảo modal center.
+    overflow-x: hidden;
+  }
 
   /* width */
   ::-webkit-scrollbar {
