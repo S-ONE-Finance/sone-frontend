@@ -150,9 +150,8 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
         )
       )}
       {isPairFilledAndValid && isShowTransactionDetails && (
-        <ColumnCenter>
+        <ColumnCenter style={{ marginTop: '17.5px' }}>
           <ClickableText
-            marginTop="17.5px"
             fontSize={mobile13Desktop16}
             fontWeight={500}
             color={theme.text5Sone}
