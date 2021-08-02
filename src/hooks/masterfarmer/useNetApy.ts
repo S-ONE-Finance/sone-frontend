@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { UserInfoSushi } from '@s-one-finance/sdk-core'
-import useMyAccountStaked from '../../../hooks/masterfarmer/useMyAccountStaked'
+import useMyAccountStaked from './useMyAccountStaked'
 
 /**
  * Need refactor file name and code.
@@ -8,7 +8,7 @@ import useMyAccountStaked from '../../../hooks/masterfarmer/useMyAccountStaked'
 
 export default function useNetApy() {
   const [netApy, setNetApy] = useState(0)
-  const myAccountStaked: UserInfoSushi[] = useMyAccountStaked()
+  const [, myAccountStaked] = useMyAccountStaked()
 
   useEffect(() => {
     let totalSoneHarvestUSD = 0

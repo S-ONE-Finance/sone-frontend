@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from 'react'
 import { calculateAPY, UserInfoSushi } from '@s-one-finance/sdk-core'
 import { exchange, masterchef } from 'apollo/client'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
@@ -5,11 +6,11 @@ import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'apollo/queries'
 import { useActiveWeb3React } from 'hooks'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
-import { useCallback, useEffect, useState } from 'react'
 import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
 
 const useMyAccountStaked = () => {
+  const [isLoading, setIsLoading] = useState(true)
   const { account, chainId } = useActiveWeb3React()
   const [users, setUsers] = useState<UserInfoSushi[]>([])
   const sushiPrice = useSonePrice()
@@ -19,7 +20,7 @@ const useMyAccountStaked = () => {
     const results = await Promise.all([
       masterchef.query({
         query: poolUserWithPoolDetailQuery,
-        // TODO_STAKING: remove fake account
+        // TODO: Remove fake account.
         variables: {
           address: '0x9ae383135ef1ead2bab41c1f97640d51ae8f458f'
         }
@@ -99,14 +100,16 @@ const useMyAccountStaked = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true)
       const results: UserInfoSushi[] = await fetchDataStaked()
       const uniqResult = _.uniq(results)
       const sorted = orderBy(uniqResult, ['id'], ['desc'])
+      setIsLoading(false)
       setUsers(sorted)
     }
     fetchData()
   }, [account, chainId, fetchDataStaked])
-  return users
+  return [isLoading, users] as const
 }
 
 export default useMyAccountStaked

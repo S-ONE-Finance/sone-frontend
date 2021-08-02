@@ -1,21 +1,18 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Heading, Section, SectionButton, SectionText, PlusIcon, CardStaking, StakingList } from '../components'
+import { CardStaking, Heading, PlusIcon, Section, SectionButton, SectionText, StakingList } from '../components'
 import { RowBetween, RowFitContent } from '../../../components/Row'
 import MyStakingItem from './MyStakingItem'
-import useAddedLiquidityPairs from '../../../hooks/useAddedLiquidityPairs'
 import OverallNetAPY from './OverallNetAPY'
-import { UserInfoSushi } from '@s-one-finance/sdk-core'
 import useMyAccountStaked from '../../../hooks/masterfarmer/useMyAccountStaked'
+import LoaderSone from '../../../components/LoaderSone'
 
 export default function MyStaking() {
   const { t } = useTranslation()
-  // TODO: This loading is fake.
-  const [isLoading] = useAddedLiquidityPairs()
+  // TODO: Is it need another name?
   const [detailUserInfo, setDetailUserInfo] = useState<string | undefined>()
-
-  const myAccountStaked: UserInfoSushi[] = useMyAccountStaked()
+  const [isLoading, myAccountStaked] = useMyAccountStaked()
 
   return (
     <Section>
@@ -30,7 +27,7 @@ export default function MyStaking() {
       </RowBetween>
       <CardStaking>
         {isLoading ? (
-          t('Fake loading...')
+          <LoaderSone size="24px" />
         ) : myAccountStaked.length ? (
           <>
             <OverallNetAPY />
@@ -39,7 +36,7 @@ export default function MyStaking() {
                 <MyStakingItem
                   key={userInfo.id}
                   userInfo={userInfo}
-                  isShowDetailedSection={detailUserInfo === userInfo.id}
+                  isShowDetailed={detailUserInfo === userInfo.id}
                   setDetailUserInfo={setDetailUserInfo}
                 />
               ))}

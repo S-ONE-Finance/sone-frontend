@@ -186,11 +186,19 @@ const RowButtons = styled(Row)`
 
 type MyStakingItemProps = {
   userInfo: UserInfoSushi
-  isShowDetailedSection: boolean
+  isShowDetailed: boolean
   setDetailUserInfo: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-export default function MyStakingItem({ userInfo, isShowDetailedSection, setDetailUserInfo }: MyStakingItemProps) {
+/**
+ *
+ * @param props
+ * @param props.userInfo The User Information
+ * @param props.isShowDetailedSection
+ * @param props.setDetailUserInfo
+ * @constructor
+ */
+export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserInfo }: MyStakingItemProps) {
   const { t } = useTranslation()
 
   // Style.
@@ -214,9 +222,8 @@ export default function MyStakingItem({ userInfo, isShowDetailedSection, setDeta
 
   const [poolRequestPending, setPoolRequestPending] = useState(false)
   const { onClaimReward } = useClaimReward()
+  // TODO: Use-case claim reward là gì?
   const claimReward = async (farmId: number | undefined) => {
-    console.log('farmId', farmId)
-    // TODO: Đoạn này đang xử lý tạm à? True -> Progressing -> False (forever luôn).
     if (farmId !== undefined) {
       setPoolRequestPending(true)
       await onClaimReward(farmId)
@@ -270,12 +277,12 @@ export default function MyStakingItem({ userInfo, isShowDetailedSection, setDeta
             <TextAPY>{t('apy')}</TextAPY>
           </Column>
           <DownIcon
-            active={isShowDetailedSection ? 0 : 1}
+            active={isShowDetailed ? 0 : 1}
             onClick={() => setDetailUserInfo(prev => (prev === userInfo.id ? undefined : userInfo.id))}
           />
         </Row>
       </SummarySection>
-      {isShowDetailedSection && (
+      {isShowDetailed && (
         <>
           <MyStakingDetailedSection gap="15px">
             <Column>

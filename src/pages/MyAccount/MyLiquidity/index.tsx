@@ -5,6 +5,7 @@ import { Heading, Section, SectionButton, SectionText, PlusIcon, CardLiquidity }
 import { RowBetween, RowFitContent } from '../../../components/Row'
 import MyLiquidityItem from './MyLiquidityItem'
 import useAddedLiquidityPairs from '../../../hooks/useAddedLiquidityPairs'
+import LoaderSone from '../../../components/LoaderSone'
 
 export default function MyLiquidity() {
   const { t } = useTranslation()
@@ -23,18 +24,20 @@ export default function MyLiquidity() {
         </SectionButton>
       </RowBetween>
       <CardLiquidity>
-        {isLoading
-          ? t('Loading...')
-          : allPairs.length > 0
-          ? allPairs.map(pair => (
-              <MyLiquidityItem
-                key={pair.liquidityToken.address}
-                pair={pair}
-                isShowDetailedSection={detailPair === pair.liquidityToken.address}
-                setDetailPair={setDetailPair}
-              />
-            ))
-          : t('No item to show.')}
+        {isLoading ? (
+          <LoaderSone size="24px" />
+        ) : allPairs.length > 0 ? (
+          allPairs.map(pair => (
+            <MyLiquidityItem
+              key={pair.liquidityToken.address}
+              pair={pair}
+              isShowDetailedSection={detailPair === pair.liquidityToken.address}
+              setDetailPair={setDetailPair}
+            />
+          ))
+        ) : (
+          t('No item to show.')
+        )}
       </CardLiquidity>
     </Section>
   )

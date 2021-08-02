@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import useNetApy from './useNetApy'
+import useNetApy from '../../../hooks/masterfarmer/useNetApy'
 
 const StakingBackground = styled.div`
   width: 100%;
@@ -45,6 +45,10 @@ const NetAPYValue = styled.div`
   margin-top: 0.25em;
 `
 
+/**
+ *
+ * @constructor
+ */
 export default function OverallNetAPY() {
   const { t } = useTranslation()
   const apy = useNetApy()

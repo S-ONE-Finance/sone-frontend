@@ -46,7 +46,7 @@ export default function LoaderSone({
   valueInside,
   ...rest
 }: {
-  size: string
+  size?: string
   valueInside?: number
   [k: string]: any
 }) {
