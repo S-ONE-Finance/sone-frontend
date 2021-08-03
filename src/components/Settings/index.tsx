@@ -281,7 +281,7 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
                 <ResponsiveAutoColumn>
                   <RowFixed>
                     <StyledExpertIcon />
-                    <SectionHeading>{t('Expert Mode')}</SectionHeading>
+                    <SectionHeading>{t('expert_mode')}</SectionHeading>
                     <QuestionHelper text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam, quibusdam?" />
                   </RowFixed>
                   <Toggle

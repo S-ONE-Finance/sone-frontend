@@ -90,7 +90,7 @@ export default function MyLiquidityItem({
         <FlexibleRow gap={isUpToExtraSmall ? '0' : '10px'} justify="center">
           <Column width="fit-content" align="center">
             <Text color={theme.text8Sone} fontSize={isUpToSmall ? '13px' : '16px'}>
-              {t('your_total_lp_tokens')}
+              {t('total_lp_token')}
             </Text>
             <TextLpTokens>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</TextLpTokens>
           </Column>

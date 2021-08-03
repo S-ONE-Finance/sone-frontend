@@ -86,7 +86,7 @@ export default function PanelCurrencyInputAndSelectPercentage({
                   ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
                   : ''}
               </TextPanelLabel>
-              {lpToken && lpToken.symbol && <TextSmaller>&nbsp;{lpToken.symbol}</TextSmaller>}
+              {lpToken && lpToken.symbol && <TextSmaller>&nbsp;{lpToken.symbol + ' LP'}</TextSmaller>}
             </RowBalance>
           )}
         </RowBetween>

@@ -32,17 +32,17 @@ export default function UnstakeTxSectionDetails({
     <SectionDetails gap={isUpToExtraSmall ? '10px' : '15px'}>
       <Row>
         <Text fontSize={isUpToExtraSmall ? 13 : 16} fontWeight={500}>
-          {t('After unstaking, you will have')}
+          {t('after_unstaking_you_will_have')}
         </Text>
       </Row>
       <UnstakeTxDetailRow
-        fieldName={t('Total LP Token')}
+        fieldName={t('total_lp_token')}
         qhText={t('Lorem ipsum dolor sit amet.')}
         value={getBalanceStringCommas(totalLpToken)}
         unit="LP"
       />
       <UnstakeTxDetailRow
-        fieldName={t('Remain Staked LP')}
+        fieldName={t('remain_staked_lp')}
         qhText={t('Lorem ipsum dolor sit amet.')}
         value={getBalanceStringCommas(remainStakedLp)}
         unit="LP"
