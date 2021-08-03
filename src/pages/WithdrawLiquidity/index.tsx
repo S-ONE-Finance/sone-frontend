@@ -346,7 +346,7 @@ export default function WithdrawLiquidity({
           disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)}
         >
           <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
-            {t('Withdraw Liquidity')}
+            {t('withdraw_liquidity')}
           </Text>
         </ButtonPrimary>
       </>
@@ -472,7 +472,7 @@ export default function WithdrawLiquidity({
                         }
                       }}
                     >
-                      {t('Withdraw Liquidity')}
+                      {t('withdraw_liquidity')}
                     </ButtonPrimary>
                   ) : (
                     <ButtonPrimary onClick={onAttemptToApprove} disabled={approval !== ApprovalState.NOT_APPROVED}>

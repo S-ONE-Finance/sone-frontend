@@ -26,13 +26,13 @@ export default function StakeTxSectionDetails1({
         </Text>
       </Row>
       <StakeTxDetailRow
-        fieldName={t('Total Staked Value')}
+        fieldName={t('total_staked_value')}
         qhText={t('Lorem ipsum dolor sit amet.')}
         value={totalStakedAfterStake}
         unit="LP"
       />
       <StakeTxDetailRow
-        fieldName={t('Earned Reward')}
+        fieldName={t('earned_reward')}
         qhText={t('Lorem ipsum dolor sit amet.')}
         value={earnedRewardAfterStake}
         unit="SONE"

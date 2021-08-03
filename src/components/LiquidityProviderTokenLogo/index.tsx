@@ -26,7 +26,6 @@ const CurrencyLeft = styled.div<{ size: number; sizeMobile: number }>`
   left: ${({ size }) => size * 0.2 + 'px'};
   width: ${({ size }) => size + 'px'};
   height: ${({ size }) => size + 'px'};
-  z-index: 1;
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
     left: ${sizeMobile * 0.2 + 'px'};
@@ -41,7 +40,6 @@ const CurrencyRight = styled.div<{ size: number; sizeMobile: number }>`
   right: ${({ size }) => size * 0.2 + 'px'};
   width: ${({ size }) => size + 'px'};
   height: ${({ size }) => size + 'px'};
-  z-index: 1;
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
     right: ${sizeMobile * 0.2 + 'px'};
@@ -76,8 +74,7 @@ export default function LiquidityProviderTokenLogo({
     height: 'auto',
     position: 'absolute',
     top: 0,
-    left: 0,
-    zIndex: 3
+    left: 0
   }
 
   return (
