@@ -21,7 +21,9 @@ import {
   updateUserSingleHopOnly,
   toggleShowTransactionDetails,
   AddLiquidityModeEnum,
-  updateAddLiquidityMode
+  updateAddLiquidityMode,
+  GuideStep,
+  updateGuideStep
 } from './actions'
 
 function serializeToken(token: Token): SerializedToken {
@@ -68,6 +70,25 @@ export function useDarkModeManager(): [boolean, () => void] {
   }, [darkMode, dispatch])
 
   return [darkMode, toggleSetDarkMode]
+}
+
+export function useGuideStepManager(): [GuideStep, (newStep: GuideStep) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const { guideStep } = useSelector<AppState, { guideStep: GuideStep }>(
+    ({ user: { guideStep } }) => ({
+      guideStep
+    }),
+    shallowEqual
+  )
+
+  const updateStepGuide = useCallback(
+    (newStep: GuideStep) => {
+      dispatch(updateGuideStep(newStep))
+    },
+    [dispatch]
+  )
+
+  return [guideStep, updateStepGuide]
 }
 
 export function useIsExpertMode(): boolean {

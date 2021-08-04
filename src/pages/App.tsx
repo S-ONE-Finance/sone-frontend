@@ -18,6 +18,7 @@ import Web3ReactManager from '../components/Web3ReactManager'
 import AbsolutePendingTxs from '../components/AbsolutePendingTxs'
 
 import Routing from './Routing'
+import Mark from '../components/lib/mark/Mark'
 
 const AppWrapper = styled.div<{ pathC?: string }>`
   display: flex;
@@ -115,6 +116,9 @@ export default function App() {
         <FooterWrapper>
           <Footer />
         </FooterWrapper>
+        <div>
+          <Mark />
+        </div>
       </AppWrapper>
     </>
   )

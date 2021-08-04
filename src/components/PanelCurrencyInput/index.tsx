@@ -10,7 +10,10 @@ import CurrencyLogoDouble from '../CurrencyLogoDouble'
 import Row, { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../hooks'
+import { useGuideStepManager } from '../../state/user/hooks'
 import { TextPanelLabel, CurrencySelect, StyledTokenName, StyledDropDown } from 'theme'
+
+import { SwapStep2 } from '../lib/mark/components'
 
 export const InputRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -52,8 +55,9 @@ export const Aligner = styled.span`
 
 export const Container = styled.div<{ height?: string; height_mobile?: string }>`
   ${({ theme }) => theme.flexColumnNoWrap}
-  position: relative;
-  z-index: 1;
+  // Comment for guide
+  // position: relative;
+  // z-index: 1;
   height: ${({ height }) => height ?? '120px'};
   width: 100%;
   border-radius: 32px;
@@ -167,9 +171,11 @@ export default function PanelCurrencyInput({
   onReceiveWETHToggle
 }: PanelCurrencyInputProps) {
   const { t } = useTranslation()
+
   if (label === 'Input') {
     label = t('input')
   }
+  const [guideStep] = useGuideStepManager()
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
@@ -178,19 +184,30 @@ export default function PanelCurrencyInput({
     setModalOpen(false)
   }, [setModalOpen])
 
+  const handleGenerateCurrencyBalance = () => {
+    if (guideStep.isGuide) {
+      return id === 'swap-currency-input' && Number(guideStep.step) > 2
+        ? '12,210'
+        : Number(guideStep.step) > 3
+        ? `41.183`
+        : ''
+    }
+    return !hideBalance && !!currency && selectedCurrencyBalance
+      ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
+      : ''
+  }
+
   return (
     <>
       <Container id={id}>
         <LabelRow>
           <RowBetween align="center">
             <TextPanelLabel>{label}</TextPanelLabel>
-            {account && (
+            {(account || guideStep.isGuide) && (
               <RowBalance onClick={onMax}>
                 <TextPanelLabel>
                   {/* BUG: https://gitlab.vnext.vn/bhswap/bhswap-front-end/sone-front-end/issues/16 */}
-                  {!hideBalance && !!currency && selectedCurrencyBalance
-                    ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
-                    : ''}
+                  {handleGenerateCurrencyBalance()}
                 </TextPanelLabel>
                 {!pair && currency && currency.symbol && <TextSmaller>&nbsp;{currency.symbol}</TextSmaller>}
               </RowBalance>
@@ -209,45 +226,60 @@ export default function PanelCurrencyInput({
             <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
           )}
           {showCurrencySelect && (
-            <CurrencySelect
-              selected={!!currency}
-              className="open-currency-select-button"
-              onClick={() => {
-                if (!disableCurrencyChange) {
-                  if (isCurrencySelectOrToggle === SelectOrToggle.SELECT) {
-                    setModalOpen(true)
-                  } else if (isCurrencySelectOrToggle === SelectOrToggle.TOGGLE && onCurrencyToggle !== undefined) {
-                    onCurrencyToggle()
-                  }
-                }
-              }}
-            >
-              <Aligner>
-                {pair ? (
-                  <CurrencyLogoDouble currency0={pair?.token0} currency1={pair?.token1} size={22} margin={true} />
-                ) : currency ? (
-                  <CurrencyLogo currency={currency} size={'23px'} sizeMobile={'15px'} />
-                ) : null}
-                {pair ? (
-                  <StyledTokenName className="pair-name-container">
-                    {pair?.token0.symbol}:{pair?.token1.symbol}
-                  </StyledTokenName>
-                ) : (
-                  <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                    {(currency && currency.symbol && currency.symbol.length > 20
-                      ? currency.symbol.slice(0, 4) +
-                        '...' +
-                        currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
-                      : currency?.symbol) || t('select_token')}
-                  </StyledTokenName>
-                )}
-                {!disableCurrencyChange && <StyledDropDown selected={!!currency} />}
-              </Aligner>
-            </CurrencySelect>
+            <>
+              {id === 'swap-currency-input' && Number(guideStep.step) === 2 ? (
+                <SwapStep2>
+                  <CurrencySelect selected={!!currency} className="open-currency-select-button">
+                    <Aligner>
+                      <CurrencyLogo currency={currency || undefined} size={'23px'} sizeMobile={'15px'} />
+                      <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                        {currency?.symbol}
+                      </StyledTokenName>
+                    </Aligner>
+                  </CurrencySelect>
+                </SwapStep2>
+              ) : (
+                <CurrencySelect
+                  selected={!!currency}
+                  className="open-currency-select-button"
+                  onClick={() => {
+                    if (!disableCurrencyChange) {
+                      if (isCurrencySelectOrToggle === SelectOrToggle.SELECT) {
+                        setModalOpen(true)
+                      } else if (isCurrencySelectOrToggle === SelectOrToggle.TOGGLE && onCurrencyToggle !== undefined) {
+                        onCurrencyToggle()
+                      }
+                    }
+                  }}
+                >
+                  <Aligner>
+                    {pair ? (
+                      <CurrencyLogoDouble currency0={pair?.token0} currency1={pair?.token1} size={22} margin={true} />
+                    ) : currency ? (
+                      <CurrencyLogo currency={currency} size={'23px'} sizeMobile={'15px'} />
+                    ) : null}
+                    {pair ? (
+                      <StyledTokenName className="pair-name-container">
+                        {pair?.token0.symbol}:{pair?.token1.symbol}
+                      </StyledTokenName>
+                    ) : (
+                      <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                        {(currency && currency.symbol && currency.symbol.length > 20
+                          ? currency.symbol.slice(0, 4) +
+                            '...' +
+                            currency.symbol.slice(currency.symbol.length - 5, currency.symbol.length)
+                          : currency?.symbol) || t('select_token')}
+                      </StyledTokenName>
+                    )}
+                    {!disableCurrencyChange && <StyledDropDown selected={!!currency} />}
+                  </Aligner>
+                </CurrencySelect>
+              )}
+            </>
           )}
           {showReceiveWETH && (
             <ButtonReceiveWETH onClick={onReceiveWETHToggle}>
-              {currency === Currency.ETHER ? t('receive_weth') : t('receive_eth')}
+              {currency === Currency.ETHER ? t('Receive WETH') : t('Receive ETH')}
             </ButtonReceiveWETH>
           )}
         </InputRow>
