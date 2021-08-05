@@ -6,6 +6,7 @@ import { ExternalLink } from '../../../theme'
 import { shortenAddress } from '../../../utils'
 import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
 import useNumberOfPages from './hooks/useNumberOfPages'
+import { useTranslation } from 'react-i18next'
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -73,6 +74,7 @@ const TableHeading = styled.th<{ align?: string }>`
 `
 
 export default function InvitedFriendsTable() {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const [limit, setLimit] = useState<5 | 10 | 100>(5)
   const [selectedPage, setSelectedPage] = useState(1)
@@ -92,9 +94,9 @@ export default function InvitedFriendsTable() {
         <TableHead>
           <TableHeadRow>
             <TableHeading align="center">#</TableHeading>
-            <TableHeading>Address of Friend</TableHeading>
-            <TableHeading>Date</TableHeading>
-            <TableHeading>Transaction</TableHeading>
+            <TableHeading>{t('address_of_friend')}</TableHeading>
+            <TableHeading>{t('date')}</TableHeading>
+            <TableHeading>{t('transaction')}</TableHeading>
           </TableHeadRow>
         </TableHead>
         <tbody>

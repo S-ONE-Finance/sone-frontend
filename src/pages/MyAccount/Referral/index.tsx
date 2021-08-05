@@ -15,10 +15,12 @@ const CardReferral = styled(Card)`
   display: grid;
   grid-template-columns: 100%;
   grid-row-gap: 40px;
+  border-radius: 15px;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
     padding: 40px 0;
     grid-row-gap: 30px;
+    border-radius: 10px;
   `}
 `
 
@@ -86,7 +88,7 @@ export default function Referral() {
   return (
     <Section>
       <RowBetween>
-        <Heading>Referral</Heading>
+        <Heading>{t('referral')}</Heading>
         <AutoColumn>
           <SectionButton onClick={requestReward} is_disabled={isDisabled ? 'yes' : undefined}>
             <SectionText>{t('request_reward')}</SectionText>
@@ -96,12 +98,12 @@ export default function Referral() {
       </RowBetween>
       <CardReferral>
         <ReferralInformationWrapper>
-          <TextSubSection>Referral Information</TextSubSection>
+          <TextSubSection>{t('referral_information')}</TextSubSection>
           <ReferralInformation />
         </ReferralInformationWrapper>
         <TitleBodyWrapper>
           <Padding20ExtraSmall>
-            <TextSubSection>Invited Friends</TextSubSection>
+            <TextSubSection>{t('invite_friends')}</TextSubSection>
           </Padding20ExtraSmall>
           <InvitedFriendsTable />
         </TitleBodyWrapper>

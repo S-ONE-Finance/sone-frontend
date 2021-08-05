@@ -90,7 +90,7 @@ export default function useWithdrawLiquidityCallback({
         ]
       }
     }
-    // we have a signataure, use permit versions of remove liquidity
+    // we have a signature, use permit versions of remove liquidity
     else if (signatureData !== null) {
       // removeLiquidityETHWithPermit
       if (oneCurrencyIsETH) {

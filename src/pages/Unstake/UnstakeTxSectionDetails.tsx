@@ -37,19 +37,19 @@ export default function UnstakeTxSectionDetails({
       </Row>
       <UnstakeTxDetailRow
         fieldName={t('total_lp_token')}
-        qhText={t('Lorem ipsum dolor sit amet.')}
+        qhText={t('question_helper_total_lp_token')}
         value={getBalanceStringCommas(totalLpToken)}
         unit="LP"
       />
       <UnstakeTxDetailRow
         fieldName={t('remain_staked_lp')}
-        qhText={t('Lorem ipsum dolor sit amet.')}
+        qhText={t('question_helper_remain_staked_lp')}
         value={getBalanceStringCommas(remainStakedLp)}
         unit="LP"
       />
       <UnstakeTxDetailRow
         fieldName={t('available_reward')}
-        qhText={t('Lorem ipsum dolor sit amet.')}
+        qhText={t('question_helper_available_reward')}
         value={getBalanceStringCommas(availableReward)}
         unit="SONE"
       />

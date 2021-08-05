@@ -32,9 +32,12 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
         <RowBetween>
           <RowFixed>
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-              {isExactIn ? t('minimum_received') : 'Maximum sold'}
+              {isExactIn ? t('minimum_received') : t('maximum_sold')}
             </Text>
-            <QuestionHelper1416 text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />
+            {/*<QuestionHelper1416 text="Your transaction will revert if there is a large, unfavorable price movement before it is confirmed." />*/}
+            <QuestionHelper1416
+              text={t(isExactIn ? 'question_helper_minimum_received' : 'question_helper_maximum_sold')}
+            />
           </RowFixed>
           <RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
@@ -51,7 +54,8 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
               {t('price_impact')}
             </Text>
-            <QuestionHelper1416 text="The difference between the market price and estimated price due to trade size." />
+            {/*<QuestionHelper1416 text="The difference between the market price and estimated price due to trade size." />*/}
+            <QuestionHelper1416 text={t('question_helper_price_impact')} />
           </RowFixed>
           <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
         </RowBetween>
@@ -89,7 +93,8 @@ export function AdvancedSwapDetailsContent({ trade }: AdvancedSwapDetailsProps) 
                     <Text fontWeight={500} fontSize={16} color={theme.text4Sone}>
                       {t('route')}
                     </Text>
-                    <QuestionHelper1416 text="Routing through these tokens resulted in the best price for your trade." />
+                    {/*<QuestionHelper1416 text="Routing through these tokens resulted in the best price for your trade." />*/}
+                    <QuestionHelper1416 text={t('question_helper_route')} />
                   </RowFixed>
                 </RowBetween>
                 <Row>

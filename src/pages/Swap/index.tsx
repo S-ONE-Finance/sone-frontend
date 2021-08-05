@@ -428,7 +428,7 @@ export default function Swap({ history }: RouteComponentProps) {
                         <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
                           {t('price')}
                         </Text>
-                        <QuestionHelper1416 text="Lorem ipsum" />
+                        <QuestionHelper1416 text={t('question_helper_price')} />
                       </RowFixed>
                       <TradePrice
                         price={trade?.executionPrice}
@@ -448,7 +448,7 @@ export default function Swap({ history }: RouteComponentProps) {
                         >
                           {t('slippage_tolerance')}
                         </ClickableText>
-                        <QuestionHelper1416 text="Lorem ipsum" />
+                        <QuestionHelper1416 text={t('question_helper_slippage_tolerance')} />
                       </RowFixed>
                       <ClickableText
                         fontWeight={700}
@@ -466,7 +466,8 @@ export default function Swap({ history }: RouteComponentProps) {
                         <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
                           {t('liquidity_provider_fee')}
                         </Text>
-                        <QuestionHelper1416 text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />
+                        {/*<QuestionHelper1416 text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />*/}
+                        <QuestionHelper1416 text={t('question_helper_liquidity_provider_fee')} />
                       </RowFixed>
                       <Text
                         fontWeight={700}
@@ -496,7 +497,7 @@ export default function Swap({ history }: RouteComponentProps) {
                         <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
                           {t('Referral ID')}
                         </Text>
-                        <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic, minus." />
+                        <QuestionHelper1416 text={t('question_helper_referral_id')} />
                       </RowFixed>
                       <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
                         {code}
