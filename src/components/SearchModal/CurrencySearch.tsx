@@ -188,7 +188,7 @@ export function CurrencySearch({
             <Text fontWeight={700} fontSize={isUpToExtraSmall ? 20 : 28}>
               {t('select_a_token')}
             </Text>
-            <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
+            <QuestionHelper1416 text={t('question_helper_select_a_token')} />
           </RowFixed>
           <StyledCloseIcon onClick={onDismiss} />
         </RowBetween>

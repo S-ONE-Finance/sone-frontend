@@ -50,7 +50,7 @@ export default function Manage({
             <Text fontWeight={700} fontSize={isUpToExtraSmall ? 20 : 28}>
               {t('manage_lists')}
             </Text>
-            <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
+            <QuestionHelper1416 text={t('question_helper_manage_lists')} />
           </RowFixed>
           <StyledCloseIcon onClick={onDismiss} />
         </RowBetween>

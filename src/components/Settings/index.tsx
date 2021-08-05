@@ -282,7 +282,7 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
                   <RowFixed>
                     <StyledExpertIcon />
                     <SectionHeading>{t('expert_mode')}</SectionHeading>
-                    <QuestionHelper text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam, quibusdam?" />
+                    <QuestionHelper text={t('question_helper_expert_mode')} />
                   </RowFixed>
                   <Toggle
                     id="toggle-expert-mode-button"

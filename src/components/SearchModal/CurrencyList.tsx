@@ -21,6 +21,7 @@ import { LightGreyCard } from 'components/Card'
 import TokenListLogo from '../../assets/svg/tokenlist.svg'
 import QuestionHelper from 'components/QuestionHelper'
 import useTheme from 'hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token ? currency.address : currency === ETHER ? 'ETHER' : ''
@@ -170,6 +171,7 @@ export default function CurrencyList({
   setImportToken: (token: Token) => void
   breakIndex: number | undefined
 }) {
+  const { t } = useTranslation()
   const itemData: (Currency | undefined)[] = useMemo(() => {
     let formatted: (Currency | undefined)[] = showETH ? [Currency.ETHER, ...currencies] : currencies
     if (breakIndex !== undefined) {
@@ -204,10 +206,11 @@ export default function CurrencyList({
                 <RowFixed>
                   <TokenListLogoWrapper src={TokenListLogo} />
                   <TYPE.main ml="6px" fontSize="12px" color={theme.text1}>
-                    Expanded results from inactive Token Lists
+                    {t('expanded_results_from_inactive_token_lists')}
                   </TYPE.main>
                 </RowFixed>
-                <QuestionHelper text="Tokens from inactive lists. Import specific tokens below or click 'Manage' to activate more lists." />
+                {/*<QuestionHelper text="Tokens from inactive lists. Import specific tokens below or click 'Manage' to activate more lists." />*/}
+                <QuestionHelper text={t('question_helper_expanded_results_from_inactive_token_lists')} />
               </RowBetween>
             </LightGreyCard>
           </FixedContentRow>
@@ -237,6 +240,7 @@ export default function CurrencyList({
       }
     },
     [
+      t,
       chainId,
       inactiveTokens,
       onCurrencySelect,
