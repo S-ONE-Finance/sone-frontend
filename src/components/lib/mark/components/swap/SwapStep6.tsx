@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { handIcon, iconCheck, swapCloseIcon } from './assets'
+import { handIcon, iconCheck, swapCloseIcon } from '../assets'
 
 const SwapStep6 = () => {
   const { t } = useTranslation()

@@ -46,7 +46,8 @@ const HeaderFrame = styled.div`
   position: relative;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: 0 80px;
-  z-index: 2;
+  // comment for guide popup
+  // z-index: 2;
   background-color: ${({ theme }) => theme.bg1Sone};
 
   ${({ theme }) => theme.mediaWidth.upToLarge`

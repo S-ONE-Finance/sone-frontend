@@ -22,6 +22,7 @@ export interface GuideStep {
   step?: number
   oldStep?: number
   isGuide?: boolean
+  screen: string
 }
 
 export const updateMatchesDarkMode = createAction<{ matchesDarkMode: boolean }>('user/updateMatchesDarkMode')

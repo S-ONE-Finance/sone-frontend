@@ -184,8 +184,12 @@ export default function PanelCurrencyInput({
     setModalOpen(false)
   }, [setModalOpen])
 
+  const handleCheckOpenGuide = () => {
+    return guideStep.screen === 'swap'
+  }
+
   const handleGenerateCurrencyBalance = () => {
-    if (guideStep.isGuide) {
+    if (handleCheckOpenGuide()) {
       return id === 'swap-currency-input' && Number(guideStep.step) > 2
         ? '12,210'
         : Number(guideStep.step) > 3
@@ -203,7 +207,7 @@ export default function PanelCurrencyInput({
         <LabelRow>
           <RowBetween align="center">
             <TextPanelLabel>{label}</TextPanelLabel>
-            {(account || guideStep.isGuide) && (
+            {(account || handleCheckOpenGuide()) && (
               <RowBalance onClick={onMax}>
                 <TextPanelLabel>
                   {/* BUG: https://gitlab.vnext.vn/bhswap/bhswap-front-end/sone-front-end/issues/16 */}

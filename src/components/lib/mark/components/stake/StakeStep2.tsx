@@ -1,14 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { girlIcon, closeIcon } from './assets'
+import { girlIcon, closeIcon } from '../assets'
 
 type Step7Props = {
   handleClose: () => void
   handleRestartGuide: () => void
 }
 
-const SwapStep7 = ({ handleClose, handleRestartGuide }: Step7Props) => {
+const StakeStep2 = ({ handleClose, handleRestartGuide }: Step7Props) => {
   const { t } = useTranslation()
   return (
     <>
@@ -30,7 +30,7 @@ const SwapStep7 = ({ handleClose, handleRestartGuide }: Step7Props) => {
   )
 }
 
-export default SwapStep7
+export default StakeStep2
 
 const StyledStep7Wrapper = styled.div`
   width: 100vw;

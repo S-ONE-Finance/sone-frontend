@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from '../../../../state/user/hooks'
-import { handIcon } from './assets'
-import { ChildrenProp } from './styled'
+import { useGuideStepManager } from '../../../../../state/user/hooks'
+import { handIcon } from '../assets'
+import { ChildrenProp } from '../styled'
 
 const SwapStep1 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
@@ -13,7 +13,7 @@ const SwapStep1 = ({ children }: ChildrenProp) => {
     <>
       <Step1Wrapper className="step-1">
         {children}
-        {Number(guideStep.step) === 1 && (
+        {Number(guideStep.step) === 1 && guideStep.screen === 'swap' && (
           <>
             <Step1Intro>{t('lets_click_connect_wallet_to_connect_and_start')}</Step1Intro>
             <StyledHandIcon>

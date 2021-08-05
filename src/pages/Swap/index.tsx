@@ -65,7 +65,7 @@ import {
   useIsReferralWorksOnCurrentNetwork,
   useReferral
 } from '../../state/referral/hooks'
-import { SwapStep1, SwapStep3, SwapStep4, SwapStep5 } from '../../components/lib/mark/components'
+import { SwapStep1, SwapStep3, SwapStep4, SwapStep5, OpenGuide } from '../../components/lib/mark/components'
 import WeeklyRanking from '../../components/WeeklyRanking'
 import TabSwapLiquidity from '../../components/TabSwapLiquidity'
 import BrandIdentitySoneForMobile from '../../components/BrandIdentitySoneForMobile'
@@ -366,6 +366,10 @@ export default function Swap({ history }: RouteComponentProps) {
     tags: []
   }
 
+  const handleCheckOpenGuide = () => {
+    return guideStep.screen === 'swap'
+  }
+
   return (
     <>
       <TokenWarningModal
@@ -374,6 +378,7 @@ export default function Swap({ history }: RouteComponentProps) {
         onConfirm={handleConfirmTokenWarning}
         onDismiss={handleDismissTokenWarning}
       />
+      <OpenGuide screen="swap" />
       <BrandIdentitySoneForMobile />
       <TabSwapLiquidity />
       <AppBody>
@@ -393,7 +398,7 @@ export default function Swap({ history }: RouteComponentProps) {
             onDismiss={handleConfirmDismiss}
           />
           <AutoColumn gap="md">
-            {guideStep.isGuide && Number(guideStep.step) > 2 ? (
+            {handleCheckOpenGuide() && Number(guideStep.step) > 2 ? (
               <SwapStep3>
                 <PanelCurrencyInput
                   label={t('from')}
@@ -432,7 +437,7 @@ export default function Swap({ history }: RouteComponentProps) {
                 />
               </IconWrapper>
             </AutoRow>
-            {guideStep.isGuide && Number(guideStep.step) > 3 ? (
+            {handleCheckOpenGuide() && Number(guideStep.step) > 3 ? (
               <SwapStep4>
                 <PanelCurrencyInput
                   value={'81.548'}
@@ -572,7 +577,7 @@ export default function Swap({ history }: RouteComponentProps) {
             ) : !account ? (
               <>
                 {/* Check guide popup */}
-                {guideStep.isGuide ? (
+                {handleCheckOpenGuide() ? (
                   <>
                     {Number(guideStep.step) === 1 ? (
                       <SwapStep1>

@@ -32,6 +32,7 @@ import { Text } from 'rebass'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import useAllowance from '../../hooks/staking/useAllowance'
 import useApproveHandler from '../../hooks/staking/useApproveHandler'
+import { OpenGuide } from '../../components/lib/mark/components'
 
 export default function Staking() {
   const { t } = useTranslation()
@@ -290,6 +291,7 @@ export default function Staking() {
         pendingText={pendingText}
         content={modalContent}
       />
+      <OpenGuide screen="stake" />
       {isUpToExtraSmall ? (
         <Row justify="center" gap="0.75rem" style={{ margin: '1.25rem 0 1.75rem 0' }}>
           <RowFixed gap="0.75rem">

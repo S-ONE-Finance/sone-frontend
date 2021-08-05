@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from '../../../../state/user/hooks'
-import { handIcon } from './assets'
-import { ChildrenProp } from './styled'
+import { useGuideStepManager } from '../../../../../state/user/hooks'
+import { handIcon } from '../assets'
+import { ChildrenProp, BackgroundColor } from '../styled'
 
 const SwapStep3 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
@@ -11,9 +11,9 @@ const SwapStep3 = ({ children }: ChildrenProp) => {
 
   return (
     <>
-      <StyledStep3 className="step-3">
+      <StyledStep3 className="step-3" backgroundC={Number(guideStep.step) === 3 ? '#c7c7c7' : 'transparent'}>
         {children}
-        {Number(guideStep.step) === 3 && (
+        {Number(guideStep.step) === 3 && guideStep.screen === 'swap' && (
           <StyledStep3Content>
             <StyledHandIconStep3>
               <img src={handIcon} alt="hand" />
@@ -29,6 +29,10 @@ export default SwapStep3
 
 const StyledStep3 = styled.div`
   position: relative;
+
+  & > #swap-currency-input {
+    background: ${({ backgroundC }: BackgroundColor) => backgroundC};
+  }
 `
 
 const StyledStep3Content = styled.div`

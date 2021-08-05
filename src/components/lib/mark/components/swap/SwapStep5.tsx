@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from '../../../../state/user/hooks'
-import { handIcon } from './assets'
-import { ChildrenProp } from './styled'
+import { useGuideStepManager } from '../../../../../state/user/hooks'
+import { handIcon } from '../assets'
+import { ChildrenProp } from '../styled'
 
 const SwapStep5 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
@@ -12,7 +12,7 @@ const SwapStep5 = ({ children }: ChildrenProp) => {
     <>
       <StyledStep5 className="step-5">
         {children}
-        {Number(guideStep.step) === 5 && (
+        {Number(guideStep.step) === 5 && guideStep.screen === 'swap' && (
           <StyledStep5Content>
             <StyledHandIconStep5>
               <img src={handIcon} alt="hand" />
