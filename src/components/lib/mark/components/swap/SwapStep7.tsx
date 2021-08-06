@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useGuideStepManager } from '../../../../../state/user/hooks'
@@ -14,10 +14,16 @@ const SwapStep7 = ({ screen }: { screen: string }) => {
     updateStepGuide({ ...guideStep, step: 1, oldStep: 0, isGuide: true, screen })
   }
 
-  const handleSkip = () => {
+  const handleSetShowAgain = () => {
     setHide(true)
-    updateStepGuide({ ...guideStep, step: 1, oldStep: 0, isGuide: false, screen: '' })
+    updateStepGuide({ ...guideStep, step: 1, oldStep: 0, isGuide: false, screen: '', showAgain: false })
   }
+
+  useEffect(() => {
+    if (!guideStep.showAgain) {
+      setHide(true)
+    }
+  }, [guideStep])
 
   return (
     <>
@@ -32,7 +38,7 @@ const SwapStep7 = ({ screen }: { screen: string }) => {
                 <img src={closeIcon} alt="close" />
               </StyledStep7ButtonClose>
               <StyledStep7Button onClick={handleRestartGuide}>{t('see_tutorial_now')}</StyledStep7Button>
-              <StyledStep7Text onClick={handleSkip}>{t('dont_show_again')}</StyledStep7Text>
+              <StyledStep7Text onClick={handleSetShowAgain}>{t('dont_show_again')}</StyledStep7Text>
             </StyledStep7Content>
           </StyledStep7>
         </StyledStep7Wrapper>
@@ -44,7 +50,7 @@ const SwapStep7 = ({ screen }: { screen: string }) => {
 export default SwapStep7
 
 const StyledStep7Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 203px;
   left: 54px;
   ${({ theme }) => theme.mediaWidth.upToLarge`

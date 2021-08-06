@@ -48,6 +48,7 @@ const StyledMarkPaginationButton = styled.div`
   font-size: 36px;
   color: #fff;
   cursor: pointer;
+  user-select: none;
   ${({ theme }) => theme.mediaWidth.upToLarge`
      font-size: 26px;
   `};
@@ -64,6 +65,7 @@ const StyledMarkPaginationButtonSkip = styled.div`
   color: #fff;
   text-align: right;
   cursor: pointer;
+  user-select: none;
   ${({ theme }) => theme.mediaWidth.upToLarge`
      font-size: 26px;
   `};
