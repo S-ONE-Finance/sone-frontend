@@ -17,7 +17,7 @@ export default function MyAccount() {
 
   return (
     <MyAccountWrapper>
-      <PageTitleMobileOnly>{t('My Account')}</PageTitleMobileOnly>
+      <PageTitleMobileOnly>{t('my_account')}</PageTitleMobileOnly>
       <Sections>
         <MyBalance />
         <MyLiquidity />
