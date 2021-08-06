@@ -1,29 +1,40 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { girlIcon, closeIcon } from '../assets'
+import { closeIcon, stakeTickIcon } from '../assets'
 
-type Step7Props = {
-  handleClose: () => void
-  handleRestartGuide: () => void
-}
-
-const StakeStep2 = ({ handleClose, handleRestartGuide }: Step7Props) => {
+const StakeStep2 = () => {
   const { t } = useTranslation()
   return (
     <>
       <StyledStep7Wrapper>
         <StyledStep7>
-          <StyledGirlIcon>
-            <img src={girlIcon} alt="hand" />
-          </StyledGirlIcon>
-          <StyledStep7Content>
-            <StyledStep7ButtonClose onClick={handleClose}>
-              <img src={closeIcon} alt="close" />
-            </StyledStep7ButtonClose>
-            <StyledStep7Button onClick={handleRestartGuide}>{t('see_tutorial_now')}</StyledStep7Button>
-            <StyledStep7Text onClick={handleClose}>{t('dont_show_again')}</StyledStep7Text>
-          </StyledStep7Content>
+          <StyledStep2Right>
+            <StyledStep2RightContent>
+              <StyledStep7ButtonClose>
+                <img src={closeIcon} alt="close" />
+              </StyledStep7ButtonClose>
+              <StyledStep2ContentText>
+                <TickIcon>
+                  <img src={stakeTickIcon} alt="close" />
+                </TickIcon>
+                <div>
+                  During the first 8 weeks since launch <br /> <span>25% of your earned SONE</span> is available to
+                  unlock.
+                </div>
+              </StyledStep2ContentText>
+              <StyledStep2ContentText>
+                <TickIcon>
+                  <img src={stakeTickIcon} alt="close" />
+                </TickIcon>
+                <div>
+                  Beginning January 18, 2021, the remaining 75% <br /> will be unlocked linearly every block over 1
+                  year.
+                </div>
+              </StyledStep2ContentText>
+              <DontShowAgain>{t('dont_show_again')}</DontShowAgain>
+            </StyledStep2RightContent>
+          </StyledStep2Right>
         </StyledStep7>
       </StyledStep7Wrapper>
     </>
@@ -42,53 +53,20 @@ const StyledStep7Wrapper = styled.div`
 const StyledStep7 = styled.div`
   position: absolute;
   bottom: 161px;
-  left: 54px;
   display: flex;
+  justify-content: space-between;
   align-items: flex-end;
+  width: 100%;
+  padding: 0 54px;
+
+  ${({ theme }) => theme.mediaWidth.upToMedium`
+    flex-direction: column;
+  `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     left: 0;
     padding: 0 1rem;
     bottom: 140px;
-  `};
-`
-
-const StyledGirlIcon = styled.div`
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    & > img {
-      width: 150px;
-    }
-  `};
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    & > img {
-      width: 120px;
-    }
-  `};
-`
-
-const StyledStep7Content = styled.div`
-  background: #fef8f8;
-  box-shadow: 0px 8px 17px rgb(0 0 0 / 18%);
-  border-radius: 25px;
-  padding: 32px 54px 15px;
-  position: relative;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    padding: 22px 34px 15px;
-  `};
-`
-
-const StyledStep7Button = styled.div`
-  padding: 18px 30px;
-  font-size: 22px;
-  color: #fff;
-  font-weight: 700;
-  background: #f05359;
-  border-radius: 30px;
-  cursor: pointer;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    padding: 8px 16px;
-    font-size: 16px;
   `};
 `
 
@@ -113,4 +91,29 @@ const StyledStep7Text = styled.div`
     margin-top: 15px;
     font-size: 13px;
   `};
+`
+const StyledStep2Right = styled.div``
+
+const StyledStep2RightContent = styled.div`
+  max-width: 402px;
+  padding: 41px 17px 26px 19px;
+  background: #ffffff;
+  box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.16);
+  border-radius: 17px;
+  position: relative;
+`
+const StyledStep2ContentText = styled.div`
+  color: #767676;
+  font-size: 16px;
+  margin-bottom: 18px;
+  display: flex;
+  & > span {
+    color: #3faab0;
+  }
+`
+const TickIcon = styled.div`
+  margin-right: 6px;
+`
+const DontShowAgain = styled(StyledStep7Text)`
+  text-align: left;
 `

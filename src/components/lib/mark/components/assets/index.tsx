@@ -6,5 +6,18 @@ import girlIcon from '../../../../../assets/images/girl-icon.svg'
 import closeIcon from '../../../../../assets/images/icon-close-guide.svg'
 import iconCheck from '../../../../../assets/images/check-icon-guide-popup.svg'
 import swapCloseIcon from '../../../../../assets/images/swap-close-icon-guide-popup.svg'
+import stakeTickIcon from '../../../../../assets/images/stake-tick-icon.svg'
+import swapMessage from '../../../../../assets/images/swap-message-light.png'
 
-export { arrowLeft, arrowRight, arrowSkip, handIcon, girlIcon, closeIcon, iconCheck, swapCloseIcon }
+export {
+  arrowLeft,
+  arrowRight,
+  arrowSkip,
+  handIcon,
+  girlIcon,
+  closeIcon,
+  iconCheck,
+  swapCloseIcon,
+  stakeTickIcon,
+  swapMessage
+}

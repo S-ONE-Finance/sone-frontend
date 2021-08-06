@@ -56,6 +56,10 @@ const StyledStep3Text = styled.div`
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
   `};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 16px;
+  `};
 `
 
 const StyledHandIconStep3 = styled.div`

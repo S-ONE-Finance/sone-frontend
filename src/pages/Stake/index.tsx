@@ -291,7 +291,6 @@ export default function Staking() {
         pendingText={pendingText}
         content={modalContent}
       />
-      <OpenGuide screen="stake" />
       {isUpToExtraSmall ? (
         <Row justify="center" gap="0.75rem" style={{ margin: '1.25rem 0 1.75rem 0' }}>
           <RowFixed gap="0.75rem">
@@ -399,6 +398,7 @@ export default function Staking() {
               : +(+farm.userInfo.soneHarvested).toFixed(3)
           }
         />
+        <OpenGuide screen="stake" />
       </AutoColumn>
     </>
   )

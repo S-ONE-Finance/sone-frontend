@@ -1,66 +1,71 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from '../../../../../state/user/hooks'
-import { handIcon } from '../assets'
-import { ChildrenProp } from '../styled'
+import { useGuideStepManager } from '../../../../../../state/user/hooks'
+import { handIcon } from '../../assets'
+import { ChildrenProp } from '../../styled'
 
-const SwapStep1 = ({ children }: ChildrenProp) => {
+const OneStep2 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
 
   return (
     <>
-      <Step1Wrapper className="step-1">
+      <StepWrapper className="step-4">
         {children}
-        {Number(guideStep.step) === 1 && guideStep.screen === 'swap' && (
-          <>
-            <Step1Intro>{t('lets_click_connect_wallet_to_connect_and_start')}</Step1Intro>
+        {Number(guideStep.step) === 4 && guideStep.screen === 'liquidity' && (
+          <StyledOneStep2>
             <StyledHandIcon>
               <img src={handIcon} alt="hand" />
             </StyledHandIcon>
-          </>
+            <StepIntro>{t('Select a pair you want')}</StepIntro>
+          </StyledOneStep2>
         )}
-      </Step1Wrapper>
+      </StepWrapper>
     </>
   )
 }
 
-export default SwapStep1
+export default OneStep2
 
-const Step1Wrapper = styled.div`
+const StepWrapper = styled.div`
   position: relative;
-  z-index: 1001;
-  pointer-events: none;
 `
-const Step1Intro = styled.div`
-  position: absolute;
-  color: #fff;
+
+const StyledOneStep2 = styled.div`
+position: absolute;
+top: 70px;
+left: 85px;
+width: 460px;
+display: flex;
+align-items: center;
+
+${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  top: 50px;
+  left: 34px;
+  width: 300px;
+  `};
+
+}`
+
+const StepIntro = styled.div`
   font-weight: 700;
   font-size: 36px;
-  max-width: 446px;
-  top: -190px;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
-    top: -90px;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 16px;
-    top: -50px;
   `};
 `
 
 const StyledHandIcon = styled.div`
-  position: absolute;
-  top: 80px;
-  right: -15px;
+  margin-right: 31px;
   transform: rotate(-29.31deg);
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    top: 95px;
-    right: 50%;
     transform: unset;
     & > img {
       width: 60px;
@@ -68,9 +73,6 @@ const StyledHandIcon = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    top: 60px;
-    right: 20px;
-    transform: rotate(-29.31deg);
     & > img {
       width: 50px;
     }

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useGuideStepManager } from '../../../../state/user/hooks'
 
-import { StakeStep2 } from './index'
+import { SwapStep6, SwapStep7 } from './index'
 import { arrowLeft, arrowRight, arrowSkip } from './assets'
 
 const StyledMarkWrapper = styled.div`
@@ -107,7 +107,7 @@ const Mark = () => {
 
   const handleReset = () => {
     handleSkip()
-    for (let i = 1; i < 2; i++) {
+    for (let i = 1; i < 8; i++) {
       handleCheckStep(`step-${i}`, 'old')
     }
   }
@@ -120,6 +120,8 @@ const Mark = () => {
 
   useEffect(() => {
     if (guideStep.isGuide) {
+      console.log(guideStep.oldStep)
+
       if (guideStep.oldStep) handleCheckStep(`step-${guideStep.oldStep}`, 'old')
       handleCheckStep(`step-${guideStep.step}`, 'new')
     }
@@ -127,10 +129,13 @@ const Mark = () => {
 
   return (
     <>
-      {guideStep.isGuide && Number(guideStep.step) < 2 && (
+      {guideStep.isGuide && (
+        // (guideStep.step === 7 && guideStep.screen === 'swap' ? (
+        //   <SwapStep7 />
+        // ) : (
         <StyledMarkWrapper id="swap-mark">
-          {/* {guideStep.step === 2 && <StakeStep2 />} */}
           <StyledMark>
+            {guideStep.step === 6 && guideStep.screen === 'swap' && <SwapStep6 />}
             <StyledMarkPagination>
               <StyledMarkPaginationButtonGroup>
                 {guideStep.step !== 1 && (
@@ -139,7 +144,7 @@ const Mark = () => {
                     {t('previous')}
                   </StyledMarkPaginationButton>
                 )}
-                {guideStep.step !== 1 && (
+                {guideStep.step !== 7 && (
                   <StyledMarkPaginationButtonRight onClick={() => handleNext(guideStep.step)}>
                     {t('next_step')}
                     <img style={{ marginLeft: '10px' }} src={arrowRight} alt="arrow" />
@@ -153,7 +158,9 @@ const Mark = () => {
             </StyledMarkPagination>
           </StyledMark>
         </StyledMarkWrapper>
-      )}
+      )
+      // ))
+      }
     </>
   )
 }

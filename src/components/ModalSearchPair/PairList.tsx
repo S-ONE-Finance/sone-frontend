@@ -6,6 +6,7 @@ import Column from '../Column'
 import { MenuItem } from '../SearchModal/styleds'
 import CurrencyLogoDouble from 'components/CurrencyLogoDouble'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+// import { OneStep2 } from '../lib/mark/components'
 
 function pairKey(pair: Pair): string {
   // This should be unique!
@@ -26,22 +27,23 @@ function PairRow({
   const key = pairKey(pair)
   const currency0 = unwrappedToken(pair.token0)
   const currency1 = unwrappedToken(pair.token1)
-
   // only show add or remove buttons if not on selected list
   return (
-    <MenuItem
-      style={style}
-      className={`token-item-${key}`}
-      onClick={() => (isSelected ? null : onSelect())}
-      disabled={isSelected}
-    >
-      <CurrencyLogoDouble currency0={currency0} currency1={currency1} size={24} />
-      <Column>
-        <Text fontWeight={500}>
-          {currency0.symbol} - {currency1.symbol}
-        </Text>
-      </Column>
-    </MenuItem>
+    <>
+      <MenuItem
+        style={style}
+        className={`token-item-${key}`}
+        onClick={() => (isSelected ? null : onSelect())}
+        disabled={isSelected}
+      >
+        <CurrencyLogoDouble currency0={currency0} currency1={currency1} size={24} />
+        <Column>
+          <Text fontWeight={500}>
+            {currency0.symbol} - {currency1.symbol}
+          </Text>
+        </Column>
+      </MenuItem>
+    </>
   )
 }
 

@@ -105,13 +105,9 @@ const Mark = () => {
     updateStepGuide({ ...guideStep, step: 1, oldStep: 0, isGuide: false, screen: '' })
   }
 
-  const handleRestartGuide = () => {
-    updateStepGuide({ ...guideStep, step: 1, oldStep: 0, isGuide: true })
-  }
-
   const handleReset = () => {
     handleSkip()
-    for (let i = 1; i < 8; i++) {
+    for (let i = 1; i < 7; i++) {
       handleCheckStep(`step-${i}`, 'old')
     }
   }
@@ -131,36 +127,33 @@ const Mark = () => {
 
   return (
     <>
-      {guideStep.isGuide &&
-        (guideStep.step === 7 && guideStep.screen === 'swap' ? (
-          <SwapStep7 handleClose={handleSkip} handleRestartGuide={handleRestartGuide} />
-        ) : (
-          <StyledMarkWrapper id="swap-mark">
-            <StyledMark>
-              {guideStep.step === 6 && guideStep.screen === 'swap' && <SwapStep6 />}
-              <StyledMarkPagination>
-                <StyledMarkPaginationButtonGroup>
-                  {guideStep.step !== 1 && (
-                    <StyledMarkPaginationButton onClick={() => handlePrevious(guideStep.step)}>
-                      <img style={{ marginRight: '10px' }} src={arrowLeft} alt="arrow" />
-                      {t('previous')}
-                    </StyledMarkPaginationButton>
-                  )}
-                  {guideStep.step !== 7 && (
-                    <StyledMarkPaginationButtonRight onClick={() => handleNext(guideStep.step)}>
-                      {t('next_step')}
-                      <img style={{ marginLeft: '10px' }} src={arrowRight} alt="arrow" />
-                    </StyledMarkPaginationButtonRight>
-                  )}
-                </StyledMarkPaginationButtonGroup>
-                <StyledMarkPaginationButtonSkip onClick={handleSkip}>
-                  {t('Finish tutorial')}
-                  <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
-                </StyledMarkPaginationButtonSkip>
-              </StyledMarkPagination>
-            </StyledMark>
-          </StyledMarkWrapper>
-        ))}
+      {guideStep.isGuide && Number(guideStep.step) < 7 && (
+        <StyledMarkWrapper id="swap-mark">
+          <StyledMark>
+            {guideStep.step === 6 && guideStep.screen === 'swap' && <SwapStep6 />}
+            <StyledMarkPagination>
+              <StyledMarkPaginationButtonGroup>
+                {guideStep.step !== 1 && (
+                  <StyledMarkPaginationButton onClick={() => handlePrevious(guideStep.step)}>
+                    <img style={{ marginRight: '10px' }} src={arrowLeft} alt="arrow" />
+                    {t('previous')}
+                  </StyledMarkPaginationButton>
+                )}
+                {guideStep.step !== 6 && (
+                  <StyledMarkPaginationButtonRight onClick={() => handleNext(guideStep.step)}>
+                    {t('next_step')}
+                    <img style={{ marginLeft: '10px' }} src={arrowRight} alt="arrow" />
+                  </StyledMarkPaginationButtonRight>
+                )}
+              </StyledMarkPaginationButtonGroup>
+              <StyledMarkPaginationButtonSkip onClick={handleSkip}>
+                {t('skip_tutorial')}
+                <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
+              </StyledMarkPaginationButtonSkip>
+            </StyledMarkPagination>
+          </StyledMark>
+        </StyledMarkWrapper>
+      )}
     </>
   )
 }

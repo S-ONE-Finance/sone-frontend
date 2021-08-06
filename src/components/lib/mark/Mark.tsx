@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react'
-import { StakeMark, SwapMark } from './components'
+import { StakeMark, SwapMark, AddLiquidityMark } from './components'
 import { useGuideStepManager } from '../../../state/user/hooks'
 
 const Mark = () => {
@@ -12,6 +12,7 @@ const Mark = () => {
         <>
           {guideStep.screen === 'swap' && <SwapMark />}
           {guideStep.screen === 'stake' && <StakeMark />}
+          {guideStep.screen === 'liquidity' && <AddLiquidityMark />}
         </>
       )}
     </>

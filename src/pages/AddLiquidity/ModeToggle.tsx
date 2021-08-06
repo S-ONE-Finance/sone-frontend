@@ -9,6 +9,7 @@ import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import useTheme from '../../hooks/useTheme'
 import { ColumnCenter } from '../../components/Column'
 import { AddLiquidityModeEnum } from '../../state/user/actions'
+import { AddLiquiditySep2 } from '../../components/lib/mark/components'
 
 const Container = styled.div`
   margin: -9px 34px 26px;
@@ -86,6 +87,7 @@ export default function ModeToggle() {
         <Text fontSize={isUpToExtraSmall ? 13 : 16} color={theme.text10Sone}>
           {t('mode')}
         </Text>
+<<<<<<< HEAD
         <QuestionHelper1416 text={t('question_helper_mode')} />
         <ButtonGroup>
           <Item onClick={setModeOneToken} active={addLiquidityMode === AddLiquidityModeEnum.OneToken}>
@@ -97,6 +99,21 @@ export default function ModeToggle() {
             <ItemDescription>{t('two_tokens_mode')}</ItemDescription>
           </Item>
         </ButtonGroup>
+=======
+        <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
+        <AddLiquiditySep2>
+          <ButtonGroup>
+            <Item onClick={setModeOneToken} active={addLiquidityMode === AddLiquidityModeEnum.OneToken}>
+              <ItemTitle>{t('simple')}</ItemTitle>
+              <ItemDescription>{t('one_token_mode')}</ItemDescription>
+            </Item>
+            <Item onClick={setModeTwoToken} active={addLiquidityMode === AddLiquidityModeEnum.TwoToken}>
+              <ItemTitle>{t('advance')}</ItemTitle>
+              <ItemDescription>{t('two_tokens_mode')}</ItemDescription>
+            </Item>
+          </ButtonGroup>
+        </AddLiquiditySep2>
+>>>>>>> Update swap
       </Row>
     </Container>
   )

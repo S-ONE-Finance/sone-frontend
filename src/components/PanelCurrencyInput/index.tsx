@@ -13,7 +13,7 @@ import { useActiveWeb3React } from '../../hooks'
 import { useGuideStepManager } from '../../state/user/hooks'
 import { TextPanelLabel, CurrencySelect, StyledTokenName, StyledDropDown } from 'theme'
 
-import { SwapStep2 } from '../lib/mark/components'
+import { SwapStep2, OneStep3 } from '../lib/mark/components'
 
 export const InputRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -201,6 +201,40 @@ export default function PanelCurrencyInput({
       : ''
   }
 
+  console.log(currency)
+  const handleRenderTypeGuidePopup = () => {
+    // const currency = { decimals: 18, symbol: 'ETH', name: 'Ether' }
+    return (
+      <>
+        {id === 'add-liquidity-simple-input-tokena' && Number(guideStep.step) > 4 && (
+          <OneStep3>
+            <CurrencySelect selected={!!currency} className="open-currency-select-button">
+              <Aligner>
+                <CurrencyLogo currency={currency || undefined} size={'23px'} sizeMobile={'15px'} />
+                <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                  {currency?.symbol}
+                </StyledTokenName>
+              </Aligner>
+            </CurrencySelect>
+          </OneStep3>
+        )}
+
+        {id === 'swap-currency-input' && Number(guideStep.step) === 2 && (
+          <SwapStep2>
+            <CurrencySelect selected={!!currency} className="open-currency-select-button">
+              <Aligner>
+                <CurrencyLogo currency={currency || undefined} size={'23px'} sizeMobile={'15px'} />
+                <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                  {currency?.symbol}
+                </StyledTokenName>
+              </Aligner>
+            </CurrencySelect>
+          </SwapStep2>
+        )}
+      </>
+    )
+  }
+
   return (
     <>
       <Container id={id}>
@@ -229,19 +263,13 @@ export default function PanelCurrencyInput({
           {account && currency && showMaxButton && label !== 'To' && (
             <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
           )}
+          {id === 'add-liquidity-simple-input-tokena' && Number(guideStep.step) > 4 && (
+            <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
+          )}
           {showCurrencySelect && (
             <>
-              {id === 'swap-currency-input' && Number(guideStep.step) === 2 ? (
-                <SwapStep2>
-                  <CurrencySelect selected={!!currency} className="open-currency-select-button">
-                    <Aligner>
-                      <CurrencyLogo currency={currency || undefined} size={'23px'} sizeMobile={'15px'} />
-                      <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                        {currency?.symbol}
-                      </StyledTokenName>
-                    </Aligner>
-                  </CurrencySelect>
-                </SwapStep2>
+              {guideStep.isGuide ? (
+                handleRenderTypeGuidePopup()
               ) : (
                 <CurrencySelect
                   selected={!!currency}

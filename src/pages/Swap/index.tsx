@@ -378,7 +378,6 @@ export default function Swap({ history }: RouteComponentProps) {
         onConfirm={handleConfirmTokenWarning}
         onDismiss={handleDismissTokenWarning}
       />
-      <OpenGuide screen="swap" />
       <BrandIdentitySoneForMobile />
       <TabSwapLiquidity />
       <AppBody>
@@ -724,6 +723,7 @@ export default function Swap({ history }: RouteComponentProps) {
         </StyledPadding>
       </AppBody>
       <WeeklyRanking />
+      <OpenGuide screen="swap" />
       {swapIsUnsupported && (
         <UnsupportedCurrencyFooter show={swapIsUnsupported} currencies={[currencies.INPUT, currencies.OUTPUT]} />
       )}

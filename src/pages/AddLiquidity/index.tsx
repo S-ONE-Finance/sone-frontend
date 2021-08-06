@@ -12,6 +12,7 @@ import ModeTwoTokens from './ModeTwoTokens'
 import TabSwapLiquidity from '../../components/TabSwapLiquidity'
 import WeeklyRanking from '../../components/WeeklyRanking'
 import BrandIdentitySoneForMobile from '../../components/BrandIdentitySoneForMobile'
+import { OpenGuide } from '../../components/lib/mark/components'
 
 export const ButtonWrapper = styled.div<{ hasTrade?: boolean }>`
   margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '2.1875rem 0 0 0')};
@@ -45,6 +46,7 @@ export default function AddLiquidity({
         </StyledPadding>
       </AppBody>
       <WeeklyRanking />
+      {/* <OpenGuide screen="liquidity" /> */}
     </>
   )
 }

@@ -24,6 +24,7 @@ import ModalHeader from './ModalHeader'
 import TransactionDetails from './TransactionDetails'
 import { useGetPairFromSubgraphAndParse } from '../../../graphql/hooks'
 import { StyledArrowDown } from '../../../theme'
+import { useGuideStepManager } from '../../../state/user/hooks'
 
 type ModeOneTokenProps = {
   currencyIdA: string | undefined
@@ -33,6 +34,7 @@ type ModeOneTokenProps = {
 export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
+  const [guideStep] = useGuideStepManager()
 
   const history = useHistory()
 
@@ -154,8 +156,8 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
           isLoading={isLoading}
           allPairs={allPairs}
         />
-        {isPairExistAndNotNull && (
-          <>
+        {(isPairExistAndNotNull || Number(guideStep.step) > 4) && (
+          <AutoColumn>
             <PanelCurrencyInput
               id="add-liquidity-simple-input-tokena"
               label={t('from')}
@@ -183,7 +185,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
                 />
               </>
             )}
-          </>
+          </AutoColumn>
         )}
       </AutoColumn>
       <ButtonGrouping

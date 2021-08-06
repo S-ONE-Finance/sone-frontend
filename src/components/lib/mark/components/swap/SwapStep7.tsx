@@ -1,31 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import { useGuideStepManager } from '../../../../../state/user/hooks'
+
 import { girlIcon, closeIcon } from '../assets'
 
-type Step7Props = {
-  handleClose: () => void
-  handleRestartGuide: () => void
-}
-
-const SwapStep7 = ({ handleClose, handleRestartGuide }: Step7Props) => {
+const SwapStep7 = ({ screen }: { screen: string }) => {
   const { t } = useTranslation()
+  const [guideStep, updateStepGuide] = useGuideStepManager()
+  const [hide, setHide] = useState(false)
+
+  const handleRestartGuide = () => {
+    updateStepGuide({ ...guideStep, step: 1, oldStep: 0, isGuide: true, screen })
+  }
+
+  const handleSkip = () => {
+    setHide(true)
+    updateStepGuide({ ...guideStep, step: 1, oldStep: 0, isGuide: false, screen: '' })
+  }
+
   return (
     <>
-      <StyledStep7Wrapper>
-        <StyledStep7>
-          <StyledGirlIcon>
-            <img src={girlIcon} alt="hand" />
-          </StyledGirlIcon>
-          <StyledStep7Content>
-            <StyledStep7ButtonClose onClick={handleClose}>
-              <img src={closeIcon} alt="close" />
-            </StyledStep7ButtonClose>
-            <StyledStep7Button onClick={handleRestartGuide}>{t('see_tutorial_now')}</StyledStep7Button>
-            <StyledStep7Text onClick={handleClose}>{t('dont_show_again')}</StyledStep7Text>
-          </StyledStep7Content>
-        </StyledStep7>
-      </StyledStep7Wrapper>
+      {!hide && (
+        <StyledStep7Wrapper>
+          <StyledStep7>
+            <StyledGirlIcon>
+              <img src={girlIcon} alt="hand" />
+            </StyledGirlIcon>
+            <StyledStep7Content>
+              <StyledStep7ButtonClose onClick={() => setHide(true)}>
+                <img src={closeIcon} alt="close" />
+              </StyledStep7ButtonClose>
+              <StyledStep7Button onClick={handleRestartGuide}>{t('see_tutorial_now')}</StyledStep7Button>
+              <StyledStep7Text onClick={handleSkip}>{t('dont_show_again')}</StyledStep7Text>
+            </StyledStep7Content>
+          </StyledStep7>
+        </StyledStep7Wrapper>
+      )}
     </>
   )
 }
@@ -33,39 +44,19 @@ const SwapStep7 = ({ handleClose, handleRestartGuide }: Step7Props) => {
 export default SwapStep7
 
 const StyledStep7Wrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  z-index: 1000;
+  position: absolute;
+  bottom: 203px;
+  left: 54px;
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    display: none
+  `};
 `
 const StyledStep7 = styled.div`
-  position: absolute;
-  bottom: 161px;
-  left: 54px;
   display: flex;
   align-items: flex-end;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    left: 0;
-    padding: 0 1rem;
-    bottom: 140px;
-  `};
 `
 
-const StyledGirlIcon = styled.div`
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    & > img {
-      width: 150px;
-    }
-  `};
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    & > img {
-      width: 120px;
-    }
-  `};
-`
+const StyledGirlIcon = styled.div``
 
 const StyledStep7Content = styled.div`
   background: #fef8f8;
@@ -73,9 +64,6 @@ const StyledStep7Content = styled.div`
   border-radius: 25px;
   padding: 32px 54px 15px;
   position: relative;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    padding: 22px 34px 15px;
-  `};
 `
 
 const StyledStep7Button = styled.div`
@@ -86,10 +74,6 @@ const StyledStep7Button = styled.div`
   background: #f05359;
   border-radius: 30px;
   cursor: pointer;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    padding: 8px 16px;
-    font-size: 16px;
-  `};
 `
 
 const StyledStep7ButtonClose = styled.div`
@@ -97,9 +81,6 @@ const StyledStep7ButtonClose = styled.div`
   right: 20px;
   top: 16px;
   cursor: pointer;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    right: 12px;
-  `};
 `
 
 const StyledStep7Text = styled.div`
@@ -109,8 +90,4 @@ const StyledStep7Text = styled.div`
   font-weight: 500;
   text-align: center;
   cursor: pointer;
-  ${({ theme }) => theme.mediaWidth.upToMedium`
-    margin-top: 15px;
-    font-size: 13px;
-  `};
 `

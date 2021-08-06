@@ -8,6 +8,8 @@ import { RowBetween } from '../Row'
 import CurrencyLogoDouble from '../CurrencyLogoDouble'
 import ModalSearchPair from '../ModalSearchPair'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { OneStep1 } from '../lib/mark/components'
+import { useGuideStepManager } from '../../state/user/hooks'
 
 const PanelWrapper = styled(RowBetween)`
   width: 100%;
@@ -34,6 +36,7 @@ type PanelSelectPairProps = {
 export default function PanelSelectPair({ selectedPair, onPairSelect, isLoading, allPairs }: PanelSelectPairProps) {
   const { t } = useTranslation()
   const [modalOpen, setModalOpen] = useState(false)
+  const [guideStep] = useGuideStepManager()
 
   const handleDismissSearch = () => {
     setModalOpen(false)
@@ -45,26 +48,28 @@ export default function PanelSelectPair({ selectedPair, onPairSelect, isLoading,
   return (
     <PanelWrapper>
       <TextPanelLabel>{t('pair')}</TextPanelLabel>
-      <PairSelect
-        selected={Boolean(selectedPair)}
-        onClick={() => {
-          if (!modalOpen) {
-            setModalOpen(true)
-          }
-        }}
-      >
-        <RowBetween>
-          {Boolean(selectedPair) && (
-            <CurrencyLogoDouble currency0={currency0} currency1={currency1} size={22} margin={true} />
-          )}
-          <StyledTokenName active={Boolean(selectedPair)}>
-            {selectedPair ? `${currency0?.symbol || '?'} - ${currency1?.symbol || '?'}` : t('select_a_pair')}
-          </StyledTokenName>
-          <StyledDropDown selected={Boolean(selectedPair)} />
-        </RowBetween>
-      </PairSelect>
+      <OneStep1>
+        <PairSelect
+          selected={Boolean(selectedPair)}
+          onClick={() => {
+            if (!modalOpen) {
+              setModalOpen(true)
+            }
+          }}
+        >
+          <RowBetween>
+            {Boolean(selectedPair) && (
+              <CurrencyLogoDouble currency0={currency0} currency1={currency1} size={22} margin={true} />
+            )}
+            <StyledTokenName active={Boolean(selectedPair)}>
+              {selectedPair ? `${currency0?.symbol || '?'} - ${currency1?.symbol || '?'}` : t('select_a_pair')}
+            </StyledTokenName>
+            <StyledDropDown selected={Boolean(selectedPair)} />
+          </RowBetween>
+        </PairSelect>
+      </OneStep1>
       <ModalSearchPair
-        isOpen={modalOpen}
+        isOpen={Number(guideStep.step) === 4 ? true : modalOpen}
         onDismiss={handleDismissSearch}
         onPairSelect={onPairSelect}
         selectedPair={selectedPair}

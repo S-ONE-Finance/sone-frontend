@@ -11,6 +11,11 @@ import StakeStep1 from './stake/StakeStep1'
 import StakeStep2 from './stake/StakeStep2'
 import StakeMark from './StakeMark'
 import SwapMark from './SwapMark'
+import AddLiquidityMark from './AddLiquidity'
+import AddLiquiditySep2 from './AddLiquidity/AddLiquiditySep2'
+import OneStep1 from './AddLiquidity/one/OneStep1'
+import OneStep2 from './AddLiquidity/one/OneStep2'
+import OneStep3 from './AddLiquidity/one/OneStep3'
 
 export {
   SwapStep1,
@@ -25,5 +30,10 @@ export {
   StakeStep1,
   StakeStep2,
   SwapMark,
-  StakeMark
+  StakeMark,
+  AddLiquidityMark,
+  AddLiquiditySep2,
+  OneStep1,
+  OneStep2,
+  OneStep3
 }
