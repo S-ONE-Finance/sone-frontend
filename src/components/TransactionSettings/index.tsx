@@ -223,6 +223,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
                 }}
                 onChange={e => parseCustomSlippage(e.target.value)}
                 color={!slippageInputIsValid ? 'red' : ''}
+                maxLength={5}
               />
               <MediumText>%</MediumText>
             </RowBetween>
