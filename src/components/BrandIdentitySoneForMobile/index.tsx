@@ -10,12 +10,13 @@ const RowMobileOnly = styled(Row)`
     display: flex;
     height: 2rem;
     position: relative;
+    margin-top: 1.25rem;
   `}
 `
 
 const LogoResponsive = styled(LogoForMobileResponsive)`
-  width: 140px;
-  height: 20px;
+  width: 8.75rem; // 140px.
+  height: 1.25rem; // 20px.
 `
 
 export default function BrandIdentitySoneForMobile() {

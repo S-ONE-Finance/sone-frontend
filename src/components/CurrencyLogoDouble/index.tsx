@@ -12,7 +12,6 @@ const Wrapper = styled.div<{ margin: boolean; sizeraw: number }>`
 `
 
 const HigherLogoWrapper = styled.div<{ sizeraw: number }>`
-  z-index: 2;
   position: absolute;
   left: ${({ sizeraw }) => (sizeraw / 2).toString() + 'px'} !important;
 `

@@ -14,7 +14,7 @@ export const MyAccountWrapper = styled.div`
   margin-top: 3rem;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    margin-top: 0;
+    margin-top: 1.25rem;
   `}
 `
 
