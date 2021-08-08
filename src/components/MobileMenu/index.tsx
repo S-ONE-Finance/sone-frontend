@@ -146,7 +146,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
       <Column>
         <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>{t('sone_wallet')}</StyledExternalLink>
         <StyledNavLink to="/swap">{t('swap')}</StyledNavLink>
-        <StyledNavLink to="/pool" isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
+        <StyledNavLink to="/add" isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
           {t('liquidity')}
         </StyledNavLink>
         <StyledNavLink to="/staking">{t('staking')}</StyledNavLink>
