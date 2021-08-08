@@ -60,7 +60,7 @@ type LiquidityProviderTokenLogoProps = {
 export default function LiquidityProviderTokenLogo({
   address0,
   address1,
-  size = 440,
+  size = 44,
   sizeMobile = 28,
   main = true,
   style
