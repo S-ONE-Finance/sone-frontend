@@ -382,12 +382,16 @@ const MenuItem = styled.div`
   `}
 `
 
-// Khi màn hình kéo về large thì phải hover lên trên menuitem phải giữ submenu hiện ra.
 const ResponsiveMenuItem = styled(MenuItem)`
   ::before {
+    // Khi màn hình kéo về large thì phải hover lên trên menuitem phải giữ submenu hiện ra.
     ${({ theme }) => theme.mediaWidth.upToLarge`
       bottom: unset;
       top: -1rem;
+    `}
+    // Khi màn hình nhỏ (thiết bị touch) thì phải disable đi để touch được cái footer.
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      display: none;
     `}
   }
 `
