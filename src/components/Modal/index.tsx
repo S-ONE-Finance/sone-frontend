@@ -135,7 +135,7 @@ export default function Modal({
                 isModalBindToBottom={isModalBindToBottom}
               >
                 {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
-                {!initialFocusRef && isModalBindToBottom ? <div tabIndex={1} /> : null}
+                {!initialFocusRef ? <div tabIndex={1} /> : null}
                 {children}
               </StyledDialogContent>
             </StyledDialogOverlay>
