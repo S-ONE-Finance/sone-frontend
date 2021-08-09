@@ -557,7 +557,7 @@ export default function Header() {
                     ? '日本語'
                     : language?.startsWith('zh')
                     ? '中文'
-                    : 'N/A'}
+                    : 'EN'}
                 </TYPE.language>
               </StyledMenuButtonWithText>
               <ResponsiveBottomRightSubMenu>

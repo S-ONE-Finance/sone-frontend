@@ -248,7 +248,7 @@ export default function Staking() {
         content={modalContent}
       />
       {isUpToExtraSmall ? (
-        <Row justify="center" gap="0.75rem" style={{ marginBottom: '1.75rem' }}>
+        <Row justify="center" gap="0.75rem" style={{ margin: '1.25rem 0 1.75rem 0' }}>
           <RowFixed gap="0.75rem">
             <LiquidityProviderTokenLogo
               address0={token0 && token0.id}
