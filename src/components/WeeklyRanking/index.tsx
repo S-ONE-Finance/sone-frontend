@@ -58,8 +58,8 @@ const Title = styled.div`
 export default function WeeklyRanking() {
   const { t } = useTranslation()
   const ranking = useWeeklyRankingData()
-  const isUpToExtraSmall = useIsUpToExtraSmall()
   const isUpToSmall = useIsUpToSmall()
+  const isUpToExtraSmall = useIsUpToExtraSmall()
 
   const rankingPlaceholder = useMemo(
     () =>

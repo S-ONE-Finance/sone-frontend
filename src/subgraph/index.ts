@@ -1,5 +1,5 @@
 // TODO: Chuyển mọi hooks sang sử dụng sdk của @s-one-finance.
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { clients } from './apollo/client'
 import { PAIRS_CURRENT } from './apollo/queries'
@@ -35,6 +35,13 @@ async function getPairIds(chainId?: number) {
 export function useBulkPairDataInterval() {
   const [subgraphData, setSubgraphData] = useState<any>({})
   const { chainId, library } = useActiveWeb3React()
+  const isUnmounted = useRef(false)
+
+  useEffect(() => {
+    return () => {
+      isUnmounted.current = true
+    }
+  }, [])
 
   const getData = useCallback(async chainId => {
     const pairIds = await getPairIds(chainId)
@@ -42,14 +49,14 @@ export function useBulkPairDataInterval() {
     // Get data for every pair in list.
     const data = await getBulkPairData(chainId, pairIds)
     if (data?.length > 0) {
-      setSubgraphData(data)
+      if (!isUnmounted.current) setSubgraphData(data)
     } else {
       console.error('Array trả về lỗi', data)
     }
   }, [])
 
   // Wait 15s for TheGraph mapping data.
-  const getDataAfter5Seconds = useCallback(() => {
+  const getDataAfter15Seconds = useCallback(() => {
     setTimeout(() => {
       getData(chainId)
     }, 15000)
@@ -60,15 +67,15 @@ export function useBulkPairDataInterval() {
     getData(chainId)
   }, [chainId, getData])
 
-  // When new block created, run the getDataAfter5Seconds callback function.
+  // When new block created, run the getDataAfter15Seconds callback function.
   useEffect(() => {
     if (!library) return
 
-    library.on('block', getDataAfter5Seconds)
+    library.on('block', getDataAfter15Seconds)
     return () => {
-      library.removeListener('block', getDataAfter5Seconds)
+      library.removeListener('block', getDataAfter15Seconds)
     }
-  }, [library, getDataAfter5Seconds])
+  }, [library, getDataAfter15Seconds])
 
   return subgraphData
 }
