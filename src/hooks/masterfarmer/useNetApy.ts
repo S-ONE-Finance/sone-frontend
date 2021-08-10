@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { UserInfoSushi } from '@s-one-finance/sdk-core'
+import { UserInfoSone } from '@s-one-finance/sdk-core'
 import useMyAccountStaked from './useMyAccountStaked'
 
 /**
@@ -13,8 +13,8 @@ export default function useNetApy() {
   useEffect(() => {
     let totalSoneHarvestUSD = 0
     let totalLPStakeUSD = 0
-    myAccountStaked.forEach((user: UserInfoSushi) => {
-      totalSoneHarvestUSD += Number(user.sushiHarvestedUSD)
+    myAccountStaked.forEach((user: UserInfoSone) => {
+      totalSoneHarvestUSD += Number(user.soneHarvestedUSD)
       totalLPStakeUSD += (Number(user.amount) / 1e18) * Number(user.pool?.LPTokenPrice)
     })
     if (totalLPStakeUSD) {

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { calculateAPY, UserInfoSushi } from '@s-one-finance/sdk-core'
+import { calculateAPY, UserInfoSone } from '@s-one-finance/sdk-core'
 import { exchange, masterchef } from 'apollo/client'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'apollo/queries'
@@ -12,8 +12,8 @@ import useSonePrice from './useSonePrice'
 const useMyAccountStaked = () => {
   const [isLoading, setIsLoading] = useState(true)
   const { account, chainId } = useActiveWeb3React()
-  const [users, setUsers] = useState<UserInfoSushi[]>([])
-  const sushiPrice = useSonePrice()
+  const [users, setUsers] = useState<UserInfoSone[]>([])
+  const sonePrice = useSonePrice()
   const block = useBlockNumber()
 
   const fetchDataStaked = useCallback(async () => {
@@ -29,7 +29,7 @@ const useMyAccountStaked = () => {
     ])
     const users = results[0]?.data.users
     const pairAddresses = users
-      .map((user: UserInfoSushi) => {
+      .map((user: UserInfoSone) => {
         return user.pool?.pair
       })
       .sort()
@@ -41,7 +41,7 @@ const useMyAccountStaked = () => {
 
     const pairs = pairsQuery?.data.pairs
 
-    const userData: UserInfoSushi[] = users.map((user: any) => {
+    const userData: UserInfoSone[] = users.map((user: any) => {
       const pair = pairs.find((pair: any) => pair.id === user.pool?.pair)
       if (pair === undefined) {
         return false
@@ -52,18 +52,18 @@ const useMyAccountStaked = () => {
       const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
       const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
       const rewardPerBlock =
-        ((user.pool?.allocPoint / user.pool?.owner.totalAllocPoint) * user.pool?.owner.sushiPerBlock) / 1e18
+        ((user.pool?.allocPoint / user.pool?.owner.totalAllocPoint) * user.pool?.owner.sonePerBlock) / 1e18
 
       const investedValue = 1000
       const LPTokenPrice = pair.reserveUSD / pair.totalSupply
       const LPTokenValue = investedValue / LPTokenPrice
       const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
-      const roiPerBlock = (rewardPerBlock * sushiPrice * poolShare) / investedValue
+      const roiPerBlock = (rewardPerBlock * sonePrice * poolShare) / investedValue
       const multiplierYear = calculateAPY(Number(averageBlockTime), block || 0)
       const roiPerYear = multiplierYear * roiPerBlock
 
       const rewardPerDay = rewardPerBlock * blocksPerHour * 24
-      const sushiHarvested = user.pool?.sushiHarvested > 0 ? user.pool?.sushiHarvested : 0
+      const soneHarvested = user.pool?.soneHarvested > 0 ? user.pool?.soneHarvested : 0
       const multiplier = (user.pool?.owner.bonusMultiplier * user.pool?.allocPoint) / 100
 
       const poolData = {
@@ -75,15 +75,15 @@ const useMyAccountStaked = () => {
         pid: Number(user.pool.id),
         pairAddress: pair.id,
         slpBalance: user.pool.balance,
-        sushiRewardPerDay: rewardPerDay,
+        soneRewardPerDay: rewardPerDay,
         liquidityPair: pair,
         rewardPerBlock,
         roiPerBlock,
         roiPerYear,
-        sushiHarvested,
+        soneHarvested,
         multiplier,
         balanceUSD,
-        sushiPrice,
+        sonePrice,
         LPTokenPrice,
         secondsPerBlock: Number(averageBlockTime)
       }
@@ -96,12 +96,12 @@ const useMyAccountStaked = () => {
 
     const sorted = orderBy(userData, ['id'], ['desc'])
     return sorted
-  }, [block, sushiPrice])
+  }, [block, sonePrice])
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
-      const results: UserInfoSushi[] = await fetchDataStaked()
+      const results: UserInfoSone[] = await fetchDataStaked()
       const uniqResult = _.uniq(results)
       const sorted = orderBy(uniqResult, ['id'], ['desc'])
       setIsLoading(false)

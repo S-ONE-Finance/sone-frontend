@@ -14,7 +14,7 @@ import { Farm } from '@s-one-finance/sdk-core/'
 const useFarms = () => {
   const { account, chainId } = useActiveWeb3React()
   const [farms, setFarms] = useState<Farm[]>([])
-  const sushiPrice = useSonePrice()
+  const sonePrice = useSonePrice()
   const block = useBlockNumber()
 
   const fetchSLPFarms = useCallback(async () => {
@@ -24,7 +24,7 @@ const useFarms = () => {
       }),
       exchange.query({
         query: liquidityPositionSubsetQuery,
-        variables: { user: '0xc2edad668740f1aa35e4d8f227fb8e17dca888cd' }
+        variables: { user: '0xfF219ff53d0f86685968348D96eBdb951341707D' }
       }),
       getAverageBlockTime()
     ])
@@ -58,18 +58,18 @@ const useFarms = () => {
         const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
         const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
         const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
-        const rewardPerBlock = ((pool.allocPoint / pool.owner.totalAllocPoint) * pool.owner.sushiPerBlock) / 1e18
+        const rewardPerBlock = ((pool.allocPoint / pool.owner.totalAllocPoint) * pool.owner.sonePerBlock) / 1e18
 
         const investedValue = 1000
         const LPTokenPrice = pair.reserveUSD / pair.totalSupply
         const LPTokenValue = investedValue / LPTokenPrice
         const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
-        const roiPerBlock = (rewardPerBlock * sushiPrice * poolShare) / investedValue
+        const roiPerBlock = (rewardPerBlock * sonePrice * poolShare) / investedValue
         const multiplierYear = calculateAPY(Number(averageBlockTime), block || 0)
         const roiPerYear = multiplierYear * roiPerBlock
 
         const rewardPerDay = rewardPerBlock * blocksPerHour * 24
-        const sushiHarvested = pool.sushiHarvested > 0 ? pool.sushiHarvested : 0
+        const soneHarvested = pool.soneHarvested > 0 ? pool.soneHarvested : 0
         const multiplier = (pool.owner.bonusMultiplier * pool.allocPoint) / 100
         return {
           ...pool,
@@ -80,18 +80,18 @@ const useFarms = () => {
           pid: Number(pool.id),
           pairAddress: pair.id,
           slpBalance: pool.balance,
-          sushiRewardPerDay: rewardPerDay,
+          soneRewardPerDay: rewardPerDay,
           liquidityPair: pair,
           rewardPerBlock,
           roiPerBlock,
           roiPerYear,
-          sushiHarvested,
+          soneHarvested,
           multiplier,
           balanceUSD,
           tvl: liquidityPosition?.liquidityTokenBalance
             ? (pair.reserveUSD / pair.totalSupply) * liquidityPosition.liquidityTokenBalance
             : 0.1,
-          sushiPrice,
+          sonePrice,
           LPTokenPrice,
           secondsPerBlock: Number(averageBlockTime)
         }
@@ -102,7 +102,7 @@ const useFarms = () => {
 
     const sorted = orderBy(farms, ['pid'], ['desc'])
     return sorted
-  }, [block, sushiPrice])
+  }, [block, sonePrice])
 
   useEffect(() => {
     const fetchData = async () => {

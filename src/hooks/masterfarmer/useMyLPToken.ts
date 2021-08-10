@@ -11,8 +11,7 @@ const useMyLPToken = () => {
     ;(async () => {
       const result = await exchange.query({
         query: liquidityPositionSubsetQuery,
-        // TODO_STAKING: remove fake account
-        variables: { user: '0x9ae383135ef1ead2bab41c1f97640d51ae8f458f' }
+        variables: { user: account }
       })
       const data = result?.data?.liquidityPositions
       setMyLiquidity(data)
