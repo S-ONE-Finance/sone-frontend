@@ -2236,13 +2236,14 @@
   resolved "https://registry.yarnpkg.com/@s-one-finance/core/-/core-0.1.2.tgz#eb119973fdb27ae62e10462985a8feb884b3b2a7"
   integrity sha512-lqljc25HWeOqiH+Mx1KVCyOdnqnniown8cEIEm2c8yQteso7gFbqohUI1U59Xny008tI+FyaZUD4IF/kR5QO3A==
 
-"@s-one-finance/sdk-core@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@s-one-finance/sdk-core/-/sdk-core-1.1.2.tgz#93b2eaf21e627fc925f38fd7e9f63f287e63d488"
-  integrity sha512-MlrbvAGrFOVJHRch1ZvjaaecZFsjPBbKgHdXZfLW7mKXJyBYb6lc7Pm4xwauEDkOp6O9puDy9NCrT1IykMvC1g==
+"@s-one-finance/sdk-core@^1.2.0":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@s-one-finance/sdk-core/-/sdk-core-1.2.1.tgz#a1d9b0ee88a6f3a21b8e9d2057b35c0f62e2efa8"
+  integrity sha512-HlL5viJPRuqDKvyb86Peybu39lanyrjRIa4kIIsp7Qh0cTuxi+ajImS7mJUc06hY/2pGhS+S77MTcTlWUpjaag==
   dependencies:
     "@s-one-finance/core" "^0.1.2"
     big.js "^5.2.2"
+    bignumber.js "^9.0.1"
     decimal.js-light "^2.5.0"
     jsbi "^3.1.1"
     tiny-invariant "^1.1.0"
@@ -10217,9 +10218,9 @@ js-yaml@^3.13.1:
     esprima "^4.0.0"
 
 jsbi@^3.1.1:
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-3.1.5.tgz#70c2aaa2f75e1dc7604fed45298061ca23724046"
-  integrity sha512-w2BY0VOYC1ahe+w6Qhl4SFoPvPsZ9NPHY4bwass+LCgU7RK3PBoVQlQ3G1s7vI8W3CYyJiEXcbKF7FIM/L8q3Q==
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-3.1.6.tgz#572431b0ff4b9c0f5f4b41e214dba76a734e676b"
+  integrity sha512-CGjq13y28FrBA5mAU+rsfHaVKEF9jrw3PhzZpIzTeMiPsT0XRDAS6E7QS8/ZTmFQUtl2MDJsxKQoYJzAhF7B1w==
 
 jsbn@~0.1.0:
   version "0.1.1"

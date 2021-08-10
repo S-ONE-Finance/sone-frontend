@@ -181,7 +181,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
         <RowFixed>
           <StyledSlippageIcon />
           <SectionHeading>{t('slippage_tolerance')}</SectionHeading>
-          <QuestionHelper text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, iste." />
+          <QuestionHelper text={t('question_helper_slippage_tolerance')} />
         </RowFixed>
         <Row>
           <Option
@@ -223,6 +223,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
                 }}
                 onChange={e => parseCustomSlippage(e.target.value)}
                 color={!slippageInputIsValid ? 'red' : ''}
+                maxLength={5}
               />
               <MediumText>%</MediumText>
             </RowBetween>
@@ -249,7 +250,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
         <RowFixed>
           <StyledDeadlineIcon />
           <SectionHeading>{t('transaction_deadline')}</SectionHeading>
-          <QuestionHelper text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam, quia." />
+          <QuestionHelper text={t('question_helper_transaction_deadline')} />
         </RowFixed>
         <RowFixed>
           <OptionCustom tabIndex={-1}>

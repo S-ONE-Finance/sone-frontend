@@ -158,7 +158,7 @@ export default function Farms() {
       <WrapTitle>
         <StyledCurrently
           dangerouslySetInnerHTML={{
-            __html: t('sone_finance_currently_has_$2,189,400_of_total_locked_value', {
+            __html: t('sone_finance_currently_has_123456_of_total_locked_value', {
               soneFinance: '<b>S-ONE Finance</b>',
               lockValue: `<span>$${totalLockValue.toNumber()}</span>`
             })

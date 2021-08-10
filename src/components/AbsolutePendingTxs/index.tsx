@@ -8,7 +8,7 @@ const LoaderSoneWrapper = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     position: absolute;
-    top: 0;
+    top: 1.25rem;
     right: 1rem;
     display: flex;
     justify-content: center;

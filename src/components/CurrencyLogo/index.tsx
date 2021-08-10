@@ -7,6 +7,9 @@ import useHttpLocations from '../../hooks/useHttpLocations'
 import { WrappedTokenInfo } from '../../state/lists/hooks'
 import Logo from '../Logo'
 import SoneLogoSvg from '../../assets/images/logo_token_sone.svg'
+import { useActiveWeb3React } from '../../hooks'
+import useCurrencyIsSone from '../../hooks/useCurrencyIsSone'
+import { SONE } from '../../constants'
 
 export const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`
@@ -94,6 +97,8 @@ export default function CurrencyLogo({
   style?: CSSProperties
 }) {
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
+  const { chainId } = useActiveWeb3React()
+  const passedCurrencyIsSone = useCurrencyIsSone(currency)
 
   const srcs: string[] = useMemo(() => {
     if (currency === ETHER) return []
@@ -113,7 +118,12 @@ export default function CurrencyLogo({
   }
 
   // SONE BOUNDED.
-  if (address && address.toLowerCase() === 'sone_bounded') {
+  if (
+    (address &&
+      (address.toLowerCase() === 'sone_bounded' ||
+        (chainId && address.toLowerCase() === SONE[chainId].address.toLowerCase()))) ||
+    (currency && passedCurrencyIsSone)
+  ) {
     return (
       <SoneLogoBoundedWrapper size={size} sizeMobile={sizeMobile}>
         <SoneLogoBounded

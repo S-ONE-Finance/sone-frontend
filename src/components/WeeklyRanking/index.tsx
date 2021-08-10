@@ -58,8 +58,8 @@ const Title = styled.div`
 export default function WeeklyRanking() {
   const { t } = useTranslation()
   const ranking = useWeeklyRankingData()
-  const isUpToExtraSmall = useIsUpToExtraSmall()
   const isUpToSmall = useIsUpToSmall()
+  const isUpToExtraSmall = useIsUpToExtraSmall()
 
   const rankingPlaceholder = useMemo(
     () =>
@@ -73,7 +73,10 @@ export default function WeeklyRanking() {
     <Container>
       <SpanFullColumns>
         <Title>{t('weekly_ranking')}</Title>
-        <QuestionHelper text="Sort theo oneWeekVolumeUSD" size={isUpToExtraSmall ? 15 : isUpToSmall ? 19 : 23} />
+        <QuestionHelper
+          text={t('question_helper_weekly_ranking')}
+          size={isUpToExtraSmall ? 15 : isUpToSmall ? 19 : 23}
+        />
       </SpanFullColumns>
       {(ranking?.length >= 1 ? ranking : rankingPlaceholder).map((item: any) => (
         <WeeklyRankingItem

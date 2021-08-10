@@ -42,3 +42,9 @@ export function useIsUpToSmall() {
 
   return width && width <= MEDIA_WIDTHS.upToSmall
 }
+
+export function useIsUpToMedium() {
+  const { width } = useWindowSize()
+
+  return width && width <= MEDIA_WIDTHS.upToMedium
+}

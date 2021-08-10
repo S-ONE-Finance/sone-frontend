@@ -84,7 +84,7 @@ export default function Unstake() {
 
   const error: string | undefined =
     typedValue === '' || +typedValue === 0 || tryParse === undefined
-      ? t('Enter an amount')
+      ? t('enter_an_amount')
       : fullBalance !== undefined && +typedValue > fullBalance
       ? t('Insufficient LP Token')
       : undefined
@@ -182,14 +182,14 @@ export default function Unstake() {
           <RowBetween>
             <RowFixed>
               <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-                {t('After unstaking, you will have')}
+                {t('after_unstaking_you_will_have')}
               </Text>
             </RowFixed>
           </RowBetween>
           <RowBetween>
             <RowFixed>
               <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                {t('Total LP Token')}
+                {t('total_lp_token')}
               </Text>
             </RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
@@ -199,7 +199,7 @@ export default function Unstake() {
           <RowBetween>
             <RowFixed>
               <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                {t('Remain Staked LP')}
+                {t('remain_staked_lp')}
               </Text>
             </RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
@@ -255,7 +255,7 @@ export default function Unstake() {
         content={modalContent}
       />
       {isUpToExtraSmall ? (
-        <Row justify="center" gap="0.75rem" style={{ marginBottom: '1.75rem' }}>
+        <Row justify="center" gap="0.75rem" style={{ margin: '1.25rem 0 1.75rem 0' }}>
           <RowFixed gap="0.75rem">
             <LiquidityProviderTokenLogo
               address0={token0 && token0.id}

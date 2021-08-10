@@ -18,6 +18,7 @@ import { useIsUpToExtraSmall, useIsUpToSmall } from '../../../hooks/useWindowSiz
 import useReferrerInformation from './hooks/useReferrerInformation'
 import usePrevious from '../../../hooks/usePrevious'
 import { CountUp } from 'use-count-up'
+import { useTranslation } from 'react-i18next'
 
 const FriendsAndReward = styled(AutoColumn)`
   display: grid;
@@ -140,7 +141,6 @@ const TextReferralID = styled(TextAccent)`
 `
 
 const StyledQRCode = styled.div`
-  border-radius: 0;
   margin-top: 20px;
   margin-bottom: 20px;
   height: 150px;
@@ -149,6 +149,7 @@ const StyledQRCode = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.white};
+  border-radius: 0.5rem;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     height: 130px;
@@ -196,6 +197,7 @@ function NumberCountUp({ value }: { value: number | undefined }) {
 }
 
 export default function ReferralInformation() {
+  const { t } = useTranslation()
   const isUpToSmall = useIsUpToSmall()
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
@@ -209,12 +211,13 @@ export default function ReferralInformation() {
     <FlexibleRow>
       <FriendsAndReward>
         <Row gap="5px">
+          {/* TODO: Hỏi khách hàng 15 friends tiếng nhật và hàn highlight ở đâu? */}
           <TextAccent>
             <NumberCountUp value={totalFriend} />
           </TextAccent>
           <TextAccentSmall>friends</TextAccentSmall>
           <TextDefault>have used your Referral ID.</TextDefault>
-          <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis, rem?" />
+          <QuestionHelper1416 text={t('question_helper_123_friends_have_used_your_referral_id')} />
         </Row>
         <PendingRewardRow>
           <SoneLogo />
@@ -225,11 +228,11 @@ export default function ReferralInformation() {
               </TextAccentBig>
               <TextSoneUnitBig>SONE</TextSoneUnitBig>
             </Row>
-            <TextSubtitle>Pending Reward</TextSubtitle>
+            <TextSubtitle>{t('pending_reward')}</TextSubtitle>
           </Column>
         </PendingRewardRow>
         <Row wrap="wrap" gap="5px">
-          <TextDefault minWidth={isUpToExtraSmall ? 'unset' : 137}>Paid Reward:</TextDefault>
+          <TextDefault minWidth={isUpToExtraSmall ? 'unset' : 137}>{t('paid_reward') + ':'}</TextDefault>
           <TextAccent>
             <NumberCountUp value={totalPaidReward} />
           </TextAccent>
@@ -240,7 +243,7 @@ export default function ReferralInformation() {
           </RowFixed>
         </Row>
         <Row wrap="wrap" gap="5px">
-          <TextDefault minWidth={isUpToExtraSmall ? 'unset' : 137}>Reward Amount:</TextDefault>
+          <TextDefault minWidth={isUpToExtraSmall ? 'unset' : 137}>{t('reward_amount') + ':'}</TextDefault>
           <TextAccent>
             <NumberCountUp value={totalRewardAmount} />
           </TextAccent>
@@ -253,13 +256,13 @@ export default function ReferralInformation() {
       </FriendsAndReward>
       <QrCodeShareSection>
         <RowBetween gap={isUpToSmall ? '10px' : undefined}>
-          <SubText2>Your Referral ID:</SubText2>
+          <SubText2>{t('your_referral_id') + ':'}</SubText2>
           <TextReferralID>{code === undefined ? '--' : code}</TextReferralID>
         </RowBetween>
         <StyledQRCode>
           <QRCode value={S_ONE_FINANCE_URL} size={110} />
         </StyledQRCode>
-        <SubText2>Share with</SubText2>
+        <SubText2>{t('share_with')}</SubText2>
         <Row gap="20px" justify="center" marginTop="10px">
           <ExternalLink href={`https://twitter.com/intent/tweet?url=${S_ONE_FINANCE_URL}&text=`}>
             <Twitter />

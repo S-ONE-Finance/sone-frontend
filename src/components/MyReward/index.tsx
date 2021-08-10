@@ -84,8 +84,8 @@ export default function MyReward({ myReward }: { myReward?: number }) {
 
   return (
     <MyRewardContainer style={{ position: 'relative' }}>
-      <MyRewardTitle>{t('My Reward')}</MyRewardTitle>
-      <MyRewardDesc style={{ marginTop: '0.25rem' }}>{t('You have rewarded from this LP Token')}</MyRewardDesc>
+      <MyRewardTitle>{t('my_reward')}</MyRewardTitle>
+      <MyRewardDesc style={{ marginTop: '0.25rem' }}>{t('you_have_rewarded_from_this_lp_token')}</MyRewardDesc>
       <RowFixed
         gap="0.5rem"
         align="baseline"

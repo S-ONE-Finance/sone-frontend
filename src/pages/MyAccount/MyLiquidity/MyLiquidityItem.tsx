@@ -90,7 +90,7 @@ export default function MyLiquidityItem({
         <FlexibleRow gap={isUpToExtraSmall ? '0' : '10px'} justify="center">
           <Column width="fit-content" align="center">
             <Text color={theme.text8Sone} fontSize={isUpToSmall ? '13px' : '16px'}>
-              {t('your_total_lp_tokens')}
+              {t('total_lp_token')}
             </Text>
             <TextLpTokens>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</TextLpTokens>
           </Column>
@@ -115,18 +115,18 @@ export default function MyLiquidityItem({
         <>
           <MyLiquidityDetailedSection gap="15px">
             <DetailedSectionItem
-              name={currency0?.symbol ? t('pooled_symbol', { symbol: currency0.symbol }) : '-'}
-              explain="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, voluptates!"
+              name={currency0?.symbol ? t('pooled_currency', { symbol: currency0.symbol }) : '-'}
+              explain={t('question_helper_pooled_currency')}
               value={token0Deposited ? token0Deposited.toSignificant(6) : '-'}
             />
             <DetailedSectionItem
-              name={currency1?.symbol ? t('pooled_symbol', { symbol: currency1.symbol }) : '-'}
-              explain="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, voluptates!"
+              name={currency1?.symbol ? t('pooled_currency', { symbol: currency1.symbol }) : '-'}
+              explain={t('question_helper_pooled_currency')}
               value={token1Deposited ? token1Deposited.toSignificant(6) : '-'}
             />
             <DetailedSectionItem
               name={t('your_pool_share')}
-              explain="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, voluptates!"
+              explain={t('question_helper_your_pool_share')}
               value={
                 poolTokenPercentage
                   ? (poolTokenPercentage.toFixed(2) === '0.00' ? '<0.01' : poolTokenPercentage.toFixed(2)) + '%'

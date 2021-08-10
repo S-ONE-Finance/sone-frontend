@@ -83,7 +83,7 @@ export default function TransactionDetails({
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
                   {t('price')}
                 </Text>
-                <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
+                <QuestionHelper1416 text={t('question_helper_price')} />
               </RowFixed>
               <TradePrice price={price} showInverted={showInverted} setShowInverted={setShowInverted} />
             </RowBetween>
@@ -98,7 +98,7 @@ export default function TransactionDetails({
                   >
                     {t('slippage_tolerance')}
                   </ClickableText>
-                  <QuestionHelper1416 text="Lorem ipsum" />
+                  <QuestionHelper1416 text={t('question_helper_slippage_tolerance')} />
                 </RowFixed>
                 <ClickableText
                   fontWeight={700}
@@ -115,7 +115,7 @@ export default function TransactionDetails({
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
                   {t('share_of_pair')}
                 </Text>
-                <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
+                <QuestionHelper1416 text={t('question_helper_share_of_pair')} />
               </RowFixed>
               <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
                 {noLiquidity && price
@@ -148,7 +148,7 @@ export default function TransactionDetails({
               >
                 {t('slippage_tolerance')}
               </ClickableText>
-              <QuestionHelper1416 text="Lorem ipsum" />
+              <QuestionHelper1416 text={t('question_helper_slippage_tolerance')} />
             </RowFixed>
             <ClickableText
               fontWeight={700}

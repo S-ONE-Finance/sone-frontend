@@ -26,11 +26,11 @@ import {
   S_ONE_BLOG_URL,
   S_ONE_DOCS_URL,
   S_ONE_FAQ_URL,
+  S_ONE_STAKING_STATISTICS_URL,
+  S_ONE_SWAP_STATISTICS_URL,
   S_ONE_TOP_PAGE_URL,
   S_ONE_WALLET_INTRO_PAGE_URL,
-  S_ONE_WHITE_PAPER_URL,
-  S_ONE_STAKING_STATISTICS_URL,
-  S_ONE_SWAP_STATISTICS_URL
+  S_ONE_WHITE_PAPER_URL
 } from '../../constants/urls'
 
 const activeClassName = 'ACTIVE'
@@ -97,9 +97,14 @@ const HeaderRow = styled(RowFixed)`
 const HeaderMenu = styled(Row)`
   margin-left: 87.52px;
   justify-content: center;
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
     justify-content: flex-end;
-`};
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraLarge`
+    margin-left: 2rem;
+  `};
 `
 
 const Title = styled.a`
@@ -327,9 +332,7 @@ const StyledMenuButtonWithText = styled(StyledMenuButton)`
   align-items: center;
 `
 
-const MenuItem = styled.div.attrs({
-  activeClassName
-})`
+const MenuItem = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
   outline: none;
@@ -338,7 +341,7 @@ const MenuItem = styled.div.attrs({
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
   width: fit-content;
-  margin-left: 60px;
+  margin: 0 0 0 60px;
   font-weight: 400;
   height: 70px;
   display: flex;
@@ -369,14 +372,26 @@ const MenuItem = styled.div.attrs({
     cursor: default;
     bottom: -1rem;
   }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraLarge`
+    margin: 0 0 0 2rem;
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    margin: 0 0 0 3vw;
+  `}
 `
 
-// Khi màn hình kéo về large thì phải hover lên trên menuitem phải giữ submenu hiện ra.
 const ResponsiveMenuItem = styled(MenuItem)`
   ::before {
+    // Khi màn hình kéo về large thì phải hover lên trên menuitem phải giữ submenu hiện ra.
     ${({ theme }) => theme.mediaWidth.upToLarge`
       bottom: unset;
       top: -1rem;
+    `}
+    // Khi màn hình nhỏ (thiết bị touch) thì phải disable đi để touch được cái footer.
+    ${({ theme }) => theme.mediaWidth.upToMedium`
+      display: none;
     `}
   }
 `
@@ -421,12 +436,6 @@ const AccountElement = styled.div`
   }
 `
 
-const HideSmall = styled.span`
-  ${({ theme }) => theme.mediaWidth.upToSmall`
-    display: none;
-  `};
-`
-
 const HideExtraSmall = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     display: none;
@@ -446,7 +455,6 @@ export default function Header() {
   const [language, setLanguage] = useLanguage()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
   const availableClaim: boolean = useUserHasAvailableClaim(account)
-
   const [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
 
   return (
@@ -463,9 +471,7 @@ export default function Header() {
               <img width="100px" src={darkMode ? LogoDark : Logo} alt="logo" />
             </Title>
             <HeaderMenu>
-              <HideSmall>
-                <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>{t('sone_wallet')}</StyledExternalLink>
-              </HideSmall>
+              <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>{t('sone_wallet')}</StyledExternalLink>
               <MenuItem>
                 <StyledNavLink
                   to="/swap"
@@ -495,7 +501,7 @@ export default function Header() {
                 <SubMenu>
                   <SubMenuItemExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</SubMenuItemExternalLink>
                   <SubMenuItemExternalLink href={S_ONE_STAKING_STATISTICS_URL}>
-                    {t('Stake Stats')}
+                    {t('staking_stats')}
                   </SubMenuItemExternalLink>
                 </SubMenu>
               </MenuItem>
@@ -544,9 +550,14 @@ export default function Header() {
             <ResponsiveMenuItem style={{ margin: '0' }}>
               <StyledMenuButtonWithText>
                 <Globe size={20} />
-                {/* Only support 3 languages */}
                 <TYPE.language style={{ marginLeft: '5px' }} fontSize="13px">
-                  {language?.startsWith('en') ? 'EN' : language?.startsWith('jp') ? '日本語' : '中文'}
+                  {language?.startsWith('en')
+                    ? 'EN'
+                    : language?.startsWith('jp')
+                    ? '日本語'
+                    : language?.startsWith('zh')
+                    ? '中文'
+                    : 'EN'}
                 </TYPE.language>
               </StyledMenuButtonWithText>
               <ResponsiveBottomRightSubMenu>
