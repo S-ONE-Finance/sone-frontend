@@ -179,7 +179,7 @@ export default function WithdrawLiquidity({
       { name: 'verifyingContract', type: 'address' }
     ]
     const domain = {
-      name: 'Uniswap V2',
+      name: 'SoneSwap LP Token V1',
       version: '1',
       chainId: chainId,
       verifyingContract: pair.liquidityToken.address
