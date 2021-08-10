@@ -58,7 +58,7 @@ export default function ButtonGroupping({
           <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
         </ButtonPrimary>
       ) : !account ? (
-        <ButtonPrimary onClick={toggleWalletModal}>Connect Wallet</ButtonPrimary>
+        <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
       ) : (
         <AutoColumn gap={'md'}>
           {(approvalA === ApprovalState.NOT_APPROVED ||

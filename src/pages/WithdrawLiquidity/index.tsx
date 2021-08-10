@@ -50,7 +50,7 @@ const TextPrice = styled(Text)`
   `}
 `
 
-const RowPrice = styled(RowBetween)`
+const DetailWrapper = styled(AutoColumn)`
   margin-top: 23px;
   padding: 0 14px;
 
@@ -179,7 +179,7 @@ export default function WithdrawLiquidity({
       { name: 'verifyingContract', type: 'address' }
     ]
     const domain = {
-      name: 'Uniswap V2',
+      name: 'SoneSwap LP Token V1',
       version: '1',
       chainId: chainId,
       verifyingContract: pair.liquidityToken.address
@@ -324,15 +324,15 @@ export default function WithdrawLiquidity({
         <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'}>
           <RowBetween>
             <Text fontWeight={500} fontSize={isUpToExtraSmall ? 13 : 16} color={theme.text4Sone}>
-              LP Token Burned
+              {t('lp_token_burned')}
             </Text>
             <Text fontWeight={500} fontSize={16}>
-              {parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) + ' ' + pair.liquidityToken.symbol}
+              {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + pair.liquidityToken.symbol}
             </Text>
           </RowBetween>
           <RowBetween>
             <Text fontWeight={500} fontSize={isUpToExtraSmall ? 13 : 16} color={theme.text4Sone}>
-              Price
+              {t('price')}
             </Text>
             <TradePrice
               price={(pair && pair.token0Price) ?? undefined}
@@ -346,7 +346,7 @@ export default function WithdrawLiquidity({
           disabled={!(approval === ApprovalState.APPROVED || signatureData !== null)}
         >
           <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
-            {t('Withdraw Liquidity')}
+            {t('withdraw_liquidity')}
           </Text>
         </ButtonPrimary>
       </>
@@ -450,17 +450,28 @@ export default function WithdrawLiquidity({
                   showReceiveWETH={currencyBIsETH || currencyBIsWETH}
                   onReceiveWETHToggle={onReceiveWETHToggle}
                 />
-                <RowPrice>
-                  <RowFixed>
-                    <TextPrice>Price</TextPrice>
-                    <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
-                  </RowFixed>
-                  <TradePrice
-                    price={(pair && pair.token0Price) ?? undefined}
-                    showInverted={showInverted}
-                    setShowInverted={setShowInverted}
-                  />
-                </RowPrice>
+                <DetailWrapper gap={isUpToExtraSmall ? '10px' : '15px'}>
+                  <RowBetween>
+                    <RowFixed>
+                      <TextPrice>{t('lp_token_burned')}</TextPrice>
+                      <QuestionHelper1416 text={t('question_helper_lp_token_burned')} />
+                    </RowFixed>
+                    <Text fontWeight={500} fontSize={16}>
+                      {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + pair.liquidityToken.symbol}
+                    </Text>
+                  </RowBetween>
+                  <RowBetween>
+                    <RowFixed>
+                      <TextPrice>{t('price')}</TextPrice>
+                      <QuestionHelper1416 text={t('question_helper_price')} />
+                    </RowFixed>
+                    <TradePrice
+                      price={(pair && pair.token0Price) ?? undefined}
+                      showInverted={showInverted}
+                      setShowInverted={setShowInverted}
+                    />
+                  </RowBetween>
+                </DetailWrapper>
                 <RowButton>
                   {approval === ApprovalState.APPROVED || signatureData !== null ? (
                     <ButtonPrimary
@@ -472,7 +483,7 @@ export default function WithdrawLiquidity({
                         }
                       }}
                     >
-                      {t('Withdraw Liquidity')}
+                      {t('withdraw_liquidity')}
                     </ButtonPrimary>
                   ) : (
                     <ButtonPrimary onClick={onAttemptToApprove} disabled={approval !== ApprovalState.NOT_APPROVED}>

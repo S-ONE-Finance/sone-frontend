@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Settings } from 'react-feather'
+import { Settings as SettingsIcon } from 'react-feather'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -20,7 +20,7 @@ import { StyledCloseIcon } from '../../theme'
 import AppVector from '../AppBodyTitleDescriptionSettings/AppVector'
 import { TransactionType } from '../../state/transactions/types'
 
-const StyledSettingsIcon = styled(Settings)`
+const StyledSettingsIcon = styled(SettingsIcon)`
   height: 24px;
   width: 24px;
 
@@ -195,7 +195,7 @@ const StyledExpertIcon = styled(ExpertIcon)`
   `};
 `
 
-export default function SettingsTab({ transactionType }: { transactionType: TransactionType }) {
+export default function Settings({ transactionType }: { transactionType: TransactionType }) {
   const { t } = useTranslation()
   const open = useModalOpen(ApplicationModal.SETTINGS)
   const toggle = useToggleSettingsMenu()
@@ -252,7 +252,7 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
       </Modal>
       <RowFixed>
         {expertMode && (
-          <Text fontSize={13} fontWeight={700} color={theme.text5Sone} marginRight={'8px'}>
+          <Text fontSize={13} fontWeight={700} color={theme.text5Sone} marginRight={'8px'} width="max-content">
             {t('expert')}
           </Text>
         )}
@@ -281,8 +281,8 @@ export default function SettingsTab({ transactionType }: { transactionType: Tran
                 <ResponsiveAutoColumn>
                   <RowFixed>
                     <StyledExpertIcon />
-                    <SectionHeading>{t('Expert Mode')}</SectionHeading>
-                    <QuestionHelper text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam, quibusdam?" />
+                    <SectionHeading>{t('expert_mode')}</SectionHeading>
+                    <QuestionHelper text={t('question_helper_expert_mode')} />
                   </RowFixed>
                   <Toggle
                     id="toggle-expert-mode-button"

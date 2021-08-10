@@ -398,7 +398,7 @@ export function ManageLists({
           <Text fontWeight={500} fontSize={16} color={theme.text10Sone}>
             {t('add_a_list')}
           </Text>
-          <QuestionHelper1416 text="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officiis, quisquam!" />
+          <QuestionHelper1416 text={t('question_helper_add_a_list')} />
         </RowFixed>
         <Row>
           <SearchInput

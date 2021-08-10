@@ -25,14 +25,14 @@ export default function StakeTxSectionDetails2({
         </Text>
       </Row>
       <StakeTxDetailRow
-        fieldName={t('reward_block')}
-        qhText={t('Lorem ipsum dolor sit amet.')}
+        fieldName={t('reward_per_block')}
+        qhText={t('question_helper_reward_per_block')}
         value={rewardPerBlock === undefined ? '--' : getNumberCommas(rewardPerBlock)}
         unit="SONE"
       />
       <StakeTxDetailRow
         fieldName={t('total_liquidity')}
-        qhText={t('Lorem ipsum dolor sit amet.')}
+        qhText={t('question_helper_total_liquidity')}
         value={totalLiquidity === undefined ? '--' : '$' + getNumberCommas(totalLiquidity)}
         unit={undefined}
       />

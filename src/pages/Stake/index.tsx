@@ -54,7 +54,7 @@ export default function Staking() {
   const error = !account
     ? t('connect_wallet')
     : +typedValue === 0
-    ? t('Enter an amount')
+    ? t('enter_an_amount')
     : !lpBalance || !farm
     ? t('stake')
     : undefined
@@ -183,7 +183,7 @@ export default function Staking() {
           <RowBetween>
             <RowFixed>
               <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                {t('Total Staked Value')}
+                {t('total_staked_value')}
               </Text>
             </RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
@@ -193,7 +193,7 @@ export default function Staking() {
           <RowBetween>
             <RowFixed>
               <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                {t('Earned Reward')}
+                {t('earned_reward')}
               </Text>
             </RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
@@ -248,7 +248,7 @@ export default function Staking() {
         content={modalContent}
       />
       {isUpToExtraSmall ? (
-        <Row justify="center" gap="0.75rem" style={{ marginBottom: '1.75rem' }}>
+        <Row justify="center" gap="0.75rem" style={{ margin: '1.25rem 0 1.75rem 0' }}>
           <RowFixed gap="0.75rem">
             <LiquidityProviderTokenLogo
               address0={token0 && token0.id}
