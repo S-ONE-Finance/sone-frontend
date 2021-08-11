@@ -140,7 +140,8 @@ export function useMasterFarmerContract(withSignerIfPossible?: boolean): Contrac
 
 export function useSoneContract(withSignerIfPossible = true): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId && SONE[chainId].address, SONE_TOKEN_ABI.abi, withSignerIfPossible)
+  // TODO_STAKING: change SONE token
+  return useContract('0x45495bE0FE306679BA8001cD4b10A781a7BBB559', SONE_TOKEN_ABI.abi, withSignerIfPossible)
 }
 
 export function useLPContract(lpTokenAddress: string, withSignerIfPossible = true): Contract | null {

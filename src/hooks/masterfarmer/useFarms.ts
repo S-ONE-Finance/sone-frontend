@@ -5,17 +5,19 @@ import { useCallback, useEffect, useState } from 'react'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
-import { calculateAPY } from '@s-one-finance/sdk-core'
+import { calculateAPY, ChainId } from '@s-one-finance/sdk-core'
 import { useActiveWeb3React } from 'hooks'
 import useSonePrice from './useSonePrice'
 import { useBlockNumber } from 'state/application/hooks'
 import { Farm } from '@s-one-finance/sdk-core/'
+import { MASTER_FARMER_ADDRESS } from '../../constants/index'
 
 const useFarms = () => {
   const { account, chainId } = useActiveWeb3React()
   const [farms, setFarms] = useState<Farm[]>([])
   const sonePrice = useSonePrice()
   const block = useBlockNumber()
+  const masterFarmerAddress: string = MASTER_FARMER_ADDRESS[chainId as ChainId]
 
   const fetchSLPFarms = useCallback(async () => {
     const results = await Promise.all([
@@ -24,7 +26,7 @@ const useFarms = () => {
       }),
       exchange.query({
         query: liquidityPositionSubsetQuery,
-        variables: { user: '0xfF219ff53d0f86685968348D96eBdb951341707D' }
+        variables: { user: masterFarmerAddress.toLowerCase() }
       }),
       getAverageBlockTime()
     ])
@@ -38,7 +40,6 @@ const useFarms = () => {
       query: pairSubsetQuery,
       variables: { pairAddresses }
     })
-
     const liquidityPositions = results[1]?.data.liquidityPositions
     const averageBlockTime = results[2]
 
@@ -102,7 +103,7 @@ const useFarms = () => {
 
     const sorted = orderBy(farms, ['pid'], ['desc'])
     return sorted
-  }, [block, sonePrice])
+  }, [block, masterFarmerAddress, sonePrice])
 
   useEffect(() => {
     const fetchData = async () => {

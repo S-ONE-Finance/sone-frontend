@@ -9,7 +9,7 @@ const useTokenBalance = (pairAddress: string | undefined): BigNumber | undefined
   const [balance, setBalance] = useState(BigNumber.from(0))
   const { account } = useActiveWeb3React()
   const block = useBlockNumber()
-  const lpContract: Contract | null = useLPContract('0x81f154163602dac421cd71bd36a17b0d8b1706b8')
+  const lpContract: Contract | null = useLPContract(pairAddress || '')
 
   const fetchBalance = useCallback(async () => {
     try {

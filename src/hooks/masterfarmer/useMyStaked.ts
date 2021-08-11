@@ -9,13 +9,15 @@ const useMyStaked = () => {
   const [myStaked, setMyStaked] = useState<UserInfoSone[]>([])
   useEffect(() => {
     ;(async () => {
-      const result: any = await masterchef.query({
-        query: poolUserQuery,
-        variables: {
-          address: account
-        }
-      })
-      setMyStaked(result?.data?.users)
+      if (account) {
+        const result: any = await masterchef.query({
+          query: poolUserQuery,
+          variables: {
+            address: account
+          }
+        })
+        setMyStaked(result?.data?.users)
+      }
     })()
   }, [account, chainId, setMyStaked])
   return myStaked
