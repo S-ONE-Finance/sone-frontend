@@ -1,24 +1,7 @@
 import { blockClients } from '../apollo/client'
-import { GET_BLOCK, GET_BLOCKS } from '../apollo/queries'
+import { GET_BLOCKS } from '../apollo/queries'
 
 import splitQuery from './splitQuery'
-
-/**
- * @notice Fetches first block after a given timestamp
- * @dev Query speed is optimized by limiting to a 600-second period
- * @param timestamp in seconds
- */
-export async function getBlockFromTimestamp(chainId: number, timestamp: number) {
-  const result = await blockClients[chainId].query({
-    query: GET_BLOCK,
-    variables: {
-      timestampFrom: timestamp,
-      timestampTo: timestamp + 600
-    },
-    fetchPolicy: 'cache-first'
-  })
-  return result?.data?.blocks?.[0]?.number
-}
 
 /**
  * @notice Fetches block objects for an array of timestamps.
@@ -50,5 +33,6 @@ export default async function getBlocksFromTimestamps(
       }
     }
   }
+
   return blocks
 }

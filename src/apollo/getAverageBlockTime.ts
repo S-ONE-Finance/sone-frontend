@@ -1,27 +1,7 @@
 import { ChainId } from '@s-one-finance/sdk-core'
-import { getUnixTime, startOfHour, startOfMinute, startOfSecond, subDays, subHours } from 'date-fns'
+import { getUnixTime, startOfHour, startOfMinute, startOfSecond, subHours } from 'date-fns'
 import { blockClient } from './client'
-import { blockQuery, blocksQuery } from './queries'
-
-export async function getOneDayBlock(chainId: ChainId = 1): Promise<{ number: number }> {
-  const date = startOfMinute(subDays(Date.now(), 1))
-  const start = Math.floor(Number(date) / 1000)
-  const end = Math.floor(Number(date) / 1000) + 600
-
-  const blocksData = await blockClient.query({
-    query: blockQuery,
-    variables: {
-      start,
-      end
-    },
-    context: {
-      clientName: 'blocklytics'
-    },
-    fetchPolicy: 'network-only'
-  })
-
-  return { number: Number(blocksData?.data?.blocks[0].number) }
-}
+import { blocksQuery } from './queries'
 
 export async function getAverageBlockTime(chainId: ChainId = 1): Promise<{ timestamp: null; difference: number }> {
   // Course timestamps used to make better use of the cache (startOfHour + startOfMinuite + startOfSecond)
@@ -37,6 +17,7 @@ export async function getAverageBlockTime(chainId: ChainId = 1): Promise<{ times
     }
   })
   const blocks = query?.data.blocks
+  console.log(`blocks`, blocks)
 
   const averageBlockTime = blocks.reduce(
     (previousValue: any, currentValue: any, currentIndex: any) => {

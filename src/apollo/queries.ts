@@ -84,15 +84,6 @@ const blockFieldsQuery = gql`
   }
 `
 
-export const blockQuery = gql`
-  query blockQuery($start: Int!, $end: Int!) {
-    blocks(first: 1, orderBy: timestamp, orderDirection: asc, where: { timestamp_gt: $start, timestamp_lt: $end }) {
-      ...blockFields
-    }
-  }
-  ${blockFieldsQuery}
-`
-
 export const blocksQuery = gql`
   query blocksQuery($first: Int! = 1000, $skip: Int! = 0, $start: Int!, $end: Int!) {
     blocks(
@@ -141,15 +132,6 @@ export const pairFieldsQuery = gql`
     txCount
   }
   ${pairTokenFieldsQuery}
-`
-
-export const pairTimeTravelQuery = gql`
-  query pairTimeTravelQuery($id: String!, $block: Block_height!) {
-    pair(id: $id, block: $block) {
-      ...pairFields
-    }
-  }
-  ${pairFieldsQuery}
 `
 
 export const pairSubsetQuery = gql`
@@ -228,6 +210,7 @@ export const poolUserDetailQuery = gql`
     }
   }
 `
+
 export const poolUserWithPoolDetailQuery = gql`
   query poolUserQuery($address: String!, $amount_gt: Int! = 0) {
     users(where: { address: $address, amount_gt: $amount_gt }) {

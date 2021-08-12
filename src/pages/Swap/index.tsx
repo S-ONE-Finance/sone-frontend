@@ -58,8 +58,12 @@ import useENSAddress from '../../hooks/useENSAddress'
 import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useApproveCallback'
 import useTheme from '../../hooks/useTheme'
 import { TransactionType } from '../../state/transactions/types'
-import { useIsAccountReferred, useIsReferralWorksOnCurrentNetwork, useReferral } from '../../state/referral/hooks'
-import useAccountIsReferrer from '../../hooks/useAccountIsReferrer'
+import {
+  useAccountIsReferrer,
+  useIsAccountReferred,
+  useIsReferralWorksOnCurrentNetwork,
+  useReferral
+} from '../../state/referral/hooks'
 import WeeklyRanking from '../../components/WeeklyRanking'
 import TabSwapLiquidity from '../../components/TabSwapLiquidity'
 import BrandIdentitySoneForMobile from '../../components/BrandIdentitySoneForMobile'
