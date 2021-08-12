@@ -125,13 +125,8 @@ export default function CurrencyLogo({
     (currency && passedCurrencyIsSone)
   ) {
     return (
-      <SoneLogoBoundedWrapper size={size} sizeMobile={sizeMobile}>
-        <SoneLogoBounded
-          size={Number.parseInt(size)}
-          sizeMobile={Number.parseInt(sizeMobile)}
-          src={SoneLogoSvg}
-          style={style}
-        />
+      <SoneLogoBoundedWrapper size={size} sizeMobile={sizeMobile} style={style}>
+        <SoneLogoBounded size={Number.parseInt(size)} sizeMobile={Number.parseInt(sizeMobile)} src={SoneLogoSvg} />
       </SoneLogoBoundedWrapper>
     )
   }
