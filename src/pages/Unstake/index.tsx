@@ -321,9 +321,7 @@ export default function Unstake() {
         </StyledPadding>
       </AppBody>
       <MyReward
-        myReward={
-          farm?.userInfo?.sushiHarvested === undefined ? undefined : +(+farm.userInfo.sushiHarvested).toFixed(3)
-        }
+        myReward={farm?.userInfo?.soneHarvested === undefined ? undefined : +(+farm.userInfo.soneHarvested).toFixed(3)}
       />
     </>
   )

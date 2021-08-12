@@ -15,8 +15,7 @@ const useApprove = (pairAddress: string) => {
   const { chainId } = useWeb3React()
   const masterFarmerAddress = MASTER_FARMER_ADDRESS[chainId as ChainId]
 
-  // TODO_STAKING: Remove fake pairAddress
-  const lpContract: Contract | null = useLPContract('0x81f154163602dac421cd71bd36a17b0d8b1706b8')
+  const lpContract: Contract | null = useLPContract(pairAddress)
 
   const handleApprove = useCallback(
     async (symbol: string) => {

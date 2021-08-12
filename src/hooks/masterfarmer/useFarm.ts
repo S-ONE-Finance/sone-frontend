@@ -13,7 +13,7 @@ const useFarm = (id: string) => {
   const { account, chainId } = useActiveWeb3React()
   const block = useBlockNumber()
   const [farm, setFarm] = useState<Farm>()
-  const sushiPrice = useSonePrice()
+  const sonePrice = useSonePrice()
 
   const fetchFarmsDetail = useCallback(async () => {
     const results = await Promise.all([
@@ -23,9 +23,8 @@ const useFarm = (id: string) => {
       }),
       masterchef.query({
         query: poolUserDetailQuery,
-        // TODO_STAKING: remove fake account
         variables: {
-          id: `${id}-0x9ae383135ef1ead2bab41c1f97640d51ae8f458f`
+          id: `${id}-${account}`
         }
       }),
       getAverageBlockTime()
@@ -42,20 +41,19 @@ const useFarm = (id: string) => {
     const balance = Number(farm.balance / 1e18)
     const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
     const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
-    // TODO_STAKING: confirm cong thuc tinh price LP token
     const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
-    const rewardPerBlock = ((farm.allocPoint / farm.owner.totalAllocPoint) * farm.owner.sushiPerBlock) / 1e18
+    const rewardPerBlock = ((farm.allocPoint / farm.owner.totalAllocPoint) * farm.owner.sonePerBlock) / 1e18
 
     const investedValue = 1000
     const LPTokenPrice = pair.reserveUSD / pair.totalSupply
     const LPTokenValue = investedValue / LPTokenPrice
     const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
-    const roiPerBlock = (rewardPerBlock * sushiPrice * poolShare) / investedValue
+    const roiPerBlock = (rewardPerBlock * sonePrice * poolShare) / investedValue
     const multiplierYear = calculateAPY(Number(averageBlockTime), block || 0)
     const roiPerYear = multiplierYear * roiPerBlock
 
     const rewardPerDay = rewardPerBlock * blocksPerHour * 24
-    const sushiHarvested = farm.sushiHarvested > 0 ? farm.sushiHarvested : 0
+    const soneHarvested = farm.soneHarvested > 0 ? farm.soneHarvested : 0
     const multiplier = (farm.owner.bonusMultiplier * farm.allocPoint) / 100
 
     return {
@@ -67,20 +65,20 @@ const useFarm = (id: string) => {
       pid: Number(farm.id),
       pairAddress: pair.id,
       slpBalance: farm.balance,
-      sushiRewardPerDay: rewardPerDay,
+      soneRewardPerDay: rewardPerDay,
       liquidityPair: pair,
       rewardPerBlock,
       roiPerBlock,
       roiPerYear,
-      sushiHarvested,
+      soneHarvested,
       multiplier,
       balanceUSD,
-      sushiPrice,
+      sonePrice,
       LPTokenPrice,
       secondsPerBlock: Number(averageBlockTime),
       userInfo: userInfo || {}
     }
-  }, [id, sushiPrice, block])
+  }, [id, account, sonePrice, block])
 
   useEffect(() => {
     const fetchData = async () => {

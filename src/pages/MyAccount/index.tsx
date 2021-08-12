@@ -1,7 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import useAccountIsReferrer from '../../hooks/useAccountIsReferrer'
-import { useIsReferralWorksOnCurrentNetwork } from '../../state/referral/hooks'
+import { useAccountIsReferrer, useIsReferralWorksOnCurrentNetwork } from '../../state/referral/hooks'
 
 import MyBalance from './MyBalance'
 import MyLiquidity from './MyLiquidity'
