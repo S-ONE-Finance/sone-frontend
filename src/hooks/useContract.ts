@@ -4,10 +4,9 @@ import { abi as UNI_ABI } from '@uniswap/governance/build/Uni.json'
 import { abi as STAKING_REWARDS_ABI } from '@uniswap/liquidity-staker/build/StakingRewards.json'
 import { abi as MERKLE_DISTRIBUTOR_ABI } from '@uniswap/merkle-distributor/build/MerkleDistributor.json'
 import { ChainId, WETH } from '@s-one-finance/sdk-core'
-// import { abi as IUniswapV2PairABI } from '@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { abi as IUniswapV2PairABI } from '@s-one-finance/core/build/contracts/IUniswapV2Pair.json'
 import { useMemo } from 'react'
-import { GOVERNANCE_ADDRESS, MASTER_FARMER_ADDRESS, MERKLE_DISTRIBUTOR_ADDRESS, SONE, UNI } from '../constants'
+import { GOVERNANCE_ADDRESS, MASTER_FARMER_ADDRESS, MERKLE_DISTRIBUTOR_ADDRESS, UNI } from '../constants'
 import {
   ARGENT_WALLET_DETECTOR_ABI,
   ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS
@@ -139,7 +138,7 @@ export function useMasterFarmerContract(withSignerIfPossible?: boolean): Contrac
 }
 
 export function useSoneContract(withSignerIfPossible = true): Contract | null {
-  const { chainId } = useActiveWeb3React()
+  // const { chainId } = useActiveWeb3React()
   // TODO_STAKING: change SONE token
   return useContract('0x45495bE0FE306679BA8001cD4b10A781a7BBB559', SONE_TOKEN_ABI.abi, withSignerIfPossible)
 }

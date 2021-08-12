@@ -1,7 +1,4 @@
 import gql from 'graphql-tag'
-//import { FACTORY_ADDRESS, BUNDLE_ID } from '../constants'
-const FACTORY_ADDRESS = '0xC0AEe478e3658e2610c5F7A4A2E1777cE9e4f2Ac'
-const BUNDLE_ID = '1'
 
 export const poolsQuery = gql`
   query poolsQuery(
