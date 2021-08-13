@@ -19,7 +19,7 @@ import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import React, { Suspense } from 'react'
+import React, { StrictMode, Suspense } from 'react'
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -65,7 +65,7 @@ function Updaters() {
 const queryClient = new QueryClient()
 
 ReactDOM.render(
-  <>
+  <StrictMode>
     <FixedGlobalStyle />
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>
@@ -86,7 +86,7 @@ ReactDOM.render(
         </Blocklist>
       </Web3ProviderNetwork>
     </Web3ReactProvider>
-  </>,
+  </StrictMode>,
   document.getElementById('root')
 )
 

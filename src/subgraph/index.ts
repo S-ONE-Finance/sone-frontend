@@ -45,15 +45,17 @@ export function useBulkPairData() {
 
     // Get data for every pair in list.
     const data = await getBulkPairData(chainId, pairIds)
-    if (!isUnmounted.current && Array.isArray(data) && data.length > 0) {
-      setSubgraphData(data)
-    } else if (!isUnmounted.current) {
-      console.error('Array trả về lỗi', data)
+    if (!isUnmounted.current) {
+      if (Array.isArray(data) && data.length > 0) {
+        setSubgraphData(data)
+      } else {
+        console.error('Array trả về lỗi', data)
+      }
     }
   }, [])
 
   useEffect(() => {
-    getData(chainId)
+    getData(chainId).then()
   }, [getData, chainId])
 
   // Fetched data mà empty (do lỗi, hoặc vv.) thì 15s sau fetch lại.
