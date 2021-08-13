@@ -2,11 +2,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, AppState } from '../index'
 import { updateReferral } from './actions'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { ADMIN_BACKEND_BASE_URL } from '../../constants/urls'
 import axios from 'axios'
 import { useActiveWeb3React } from '../../hooks'
-import { FETCH_REFERRAL_DATA_INTERVAL } from '../../pages/MyAccount/Referral'
+import { useQuery } from 'react-query'
 
 interface AccountIsReferrerResponse {
   data:
@@ -21,25 +21,17 @@ interface AccountIsReferrerResponse {
 
 export function useAccountIsReferrer(): boolean {
   const { account } = useActiveWeb3React()
-  const [isReferrer, setIsReferrer] = useState<boolean>(false)
 
-  const fetchData = useCallback(async () => {
-    if (!account) return
-
-    const url = `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-code/address/${account}`
-    const { data } = await axios.get<AccountIsReferrerResponse>(url)
-    if (data.statusCode === 200) {
-      setIsReferrer(!!data.data)
-    } else {
-      throw new Error('Error in useAccountIsReferrer.')
-    }
-  }, [account])
-
-  useEffect(() => {
-    fetchData()
-  }, [fetchData])
-
-  return isReferrer
+  const url = useMemo(() => `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-code/address/${account}`, [account])
+  const { data } = useQuery('useAccountIsReferrer', () =>
+    axios
+      .get<AccountIsReferrerResponse>(url)
+      .then(data => data.data)
+      .catch(() => {
+        throw new Error('Error in useAccountIsReferrer.')
+      })
+  )
+  return Boolean(data?.data)
 }
 
 interface GetReferralIdByCodeResponse {
@@ -53,16 +45,6 @@ interface GetReferralIdByCodeResponse {
   time: string
 }
 
-async function getReferralIdByCode(code: string): Promise<number | undefined> {
-  const url = `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-address/code/${code}`
-  const { data } = await axios.get<GetReferralIdByCodeResponse>(url)
-  if (data.statusCode === 200) {
-    return data?.data?.id
-  } else {
-    throw new Error('Error in validateReferralId.')
-  }
-}
-
 /**
  * Watch url query string and update referralId state (if any).
  * What user see: referralId = 1A2B3C4D.
@@ -70,22 +52,44 @@ async function getReferralIdByCode(code: string): Promise<number | undefined> {
  */
 export function useReferral() {
   const queryString = useParsedQueryString()
+  const referralCodeInQueryString = queryString['referral-id']
+
   const dispatch = useDispatch<AppDispatch>()
+  const referralInStore = useSelector<AppState, AppState['referral']>(state => state.referral)
 
-  useEffect(() => {
-    if (queryString['referral-id'] !== undefined) {
-      const code = queryString['referral-id'].toString()
-      getReferralIdByCode(code).then(referralId => {
-        if (referralId !== undefined) {
-          dispatch(updateReferral({ id: referralId, code }))
-        } else {
-          console.error(`Referral ID ${code} is not valid.`)
-        }
-      })
-    }
-  }, [dispatch, queryString])
+  const url = `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-address/code/${referralCodeInQueryString}`
+  const shouldQueryRun = Boolean(referralCodeInQueryString && referralCodeInQueryString !== referralInStore.code)
+  useQuery(
+    ['useReferral', referralCodeInQueryString],
+    () =>
+      axios
+        .get<GetReferralIdByCodeResponse>(url)
+        .then(data => {
+          if (data.data.data?.id && referralCodeInQueryString) {
+            dispatch(
+              updateReferral({
+                id: data.data.data.id,
+                code: referralCodeInQueryString.toString()
+              })
+            )
+          } else {
+            dispatch(
+              updateReferral({
+                id: undefined,
+                code: undefined
+              })
+            )
+            throw new Error(`${referralCodeInQueryString} might not a valid referral id.`)
+          }
+          return data.data
+        })
+        .catch(() => {
+          throw new Error(`${referralCodeInQueryString} might not a valid referral id.`)
+        }),
+    { enabled: shouldQueryRun }
+  )
 
-  return useSelector<AppState, AppState['referral']>(state => state.referral)
+  return referralInStore
 }
 
 interface IsAccountReferredResponse {
@@ -96,25 +100,18 @@ interface IsAccountReferredResponse {
 
 export function useIsAccountReferred(): boolean {
   const { account } = useActiveWeb3React()
-  const [isAccountReferred, setIsAccountReferred] = useState(true)
 
-  const fetchData = useCallback(async () => {
-    const url = `${ADMIN_BACKEND_BASE_URL}/friends-manager/is-address-referred/${account}`
-    const { data } = await axios.get<IsAccountReferredResponse>(url)
-    if (data.statusCode === 200) {
-      setIsAccountReferred(!!data.data)
-    } else {
-      throw new Error('Error in useIsAccountReferred.')
-    }
-  }, [account])
+  const url = `${ADMIN_BACKEND_BASE_URL}/friends-manager/is-address-referred/${account}`
+  const { data: isAccountReferred } = useQuery('useIsAccountReferred', () =>
+    axios
+      .get<IsAccountReferredResponse>(url)
+      .then(data => data.data.data)
+      .catch(() => {
+        throw new Error('Error in useIsAccountReferred.')
+      })
+  )
 
-  useEffect(() => {
-    fetchData()
-    const interval = setInterval(fetchData, FETCH_REFERRAL_DATA_INTERVAL)
-    return () => clearInterval(interval)
-  }, [fetchData])
-
-  return isAccountReferred
+  return useMemo(() => (isAccountReferred === undefined ? true : isAccountReferred), [isAccountReferred])
 }
 
 const REFERRAL_NETWORK = process.env.REACT_APP_REFERRAL_NETWORK

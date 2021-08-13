@@ -19,7 +19,8 @@ export default function useSwapReferralCallback() {
         address: account,
         transaction: txHash,
         date: today,
-        // TODO: Tính toán rewardAmount.
+        // TODO: Tính toán rewardAmount, đơn vị là SONE.
+        // Ví dụ swap 1 ETH sang DAI. 1 ETH = 3100 SONE --> rewardAmount = 0.025% * 3100
         rewardAmount: 100
       }
 

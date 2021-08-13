@@ -1,6 +1,5 @@
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
 import 'inter-ui'
-import React, { StrictMode, Suspense } from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactDOM from 'react-dom'
 import ReactGA from 'react-ga'
@@ -19,6 +18,8 @@ import TransactionUpdater from './state/transactions/updater'
 import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import React, { Suspense } from 'react'
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
@@ -61,27 +62,31 @@ function Updaters() {
   )
 }
 
+const queryClient = new QueryClient()
+
 ReactDOM.render(
-  <StrictMode>
+  <>
     <FixedGlobalStyle />
     <Web3ReactProvider getLibrary={getLibrary}>
       <Web3ProviderNetwork getLibrary={getLibrary}>
         <Blocklist>
           <Provider store={store}>
             <Updaters />
-            <ThemeProvider>
-              <ThemedGlobalStyle />
-              <HashRouter>
-                <Suspense fallback={null}>
-                  <App />
-                </Suspense>
-              </HashRouter>
-            </ThemeProvider>
+            <QueryClientProvider client={queryClient}>
+              <ThemeProvider>
+                <ThemedGlobalStyle />
+                <HashRouter>
+                  <Suspense fallback={null}>
+                    <App />
+                  </Suspense>
+                </HashRouter>
+              </ThemeProvider>
+            </QueryClientProvider>
           </Provider>
         </Blocklist>
       </Web3ProviderNetwork>
     </Web3ReactProvider>
-  </StrictMode>,
+  </>,
   document.getElementById('root')
 )
 

@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react'
 import axios from 'axios'
 import useReferrerInformation from './useReferrerInformation'
 import { ADMIN_BACKEND_BASE_URL } from '../../../../constants/urls'
-import { FETCH_REFERRAL_DATA_INTERVAL } from '../index'
 
 export default function useRequestReward(): [boolean, () => void] {
   const { id: referralId, pendingAmount: amount, isRequestRewardPending } = useReferrerInformation() || {}
@@ -26,7 +25,8 @@ export default function useRequestReward(): [boolean, () => void] {
       })
       .then(() => {
         setClicked(true)
-        setTimeout(() => setClicked(false), FETCH_REFERRAL_DATA_INTERVAL)
+        // TODO: Xử lý lại để không phụ thuộc vào setTimeout??
+        setTimeout(() => setClicked(false), 15000)
       })
       .catch(err => {
         if (err.response) {
