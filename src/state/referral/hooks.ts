@@ -8,7 +8,41 @@ import axios from 'axios'
 import { useActiveWeb3React } from '../../hooks'
 import { FETCH_REFERRAL_DATA_INTERVAL } from '../../pages/MyAccount/Referral'
 
-interface ValidateReferralIdResponse {
+interface AccountIsReferrerResponse {
+  data:
+    | {
+        id: number
+        code: string
+      }
+    | undefined
+  statusCode: number
+  time: string
+}
+
+export function useAccountIsReferrer(): boolean {
+  const { account } = useActiveWeb3React()
+  const [isReferrer, setIsReferrer] = useState<boolean>(false)
+
+  const fetchData = useCallback(async () => {
+    if (!account) return
+
+    const url = `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-code/address/${account}`
+    const { data } = await axios.get<AccountIsReferrerResponse>(url)
+    if (data.statusCode === 200) {
+      setIsReferrer(!!data.data)
+    } else {
+      throw new Error('Error in useAccountIsReferrer.')
+    }
+  }, [account])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  return isReferrer
+}
+
+interface GetReferralIdByCodeResponse {
   data:
     | {
         id: number
@@ -21,7 +55,7 @@ interface ValidateReferralIdResponse {
 
 async function getReferralIdByCode(code: string): Promise<number | undefined> {
   const url = `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-address/code/${code}`
-  const { data } = await axios.get<ValidateReferralIdResponse>(url)
+  const { data } = await axios.get<GetReferralIdByCodeResponse>(url)
   if (data.statusCode === 200) {
     return data?.data?.id
   } else {

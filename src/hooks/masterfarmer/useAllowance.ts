@@ -9,8 +9,7 @@ import { ChainId } from '@s-one-finance/sdk-core'
 const useAllowance = (pairAddress: string) => {
   const [allowance, setAllowance] = useState(new BigNumber(0))
   const { account, chainId } = useWeb3React()
-  // TODO_STAKING: Remove fake pairAddress
-  const lpContract: Contract | null = useLPContract('0x9019e228ac3524885c803dc6fbfb7e6111a5f049')
+  const lpContract: Contract | null = useLPContract(pairAddress)
   const masterFarmerAddress = MASTER_FARMER_ADDRESS[chainId as ChainId]
 
   const fetchAllowance = useCallback(async () => {

@@ -15,8 +15,12 @@ import useENS from './useENS'
 import { Version } from './useToggledVersion'
 import { TransactionType } from '../state/transactions/types'
 import useSwapReferralCallback from './useSwapReferralCallback'
-import { useIsAccountReferred, useIsReferralWorksOnCurrentNetwork, useReferral } from '../state/referral/hooks'
-import useAccountIsReferrer from './useAccountIsReferrer'
+import {
+  useAccountIsReferrer,
+  useIsAccountReferred,
+  useIsReferralWorksOnCurrentNetwork,
+  useReferral
+} from '../state/referral/hooks'
 
 export enum SwapCallbackState {
   INVALID,

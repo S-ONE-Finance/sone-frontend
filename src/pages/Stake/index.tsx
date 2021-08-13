@@ -345,9 +345,9 @@ export default function Staking() {
         </AppBody>
         <MyReward
           myReward={
-            !account || farm?.userInfo?.sushiHarvested === undefined
+            !account || farm?.userInfo?.soneHarvested === undefined
               ? undefined
-              : +(+farm.userInfo.sushiHarvested).toFixed(3)
+              : +(+farm.userInfo.soneHarvested).toFixed(3)
           }
         />
       </AutoColumn>

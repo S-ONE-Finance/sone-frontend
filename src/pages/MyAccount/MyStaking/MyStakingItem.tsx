@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { UserInfoSushi } from '@s-one-finance/sdk-core'
+import { UserInfoSone } from '@s-one-finance/sdk-core'
 import { Text } from 'rebass'
 import styled from 'styled-components'
 import { darken } from 'polished'
@@ -185,7 +185,7 @@ const RowButtons = styled(Row)`
 `
 
 type MyStakingItemProps = {
-  userInfo: UserInfoSushi
+  userInfo: UserInfoSone
   isShowDetailed: boolean
   setDetailUserInfo: React.Dispatch<React.SetStateAction<string | undefined>>
 }
@@ -212,7 +212,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
   const token0Address = userInfo.pool?.liquidityPair.token0.id ?? undefined
   const token1Address = userInfo.pool?.liquidityPair.token1.id ?? undefined
 
-  const rewardedSone = isNaN(+userInfo.sushiHarvested) ? '--' : (+userInfo.sushiHarvested).toFixed(6)
+  const rewardedSone = isNaN(+userInfo.soneHarvested) ? '--' : (+userInfo.soneHarvested).toFixed(6)
   // TODO: Kiểm tra lại chỗ này, tại sao availableRewardRaw có thể undefined?
   const availableRewardRaw = usePendingReward(Number(userInfo.pool?.pid))
   const availableReward = availableRewardRaw === undefined ? '0' : availableRewardRaw.toNumber().toFixed(6)

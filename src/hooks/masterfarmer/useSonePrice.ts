@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react'
 
 const useSonePrice = () => {
   const [price, setPrice] = useState(0)
-  // TODO_STAKING: Remove fake address token
-  const SONE_ADDRESS = '0x6b3595068778dd592e39a122f4f5a5cf09c90fe2' // token sone
-  const USDT_ADDRESS = '0xdac17f958d2ee523a2206206994597c13d831ec7' // token USDT
+  // TODO: Thay địa chỉ sone và usdt thật ứng với chainId.
+  const SONE_ADDRESS = '0x45495bE0FE306679BA8001cD4b10A781a7BBB559'
+  const USDT_ADDRESS = '0x393397Baae01Dc19678220E4D3Fd34FDA4FeBd1D'
   let [token0, token1] = ['', '']
   if (SONE_ADDRESS > USDT_ADDRESS) {
     ;[token0, token1] = [USDT_ADDRESS, SONE_ADDRESS]

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Farm, LiquidityPosition, UserInfoSushi } from '@s-one-finance/sdk-core'
+import { Farm, LiquidityPosition, UserInfoSone } from '@s-one-finance/sdk-core'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import useMyStaked from 'hooks/masterfarmer/useMyStaked'
@@ -28,7 +28,7 @@ export default function Farms() {
   const [circulatingSupplyValue, setCirculatingSupplyValue] = useState<BigNumber>(new BigNumber(0))
 
   const farms: Farm[] = useFarms()
-  const myStaked: UserInfoSushi[] = useMyStaked()
+  const myStaked: UserInfoSone[] = useMyStaked()
   const myLpToken: LiquidityPosition[] = useMyLPToken()
 
   const [sortBy, setSortBy] = useState(t('bonus_campaign'))
@@ -114,7 +114,7 @@ export default function Farms() {
       let circulatingSupply: BigNumber = new BigNumber(0)
       farms.map((farm: Farm) => {
         totalLock = totalLock.plus(new BigNumber(farm.tvl | 0))
-        circulatingSupply = circulatingSupply.plus(new BigNumber(farm.sushiHarvested | 0))
+        circulatingSupply = circulatingSupply.plus(new BigNumber(farm.soneHarvested | 0))
         return farm
       })
       setTotalLockValue(totalLock)
