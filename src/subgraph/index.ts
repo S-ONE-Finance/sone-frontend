@@ -27,14 +27,11 @@ async function getPairIds(chainId?: number) {
 
 /**
  * Use Subgraph to query bulk data for pairs.
- * Interval every 15s after new block created.
- * FIXME: Đang có 2 vấn đề với hooks này:
- * 1. Nếu có từ 2 hooks hoặc components gọi hàm này thì sẽ fetch data liên tục, điều này là không cần thiết.
- * 2. Nếu trong hooks hoặc components gọi hook này mounted, gọi hook, và unmount trước khi data trả về thì sẽ bị lỗi `Can't perform a React state update on an unmounted component.`.
+ * FIXME: Nếu có từ 2 hooks hoặc components gọi hàm này thì sẽ fetch data 2 lần, điều này là không cần thiết.
  */
-export function useBulkPairDataInterval() {
-  const [subgraphData, setSubgraphData] = useState<any>({})
-  const { chainId, library } = useActiveWeb3React()
+export function useBulkPairData() {
+  const [subgraphData, setSubgraphData] = useState<any[]>([])
+  const { chainId } = useActiveWeb3React()
   const isUnmounted = useRef(false)
 
   useEffect(() => {
@@ -48,34 +45,29 @@ export function useBulkPairDataInterval() {
 
     // Get data for every pair in list.
     const data = await getBulkPairData(chainId, pairIds)
-    if (data?.length > 0) {
-      if (!isUnmounted.current) setSubgraphData(data)
-    } else {
+    if (!isUnmounted.current && Array.isArray(data) && data.length > 0) {
+      setSubgraphData(data)
+    } else if (!isUnmounted.current) {
       console.error('Array trả về lỗi', data)
     }
   }, [])
 
-  // Wait 15s for TheGraph mapping data.
-  const getDataAfter15Seconds = useCallback(() => {
-    setTimeout(() => {
-      getData(chainId)
-    }, 15000)
-  }, [chainId, getData])
-
-  // Query data the first time.
   useEffect(() => {
     getData(chainId)
-  }, [chainId, getData])
+  }, [getData, chainId])
 
-  // When new block created, run the getDataAfter15Seconds callback function.
+  // Fetched data mà empty (do lỗi, hoặc vv.) thì 15s sau fetch lại.
   useEffect(() => {
-    if (!library) return
-
-    library.on('block', getDataAfter15Seconds)
-    return () => {
-      library.removeListener('block', getDataAfter15Seconds)
+    let timeout: ReturnType<typeof setTimeout>
+    if (subgraphData.length === 0) {
+      setTimeout(() => {
+        getData(chainId)
+      }, 15000)
     }
-  }, [library, getDataAfter15Seconds])
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [subgraphData, chainId, getData])
 
   return subgraphData
 }
@@ -143,7 +135,8 @@ export function useGetPairFromSubgraphAndParse(): [boolean, Pair[]] {
  * bug do token1 bị swap với token0, source: uniswap-info).
  */
 export function useOneDayPairPriceChangeData() {
-  const data = useBulkPairDataInterval()
+  const data = useBulkPairData()
+  // console.log(`data`, data)
 
   return useMemo(
     () =>
@@ -162,7 +155,7 @@ export function useOneDayPairPriceChangeData() {
 }
 
 export function useWeeklyRankingData() {
-  const data = useBulkPairDataInterval()
+  const data = useBulkPairData()
 
   // Màn hình dưới extra small chỉ show 4 items.
   const isUpToExtraSmall = useIsUpToExtraSmall()

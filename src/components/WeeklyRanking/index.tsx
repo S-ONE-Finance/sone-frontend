@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useWeeklyRankingData } from '../../subgraph'
@@ -55,7 +55,7 @@ const Title = styled.div`
 `
 
 // Ranking theo volume.
-export default function WeeklyRanking() {
+const WeeklyRanking = memo(function WeeklyRanking() {
   const { t } = useTranslation()
   const ranking = useWeeklyRankingData()
   const isUpToSmall = useIsUpToSmall()
@@ -91,4 +91,6 @@ export default function WeeklyRanking() {
       ))}
     </Container>
   )
-}
+})
+
+export default WeeklyRanking

@@ -69,7 +69,7 @@ const PendingText = styled(Text)`
   `}
 `
 
-export const FETCH_REFERRAL_DATA_INTERVAL = 15000
+// export const FETCH_REFERRAL_DATA_INTERVAL = 15000
 
 export default function Referral() {
   // Ở đây dùng tạm hàm biến cờ "clicked" để set "Waiting for Approval"

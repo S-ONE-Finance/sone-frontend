@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { memo, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import useNetApy from '../../../hooks/masterfarmer/useNetApy'
+import useMyAccountStaked from '../../../hooks/masterfarmer/useMyAccountStaked'
+import { UserInfoSone } from '@s-one-finance/sdk-core'
 
 const StakingBackground = styled.div`
   width: 100%;
@@ -45,21 +46,33 @@ const NetAPYValue = styled.div`
   margin-top: 0.25em;
 `
 
-/**
- *
- * @constructor
- */
-export default function OverallNetAPY() {
+const OverallNetAPY = memo(function OverallNetAPY() {
   const { t } = useTranslation()
-  const apy = useNetApy()
-  const apyRender = (apy < 10 ? apy.toFixed(3) : apy.toFixed(2)) + '%'
+  const [, myAccountStaked] = useMyAccountStaked()
+  const [netApy, setNetApy] = useState(0)
+
+  useEffect(() => {
+    let totalSoneHarvestUSD = 0
+    let totalLPStakeUSD = 0
+    myAccountStaked.forEach((user: UserInfoSone) => {
+      totalSoneHarvestUSD += Number(user.soneHarvestedUSD)
+      totalLPStakeUSD += (Number(user.amount) / 1e18) * Number(user.pool?.LPTokenPrice)
+    })
+    if (totalLPStakeUSD) {
+      setNetApy(totalSoneHarvestUSD / totalLPStakeUSD)
+    }
+  }, [myAccountStaked])
+
+  const netApyRender = useMemo(() => (netApy < 10 ? netApy.toFixed(3) : netApy.toFixed(2)) + '%', [netApy])
 
   return (
     <StakingBackground>
       <AbsoluteCenter>
-        <NetAPYField>{t('NET APY')}</NetAPYField>
-        <NetAPYValue>{apyRender}</NetAPYValue>
+        <NetAPYField>{t('net_apy')}</NetAPYField>
+        <NetAPYValue>{netApyRender}</NetAPYValue>
       </AbsoluteCenter>
     </StakingBackground>
   )
-}
+})
+
+export default OverallNetAPY
