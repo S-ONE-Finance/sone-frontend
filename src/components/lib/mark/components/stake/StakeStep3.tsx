@@ -5,13 +5,13 @@ import { useGuideStepManager } from '../../../../../state/user/hooks'
 import { handIcon } from '../assets'
 import { ChildrenProp } from '../styled'
 
-const StakeStep2 = ({ children }: ChildrenProp) => {
+const StakeStep3 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
 
   return (
     <>
-      <Step1Wrapper className="step-2">
+      <Step1Wrapper className="step-3">
         {children}
         {Number(guideStep.step) === 10 && guideStep.screen === 'stake' && (
           <>
@@ -26,12 +26,13 @@ const StakeStep2 = ({ children }: ChildrenProp) => {
   )
 }
 
-export default StakeStep2
+export default StakeStep3
 
 const Step1Wrapper = styled.div`
   position: relative;
+  z-index: 1001;
+  pointer-events: none;
 `
-
 const Step1Intro = styled.div`
   position: absolute;
   color: #fff;

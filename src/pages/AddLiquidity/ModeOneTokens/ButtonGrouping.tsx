@@ -13,8 +13,10 @@ import { useWalletModalToggle } from 'state/application/hooks'
 import { useDerivedMintSimpleInfo } from 'state/mintSimple/hooks'
 import { useIsExpertMode } from 'state/user/hooks'
 import { TYPE } from 'theme'
-import { ButtonWrapper } from '..'
+import { ButtonWrapper } from '../index'
 import { ROUTER_ADDRESS } from '../../../constants'
+import { OneStep5, ConnectButton } from '../../../components/lib/mark/components'
+import { useGuideStepManager } from '../../../state/user/hooks'
 
 type ButtonGroupingProps = {
   selectedPairState: PairState
@@ -32,6 +34,8 @@ export default function ButtonGrouping({
   onAdd
 }: ButtonGroupingProps) {
   const { t } = useTranslation()
+  const [guideStep] = useGuideStepManager()
+
   const { token0, token1 } = selectedPair ?? {}
   const { error, selectedTokenParsedAmount, theOtherTokenParsedAmount } = useDerivedMintSimpleInfo(
     selectedPairState,
@@ -66,7 +70,21 @@ export default function ButtonGrouping({
           <TYPE.main mb="4px">{t('Unsupported Asset')}</TYPE.main>
         </ButtonPrimary>
       ) : !account ? (
-        <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
+        <>
+          {Number(guideStep.step) === 1 ? (
+            <ConnectButton>
+              <ButtonPrimary onClick={toggleWalletModal}>
+                {Number(guideStep.step) === 7 ? t('add_liquidity') : t('connect_wallet')}
+              </ButtonPrimary>
+            </ConnectButton>
+          ) : (
+            <OneStep5>
+              <ButtonPrimary onClick={toggleWalletModal}>
+                {Number(guideStep.step) === 7 ? t('add_liquidity') : t('connect_wallet')}
+              </ButtonPrimary>
+            </OneStep5>
+          )}
+        </>
       ) : (
         <AutoColumn gap={'md'}>
           {/* FIXME: Có thể sẽ bug user auto click ở đây. */}

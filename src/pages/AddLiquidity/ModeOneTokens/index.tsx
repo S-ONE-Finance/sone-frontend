@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Pair, WETH } from '@s-one-finance/sdk-core'
 import { useTranslation } from 'react-i18next'
 import { AutoColumn } from 'components/Column'
@@ -25,6 +26,7 @@ import TransactionDetails from './TransactionDetails'
 import { useGetPairFromSubgraphAndParse } from '../../../graphql/hooks'
 import { StyledArrowDown } from '../../../theme'
 import { useGuideStepManager } from '../../../state/user/hooks'
+import { OneStep4 } from '../../../components/lib/mark/components'
 
 type ModeOneTokenProps = {
   currencyIdA: string | undefined
@@ -158,19 +160,21 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
         />
         {(isPairExistAndNotNull || Number(guideStep.step) > 4) && (
           <AutoColumn>
-            <PanelCurrencyInput
-              id="add-liquidity-simple-input-tokena"
-              label={t('from')}
-              value={typedValue}
-              onUserInput={onFieldInput}
-              showMaxButton
-              onMax={() => {
-                onFieldInput(maxAmount?.toExact() ?? '')
-              }}
-              currency={selectedCurrency}
-              isCurrencySelectOrToggle={SelectOrToggle.TOGGLE}
-              onCurrencyToggle={onCurrencyToggle}
-            />
+            <OneStep4>
+              <PanelCurrencyInput
+                id="add-liquidity-simple-input-tokena"
+                label={t('from')}
+                value={Number(guideStep.step) > 5 ? '3.14159' : typedValue}
+                onUserInput={onFieldInput}
+                showMaxButton
+                onMax={() => {
+                  onFieldInput(maxAmount?.toExact() ?? '')
+                }}
+                currency={selectedCurrency}
+                isCurrencySelectOrToggle={SelectOrToggle.TOGGLE}
+                onCurrencyToggle={onCurrencyToggle}
+              />
+            </OneStep4>
 
             {selectedTokenParsedAmount && theOtherTokenParsedAmount && (
               <>

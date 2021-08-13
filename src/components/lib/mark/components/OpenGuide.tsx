@@ -18,11 +18,17 @@ export default function OpenGuide({ screen }: OpenGuideProps) {
   }
 
   const onClickBtn = () => {
-    openGuidePopup(true, screen)
+    if (guideStep.showAgain) {
+      openGuidePopup(true, screen)
+    }
   }
 
   useEffect(() => {
     openGuidePopup(false, '')
+
+    return () => {
+      openGuidePopup(false, '')
+    }
   }, [])
 
   return (

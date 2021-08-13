@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Currency, Pair } from '@s-one-finance/sdk-core'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
@@ -196,14 +197,19 @@ export default function PanelCurrencyInput({
         ? `41.183`
         : ''
     }
+    if (guideStep.screen === 'liquidity') {
+      return id === 'add-liquidity-simple-input-tokena' && Number(guideStep.step) > 5 ? `41.183` : ''
+    }
     return !hideBalance && !!currency && selectedCurrencyBalance
       ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
       : ''
   }
 
-  console.log(currency)
+  useEffect(() => {
+    if (guideStep.screen === 'liquidity' && Number(guideStep.step) > 6) onUserInput(value)
+  }, [guideStep])
+
   const handleRenderTypeGuidePopup = () => {
-    // const currency = { decimals: 18, symbol: 'ETH', name: 'Ether' }
     return (
       <>
         {id === 'add-liquidity-simple-input-tokena' && Number(guideStep.step) > 4 && (
@@ -261,9 +267,6 @@ export default function PanelCurrencyInput({
             }}
           />
           {account && currency && showMaxButton && label !== 'To' && (
-            <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
-          )}
-          {id === 'add-liquidity-simple-input-tokena' && Number(guideStep.step) > 4 && (
             <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
           )}
           {showCurrencySelect && (

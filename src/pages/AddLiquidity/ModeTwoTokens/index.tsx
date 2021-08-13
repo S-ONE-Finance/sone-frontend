@@ -19,6 +19,7 @@ import ModalHeader from './ModalHeader'
 import ButtonGrouping from './ButtonGrouping'
 import TransactionDetails from './TransactionDetails'
 import { StyledPlus } from '../../../theme'
+import { useGuideStepManager } from '../../../state/user/hooks'
 
 type ModeTwoTokensProps = {
   currencyIdA: string | undefined
@@ -28,6 +29,10 @@ type ModeTwoTokensProps = {
 export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoTokensProps) {
   const { t } = useTranslation()
   const history = useHistory()
+  const [guideStep] = useGuideStepManager()
+
+  console.log(currencyIdA, 'currencyIdA')
+  console.log(currencyIdB, 'currencyIdB')
 
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
@@ -124,6 +129,8 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
     setTxHash('')
   }, [onFieldAInput, txHash])
 
+  console.log(currencies[Field.CURRENCY_A], 'currencies[Field.CURRENCY_A]')
+
   return (
     <>
       <TransactionConfirmationModal
@@ -153,7 +160,7 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
       />
       <AutoColumn gap="md">
         <PanelCurrencyInput
-          value={formattedAmounts[Field.CURRENCY_A]}
+          value={Number(guideStep.step) > 2 ? '2.71828' : formattedAmounts[Field.CURRENCY_A]}
           onUserInput={onFieldAInput}
           onMax={() => {
             onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
@@ -172,7 +179,7 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
           </AutoRow>
         </AutoColumn>
         <PanelCurrencyInput
-          value={formattedAmounts[Field.CURRENCY_B]}
+          value={Number(guideStep.step) > 2 ? '81.5484' : formattedAmounts[Field.CURRENCY_B]}
           onUserInput={onFieldBInput}
           onCurrencySelect={handleCurrencyBSelect}
           onMax={() => {

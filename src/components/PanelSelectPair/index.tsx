@@ -9,7 +9,6 @@ import CurrencyLogoDouble from '../CurrencyLogoDouble'
 import ModalSearchPair from '../ModalSearchPair'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { OneStep1 } from '../lib/mark/components'
-import { useGuideStepManager } from '../../state/user/hooks'
 
 const PanelWrapper = styled(RowBetween)`
   width: 100%;
@@ -36,7 +35,6 @@ type PanelSelectPairProps = {
 export default function PanelSelectPair({ selectedPair, onPairSelect, isLoading, allPairs }: PanelSelectPairProps) {
   const { t } = useTranslation()
   const [modalOpen, setModalOpen] = useState(false)
-  const [guideStep] = useGuideStepManager()
 
   const handleDismissSearch = () => {
     setModalOpen(false)
@@ -69,7 +67,7 @@ export default function PanelSelectPair({ selectedPair, onPairSelect, isLoading,
         </PairSelect>
       </OneStep1>
       <ModalSearchPair
-        isOpen={Number(guideStep.step) === 4 ? true : modalOpen}
+        isOpen={modalOpen}
         onDismiss={handleDismissSearch}
         onPairSelect={onPairSelect}
         selectedPair={selectedPair}

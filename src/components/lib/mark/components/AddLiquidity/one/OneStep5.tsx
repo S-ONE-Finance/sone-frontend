@@ -5,20 +5,20 @@ import { useGuideStepManager } from '../../../../../../state/user/hooks'
 import { handIcon } from '../../assets'
 import { ChildrenProp } from '../../styled'
 
-const OneStep3 = ({ children }: ChildrenProp) => {
+const OneStep5 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
 
   return (
     <>
-      <StyledStep2 className="step-5">
+      <StyledStep2 className="step-7">
         {children}
-        {Number(guideStep.step) === 5 && guideStep.screen === 'liquidity' && (
+        {Number(guideStep.step) === 7 && guideStep.screen === 'liquidity' && (
           <StyledStep2Content>
             <StyledStep2Icon>
               <img src={handIcon} alt="hand" />
             </StyledStep2Icon>
-            <StyledStep2Text>{t('choose_token')}</StyledStep2Text>
+            <StyledStep2Text>{t('click_here')}</StyledStep2Text>
           </StyledStep2Content>
         )}
       </StyledStep2>
@@ -26,15 +26,14 @@ const OneStep3 = ({ children }: ChildrenProp) => {
   )
 }
 
-export default OneStep3
+export default OneStep5
 const StyledStep2 = styled.div`
   position: relative;
-  // z-index: 1001;
 `
 
 const StyledStep2Content = styled.div`
   position: absolute;
-  top: 60px;
+  left: 65%;
   display: flex;
   align-items: center;
 }
@@ -44,8 +43,8 @@ const StyledStep2Content = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    left: -60px;
-    top: 50px;
+    left: 40%;
+    top: 70px;
   `};
 `
 const StyledStep2Text = styled.div`
@@ -53,7 +52,6 @@ const StyledStep2Text = styled.div`
   font-size: 36px;
   color: #fff;
   margin-top: 20px;
-  width: 250px;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
@@ -68,17 +66,16 @@ const StyledStep2Text = styled.div`
 
 const StyledStep2Icon = styled.div`
   margin-right: 37px;
-
+  transform: rotate(-37.55deg);
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    margin-right: 10px;
+    transform: unset;
+    margin-right: 20px;
     & > img {
       width: 60px;
     }
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    margin-right: 10px;
-    transform: rotate(48deg);
     & > img {
       width: 50px;
     }

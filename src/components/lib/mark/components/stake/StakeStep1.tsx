@@ -13,7 +13,7 @@ const StakeStep1 = ({ children }: ChildrenProp) => {
     <>
       <Step1Wrapper className="step-1">
         {children}
-        {Number(guideStep.step) === 1 && guideStep.screen === 'swap' && (
+        {Number(guideStep.step) === 1 && guideStep.screen === 'stake' && (
           <>
             <Step1Intro>{t('lets_click_connect_wallet_to_connect_and_start')}</Step1Intro>
             <StyledHandIcon>

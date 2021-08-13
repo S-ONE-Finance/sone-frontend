@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useGuideStepManager } from '../../../../state/user/hooks'
 
-import { SwapStep6, SwapStep7 } from './index'
+import { SwapStep6 } from './index'
 import { arrowLeft, arrowRight, arrowSkip } from './assets'
 
 const StyledMarkWrapper = styled.div`

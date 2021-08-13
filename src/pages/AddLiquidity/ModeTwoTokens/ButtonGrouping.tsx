@@ -16,6 +16,9 @@ import { TYPE } from 'theme'
 import { ButtonWrapper } from '..'
 import { ROUTER_ADDRESS } from '../../../constants'
 import { Field } from '../../../state/mint/actions'
+import { useGuideStepManager } from '../../../state/user/hooks'
+import { TowStep2, ConnectButton } from '../../../components/lib/mark/components'
+import iconCheck from '../../../assets/images/check-icon-guide-popup-white.svg'
 
 type ButtonGroupingProps = {
   currencyA?: Currency
@@ -34,6 +37,7 @@ export default function ButtonGroupping({
 }: ButtonGroupingProps) {
   const { t } = useTranslation()
   const { currencies, parsedAmounts, error } = useDerivedMintInfo(currencyA, currencyB)
+  const [guideStep] = useGuideStepManager()
 
   const isValid = !error
 
@@ -58,7 +62,27 @@ export default function ButtonGroupping({
           <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
         </ButtonPrimary>
       ) : !account ? (
-        <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
+        <>
+          {Number(guideStep.step) === 1 ? (
+            <ConnectButton>
+              <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
+            </ConnectButton>
+          ) : (
+            <TowStep2>
+              {Number(guideStep.step) > 4 && guideStep.screen === 'liquidity' ? (
+                <ButtonPrimary onClick={toggleWalletModal}>
+                  <img src={iconCheck} alt="iconCheck" />
+                </ButtonPrimary>
+              ) : (
+                <ButtonPrimary onClick={toggleWalletModal}>
+                  {Number(guideStep.step) === 3 || Number(guideStep.step) === 4
+                    ? t('add_liquidity')
+                    : t('connect_wallet')}
+                </ButtonPrimary>
+              )}
+            </TowStep2>
+          )}
+        </>
       ) : (
         <AutoColumn gap={'md'}>
           {(approvalA === ApprovalState.NOT_APPROVED ||

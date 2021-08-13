@@ -32,13 +32,17 @@ import { Text } from 'rebass'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import useAllowance from '../../hooks/staking/useAllowance'
 import useApproveHandler from '../../hooks/staking/useApproveHandler'
-import { OpenGuide } from '../../components/lib/mark/components'
+import { OpenGuide, StakeStep1, StakeStep2, StakeStep3 } from '../../components/lib/mark/components'
+import { useGuideStepManager } from '../../state/user/hooks'
+import iconCheck from '../../assets/images/check-icon-guide-popup-white.svg'
 
 export default function Staking() {
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? '13px' : '16px'
   const theme = useTheme()
+  const [guideStep] = useGuideStepManager()
+  console.log(guideStep, 'guideStep')
 
   const [isShowRewardInformation, toggleIsShowRewardInformation] = useShowTransactionDetailsManager()
 
@@ -327,16 +331,37 @@ export default function Staking() {
           <AppBodyTitleDescriptionSettings transactionType={TransactionType.STAKE} />
           <StyledPadding>
             <AutoColumn gap={isUpToExtraSmall ? '1.5rem' : '2.1875rem'}>
-              <PanelPairInput
-                value={typedValue}
-                onUserInput={onUserInput}
-                balance={lpBalance}
-                onMax={onMax}
-                label={t('input')}
-                customBalanceText={t('LP Balance') + ':'}
-              />
+              <StakeStep2>
+                <PanelPairInput
+                  value={Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? '100,100' : typedValue}
+                  onUserInput={onUserInput}
+                  balance={Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? 111634 : lpBalance}
+                  onMax={onMax}
+                  label={t('input')}
+                  customBalanceText={t('LP Balance') + ':'}
+                />
+              </StakeStep2>
               {error === t('connect_wallet') ? (
-                <ButtonPrimary onClick={toggleWalletModal}>{error}</ButtonPrimary>
+                <>
+                  {Number(guideStep.step) === 1 && guideStep.screen === 'stake' ? (
+                    <StakeStep1>
+                      <ButtonPrimary>{error}</ButtonPrimary>
+                    </StakeStep1>
+                  ) : (
+                    <>
+                      {Number(guideStep.step) === 3 && guideStep.screen === 'stake' ? (
+                        <StakeStep3>
+                          <ButtonPrimary>
+                            {' '}
+                            <img src={iconCheck} alt="iconCheck" />
+                          </ButtonPrimary>
+                        </StakeStep3>
+                      ) : (
+                        <ButtonPrimary onClick={toggleWalletModal}>{error}</ButtonPrimary>
+                      )}
+                    </>
+                  )}
+                </>
               ) : error === t('approve') || error === t('approving...') ? (
                 <ButtonPrimary disabled={error === t('approving...')} onClick={() => onApprove(symbol)}>
                   {error === t('approving...') ? error : `Approve ${symbol} LP Token`}

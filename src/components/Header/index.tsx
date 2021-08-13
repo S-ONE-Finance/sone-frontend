@@ -455,6 +455,7 @@ export default function Header() {
   const { account } = useActiveWeb3React()
   const [language, setLanguage] = useLanguage()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
+
   const availableClaim: boolean = useUserHasAvailableClaim(account)
   const [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
 
@@ -519,7 +520,7 @@ export default function Header() {
             </HeaderMenu>
           </HeaderRow>
         </HideExtraSmall>
-        <HeaderControls>
+        <HeaderControls className="header-wrapper">
           <HeaderElement>
             <HideExtraSmall>
               <AccountElement style={{ pointerEvents: 'auto' }}>

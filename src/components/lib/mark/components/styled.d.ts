@@ -9,3 +9,9 @@ export type OpenGuideProps = {
 export type BackgroundColor = {
   backgroundC: string
 }
+
+export type PaginationProps = {
+  handleNext: (e) => void
+  handlePrevious: (e) => void
+  handleSkip: (e) => void
+}

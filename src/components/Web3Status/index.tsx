@@ -112,7 +112,7 @@ function Web3StatusInner() {
         {guideStep.isGuide && Number(guideStep.step) === 1 ? (
           <MarkHeader>
             <ButtonMainRed id="connect-wallet" className="step-1">
-              {guideStep.screen === 'stake' ? t('my_account') : t('connect_wallet')}
+              {t('connect_wallet')}
             </ButtonMainRed>
           </MarkHeader>
         ) : (

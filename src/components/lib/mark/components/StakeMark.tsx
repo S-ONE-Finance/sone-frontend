@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 import { useGuideStepManager } from '../../../../state/user/hooks'
 
-import { StakeStep2 } from './index'
+import { StakeStep1Header, StakeStep4 } from './index'
 import { arrowLeft, arrowRight, arrowSkip } from './assets'
 
 const StyledMarkWrapper = styled.div`
@@ -107,7 +107,7 @@ const Mark = () => {
 
   const handleReset = () => {
     handleSkip()
-    for (let i = 1; i < 2; i++) {
+    for (let i = 1; i < 4; i++) {
       handleCheckStep(`step-${i}`, 'old')
     }
   }
@@ -127,33 +127,32 @@ const Mark = () => {
 
   return (
     <>
-      {guideStep.isGuide && Number(guideStep.step) < 2 && (
-        <StyledMarkWrapper id="swap-mark">
-          {/* {guideStep.step === 2 && <StakeStep2 />} */}
-          <StyledMark>
-            <StyledMarkPagination>
-              <StyledMarkPaginationButtonGroup>
-                {guideStep.step !== 1 && (
-                  <StyledMarkPaginationButton onClick={() => handlePrevious(guideStep.step)}>
-                    <img style={{ marginRight: '10px' }} src={arrowLeft} alt="arrow" />
-                    {t('previous')}
-                  </StyledMarkPaginationButton>
-                )}
-                {guideStep.step !== 1 && (
-                  <StyledMarkPaginationButtonRight onClick={() => handleNext(guideStep.step)}>
-                    {t('next_step')}
-                    <img style={{ marginLeft: '10px' }} src={arrowRight} alt="arrow" />
-                  </StyledMarkPaginationButtonRight>
-                )}
-              </StyledMarkPaginationButtonGroup>
-              <StyledMarkPaginationButtonSkip onClick={handleSkip}>
-                {t('skip_tutorial')}
-                <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
-              </StyledMarkPaginationButtonSkip>
-            </StyledMarkPagination>
-          </StyledMark>
-        </StyledMarkWrapper>
-      )}
+      <StyledMarkWrapper id="swap-mark">
+        <StakeStep1Header />
+        <StyledMark>
+          {guideStep.step === 4 && guideStep.screen === 'stake' && <StakeStep4 />}
+          <StyledMarkPagination>
+            <StyledMarkPaginationButtonGroup>
+              {guideStep.step !== 1 && (
+                <StyledMarkPaginationButton onClick={() => handlePrevious(guideStep.step)}>
+                  <img style={{ marginRight: '10px' }} src={arrowLeft} alt="arrow" />
+                  {t('previous')}
+                </StyledMarkPaginationButton>
+              )}
+              {guideStep.step !== 4 && (
+                <StyledMarkPaginationButtonRight onClick={() => handleNext(guideStep.step)}>
+                  {t('next_step')}
+                  <img style={{ marginLeft: '10px' }} src={arrowRight} alt="arrow" />
+                </StyledMarkPaginationButtonRight>
+              )}
+            </StyledMarkPaginationButtonGroup>
+            <StyledMarkPaginationButtonSkip onClick={handleSkip}>
+              {t('skip_tutorial')}
+              <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
+            </StyledMarkPaginationButtonSkip>
+          </StyledMarkPagination>
+        </StyledMark>
+      </StyledMarkWrapper>
     </>
   )
 }

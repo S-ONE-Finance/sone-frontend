@@ -5,15 +5,15 @@ import { useGuideStepManager } from '../../../../../state/user/hooks'
 import { handIcon } from '../assets'
 import { ChildrenProp } from '../styled'
 
-const StakeStep2 = ({ children }: ChildrenProp) => {
+const ConnectButton = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
 
   return (
     <>
-      <Step1Wrapper className="step-2">
+      <Step1Wrapper className="step-1">
         {children}
-        {Number(guideStep.step) === 10 && guideStep.screen === 'stake' && (
+        {Number(guideStep.step) === 1 && guideStep.screen === 'liquidity' && (
           <>
             <Step1Intro>{t('lets_click_connect_wallet_to_connect_and_start')}</Step1Intro>
             <StyledHandIcon>
@@ -26,12 +26,13 @@ const StakeStep2 = ({ children }: ChildrenProp) => {
   )
 }
 
-export default StakeStep2
+export default ConnectButton
 
 const Step1Wrapper = styled.div`
   position: relative;
+  z-index: 1001;
+  pointer-events: none;
 `
-
 const Step1Intro = styled.div`
   position: absolute;
   color: #fff;
@@ -46,8 +47,8 @@ const Step1Intro = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    font-size: 26px;
-    top: -100px;
+    font-size: 16px;
+    top: -50px;
   `};
 `
 

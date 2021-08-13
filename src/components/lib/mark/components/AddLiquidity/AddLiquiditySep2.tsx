@@ -1,12 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from '../../../../../state/user/hooks'
+import { useGuideStepManager, useAddLiquidityModeManager } from '../../../../../state/user/hooks'
+import { AddLiquidityModeEnum } from '../../../../../state/user/actions'
 import { handIcon } from '../assets'
 import { ChildrenProp } from '../styled'
 
 const AddLiquiditySep2 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
+  const [addLiquidityMode] = useAddLiquidityModeManager()
   const [guideStep] = useGuideStepManager()
 
   return (
@@ -14,12 +16,25 @@ const AddLiquiditySep2 = ({ children }: ChildrenProp) => {
       <StepWrapper className="step-2">
         {children}
         {Number(guideStep.step) === 2 && guideStep.screen === 'liquidity' && (
-          <Step2>
-            <StyledHandIcon>
-              <img src={handIcon} alt="hand" />
-            </StyledHandIcon>
-            <StepIntro>{t('Add One Token mode is recommended')}</StepIntro>
-          </Step2>
+          <>
+            {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
+              <Step2OneToken>
+                <StyledHandIcon>
+                  <img src={handIcon} alt="hand" />
+                </StyledHandIcon>
+                <StepIntro>{t('Add One Token mode is recommended')}</StepIntro>
+              </Step2OneToken>
+            ) : (
+              <>
+                <Step2TwoToken>
+                  <StylesHandIconTow>
+                    <img src={handIcon} alt="hand" />
+                  </StylesHandIconTow>
+                  <StepIntro>{t('when_add_two_tokens_mode_is_on')}</StepIntro>
+                </Step2TwoToken>
+              </>
+            )}
+          </>
         )}
       </StepWrapper>
     </>
@@ -30,30 +45,31 @@ export default AddLiquiditySep2
 
 const StepWrapper = styled.div`
   position: relative;
-  // z-index: 1001;
-  // pointer-events: none;
 `
 
-const Step2 = styled.div`
+const Step2OneToken = styled.div`
 position: absolute;
 top: 70px;
 left: 95px;
 width: 460px;
 display: flex;
 align-items: center;
+${({ theme }) => theme.mediaWidth.upToLarge`
+  left: 45px;
+`};
 
 ${({ theme }) => theme.mediaWidth.upToExtraSmall`
   top: 50px;
-  left: 34px;
-  width: 300px;
-  `};
+  left: 25px;
+  width: fit-content;
+`};
 
 }`
 
 const StepIntro = styled.div`
   font-weight: 700;
   font-size: 36px;
-
+  color: #fff;
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
   `};
@@ -79,4 +95,14 @@ const StyledHandIcon = styled.div`
       width: 50px;
     }
   `};
+`
+
+const StylesHandIconTow = styled(StyledHandIcon)`
+  margin-right: 0;
+  margin-bottom: 22px;
+`
+
+const Step2TwoToken = styled(Step2OneToken)`
+  left: 50%;
+  flex-direction: column;
 `
