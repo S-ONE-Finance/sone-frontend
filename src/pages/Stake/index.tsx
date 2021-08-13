@@ -42,7 +42,6 @@ export default function Staking() {
   const mobile13Desktop16 = isUpToExtraSmall ? '13px' : '16px'
   const theme = useTheme()
   const [guideStep] = useGuideStepManager()
-  console.log(guideStep, 'guideStep')
 
   const [isShowRewardInformation, toggleIsShowRewardInformation] = useShowTransactionDetailsManager()
 

@@ -31,9 +31,6 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
   const history = useHistory()
   const [guideStep] = useGuideStepManager()
 
-  console.log(currencyIdA, 'currencyIdA')
-  console.log(currencyIdB, 'currencyIdB')
-
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
@@ -129,8 +126,6 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
     setTxHash('')
   }, [onFieldAInput, txHash])
 
-  console.log(currencies[Field.CURRENCY_A], 'currencies[Field.CURRENCY_A]')
-
   return (
     <>
       <TransactionConfirmationModal
@@ -166,7 +161,7 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
             onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
           }}
           onCurrencySelect={handleCurrencyASelect}
-          showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+          showMaxButton={Number(guideStep.step) > 2 ? true : !atMaxAmounts[Field.CURRENCY_A]}
           currency={currencies[Field.CURRENCY_A]}
           id="add-liquidity-input-tokena"
           showCommonBases
