@@ -17,7 +17,6 @@ export async function getAverageBlockTime(chainId: ChainId = 1): Promise<{ times
     }
   })
   const blocks = query?.data.blocks
-  console.log(`blocks`, blocks)
 
   const averageBlockTime = blocks.reduce(
     (previousValue: any, currentValue: any, currentIndex: any) => {
