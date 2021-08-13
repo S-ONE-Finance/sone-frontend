@@ -72,13 +72,13 @@ const PendingText = styled(Text)`
 // export const FETCH_REFERRAL_DATA_INTERVAL = 15000
 
 export default function Referral() {
-  // Ở đây dùng tạm hàm biến cờ "clicked" để set "Waiting for Approval"
-  // ngay sau khi POST lệnh "request reward" thành công. Sau 5000ms (FETCH_DATA_REFERRAL_INTERVAL) sẽ nhả ra.
+  // Ở đây dùng tạm hàm biến cờ "justClicked" để set "Waiting for Approval"
+  // ngay sau khi POST lệnh "request reward" thành công. Sau 15000ms (FETCH_DATA_REFERRAL_INTERVAL) sẽ nhả ra.
   const { t } = useTranslation()
-  const [clicked, requestReward] = useRequestReward()
+  const [justClicked, requestReward] = useRequestReward()
   const { isRequestRewardPending, pendingAmount } = useReferrerInformation() || {}
   const isDisabled =
-    clicked ||
+    justClicked ||
     isRequestRewardPending === undefined ||
     isRequestRewardPending === true ||
     pendingAmount === undefined ||

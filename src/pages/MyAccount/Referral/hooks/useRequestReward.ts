@@ -5,7 +5,7 @@ import { ADMIN_BACKEND_BASE_URL } from '../../../../constants/urls'
 
 export default function useRequestReward(): [boolean, () => void] {
   const { id: referralId, pendingAmount: amount, isRequestRewardPending } = useReferrerInformation() || {}
-  const [clicked, setClicked] = useState(false)
+  const [justClicked, setJustClicked] = useState(false)
 
   const handler = useCallback(() => {
     if (
@@ -24,9 +24,9 @@ export default function useRequestReward(): [boolean, () => void] {
         amount
       })
       .then(() => {
-        setClicked(true)
+        setJustClicked(true)
         // TODO: Xử lý lại để không phụ thuộc vào setTimeout??
-        setTimeout(() => setClicked(false), 15000)
+        setTimeout(() => setJustClicked(false), 15000)
       })
       .catch(err => {
         if (err.response) {
@@ -37,5 +37,5 @@ export default function useRequestReward(): [boolean, () => void] {
       })
   }, [referralId, amount, isRequestRewardPending])
 
-  return [clicked, handler]
+  return [justClicked, handler]
 }
