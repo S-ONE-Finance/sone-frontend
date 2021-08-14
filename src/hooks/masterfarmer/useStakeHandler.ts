@@ -6,11 +6,11 @@ import BigNumber from 'bignumber.js'
 import { useMasterFarmerContract } from 'hooks/useContract'
 import { useTransactionAdder } from 'state/transactions/hooks'
 
-const useStake = (pid: number) => {
+export default function useStakeHandler(pid: number) {
   const addTransaction = useTransactionAdder()
   const masterContract: Contract | null = useMasterFarmerContract()
 
-  const handleStake = useCallback(
+  const stakeHandler = useCallback(
     async (amount: string, symbol: string) => {
       try {
         const tx = masterContract
@@ -31,7 +31,5 @@ const useStake = (pid: number) => {
     [masterContract, pid, addTransaction]
   )
 
-  return { onStake: handleStake }
+  return stakeHandler
 }
-
-export default useStake

@@ -22,7 +22,7 @@ const useMyAccountStaked = () => {
       masterchef.query({
         query: poolUserWithPoolDetailQuery,
         variables: {
-          address: account
+          address: account?.toLowerCase()
         }
       }),
       getAverageBlockTime()

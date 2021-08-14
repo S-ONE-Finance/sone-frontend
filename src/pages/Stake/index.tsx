@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Row, { RowBetween, RowFixed } from '../../components/Row'
 import { AutoColumn, ColumnCenter } from '../../components/Column'
 import { AppBody, StyledPadding } from '../../theme'
@@ -25,11 +25,13 @@ import { useActiveWeb3React } from '../../hooks'
 import useTokenBalance from '../../hooks/masterfarmer/useTokenBalance'
 import { getBalanceNumber, getBalanceStringCommas } from '../../hooks/masterfarmer/utils'
 import BigNumber from 'bignumber.js'
-import useStake from '../../hooks/masterfarmer/useStake'
+import useStakeHandler from '../../hooks/masterfarmer/useStakeHandler'
 import { TruncatedText } from '../../components/swap/styleds'
 import { getNumberCommas } from '../../subgraph/utils/formatter'
 import { Text } from 'rebass'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
+import useAllowance from '../../hooks/masterfarmer/useAllowance'
+import useApproveHandler from '../../hooks/masterfarmer/useApproveHandler'
 
 export default function Staking() {
   const { t } = useTranslation()
@@ -50,14 +52,6 @@ export default function Staking() {
 
   const toggleWalletModal = useWalletModalToggle()
   const { account } = useActiveWeb3React()
-
-  const error = !account
-    ? t('connect_wallet')
-    : +typedValue === 0
-    ? t('enter_an_amount')
-    : !lpBalance || !farm
-    ? t('stake')
-    : undefined
 
   const { token0, token1 } = farm?.liquidityPair || {}
 
@@ -114,20 +108,6 @@ export default function Staking() {
     setTxHash('')
   }
 
-  const { onStake: _onStake } = useStake(Number(farmId))
-  const onStake = async () => {
-    if (!error && symbol) {
-      setAttemptingTxn(true)
-      const tx = await _onStake(typedValue, symbol)
-      setAttemptingTxn(false)
-      if (tx) {
-        setTxHash(tx.hash)
-      } else {
-        setTxHash('')
-      }
-    }
-  }
-
   const onUserInput = (theNewOne: string) => {
     setTypedValue(theNewOne)
   }
@@ -138,92 +118,157 @@ export default function Staking() {
     }
   }
 
-  const ModalHeader = () => {
-    return (
-      <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>
-        <RowBetween align="flex-end">
-          <RowFixed gap="0">
-            <TruncatedText fontSize={isUpToExtraSmall ? '20px' : '28px'} fontWeight={600} style={{ zIndex: 1 }}>
-              {getNumberCommas(typedValue)}
-            </TruncatedText>
-          </RowFixed>
-          {/* zIndex để hiển thị đè lên SwapVector. */}
-          <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align="center">
-            <LiquidityProviderTokenLogo
-              address0={token0 && token0.id}
-              address1={token1 && token1.id}
-              size={28}
-              sizeMobile={14}
-              main={false}
-              style={{ marginRight: '0.625rem' }}
-            />
-            <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
-              LP
-            </Text>
-          </RowFixed>
-        </RowBetween>
-      </AutoColumn>
-    )
-  }
+  const [isApproving, setIsApproving] = useState(false)
+  const [isApproveTxPushed, setIsApproveTxPushed] = useState(false)
+  const allowance = useAllowance(pairAddress)
 
-  const ModalFooter = () => {
-    const theme = useTheme()
-    const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
+  const error = !farm
+    ? t('invalid_farm')
+    : !account
+    ? t('connect_wallet')
+    : +typedValue === 0
+    ? t('enter_an_amount')
+    : lpBalance === undefined || lpBalance < +typedValue
+    ? t('insufficient_lp_token')
+    : allowance.toString() === '0' && (isApproveTxPushed || isApproving)
+    ? t('approving...')
+    : allowance.toString() === '0' && !isApproveTxPushed
+    ? t('approve')
+    : undefined
 
-    return (
-      <>
-        <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'}>
-          <RowBetween>
-            <RowFixed>
-              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-                {t('after_staking_you_will_have')}
+  const _onApprove = useApproveHandler(pairAddress)
+  const onApprove = useCallback(
+    async symbol => {
+      setIsApproving(true)
+      const txHash = await _onApprove(symbol)
+      setIsApproving(false)
+      if (txHash) {
+        setIsApproveTxPushed(true)
+      }
+      if (txHash) {
+      }
+    },
+    [_onApprove]
+  )
+
+  const _onStake = useStakeHandler(Number(farmId))
+  const onStake = useCallback(async () => {
+    if (!error && symbol) {
+      setAttemptingTxn(true)
+      const tx = await _onStake(typedValue, symbol)
+      setAttemptingTxn(false)
+      if (tx) {
+        setTxHash(tx.hash)
+      } else {
+        setTxHash('')
+      }
+    }
+  }, [_onStake, error, symbol, typedValue])
+
+  const pendingText = `Staking ${typedValue} LP`
+
+  const ModalHeader = useCallback(
+    function ModalHeader() {
+      return (
+        <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>
+          <RowBetween align="flex-end">
+            <RowFixed gap="0">
+              <TruncatedText fontSize={isUpToExtraSmall ? '20px' : '28px'} fontWeight={600} style={{ zIndex: 1 }}>
+                {getNumberCommas(typedValue)}
+              </TruncatedText>
+            </RowFixed>
+            {/* zIndex để hiển thị đè lên SwapVector. */}
+            <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align="center">
+              <LiquidityProviderTokenLogo
+                address0={token0 && token0.id}
+                address1={token1 && token1.id}
+                size={28}
+                sizeMobile={14}
+                main={false}
+                style={{ marginRight: '0.625rem' }}
+              />
+              <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
+                LP
               </Text>
             </RowFixed>
-          </RowBetween>
-          <RowBetween>
-            <RowFixed>
-              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                {t('total_staked_value')}
-              </Text>
-            </RowFixed>
-            <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-              {totalStakedAfterStakeRender} LP
-            </Text>
-          </RowBetween>
-          <RowBetween>
-            <RowFixed>
-              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                {t('earned_reward')}
-              </Text>
-            </RowFixed>
-            <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-              {earnedRewardAfterStakeRender} LP
-            </Text>
-          </RowBetween>
-          <RowBetween>
-            <RowFixed>
-              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                {t('apy')}
-              </Text>
-            </RowFixed>
-            <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text5Sone}>
-              {apyAfterStakeRender}%
-            </Text>
           </RowBetween>
         </AutoColumn>
+      )
+    },
+    [isUpToExtraSmall, token0, token1, typedValue]
+  )
 
-        {error ? (
-          <ButtonPrimary disabled>{error}</ButtonPrimary>
-        ) : (
-          <ButtonPrimary onClick={onStake}>
-            <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
-              {t('stake')}
-            </Text>
-          </ButtonPrimary>
-        )}
-      </>
-    )
-  }
+  const ModalFooter = useCallback(
+    function ModalFooter() {
+      const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
+
+      return (
+        <>
+          <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'}>
+            <RowBetween>
+              <RowFixed>
+                <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+                  {t('after_staking_you_will_have')}
+                </Text>
+              </RowFixed>
+            </RowBetween>
+            <RowBetween>
+              <RowFixed>
+                <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                  {t('total_staked_value')}
+                </Text>
+              </RowFixed>
+              <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+                {totalStakedAfterStakeRender} LP
+              </Text>
+            </RowBetween>
+            <RowBetween>
+              <RowFixed>
+                <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                  {t('earned_reward')}
+                </Text>
+              </RowFixed>
+              <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+                {earnedRewardAfterStakeRender} LP
+              </Text>
+            </RowBetween>
+            <RowBetween>
+              <RowFixed>
+                <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                  {t('apy')}
+                </Text>
+              </RowFixed>
+              <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text5Sone}>
+                {apyAfterStakeRender}%
+              </Text>
+            </RowBetween>
+          </AutoColumn>
+
+          {error ? (
+            <ButtonPrimary disabled>{error}</ButtonPrimary>
+          ) : (
+            <ButtonPrimary onClick={onStake}>
+              <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
+                {t('stake')}
+              </Text>
+            </ButtonPrimary>
+          )}
+        </>
+      )
+    },
+    [
+      apyAfterStakeRender,
+      earnedRewardAfterStakeRender,
+      error,
+      isUpToExtraSmall,
+      onStake,
+      t,
+      theme.text4Sone,
+      theme.text5Sone,
+      theme.text6Sone,
+      totalStakedAfterStakeRender
+    ]
+  )
 
   const modalContent = () => (
     <ConfirmationModalContent
@@ -234,8 +279,6 @@ export default function Staking() {
       transactionType={undefined}
     />
   )
-
-  const pendingText = `Staking ${typedValue} LP`
 
   return (
     <>
@@ -293,6 +336,10 @@ export default function Staking() {
               />
               {error === t('connect_wallet') ? (
                 <ButtonPrimary onClick={toggleWalletModal}>{error}</ButtonPrimary>
+              ) : error === t('approve') || error === t('approving...') ? (
+                <ButtonPrimary disabled={error === t('approving...')} onClick={() => onApprove(symbol)}>
+                  {error === t('approving...') ? error : `Approve ${symbol} LP Token`}
+                </ButtonPrimary>
               ) : error ? (
                 <ButtonPrimary disabled={true}>{error}</ButtonPrimary>
               ) : (

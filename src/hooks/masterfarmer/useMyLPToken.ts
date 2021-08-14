@@ -13,7 +13,7 @@ const useMyLPToken = () => {
     ;(async () => {
       const result = await exchange.query({
         query: liquidityPositionSubsetQuery,
-        variables: { user: account }
+        variables: { user: account?.toLowerCase() }
       })
       const data = result?.data?.liquidityPositions
       setMyLiquidity(data)

@@ -143,6 +143,6 @@ export function useSoneContract(withSignerIfPossible = true): Contract | null {
   return useContract('0x45495bE0FE306679BA8001cD4b10A781a7BBB559', SoneTokenABI, withSignerIfPossible)
 }
 
-export function useLPContract(lpTokenAddress: string, withSignerIfPossible = true): Contract | null {
+export function useLPContract(lpTokenAddress?: string, withSignerIfPossible = true): Contract | null {
   return useContract(lpTokenAddress, UniswapV2PairABI, withSignerIfPossible)
 }

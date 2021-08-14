@@ -15,7 +15,7 @@ const useMyStaked = () => {
         const result: any = await masterchef.query({
           query: poolUserQuery,
           variables: {
-            address: account
+            address: account.toLowerCase()
           }
         })
         setMyStaked(result?.data?.users)

@@ -138,7 +138,6 @@ export function useGetPairFromSubgraphAndParse(): [boolean, Pair[]] {
  */
 export function useOneDayPairPriceChangeData() {
   const data = useBulkPairData()
-  // console.log(`data`, data)
 
   return useMemo(
     () =>

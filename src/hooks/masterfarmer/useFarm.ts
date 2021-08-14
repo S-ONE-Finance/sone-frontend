@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Farm } from '@s-one-finance/sdk-core/'
 import { calculateAPY } from '@s-one-finance/sdk-core'
 
@@ -24,7 +24,7 @@ const useFarm = (id: string) => {
       masterchef.query({
         query: poolUserDetailQuery,
         variables: {
-          id: `${id}-${account}`
+          id: `${id}-${account?.toLowerCase()}`
         }
       }),
       getAverageBlockTime()
@@ -80,13 +80,20 @@ const useFarm = (id: string) => {
     }
   }, [id, account, sonePrice, block])
 
+  const isUnmounted = useRef(false)
+
   useEffect(() => {
-    const fetchData = async () => {
-      const results = await fetchFarmsDetail()
-      setFarm(results)
+    return () => {
+      isUnmounted.current = true
     }
-    fetchData()
-  }, [account, chainId, fetchFarmsDetail])
+  }, [])
+
+  useEffect(() => {
+    ;(async () => {
+      const results = await fetchFarmsDetail()
+      if (!isUnmounted.current) setFarm(results)
+    })()
+  }, [chainId, fetchFarmsDetail])
 
   return farm
 }
