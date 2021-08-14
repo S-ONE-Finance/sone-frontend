@@ -1,16 +1,16 @@
-import { exchange, masterchef } from 'apollo/client'
-import { liquidityPositionSubsetQuery, pairSubsetQuery, poolsQuery } from 'apollo/queries'
 import { useCallback, useEffect, useState } from 'react'
-
-import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
 import { calculateAPY, ChainId } from '@s-one-finance/sdk-core'
-import { useActiveWeb3React } from 'hooks'
-import useSonePrice from './useSonePrice'
-import { useBlockNumber } from 'state/application/hooks'
 import { Farm } from '@s-one-finance/sdk-core/'
-import { MASTER_FARMER_ADDRESS } from '../../constants/index'
+
+import { liquidityPositionSubsetQuery, pairSubsetQuery, poolsQuery } from 'apollo/queries'
+import { exchange, masterchef } from 'apollo/client'
+import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
+import { useActiveWeb3React } from 'hooks'
+import { useBlockNumber } from 'state/application/hooks'
+import useSonePrice from './useSonePrice'
+import { MASTER_FARMER_ADDRESS } from '../../constants'
 
 const useFarms = () => {
   const { account, chainId } = useActiveWeb3React()

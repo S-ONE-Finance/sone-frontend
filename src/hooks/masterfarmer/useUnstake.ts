@@ -1,8 +1,9 @@
+import { useCallback } from 'react'
+import BigNumber from 'bignumber.js'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
-import BigNumber from 'bignumber.js'
+
 import { useMasterFarmerContract } from 'hooks/useContract'
-import { useCallback } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 
 const useUnstake = (pid: number) => {

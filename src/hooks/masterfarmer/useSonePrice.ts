@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react'
+
 import { exchange } from 'apollo/client'
 import { pairsQueryDetail } from 'apollo/queries'
-import { useEffect, useState } from 'react'
 
 const useSonePrice = () => {
   const [price, setPrice] = useState(0)
@@ -8,11 +9,13 @@ const useSonePrice = () => {
   const SONE_ADDRESS = '0x45495bE0FE306679BA8001cD4b10A781a7BBB559'
   const USDT_ADDRESS = '0x393397Baae01Dc19678220E4D3Fd34FDA4FeBd1D'
   let [token0, token1] = ['', '']
+
   if (SONE_ADDRESS > USDT_ADDRESS) {
     ;[token0, token1] = [USDT_ADDRESS, SONE_ADDRESS]
   } else {
     ;[token0, token1] = [SONE_ADDRESS, USDT_ADDRESS]
   }
+
   useEffect(() => {
     ;(async () => {
       const result: any = await exchange.query({
@@ -34,6 +37,7 @@ const useSonePrice = () => {
       }
     })()
   }, [token0, token1])
+
   return price
 }
 

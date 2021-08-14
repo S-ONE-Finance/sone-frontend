@@ -1,10 +1,11 @@
+import { useCallback } from 'react'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
+
 import { useMasterFarmerContract } from 'hooks/useContract'
-import { useCallback } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 
-const useClaimReward = () => {
+export default function useClaimReward() {
   const addTransaction = useTransactionAdder()
 
   const masterContract: Contract | null = useMasterFarmerContract()
@@ -32,5 +33,3 @@ const useClaimReward = () => {
 
   return { onClaimReward: handleClaimReward }
 }
-
-export default useClaimReward

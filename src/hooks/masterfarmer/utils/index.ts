@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+
 import { getNumberCommas } from '../../../subgraph/utils/formatter'
 
 export const getBalanceNumber = (balance: string, decimals = 18) => {

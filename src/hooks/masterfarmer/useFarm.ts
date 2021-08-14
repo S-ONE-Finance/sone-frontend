@@ -1,13 +1,13 @@
-//import range from 'lodash/range'
+import { useCallback, useEffect, useState } from 'react'
+import { Farm } from '@s-one-finance/sdk-core/'
 import { calculateAPY } from '@s-one-finance/sdk-core'
+
 import { exchange, masterchef } from 'apollo/client'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import { pairSubsetQuery, poolsQueryDetail, poolUserDetailQuery } from 'apollo/queries'
 import { useActiveWeb3React } from 'hooks'
-import { useCallback, useEffect, useState } from 'react'
 import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
-import { Farm } from '@s-one-finance/sdk-core/'
 
 const useFarm = (id: string) => {
   const { account, chainId } = useActiveWeb3React()
@@ -87,6 +87,7 @@ const useFarm = (id: string) => {
     }
     fetchData()
   }, [account, chainId, fetchFarmsDetail])
+
   return farm
 }
 

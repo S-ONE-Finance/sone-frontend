@@ -1,7 +1,8 @@
+import { useCallback, useEffect, useState } from 'react'
 import { Contract } from '@ethersproject/contracts'
 import { BigNumber } from 'ethers'
+
 import { useLPContract } from 'hooks/useContract'
-import { useCallback, useEffect, useState } from 'react'
 import { useBlockNumber } from 'state/application/hooks'
 import { useActiveWeb3React } from '../index'
 

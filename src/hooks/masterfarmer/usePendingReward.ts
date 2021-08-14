@@ -1,8 +1,9 @@
+import { useCallback, useEffect, useState } from 'react'
+import { BigNumber } from 'ethers'
 import { Contract } from '@ethersproject/contracts'
 import { useWeb3React } from '@web3-react/core'
-import { BigNumber } from 'ethers'
+
 import { useMasterFarmerContract } from 'hooks/useContract'
-import { useCallback, useEffect, useState } from 'react'
 
 const usePendingReward = (pid: number) => {
   const [pendingReward, setPendingReward] = useState(BigNumber.from(0))

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { calculateAPY, UserInfoSone } from '@s-one-finance/sdk-core'
+import _ from 'lodash'
+import orderBy from 'lodash/orderBy'
+
 import { exchange, masterchef } from 'apollo/client'
 import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
 import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'apollo/queries'
 import { useActiveWeb3React } from 'hooks'
-import _ from 'lodash'
-import orderBy from 'lodash/orderBy'
 import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
 
