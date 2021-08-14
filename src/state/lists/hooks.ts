@@ -1,4 +1,5 @@
 import { UNSUPPORTED_LIST_URLS } from './../../constants/lists'
+// TODO: Cần chuyển sang sone-default-token-list.
 import DEFAULT_TOKEN_LIST from '@uniswap/default-token-list'
 import { ChainId, Token } from '@s-one-finance/sdk-core'
 import { Tags, TokenInfo, TokenList } from '@uniswap/token-lists'

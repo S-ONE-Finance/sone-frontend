@@ -22,9 +22,9 @@ import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
-import SONE_MASTER_FARMER_ABI from '../constants/abis/SoneMasterFarmer.json'
-import SONE_TOKEN_ABI from '../constants/abis/SoneToken.json'
-import PAIR_ABI from '../constants/abis/UniswapV2Pair.json'
+import { abi as SoneMasterFarmerABI } from '@s-one-finance/core/build/contracts/SoneMasterFarmer.json'
+import { abi as SoneTokenABI } from '../constants/abis/SoneToken.json'
+import { abi as UniswapV2PairABI } from '@s-one-finance/core/build/contracts/UniswapV2Pair.json'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
@@ -134,15 +134,15 @@ export function useSocksController(): Contract | null {
 
 export function useMasterFarmerContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId && MASTER_FARMER_ADDRESS[chainId], SONE_MASTER_FARMER_ABI.abi, withSignerIfPossible)
+  return useContract(chainId && MASTER_FARMER_ADDRESS[chainId], SoneMasterFarmerABI, withSignerIfPossible)
 }
 
 export function useSoneContract(withSignerIfPossible = true): Contract | null {
   // const { chainId } = useActiveWeb3React()
   // TODO_STAKING: change SONE token
-  return useContract('0x45495bE0FE306679BA8001cD4b10A781a7BBB559', SONE_TOKEN_ABI.abi, withSignerIfPossible)
+  return useContract('0x45495bE0FE306679BA8001cD4b10A781a7BBB559', SoneTokenABI, withSignerIfPossible)
 }
 
 export function useLPContract(lpTokenAddress: string, withSignerIfPossible = true): Contract | null {
-  return useContract(lpTokenAddress, PAIR_ABI.abi, withSignerIfPossible)
+  return useContract(lpTokenAddress, UniswapV2PairABI, withSignerIfPossible)
 }
