@@ -28,7 +28,7 @@ import SoneLogoSvg from '../../../assets/images/logo_token_sone.svg'
 import TickIconSvg from '../../../assets/images/tick-icon.svg'
 import { HideExtraSmall } from '../../../theme'
 import usePendingReward from '../../../hooks/masterfarmer/usePendingReward'
-import { getBalanceNumber } from '../../../hooks/masterfarmer/utils'
+import { getBalanceNumber } from '../../../utils/formatNumber'
 import useClaimReward from '../../../hooks/masterfarmer/useClaimReward'
 import LiquidityProviderTokenLogo from '../../../components/LiquidityProviderTokenLogo'
 

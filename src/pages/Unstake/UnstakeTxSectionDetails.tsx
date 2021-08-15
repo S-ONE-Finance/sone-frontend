@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { AutoColumn } from '../../components/Column'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { useTranslation } from 'react-i18next'
-import { getBalanceStringCommas } from '../../hooks/masterfarmer/utils'
+import { getBalanceStringCommas } from '../../utils/formatNumber'
 
 export const SectionDetails = styled(AutoColumn)`
   padding: 0 14px;
