@@ -1,6 +1,6 @@
 import { getUnixTime, startOfHour, startOfMinute, startOfSecond, subHours } from 'date-fns'
-import { blocksQuery } from '../../apollo/queries'
-import { blockClients } from '../../subgraph/clients'
+import { blocksQuery } from '../../graphql/stakingQueries'
+import { blockClients } from '../../graphql/clients'
 import { useActiveWeb3React } from '../index'
 import { useCallback, useMemo } from 'react'
 import { useQuery } from 'react-query'

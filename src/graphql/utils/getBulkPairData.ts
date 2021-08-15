@@ -1,5 +1,5 @@
 import { swapClients } from '../clients'
-import { PAIR_DATA, PAIRS_BULK, PAIRS_HISTORICAL_BULK } from '../queries'
+import { PAIR_DATA, PAIRS_BULK, PAIRS_HISTORICAL_BULK } from '../swapQueries'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import parseBulkPairData from './parseBulkPairData'

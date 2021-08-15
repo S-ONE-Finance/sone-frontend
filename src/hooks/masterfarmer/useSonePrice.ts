@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import { pairsQueryDetail } from 'apollo/queries'
-import { swapClients } from '../../subgraph/clients'
+import { pairsQueryDetail } from 'graphql/stakingQueries'
+import { swapClients } from '../../graphql/clients'
 import { useActiveWeb3React } from '../index'
 
 const useSonePrice = () => {

@@ -1,5 +1,5 @@
 import { swapClients } from '../clients'
-import { PAIRS_BULK } from '../queries'
+import { PAIRS_BULK } from '../swapQueries'
 
 /**
  * Get data sử dụng cho select pair

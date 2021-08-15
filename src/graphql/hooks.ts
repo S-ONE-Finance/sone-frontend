@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { swapClients } from './clients'
-import { PAIRS_CURRENT } from './queries'
+import { PAIRS_CURRENT } from './swapQueries'
 
 import getBulkPairData from './utils/getBulkPairData'
 import getPairData from './utils/getPairData'
@@ -131,7 +131,7 @@ export function useGetPairFromSubgraphAndParse(): [boolean, Pair[]] {
  * và so sánh giá trị này với chính nó ở thời điểm 24h trước.
  * Ta có 2 kết quả: "token1Price và token1PriceChange"
  *
- * PS: Chỗ này tại sao ko phải là "token0Price và token0PriceChange"?? do data trong subgraph là như thế, maybe
+ * PS: Chỗ này tại sao ko phải là "token0Price và token0PriceChange"?? do data trong graphql là như thế, maybe
  * bug do token1 bị swap với token0, source: uniswap-info).
  */
 export function useOneDayPairPriceChangeData() {

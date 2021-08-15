@@ -4,11 +4,11 @@ import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
 
 import useAverageBlockTime from 'hooks/masterfarmer/useAverageBlockTime'
-import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'apollo/queries'
+import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'graphql/stakingQueries'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
-import { stakingClients, swapClients } from '../../subgraph/clients'
+import { stakingClients, swapClients } from '../../graphql/clients'
 
 const useMyAccountStaked = () => {
   const [isLoading, setIsLoading] = useState(true)

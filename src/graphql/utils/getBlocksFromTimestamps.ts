@@ -2,7 +2,7 @@ import { ApolloClient } from 'apollo-client'
 import { NormalizedCacheObject } from 'apollo-cache-inmemory'
 
 import { blockClients } from '../clients'
-import { GET_BLOCKS } from '../queries'
+import { GET_BLOCKS } from '../swapQueries'
 
 /**
  *

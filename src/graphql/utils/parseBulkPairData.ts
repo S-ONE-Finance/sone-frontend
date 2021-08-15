@@ -14,7 +14,7 @@ interface BasicData {
 }
 
 // Override data return from graph - usually because proxy token has changed
-// names since entity was created in subgraph
+// names since entity was created in graphql
 // keys are lowercase token addresses <--------
 const TOKEN_OVERRIDES: {
   [address: string]: { name: string; symbol: string }

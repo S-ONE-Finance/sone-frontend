@@ -4,13 +4,13 @@ import orderBy from 'lodash/orderBy'
 import { calculateAPY, ChainId } from '@s-one-finance/sdk-core'
 import { Farm } from '@s-one-finance/sdk-core/'
 
-import { liquidityPositionSubsetQuery, pairSubsetQuery, poolsQuery } from 'apollo/queries'
+import { liquidityPositionSubsetQuery, pairSubsetQuery, poolsQuery } from 'graphql/stakingQueries'
 import useAverageBlockTime from 'hooks/masterfarmer/useAverageBlockTime'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
 import { MASTER_FARMER_ADDRESS } from '../../constants'
-import { stakingClients, swapClients } from '../../subgraph/clients'
+import { stakingClients, swapClients } from '../../graphql/clients'
 
 const useFarms = () => {
   const { account, chainId } = useActiveWeb3React()

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { LiquidityPosition } from '@s-one-finance/sdk-core'
 
-import { liquidityPositionSubsetQuery } from 'apollo/queries'
+import { liquidityPositionSubsetQuery } from 'graphql/stakingQueries'
 import { useActiveWeb3React } from 'hooks'
-import { swapClients } from '../../subgraph/clients'
+import { swapClients } from '../../graphql/clients'
 
 const useMyLPToken = () => {
   const { account, chainId } = useActiveWeb3React()

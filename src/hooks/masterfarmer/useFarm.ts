@@ -3,11 +3,11 @@ import { Farm } from '@s-one-finance/sdk-core/'
 import { calculateAPY } from '@s-one-finance/sdk-core'
 
 import useAverageBlockTime from 'hooks/masterfarmer/useAverageBlockTime'
-import { pairSubsetQuery, poolsQueryDetail, poolUserDetailQuery } from 'apollo/queries'
+import { pairSubsetQuery, poolsQueryDetail, poolUserDetailQuery } from 'graphql/stakingQueries'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
-import { stakingClients, swapClients } from '../../subgraph/clients'
+import { stakingClients, swapClients } from '../../graphql/clients'
 import useUnmountedRef from '../useUnmountedRef'
 
 const useFarm = (id: string) => {

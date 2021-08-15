@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { useOneDayPairPriceChangeData } from '../../subgraph/hooks'
+import { useOneDayPairPriceChangeData } from '../../graphql/hooks'
 
 import { RowFixed } from '../Row'
 import PairInfo from './PairInfo'

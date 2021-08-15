@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { UserInfoSone } from '@s-one-finance/sdk-core'
 
-import { poolUserQuery } from 'apollo/queries'
+import { poolUserQuery } from 'graphql/stakingQueries'
 import { useActiveWeb3React } from 'hooks'
-import { stakingClients } from '../../subgraph/clients'
+import { stakingClients } from '../../graphql/clients'
 
 const useMyStaked = () => {
   const { account, chainId } = useActiveWeb3React()
