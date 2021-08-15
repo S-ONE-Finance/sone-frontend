@@ -87,20 +87,7 @@ export default function ModeToggle() {
         <Text fontSize={isUpToExtraSmall ? 13 : 16} color={theme.text10Sone}>
           {t('mode')}
         </Text>
-<<<<<<< HEAD
         <QuestionHelper1416 text={t('question_helper_mode')} />
-        <ButtonGroup>
-          <Item onClick={setModeOneToken} active={addLiquidityMode === AddLiquidityModeEnum.OneToken}>
-            <ItemTitle>{t('simple')}</ItemTitle>
-            <ItemDescription>{t('one_token_mode')}</ItemDescription>
-          </Item>
-          <Item onClick={setModeTwoToken} active={addLiquidityMode === AddLiquidityModeEnum.TwoToken}>
-            <ItemTitle>{t('advance')}</ItemTitle>
-            <ItemDescription>{t('two_tokens_mode')}</ItemDescription>
-          </Item>
-        </ButtonGroup>
-=======
-        <QuestionHelper1416 text="Lorem ipsum dolor sit amet." />
         <AddLiquiditySep2>
           <ButtonGroup>
             <Item onClick={setModeOneToken} active={addLiquidityMode === AddLiquidityModeEnum.OneToken}>
@@ -113,7 +100,6 @@ export default function ModeToggle() {
             </Item>
           </ButtonGroup>
         </AddLiquiditySep2>
->>>>>>> Update swap
       </Row>
     </Container>
   )

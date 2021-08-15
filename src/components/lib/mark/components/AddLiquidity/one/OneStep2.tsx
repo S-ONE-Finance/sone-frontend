@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useGuideStepManager } from '../../../../../../state/user/hooks'
 import { handIcon } from '../../assets'
 import ModalSearchPair from './ModalSearchPair'
-import { useGetPairFromSubgraphAndParse } from '../../../../../../subgraph'
+import { useGetPairFromSubgraphAndParse } from '../../../../../../graphql/hooks'
 
 const OneStep2 = () => {
   const { t } = useTranslation()
