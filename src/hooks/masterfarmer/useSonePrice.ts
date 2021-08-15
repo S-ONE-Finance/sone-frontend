@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import { exchange } from 'apollo/client'
 import { pairsQueryDetail } from 'apollo/queries'
+import { swapClients } from '../../subgraph/clients'
+import { useActiveWeb3React } from '../index'
 
 const useSonePrice = () => {
+  const { chainId } = useActiveWeb3React()
   const [price, setPrice] = useState(0)
   // TODO: Thay địa chỉ sone và usdt thật ứng với chainId.
   const SONE_ADDRESS = '0x45495bE0FE306679BA8001cD4b10A781a7BBB559'
@@ -18,7 +20,7 @@ const useSonePrice = () => {
 
   useEffect(() => {
     ;(async () => {
-      const result: any = await exchange.query({
+      const result: any = await swapClients[chainId ?? 1].query({
         query: pairsQueryDetail,
         variables: {
           token0: token0.toLowerCase(),
@@ -36,7 +38,7 @@ const useSonePrice = () => {
         setPrice(0)
       }
     })()
-  }, [token0, token1])
+  }, [chainId, token0, token1])
 
   return price
 }

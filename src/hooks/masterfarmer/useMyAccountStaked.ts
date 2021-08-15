@@ -3,12 +3,12 @@ import { calculateAPY, UserInfoSone } from '@s-one-finance/sdk-core'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
 
-import { exchange, masterchef } from 'apollo/client'
-import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
+import useAverageBlockTime from 'hooks/masterfarmer/useAverageBlockTime'
 import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'apollo/queries'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
+import { stakingClients, swapClients } from '../../subgraph/clients'
 
 const useMyAccountStaked = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -16,16 +16,16 @@ const useMyAccountStaked = () => {
   const [users, setUsers] = useState<UserInfoSone[]>([])
   const sonePrice = useSonePrice()
   const block = useBlockNumber()
+  const averageBlockTime = useAverageBlockTime()
 
   const fetchDataStaked = useCallback(async () => {
     const results = await Promise.all([
-      masterchef.query({
+      stakingClients[chainId ?? 1].query({
         query: poolUserWithPoolDetailQuery,
         variables: {
           address: account?.toLowerCase()
         }
-      }),
-      getAverageBlockTime()
+      })
     ])
     const users = results[0]?.data.users
     const pairAddresses = users
@@ -33,12 +33,10 @@ const useMyAccountStaked = () => {
         return user.pool?.pair
       })
       .sort()
-    const pairsQuery = await exchange.query({
+    const pairsQuery = await swapClients[chainId ?? 1].query({
       query: pairSubsetQuery,
       variables: { pairAddresses }
     })
-    const averageBlockTime = results[1]
-
     const pairs = pairsQuery?.data.pairs
 
     const userData: UserInfoSone[] = users.map((user: any) => {
@@ -96,7 +94,7 @@ const useMyAccountStaked = () => {
 
     const sorted = orderBy(userData, ['id'], ['desc'])
     return sorted
-  }, [account, block, sonePrice])
+  }, [chainId, account, averageBlockTime, sonePrice, block])
 
   useEffect(() => {
     const fetchData = async () => {

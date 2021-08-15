@@ -5,7 +5,7 @@ import { RowFixed } from '../Row'
 import { TYPE } from '../../theme'
 import { ArrowDown, ArrowUp } from 'react-feather'
 
-import { getFormattedNumber } from '../../subgraph/utils/formatter'
+import { getFormattedNumber } from '../../utils/formatNumber'
 
 interface PairInfoProps {
   pairName: string

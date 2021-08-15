@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 
-import { getNumberCommas } from '../../../subgraph/utils/formatter'
+import { getNumberCommas } from '../../../utils/formatNumber'
 
 export const getBalanceNumber = (balance: string, decimals = 18) => {
   return new BigNumber(balance).dividedBy(new BigNumber(10).pow(decimals)).toNumber()

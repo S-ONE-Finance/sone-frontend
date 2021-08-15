@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { LiquidityPosition } from '@s-one-finance/sdk-core'
 
-import { exchange } from 'apollo/client'
 import { liquidityPositionSubsetQuery } from 'apollo/queries'
 import { useActiveWeb3React } from 'hooks'
+import { swapClients } from '../../subgraph/clients'
 
 const useMyLPToken = () => {
   const { account, chainId } = useActiveWeb3React()
@@ -11,7 +11,7 @@ const useMyLPToken = () => {
 
   useEffect(() => {
     ;(async () => {
-      const result = await exchange.query({
+      const result = await swapClients[chainId ?? 1].query({
         query: liquidityPositionSubsetQuery,
         variables: { user: account?.toLowerCase() }
       })

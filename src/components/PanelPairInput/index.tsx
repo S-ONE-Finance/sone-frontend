@@ -9,7 +9,7 @@ import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../hooks'
 import { TextPanelLabel, TextPanelLabelAccent } from 'theme'
 import { Container, InputRow, LabelRow, RowBalance, StyledBalanceMax } from '../PanelCurrencyInput'
-import { getNumberCommas } from '../../subgraph/utils/formatter'
+import { getNumberCommas } from '../../utils/formatNumber'
 import styled from 'styled-components'
 import LiquidityProviderTokenLogo from '../LiquidityProviderTokenLogo'
 

@@ -21,7 +21,7 @@ import TransactionConfirmationModal, { ConfirmationModalContent } from '../../co
 import { TruncatedText } from '../../components/swap/styleds'
 import useTheme from '../../hooks/useTheme'
 import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenLogo'
-import { getNumberCommas } from '../../subgraph/utils/formatter'
+import { getNumberCommas } from '../../utils/formatNumber'
 import useTokenBalance from '../../hooks/masterfarmer/useTokenBalance'
 import usePendingReward from '../../hooks/masterfarmer/usePendingReward'
 import { useBlockNumber } from '../../state/application/hooks'

@@ -1,42 +1,43 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Farm } from '@s-one-finance/sdk-core/'
 import { calculateAPY } from '@s-one-finance/sdk-core'
 
-import { exchange, masterchef } from 'apollo/client'
-import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
+import useAverageBlockTime from 'hooks/masterfarmer/useAverageBlockTime'
 import { pairSubsetQuery, poolsQueryDetail, poolUserDetailQuery } from 'apollo/queries'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
+import { stakingClients, swapClients } from '../../subgraph/clients'
+import useUnmountedRef from '../useUnmountedRef'
 
 const useFarm = (id: string) => {
   const { account, chainId } = useActiveWeb3React()
+  const unmountedRef = useUnmountedRef()
   const block = useBlockNumber()
   const [farm, setFarm] = useState<Farm>()
   const sonePrice = useSonePrice()
+  const averageBlockTime = useAverageBlockTime()
 
   const fetchFarmsDetail = useCallback(async () => {
     const results = await Promise.all([
-      masterchef.query({
+      stakingClients[chainId ?? 1].query({
         query: poolsQueryDetail,
         variables: { id: id }
       }),
-      masterchef.query({
+      stakingClients[chainId ?? 1].query({
         query: poolUserDetailQuery,
         variables: {
           id: `${id}-${account?.toLowerCase()}`
         }
-      }),
-      getAverageBlockTime()
+      })
     ])
     const farm = results[0]?.data.pools[0]
-    const dataPair = await exchange.query({
+    const dataPair = await swapClients[chainId ?? 1].query({
       query: pairSubsetQuery,
       variables: { pairAddresses: [farm.pair] }
     })
     const pair = dataPair?.data.pairs[0]
     const userInfo = results[1]?.data?.users[0]
-    const averageBlockTime = results[2]
     const blocksPerHour = 3600 / Number(averageBlockTime)
     const balance = Number(farm.balance / 1e18)
     const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
@@ -78,22 +79,14 @@ const useFarm = (id: string) => {
       secondsPerBlock: Number(averageBlockTime),
       userInfo: userInfo || {}
     }
-  }, [id, account, sonePrice, block])
-
-  const isUnmounted = useRef(false)
-
-  useEffect(() => {
-    return () => {
-      isUnmounted.current = true
-    }
-  }, [])
+  }, [chainId, id, account, averageBlockTime, sonePrice, block])
 
   useEffect(() => {
     ;(async () => {
       const results = await fetchFarmsDetail()
-      if (!isUnmounted.current) setFarm(results)
+      if (!unmountedRef.current) setFarm(results)
     })()
-  }, [chainId, fetchFarmsDetail])
+  }, [unmountedRef, chainId, fetchFarmsDetail])
 
   return farm
 }

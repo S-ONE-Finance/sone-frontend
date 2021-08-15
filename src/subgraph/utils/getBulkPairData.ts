@@ -1,9 +1,32 @@
-import { clients } from '../apollo/client'
-import { PAIR_DATA, PAIRS_BULK, PAIRS_HISTORICAL_BULK } from '../apollo/queries'
-
-import parseData from './parseData'
+import { swapClients } from '../clients'
+import { PAIR_DATA, PAIRS_BULK, PAIRS_HISTORICAL_BULK } from '../queries'
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+import parseBulkPairData from './parseBulkPairData'
 import getBlocksFromTimestamps from './getBlocksFromTimestamps'
-import getTimestampsForChanges from './getTimestampsForChanges'
+
+dayjs.extend(utc)
+
+function getTimestampsForChanges() {
+  const utcCurrentTime = dayjs()
+  const t1Day = utcCurrentTime
+    .subtract(1, 'day')
+    .startOf('minute')
+    .unix()
+  const t2Day = utcCurrentTime
+    .subtract(2, 'day')
+    .startOf('minute')
+    .unix()
+  const tWeek = utcCurrentTime
+    .subtract(1, 'week')
+    .startOf('minute')
+    .unix()
+  const t2Week = utcCurrentTime
+    .subtract(2, 'week')
+    .startOf('minute')
+    .unix()
+  return [t1Day, t2Day, tWeek, t2Week]
+}
 
 /**
  * Get một đống data trong "hiện tại", "1 day ago", "2 days ago",
@@ -21,7 +44,7 @@ export default async function getBulkPairData(chainId: number | undefined, pairI
     if (b1Day === undefined || b2Day === undefined || b1Week === undefined || b2Week === undefined) return []
 
     // Lấy data current.
-    const current = await clients[chainId].query({
+    const current = await swapClients[chainId].query({
       query: PAIRS_BULK,
       variables: {
         allPairs: pairIds
@@ -32,7 +55,7 @@ export default async function getBulkPairData(chainId: number | undefined, pairI
     // Lấy data quá khứ.
     const [oneDayResult, twoDayResult, oneWeekResult, twoWeekResult] = await Promise.all(
       [b1Day, b2Day, b1Week, b2Week].map(async block => {
-        return clients[chainId].query({
+        return swapClients[chainId].query({
           query: PAIRS_HISTORICAL_BULK(block, pairIds),
           fetchPolicy: 'network-only'
         })
@@ -65,7 +88,7 @@ export default async function getBulkPairData(chainId: number | undefined, pairI
           async function getHistoryFromData(data: any, blockNumber: number) {
             let history = data?.[pair.id]
             if (chainId !== undefined && !history) {
-              const newData = await clients[chainId].query({
+              const newData = await swapClients[chainId].query({
                 query: PAIR_DATA(pair.id, blockNumber),
                 fetchPolicy: 'cache-first'
               })
@@ -80,7 +103,7 @@ export default async function getBulkPairData(chainId: number | undefined, pairI
 
           // Nếu không có data quá khứ thì trả về null.
           if (oneDayHistory && twoDayHistory && oneWeekHistory && twoWeekHistory) {
-            data = parseData(data, oneDayHistory, twoDayHistory, oneWeekHistory, twoWeekHistory)
+            data = parseBulkPairData(data, oneDayHistory, twoDayHistory, oneWeekHistory, twoWeekHistory)
             return data
           } else {
             return null

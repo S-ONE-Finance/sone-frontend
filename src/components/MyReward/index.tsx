@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { RowFixed } from '../Row'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { getNumberCommas } from '../../subgraph/utils/formatter'
+import { getNumberCommas } from '../../utils/formatNumber'
 
 const MyRewardContainer = styled.div`
   padding: 1.5rem 0 1.5rem 2.5rem;

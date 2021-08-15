@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { UserInfoSone } from '@s-one-finance/sdk-core'
 
-import { masterchef } from 'apollo/client'
 import { poolUserQuery } from 'apollo/queries'
 import { useActiveWeb3React } from 'hooks'
+import { stakingClients } from '../../subgraph/clients'
 
 const useMyStaked = () => {
   const { account, chainId } = useActiveWeb3React()
@@ -12,7 +12,7 @@ const useMyStaked = () => {
   useEffect(() => {
     ;(async () => {
       if (account) {
-        const result: any = await masterchef.query({
+        const result: any = await stakingClients[chainId ?? 1].query({
           query: poolUserQuery,
           variables: {
             address: account.toLowerCase()

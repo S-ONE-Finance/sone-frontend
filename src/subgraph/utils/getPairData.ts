@@ -1,5 +1,5 @@
-import { clients } from '../apollo/client'
-import { PAIRS_BULK } from '../apollo/queries'
+import { swapClients } from '../clients'
+import { PAIRS_BULK } from '../queries'
 
 /**
  * Get data sử dụng cho select pair
@@ -10,7 +10,7 @@ export default async function getPairData(chainId: number | undefined, pairIds: 
 
   try {
     // Lấy data current.
-    const result = await clients[chainId].query({
+    const result = await swapClients[chainId].query({
       query: PAIRS_BULK,
       variables: {
         allPairs: pairIds

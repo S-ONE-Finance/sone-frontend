@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { ColumnCenter } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
-import { getFormattedNumber } from '../../subgraph/utils/formatter'
+import { getFormattedNumber } from '../../utils/formatNumber'
 import styled from 'styled-components'
 import Row from '../Row'
 import { ExternalLink } from '../../theme'

@@ -7,8 +7,8 @@
  * @param {*} valueBefore2
  */
 export const get2PeriodPercentChange = (valueNow: number, valueBefore1: number, valueBefore2: number) => {
-  let currentChange = valueNow - valueBefore1
-  let previousChange = valueBefore1 - valueBefore2
+  const currentChange = valueNow - valueBefore1
+  const previousChange = valueBefore1 - valueBefore2
 
   if (currentChange === 0 && previousChange === 0) {
     return [0, 0]

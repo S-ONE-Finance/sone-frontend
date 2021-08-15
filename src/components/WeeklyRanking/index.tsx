@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { useWeeklyRankingData } from '../../subgraph'
+import { useWeeklyRankingData } from '../../subgraph/hooks'
 import Row from '../Row'
 import QuestionHelper from '../QuestionHelper'
 import { useIsUpToExtraSmall, useIsUpToSmall } from '../../hooks/useWindowSize'

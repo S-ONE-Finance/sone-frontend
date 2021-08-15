@@ -1,7 +1,51 @@
-import { blockClients } from '../apollo/client'
-import { GET_BLOCKS } from '../apollo/queries'
+import { ApolloClient } from 'apollo-client'
+import { NormalizedCacheObject } from 'apollo-cache-inmemory'
 
-import splitQuery from './splitQuery'
+import { blockClients } from '../clients'
+import { GET_BLOCKS } from '../queries'
+
+/**
+ *
+ * @param query Đúng ra type phải là "DocumentNode", nhưng để sử dụng type đấy phải import graphql lib, mất công
+ * @param localClient
+ * @param vars
+ * @param list
+ * @param skipCount
+ */
+async function splitQuery(
+  query: any,
+  localClient: ApolloClient<NormalizedCacheObject>,
+  vars: string[],
+  list: number[],
+  skipCount = 100
+) {
+  let fetchedData = {}
+  let allFound = false
+  let skip = 0
+
+  while (!allFound) {
+    let end = list.length
+    if (skip + skipCount < list.length) {
+      end = skip + skipCount
+    }
+    const sliced = list.slice(skip, end)
+    const result = await localClient.query({
+      query: query(...vars, sliced),
+      fetchPolicy: 'cache-first'
+    })
+    fetchedData = {
+      ...fetchedData,
+      ...result.data
+    }
+    if (Object.keys(result.data).length < skipCount || skip + skipCount > list.length) {
+      allFound = true
+    } else {
+      skip += skipCount
+    }
+  }
+
+  return fetchedData
+}
 
 /**
  * @notice Fetches block objects for an array of timestamps.

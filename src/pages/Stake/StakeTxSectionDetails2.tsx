@@ -5,7 +5,7 @@ import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { useTranslation } from 'react-i18next'
 import { SectionDetails } from '../Unstake/UnstakeTxSectionDetails'
 import StakeTxDetailRow from './StakeTxDetailRow'
-import { getNumberCommas } from '../../subgraph/utils/formatter'
+import { getNumberCommas } from '../../utils/formatNumber'
 
 export default function StakeTxSectionDetails2({
   rewardPerBlock,

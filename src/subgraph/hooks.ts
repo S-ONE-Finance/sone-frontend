@@ -1,8 +1,8 @@
 // TODO: Chuyển mọi hooks sang sử dụng sdk của @s-one-finance.
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { clients } from './apollo/client'
-import { PAIRS_CURRENT } from './apollo/queries'
+import { swapClients } from './clients'
+import { PAIRS_CURRENT } from './queries'
 
 import getBulkPairData from './utils/getBulkPairData'
 import getPairData from './utils/getPairData'
@@ -11,13 +11,14 @@ import getCaseSensitiveAddress from './utils/getCaseSensitiveAddress'
 import { useIsUpToExtraSmall } from '../hooks/useWindowSize'
 import { Pair, Token } from '@s-one-finance/sdk-core'
 import { PairState, usePairs } from 'data/Reserves'
+import useUnmountedRef from '../hooks/useUnmountedRef'
 
 async function getPairIds(chainId?: number) {
   if (chainId === undefined) return []
 
   const {
     data: { pairs }
-  } = await clients[chainId].query({
+  } = await swapClients[chainId].query({
     query: PAIRS_CURRENT,
     fetchPolicy: 'cache-first'
   })
@@ -32,27 +33,24 @@ async function getPairIds(chainId?: number) {
 export function useBulkPairData() {
   const [subgraphData, setSubgraphData] = useState<any[]>([])
   const { chainId } = useActiveWeb3React()
-  const isUnmounted = useRef(false)
+  const unmountedRef = useUnmountedRef()
 
-  useEffect(() => {
-    return () => {
-      isUnmounted.current = true
-    }
-  }, [])
+  const getData = useCallback(
+    async chainId => {
+      const pairIds = await getPairIds(chainId)
 
-  const getData = useCallback(async chainId => {
-    const pairIds = await getPairIds(chainId)
-
-    // Get data for every pair in list.
-    const data = await getBulkPairData(chainId, pairIds)
-    if (!isUnmounted.current) {
-      if (Array.isArray(data) && data.length > 0) {
-        setSubgraphData(data)
-      } else {
-        console.error('Array trả về lỗi', data)
+      // Get data for every pair in list.
+      const data = await getBulkPairData(chainId, pairIds)
+      if (!unmountedRef.current) {
+        if (Array.isArray(data) && data.length > 0) {
+          setSubgraphData(data)
+        } else {
+          console.error('Array trả về lỗi', data)
+        }
       }
-    }
-  }, [])
+    },
+    [unmountedRef]
+  )
 
   useEffect(() => {
     getData(chainId).then()

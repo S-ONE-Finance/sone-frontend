@@ -1,4 +1,4 @@
-import { get2PeriodPercentChange, getPercentChange } from './getChange'
+import { get2PeriodPercentChange, getPercentChange } from './getPercentChange'
 
 interface BasicData {
   token0?: {
@@ -44,7 +44,13 @@ function updateNameData(data: BasicData): BasicData | undefined {
   return data
 }
 
-export default function parseData(data: any, oneDayData: any, twoDayData: any, oneWeekData: any, twoWeekData: any) {
+export default function parseBulkPairData(
+  data: any,
+  oneDayData: any,
+  twoDayData: any,
+  oneWeekData: any,
+  twoWeekData: any
+) {
   if (!data) {
     throw new Error('Pass the empty data current')
   }

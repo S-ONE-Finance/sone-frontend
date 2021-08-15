@@ -5,12 +5,12 @@ import { calculateAPY, ChainId } from '@s-one-finance/sdk-core'
 import { Farm } from '@s-one-finance/sdk-core/'
 
 import { liquidityPositionSubsetQuery, pairSubsetQuery, poolsQuery } from 'apollo/queries'
-import { exchange, masterchef } from 'apollo/client'
-import { getAverageBlockTime } from 'apollo/getAverageBlockTime'
+import useAverageBlockTime from 'hooks/masterfarmer/useAverageBlockTime'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
 import { MASTER_FARMER_ADDRESS } from '../../constants'
+import { stakingClients, swapClients } from '../../subgraph/clients'
 
 const useFarms = () => {
   const { account, chainId } = useActiveWeb3React()
@@ -18,17 +18,17 @@ const useFarms = () => {
   const sonePrice = useSonePrice()
   const block = useBlockNumber()
   const masterFarmerAddress: string = MASTER_FARMER_ADDRESS[chainId as ChainId]
+  const averageBlockTime = useAverageBlockTime()
 
   const fetchSLPFarms = useCallback(async () => {
     const results = await Promise.all([
-      masterchef.query({
+      stakingClients[chainId ?? 1].query({
         query: poolsQuery
       }),
-      exchange.query({
+      swapClients[chainId ?? 1].query({
         query: liquidityPositionSubsetQuery,
         variables: { user: masterFarmerAddress.toLowerCase() }
-      }),
-      getAverageBlockTime()
+      })
     ])
     const pools = results[0]?.data.pools
     const pairAddresses = pools
@@ -36,13 +36,11 @@ const useFarms = () => {
         return pool.pair
       })
       .sort()
-    const pairsQuery = await exchange.query({
+    const pairsQuery = await swapClients[chainId ?? 1].query({
       query: pairSubsetQuery,
       variables: { pairAddresses }
     })
     const liquidityPositions = results[1]?.data.liquidityPositions
-    const averageBlockTime = results[2]
-
     const pairs = pairsQuery?.data.pairs
 
     const farms: Farm[] = pools
@@ -103,7 +101,7 @@ const useFarms = () => {
 
     const sorted = orderBy(farms, ['pid'], ['desc'])
     return sorted
-  }, [block, masterFarmerAddress, sonePrice])
+  }, [chainId, masterFarmerAddress, averageBlockTime, sonePrice, block])
 
   useEffect(() => {
     const fetchData = async () => {

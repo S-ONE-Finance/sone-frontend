@@ -27,7 +27,7 @@ import { getBalanceNumber, getBalanceStringCommas } from '../../hooks/masterfarm
 import BigNumber from 'bignumber.js'
 import useStakeHandler from '../../hooks/masterfarmer/useStakeHandler'
 import { TruncatedText } from '../../components/swap/styleds'
-import { getNumberCommas } from '../../subgraph/utils/formatter'
+import { getNumberCommas } from '../../utils/formatNumber'
 import { Text } from 'rebass'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import useAllowance from '../../hooks/masterfarmer/useAllowance'

@@ -22,7 +22,7 @@ import ButtonGrouping from './ButtonGrouping'
 import ModalFooter from './ModalFooter'
 import ModalHeader from './ModalHeader'
 import TransactionDetails from './TransactionDetails'
-import { useGetPairFromSubgraphAndParse } from '../../../subgraph'
+import { useGetPairFromSubgraphAndParse } from '../../../subgraph/hooks'
 import { StyledArrowDown } from '../../../theme'
 
 type ModeOneTokenProps = {
