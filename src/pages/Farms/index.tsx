@@ -5,16 +5,16 @@ import BigNumber from 'bignumber.js'
 import { Farm, LiquidityPosition, UserInfoSone } from '@s-one-finance/sdk-core'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
-import useMyStaked from 'hooks/masterfarmer/useMyStaked'
-import useMyLPToken from 'hooks/masterfarmer/useMyLPToken'
 import Balances from './Balances'
 import FarmCards from './FarmCards'
 import StakingHeader from './StakingHeader'
-import useFarms from '../../hooks/masterfarmer/useFarms'
 import FilterC from './FilterC'
 import { pxToRem } from '../../utils/PxToRem'
 import iconFilter from '../../assets/images/icon-filter.svg'
 import iconSort from '../../assets/images/icon-sort.svg'
+import useFarms from '../../hooks/staking/useFarms'
+import useMyStaked from '../../hooks/staking/useMyStaked'
+import useMyLpToken from '../../hooks/staking/useMyLpToken'
 
 type Options = {
   value: string
@@ -29,7 +29,7 @@ export default function Farms() {
 
   const farms: Farm[] = useFarms()
   const myStaked: UserInfoSone[] = useMyStaked()
-  const myLpToken: LiquidityPosition[] = useMyLPToken()
+  const myLpToken: LiquidityPosition[] = useMyLpToken()
 
   const [sortBy, setSortBy] = useState(t('bonus_campaign'))
   const [filter, setFilter] = useState(t('active_pool'))

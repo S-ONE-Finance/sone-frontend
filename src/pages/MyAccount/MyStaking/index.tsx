@@ -5,7 +5,7 @@ import { CardStaking, Heading, PlusIcon, Section, SectionButton, SectionText, St
 import { RowBetween, RowFitContent } from '../../../components/Row'
 import MyStakingItem from './MyStakingItem'
 import OverallNetAPY from './OverallNetAPY'
-import useMyAccountStaked from '../../../hooks/masterfarmer/useMyAccountStaked'
+import useMyAccountStaked from '../../../hooks/staking/useMyAccountStaked'
 import LoaderSone from '../../../components/LoaderSone'
 
 export default function MyStaking() {

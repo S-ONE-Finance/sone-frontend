@@ -32,7 +32,10 @@ export default function useAverageBlockTime(): number {
 
   const { data: blocks, isSuccess }: { data: BlocksResponse[] | undefined; isSuccess: boolean } = useQuery(
     'useAverageBlockTime',
-    queryFn
+    queryFn,
+    {
+      enabled: Boolean(chainId)
+    }
   )
 
   // If request failed then make average block time is 15 seconds by default

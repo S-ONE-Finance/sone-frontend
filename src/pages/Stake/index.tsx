@@ -19,19 +19,19 @@ import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenL
 import StakeTxSectionDetails2 from './StakeTxSectionDetails2'
 import { useParams } from 'react-router-dom'
 import { Farm, PoolInfo, UserInfo } from '@s-one-finance/sdk-core'
-import useFarm from '../../hooks/masterfarmer/useFarm'
+import useFarm from '../../hooks/staking/useFarm'
 import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
 import { useActiveWeb3React } from '../../hooks'
-import useTokenBalance from '../../hooks/masterfarmer/useTokenBalance'
+import useLpTokenBalance from '../../hooks/staking/useLpTokenBalance'
 import { getBalanceNumber, getBalanceStringCommas } from '../../utils/formatNumber'
 import BigNumber from 'bignumber.js'
-import useStakeHandler from '../../hooks/masterfarmer/useStakeHandler'
+import useStakeHandler from '../../hooks/staking/useStakeHandler'
 import { TruncatedText } from '../../components/swap/styleds'
 import { getNumberCommas } from '../../utils/formatNumber'
 import { Text } from 'rebass'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
-import useAllowance from '../../hooks/masterfarmer/useAllowance'
-import useApproveHandler from '../../hooks/masterfarmer/useApproveHandler'
+import useAllowance from '../../hooks/staking/useAllowance'
+import useApproveHandler from '../../hooks/staking/useApproveHandler'
 
 export default function Staking() {
   const { t } = useTranslation()
@@ -47,7 +47,7 @@ export default function Staking() {
   const [typedValue, setTypedValue] = useState('')
 
   const { pairAddress, symbol } = farm || {}
-  const lpBalanceRaw = useTokenBalance(pairAddress)
+  const lpBalanceRaw = useLpTokenBalance(pairAddress)
   const lpBalance = pairAddress && lpBalanceRaw ? getBalanceNumber(lpBalanceRaw.toString()) : undefined
 
   const toggleWalletModal = useWalletModalToggle()

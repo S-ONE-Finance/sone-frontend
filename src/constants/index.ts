@@ -42,6 +42,7 @@ export const UNI: { [chainId in ChainId]: Token } = {
 
 const TEMP = '0x0000000000000000000000000000000000000000'
 const SONE_ADDRESS = '0x57bb30bdb0d449bf687ed648acf2467f045c8e74'
+export const SONE_PRICE_MINIMUM = 0.00001 // 1 SONE >= 0.00001 USDT
 
 // TODO: Need fill address of sone in all 5 networks.
 export const SONE: { [chainId in ChainId]: Token } = {
@@ -52,7 +53,7 @@ export const SONE: { [chainId in ChainId]: Token } = {
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, TEMP, 18, 'SONE', 'S-ONE Finance')
 }
 
-export const MASTER_FARMER_ADDRESS: { [chainId in ChainId]: string } = {
+export const SONE_MASTER_FARMER_ADDRESS: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '',
   [ChainId.RINKEBY]: '',
   [ChainId.ROPSTEN]: '0xfF219ff53d0f86685968348D96eBdb951341707D',

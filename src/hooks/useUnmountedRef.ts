@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react'
 
-const useUnmountedRef = () => {
+export default function useUnmountedRef() {
   const unmountedRef = useRef(false)
 
   useEffect(() => {
@@ -13,5 +13,3 @@ const useUnmountedRef = () => {
 
   return unmountedRef
 }
-
-export default useUnmountedRef

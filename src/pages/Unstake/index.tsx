@@ -15,15 +15,15 @@ import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { getBalanceNumber, getBalanceStringCommas } from '../../utils/formatNumber'
 import { useParams } from 'react-router-dom'
 import { Farm, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
-import useFarm from '../../hooks/masterfarmer/useFarm'
-import useUnstake from '../../hooks/masterfarmer/useUnstake'
+import useFarm from '../../hooks/staking/useFarm'
+import useUnstakeHandler from '../../hooks/staking/useUnstakeHandler'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
 import { TruncatedText } from '../../components/swap/styleds'
 import useTheme from '../../hooks/useTheme'
 import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenLogo'
 import { getNumberCommas } from '../../utils/formatNumber'
-import useTokenBalance from '../../hooks/masterfarmer/useTokenBalance'
-import usePendingReward from '../../hooks/masterfarmer/usePendingReward'
+import useLpTokenBalance from '../../hooks/staking/useLpTokenBalance'
+import usePendingReward from '../../hooks/staking/usePendingReward'
 import { useBlockNumber } from '../../state/application/hooks'
 import BigNumber from 'bignumber.js'
 import { tryParseAmount } from '../../state/swap/hooks'
@@ -97,7 +97,7 @@ export default function Unstake() {
   const [remainStakedLp, setRemainStakedLp] = useState('0')
   const [availableReward, setAvailableReward] = useState('0')
 
-  const tokenBalance = useTokenBalance(farm?.pairAddress)
+  const tokenBalance = useLpTokenBalance(farm?.pairAddress)
   const pendingReward = usePendingReward(Number(farm?.id))
   const block = useBlockNumber()
 
@@ -130,7 +130,7 @@ export default function Unstake() {
     setTxHash('')
   }
 
-  const { onUnstake: _onUnstake } = useUnstake(Number(farmId))
+  const _onUnstake = useUnstakeHandler(Number(farmId))
   const onUnstake = async () => {
     if (!error) {
       setAttemptingTxn(true)

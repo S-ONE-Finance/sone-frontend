@@ -6,7 +6,7 @@ import { abi as MERKLE_DISTRIBUTOR_ABI } from '@uniswap/merkle-distributor/build
 import { ChainId, WETH } from '@s-one-finance/sdk-core'
 import { abi as IUniswapV2PairABI } from '@s-one-finance/core/build/contracts/IUniswapV2Pair.json'
 import { useMemo } from 'react'
-import { GOVERNANCE_ADDRESS, MASTER_FARMER_ADDRESS, MERKLE_DISTRIBUTOR_ADDRESS, UNI } from '../constants'
+import { GOVERNANCE_ADDRESS, SONE_MASTER_FARMER_ADDRESS, MERKLE_DISTRIBUTOR_ADDRESS, UNI } from '../constants'
 import {
   ARGENT_WALLET_DETECTOR_ABI,
   ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS
@@ -132,9 +132,9 @@ export function useSocksController(): Contract | null {
   )
 }
 
-export function useMasterFarmerContract(withSignerIfPossible?: boolean): Contract | null {
+export function useSoneMasterFarmerContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId && MASTER_FARMER_ADDRESS[chainId], SoneMasterFarmerABI, withSignerIfPossible)
+  return useContract(chainId && SONE_MASTER_FARMER_ADDRESS[chainId], SoneMasterFarmerABI, withSignerIfPossible)
 }
 
 export function useSoneContract(withSignerIfPossible = true): Contract | null {
@@ -143,6 +143,7 @@ export function useSoneContract(withSignerIfPossible = true): Contract | null {
   return useContract('0x45495bE0FE306679BA8001cD4b10A781a7BBB559', SoneTokenABI, withSignerIfPossible)
 }
 
-export function useLPContract(lpTokenAddress?: string, withSignerIfPossible = true): Contract | null {
+// TODO: hook này chưa áp dụng chainId vào?
+export function useLpContract(lpTokenAddress?: string, withSignerIfPossible = true): Contract | null {
   return useContract(lpTokenAddress, UniswapV2PairABI, withSignerIfPossible)
 }

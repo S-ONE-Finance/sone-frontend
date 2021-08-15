@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import useMyAccountStaked from '../../../hooks/masterfarmer/useMyAccountStaked'
+import useMyAccountStaked from '../../../hooks/staking/useMyAccountStaked'
 import { UserInfoSone } from '@s-one-finance/sdk-core'
 
 const StakingBackground = styled.div`

@@ -1,25 +1,26 @@
-import { useEffect, useState } from 'react'
 import { LiquidityPosition } from '@s-one-finance/sdk-core'
 
 import { liquidityPositionSubsetQuery } from 'graphql/stakingQueries'
 import { useActiveWeb3React } from 'hooks'
 import { swapClients } from '../../graphql/clients'
+import { useQuery } from 'react-query'
 
-const useMyLPToken = () => {
+// TODO: useMyLpToken is called many times.
+export default function useMyLpToken(): LiquidityPosition[] {
+  // console.log(`I'm here:`)
   const { account, chainId } = useActiveWeb3React()
-  const [myLiquidity, setMyLiquidity] = useState<LiquidityPosition[]>([])
 
-  useEffect(() => {
-    ;(async () => {
+  const { data: myLpToken } = useQuery(
+    ['useMyLpToken', account, chainId],
+    async () => {
       const result = await swapClients[chainId ?? 1].query({
         query: liquidityPositionSubsetQuery,
         variables: { user: account?.toLowerCase() }
       })
-      const data = result?.data?.liquidityPositions
-      setMyLiquidity(data)
-    })()
-  }, [account, chainId, setMyLiquidity])
-  return myLiquidity
-}
+      return result?.data?.liquidityPositions
+    },
+    { enabled: Boolean(chainId && account) }
+  )
 
-export default useMyLPToken
+  return myLpToken ?? []
+}

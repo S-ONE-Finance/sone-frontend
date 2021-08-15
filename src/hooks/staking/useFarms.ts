@@ -1,3 +1,5 @@
+// TODO: dungnh: Not refactor yet!
+
 import { useCallback, useEffect, useState } from 'react'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
@@ -5,11 +7,11 @@ import { calculateAPY, ChainId } from '@s-one-finance/sdk-core'
 import { Farm } from '@s-one-finance/sdk-core/'
 
 import { liquidityPositionSubsetQuery, pairSubsetQuery, poolsQuery } from 'graphql/stakingQueries'
-import useAverageBlockTime from 'hooks/masterfarmer/useAverageBlockTime'
+import useAverageBlockTime from 'hooks/staking/useAverageBlockTime'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
-import { MASTER_FARMER_ADDRESS } from '../../constants'
+import { SONE_MASTER_FARMER_ADDRESS, SONE_PRICE_MINIMUM } from '../../constants'
 import { stakingClients, swapClients } from '../../graphql/clients'
 
 const useFarms = () => {
@@ -17,7 +19,7 @@ const useFarms = () => {
   const [farms, setFarms] = useState<Farm[]>([])
   const sonePrice = useSonePrice()
   const block = useBlockNumber()
-  const masterFarmerAddress: string = MASTER_FARMER_ADDRESS[chainId as ChainId]
+  const masterFarmerAddress: string = SONE_MASTER_FARMER_ADDRESS[chainId as ChainId]
   const averageBlockTime = useAverageBlockTime()
 
   const fetchSLPFarms = useCallback(async () => {
@@ -60,12 +62,21 @@ const useFarms = () => {
         const rewardPerBlock = ((pool.allocPoint / pool.owner.totalAllocPoint) * pool.owner.sonePerBlock) / 1e18
 
         const investedValue = 1000
-        const LPTokenPrice = pair.reserveUSD / pair.totalSupply
+        const LPTokenPrice = pair.reserveUSD / pair.totalSupply || SONE_PRICE_MINIMUM
+        // console.log(`LPTokenPrice`, LPTokenPrice)
         const LPTokenValue = investedValue / LPTokenPrice
         const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
+        // console.log(`investedValue`, investedValue)
+        // console.log(`LPTokenValue`, LPTokenValue)
         const roiPerBlock = (rewardPerBlock * sonePrice * poolShare) / investedValue
-        const multiplierYear = calculateAPY(Number(averageBlockTime), block || 0)
+        // console.log(`rewardPerBlock`, rewardPerBlock)
+        // console.log(`sonePrice`, sonePrice)
+        // console.log(`poolShare`, poolShare)
+        // console.log(`investedValue`, investedValue)
+        const multiplierYear = calculateAPY(averageBlockTime, block || 0)
         const roiPerYear = multiplierYear * roiPerBlock
+        // console.log(`roiPerBlock`, roiPerBlock)
+        // console.log(`multiplierYear`, multiplierYear)
 
         const rewardPerDay = rewardPerBlock * blocksPerHour * 24
         const soneHarvested = pool.soneHarvested > 0 ? pool.soneHarvested : 0

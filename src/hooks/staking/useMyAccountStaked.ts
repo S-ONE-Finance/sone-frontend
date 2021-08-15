@@ -1,9 +1,11 @@
+// TODO: dungnh: Not refactor yet!
+
 import { useCallback, useEffect, useState } from 'react'
 import { calculateAPY, UserInfoSone } from '@s-one-finance/sdk-core'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
 
-import useAverageBlockTime from 'hooks/masterfarmer/useAverageBlockTime'
+import useAverageBlockTime from 'hooks/staking/useAverageBlockTime'
 import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'graphql/stakingQueries'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'

@@ -27,9 +27,9 @@ import { useIsDarkMode } from '../../../state/user/hooks'
 import SoneLogoSvg from '../../../assets/images/logo_token_sone.svg'
 import TickIconSvg from '../../../assets/images/tick-icon.svg'
 import { HideExtraSmall } from '../../../theme'
-import usePendingReward from '../../../hooks/masterfarmer/usePendingReward'
+import usePendingReward from '../../../hooks/staking/usePendingReward'
 import { getBalanceNumber } from '../../../utils/formatNumber'
-import useClaimReward from '../../../hooks/masterfarmer/useClaimReward'
+import useClaimRewardHandler from '../../../hooks/staking/useClaimRewardHandler'
 import LiquidityProviderTokenLogo from '../../../components/LiquidityProviderTokenLogo'
 
 const DetailedSectionIcon = styled.img`
@@ -213,15 +213,15 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
   const token1Address = userInfo.pool?.liquidityPair.token1.id ?? undefined
 
   const rewardedSone = isNaN(+userInfo.soneHarvested) ? '--' : (+userInfo.soneHarvested).toFixed(6)
-  // TODO: Kiểm tra lại chỗ này, tại sao availableRewardRaw có thể undefined?
-  const availableRewardRaw = usePendingReward(Number(userInfo.pool?.pid))
-  const availableReward = availableRewardRaw === undefined ? '0' : availableRewardRaw.toNumber().toFixed(6)
+  const availableReward = usePendingReward(Number(userInfo.pool?.pid))
+    .toNumber()
+    .toFixed(6)
 
   const myStakedLpToken = getBalanceNumber(userInfo.amount).toFixed(9)
   const apy = userInfo.pool?.roiPerYear === undefined ? '--' : `${userInfo.pool.roiPerYear * 100}%`
 
   const [poolRequestPending, setPoolRequestPending] = useState(false)
-  const { onClaimReward } = useClaimReward()
+  const onClaimReward = useClaimRewardHandler()
   // TODO: Use-case claim reward là gì?
   const claimReward = async (farmId: number | undefined) => {
     if (farmId !== undefined) {

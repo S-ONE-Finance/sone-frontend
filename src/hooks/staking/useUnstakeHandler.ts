@@ -1,23 +1,23 @@
 import { useCallback } from 'react'
+import BigNumber from 'bignumber.js'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 
-import { useMasterFarmerContract } from 'hooks/useContract'
+import { useSoneMasterFarmerContract } from 'hooks/useContract'
 import { useTransactionAdder } from 'state/transactions/hooks'
 
-export default function useClaimReward() {
+export default function useUnstakeHandler(pid: number) {
   const addTransaction = useTransactionAdder()
+  const masterContract: Contract | null = useSoneMasterFarmerContract()
 
-  const masterContract: Contract | null = useMasterFarmerContract()
-
-  const handleClaimReward = useCallback(
-    async (pid: number) => {
+  return useCallback(
+    async (amount: string, symbol: string) => {
       try {
         const tx = masterContract
-          ?.claimReward(pid)
+          ?.withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
           .then((txResponse: TransactionResponse) => {
             addTransaction(txResponse, {
-              summary: 'Claim reward success'
+              summary: `Unstake ${amount} ${symbol} LP Token`
             })
             return txResponse
           })
@@ -28,8 +28,6 @@ export default function useClaimReward() {
         return false
       }
     },
-    [masterContract, addTransaction]
+    [masterContract, pid, addTransaction]
   )
-
-  return { onClaimReward: handleClaimReward }
 }
