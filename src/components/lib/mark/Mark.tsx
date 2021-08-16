@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react'
 import { StakeMark, SwapMark, AddLiquidityMark } from './components'
 import { useGuideStepManager } from '../../../state/user/hooks'

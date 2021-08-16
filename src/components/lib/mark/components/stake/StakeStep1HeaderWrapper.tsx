@@ -278,7 +278,7 @@ export default function Header() {
     <>
       <HeaderFrame>
         {/* Cái này là modal thông báo claim uni, sau này cho thành clame sone modal, giờ chưa cần sử dụng. */}
-        <HeaderControls className="header-wrapper">
+        <HeaderControls>
           <HeaderElement>
             <HideExtraSmall>
               <AccountElement style={{ pointerEvents: 'auto' }}>

@@ -16,7 +16,7 @@ const StyledMarkWrapper = styled.div`
   z-index: 1000;
 `
 
-const Mark = () => {
+const MarkLiquidity = () => {
   const [guideStep, updateStepGuide] = useGuideStepManager()
   const [addLiquidityMode] = useAddLiquidityModeManager()
 
@@ -88,4 +88,4 @@ const Mark = () => {
   )
 }
 
-export default Mark
+export default MarkLiquidity

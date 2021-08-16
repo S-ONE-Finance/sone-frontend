@@ -11,10 +11,10 @@ import StakeStep1 from './stake/StakeStep1'
 import StakeStep2 from './stake/StakeStep2'
 import StakeStep3 from './stake/StakeStep3'
 import StakeStep4 from './stake/StakeStep4'
-import StakeMark from './StakeMark'
-import SwapMark from './SwapMark'
-import AddLiquidityMark from './AddLiquidity'
-import AddLiquiditySep2 from './AddLiquidity/AddLiquiditySep2'
+import StakeMark from './MarkStake'
+import SwapMark from './MarkSwap'
+import AddLiquidityMark from './MarkLiquidity'
+import AddLiquidityStep2 from './AddLiquidity/AddLiquidityStep2'
 import ConnectButton from './AddLiquidity/ConnectButton'
 import OneStep1 from './AddLiquidity/one/OneStep1'
 import OneStep2 from './AddLiquidity/one/OneStep2'
@@ -46,7 +46,7 @@ export {
   SwapMark,
   StakeMark,
   AddLiquidityMark,
-  AddLiquiditySep2,
+  AddLiquidityStep2,
   OneStep1,
   OneStep2,
   OneStep3,

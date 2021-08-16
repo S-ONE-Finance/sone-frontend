@@ -10,19 +10,17 @@ const ConnectButton = ({ children }: ChildrenProp) => {
   const [guideStep] = useGuideStepManager()
 
   return (
-    <>
-      <Step1Wrapper className="step-1">
-        {children}
-        {Number(guideStep.step) === 1 && guideStep.screen === 'liquidity' && (
-          <>
-            <Step1Intro>{t('lets_click_connect_wallet_to_connect_and_start')}</Step1Intro>
-            <StyledHandIcon>
-              <img src={handIcon} alt="hand" />
-            </StyledHandIcon>
-          </>
-        )}
-      </Step1Wrapper>
-    </>
+    <Step1Wrapper className="step-1">
+      {children}
+      {Number(guideStep.step) === 1 && guideStep.screen === 'liquidity' && (
+        <>
+          <Step1Intro>{t('lets_click_connect_wallet_to_connect_and_start')}</Step1Intro>
+          <StyledHandIcon>
+            <img src={handIcon} alt="hand" />
+          </StyledHandIcon>
+        </>
+      )}
+    </Step1Wrapper>
   )
 }
 

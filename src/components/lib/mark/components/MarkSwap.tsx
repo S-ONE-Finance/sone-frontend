@@ -71,7 +71,7 @@ const StyledMarkPaginationButtonSkip = styled.div`
   `};
 `
 
-const Mark = () => {
+const MarkSwap = () => {
   const { t } = useTranslation()
   const [guideStep, updateStepGuide] = useGuideStepManager()
 
@@ -160,4 +160,4 @@ const Mark = () => {
   )
 }
 
-export default Mark
+export default MarkSwap

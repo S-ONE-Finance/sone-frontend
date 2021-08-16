@@ -6,42 +6,40 @@ import { AddLiquidityModeEnum } from '../../../../../state/user/actions'
 import { handIcon } from '../assets'
 import { ChildrenProp } from '../styled'
 
-const AddLiquiditySep2 = ({ children }: ChildrenProp) => {
+const AddLiquidityStep2 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
   const [addLiquidityMode] = useAddLiquidityModeManager()
   const [guideStep] = useGuideStepManager()
 
   return (
-    <>
-      <StepWrapper className="step-2">
-        {children}
-        {Number(guideStep.step) === 2 && guideStep.screen === 'liquidity' && (
-          <>
-            {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
-              <Step2OneToken>
-                <StyledHandIcon>
+    <StepWrapper className="step-2">
+      {children}
+      {Number(guideStep.step) === 2 && guideStep.screen === 'liquidity' && (
+        <>
+          {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
+            <Step2OneToken>
+              <StyledHandIcon>
+                <img src={handIcon} alt="hand" />
+              </StyledHandIcon>
+              <StepIntro>{t('Add One Token mode is recommended')}</StepIntro>
+            </Step2OneToken>
+          ) : (
+            <>
+              <Step2TwoToken>
+                <StylesHandIconTow>
                   <img src={handIcon} alt="hand" />
-                </StyledHandIcon>
-                <StepIntro>{t('Add One Token mode is recommended')}</StepIntro>
-              </Step2OneToken>
-            ) : (
-              <>
-                <Step2TwoToken>
-                  <StylesHandIconTow>
-                    <img src={handIcon} alt="hand" />
-                  </StylesHandIconTow>
-                  <StepIntro>{t('when_add_two_tokens_mode_is_on')}</StepIntro>
-                </Step2TwoToken>
-              </>
-            )}
-          </>
-        )}
-      </StepWrapper>
-    </>
+                </StylesHandIconTow>
+                <StepIntro>{t('when_add_two_tokens_mode_is_on')}</StepIntro>
+              </Step2TwoToken>
+            </>
+          )}
+        </>
+      )}
+    </StepWrapper>
   )
 }
 
-export default AddLiquiditySep2
+export default AddLiquidityStep2
 
 const StepWrapper = styled.div`
   position: relative;
