@@ -19,6 +19,7 @@ import ModalHeader from './ModalHeader'
 import ButtonGrouping from './ButtonGrouping'
 import TransactionDetails from './TransactionDetails'
 import { StyledPlus } from '../../../theme'
+import { useGuideStepManager } from '../../../state/user/hooks'
 
 type ModeTwoTokensProps = {
   currencyIdA: string | undefined
@@ -28,6 +29,7 @@ type ModeTwoTokensProps = {
 export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoTokensProps) {
   const { t } = useTranslation()
   const history = useHistory()
+  const [guideStep] = useGuideStepManager()
 
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
@@ -153,13 +155,13 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
       />
       <AutoColumn gap="md">
         <PanelCurrencyInput
-          value={formattedAmounts[Field.CURRENCY_A]}
+          value={Number(guideStep.step) > 2 ? '2.71828' : formattedAmounts[Field.CURRENCY_A]}
           onUserInput={onFieldAInput}
           onMax={() => {
             onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
           }}
           onCurrencySelect={handleCurrencyASelect}
-          showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+          showMaxButton={Number(guideStep.step) > 2 ? true : !atMaxAmounts[Field.CURRENCY_A]}
           currency={currencies[Field.CURRENCY_A]}
           id="add-liquidity-input-tokena"
           showCommonBases
@@ -172,7 +174,7 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
           </AutoRow>
         </AutoColumn>
         <PanelCurrencyInput
-          value={formattedAmounts[Field.CURRENCY_B]}
+          value={Number(guideStep.step) > 2 ? '81.5484' : formattedAmounts[Field.CURRENCY_B]}
           onUserInput={onFieldBInput}
           onCurrencySelect={handleCurrencyBSelect}
           onMax={() => {

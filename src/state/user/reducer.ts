@@ -17,7 +17,9 @@ import {
   updateUserDeadline,
   updateUserExpertMode,
   updateUserSingleHopOnly,
-  updateUserSlippageTolerance
+  updateUserSlippageTolerance,
+  GuideStep,
+  updateGuideStep
 } from './actions'
 
 const currentTimestamp = () => new Date().getTime()
@@ -56,6 +58,8 @@ export interface UserState {
   URLWarningVisible: boolean
   isShowTransactionDetails: boolean
   addLiquidityMode: AddLiquidityModeEnum
+
+  guideStep: GuideStep
 }
 
 function pairKey(token0Address: string, token1Address: string) {
@@ -74,7 +78,14 @@ export const initialState: UserState = {
   timestamp: currentTimestamp(),
   URLWarningVisible: true,
   isShowTransactionDetails: false,
-  addLiquidityMode: AddLiquidityModeEnum.TwoToken
+  addLiquidityMode: AddLiquidityModeEnum.TwoToken,
+  guideStep: {
+    step: 1,
+    oldStep: 0,
+    isGuide: true,
+    screen: '',
+    showAgain: true
+  }
 }
 
 export default createReducer(initialState, builder =>
@@ -160,5 +171,8 @@ export default createReducer(initialState, builder =>
     })
     .addCase(updateAddLiquidityMode, (state, { payload }) => {
       state.addLiquidityMode = payload
+    })
+    .addCase(updateGuideStep, (state, { payload }) => {
+      state.guideStep = payload
     })
 )

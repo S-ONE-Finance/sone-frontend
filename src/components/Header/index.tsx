@@ -46,7 +46,6 @@ const HeaderFrame = styled.div`
   position: relative;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: 0 80px;
-  z-index: 2;
   background-color: ${({ theme }) => theme.bg1Sone};
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
@@ -454,6 +453,7 @@ export default function Header() {
   const { account } = useActiveWeb3React()
   const [language, setLanguage] = useLanguage()
   const [darkMode, toggleDarkMode] = useDarkModeManager()
+
   const availableClaim: boolean = useUserHasAvailableClaim(account)
   const [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
 

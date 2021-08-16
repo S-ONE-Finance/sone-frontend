@@ -12,6 +12,7 @@ import { Container, InputRow, LabelRow, RowBalance, StyledBalanceMax } from '../
 import { getNumberCommas } from '../../utils/formatNumber'
 import styled from 'styled-components'
 import LiquidityProviderTokenLogo from '../LiquidityProviderTokenLogo'
+import { useGuideStepManager } from '../../state/user/hooks'
 
 const PanelPairLabelRow = styled(LabelRow)`
   padding: 18px 30px 0 30px;
@@ -31,6 +32,17 @@ export const PanelPairInputRow = styled(InputRow)`
   > * + * + * {
     margin-left: 0.625rem;
   }
+`
+
+const BackgroundColor = styled.div`
+  height: 120px;
+  width: 100%;
+  border-radius: 32px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    height: 95px;
+    border-radius: 25px;
+  `};
 `
 
 interface PanelPairInputProps {
@@ -56,38 +68,41 @@ export default function PanelPairInput({
 }: PanelPairInputProps) {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
+  const [guideStep] = useGuideStepManager()
 
   return (
     <Container>
-      <PanelPairLabelRow>
-        <RowBetween align="center">
-          <TextPanelLabel>{label}</TextPanelLabel>
-          {account && (
-            <RowBalance onClick={onMax} gap="0.25rem">
-              <LiquidityProviderTokenLogo
-                address0={address0}
-                address1={address1}
-                size={22}
-                sizeMobile={14}
-                main={false}
-                style={{ marginRight: '0.25rem' }}
-              />
-              <TextPanelLabel>{customBalanceText}</TextPanelLabel>
-              <TextPanelLabelAccent>{balance !== undefined ? getNumberCommas(balance) : '--'}</TextPanelLabelAccent>
-            </RowBalance>
-          )}
-        </RowBetween>
-      </PanelPairLabelRow>
-      <PanelPairInputRow>
-        <NumericalInput
-          className="token-amount-input"
-          value={value}
-          onUserInput={val => {
-            onUserInput(val)
-          }}
-        />
-        {account && <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>}
-      </PanelPairInputRow>
+      <BackgroundColor style={{ backgroundColor: Number(guideStep.step) === 2 ? '#c7c7c7' : 'transparent' }}>
+        <PanelPairLabelRow>
+          <RowBetween align="center">
+            <TextPanelLabel>{label}</TextPanelLabel>
+            {(account || Number(guideStep.step) > 1) && (
+              <RowBalance onClick={onMax} gap="0.25rem">
+                <LiquidityProviderTokenLogo
+                  address0={address0}
+                  address1={address1}
+                  size={22}
+                  sizeMobile={14}
+                  main={false}
+                  style={{ marginRight: '0.25rem' }}
+                />
+                <TextPanelLabel>{customBalanceText}</TextPanelLabel>
+                <TextPanelLabelAccent>{balance !== undefined ? getNumberCommas(balance) : '--'}</TextPanelLabelAccent>
+              </RowBalance>
+            )}
+          </RowBetween>
+        </PanelPairLabelRow>
+        <PanelPairInputRow>
+          <NumericalInput
+            className="token-amount-input"
+            value={value}
+            onUserInput={val => {
+              onUserInput(val)
+            }}
+          />
+          {(account || Number(guideStep.step) > 1) && <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>}
+        </PanelPairInputRow>
+      </BackgroundColor>
     </Container>
   )
 }

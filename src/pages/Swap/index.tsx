@@ -20,6 +20,7 @@ import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
+import { useGuideStepManager } from '../../state/user/hooks'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { getTradeVersion } from '../../data/V1'
@@ -64,6 +65,7 @@ import {
   useIsReferralWorksOnCurrentNetwork,
   useReferral
 } from '../../state/referral/hooks'
+import { SwapStep1, SwapStep3, SwapStep4, SwapStep5, OpenGuide } from '../../components/lib/mark/components'
 import WeeklyRanking from '../../components/WeeklyRanking'
 import TabSwapLiquidity from '../../components/TabSwapLiquidity'
 import BrandIdentitySoneForMobile from '../../components/BrandIdentitySoneForMobile'
@@ -79,6 +81,7 @@ export const ResponsiveAutoColumn = styled(AutoColumn)`
 
 export default function Swap({ history }: RouteComponentProps) {
   const { t } = useTranslation()
+  const [guideStep] = useGuideStepManager()
 
   // For Styling Responsive.
   const isUpToExtraSmall = useIsUpToExtraSmall()
@@ -345,6 +348,28 @@ export default function Swap({ history }: RouteComponentProps) {
   const accountIsReferrer = useAccountIsReferrer()
   const weCanUseReferral = isReferralWorksOnCurrentNetwork && !isAccountReferred && code && !accountIsReferrer
 
+  const tokenToGuide = {
+    decimals: 18,
+    symbol: 'DAI',
+    name: 'Dai Stablecoin',
+    chainId: 1,
+    address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+    tokenInfo: {
+      name: 'Dai Stablecoin',
+      address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+      symbol: 'DAI',
+      decimals: 18,
+      chainId: 1,
+      logoURI:
+        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png'
+    },
+    tags: []
+  }
+
+  const handleCheckOpenGuide = () => {
+    return guideStep.screen === 'swap'
+  }
+
   return (
     <>
       <TokenWarningModal
@@ -371,19 +396,34 @@ export default function Swap({ history }: RouteComponentProps) {
             swapErrorMessage={swapErrorMessage}
             onDismiss={handleConfirmDismiss}
           />
-
           <AutoColumn gap="md">
-            <PanelCurrencyInput
-              label={independentField === Field.OUTPUT && !showWrap && trade ? `${t('from')} (estimated)` : t('from')}
-              value={formattedAmounts[Field.INPUT]}
-              showMaxButton={!atMaxAmountInput}
-              currency={currencies[Field.INPUT]}
-              onUserInput={handleTypeInput}
-              onMax={handleMaxInput}
-              onCurrencySelect={handleInputSelect}
-              otherCurrency={currencies[Field.OUTPUT]}
-              id="swap-currency-input"
-            />
+            {handleCheckOpenGuide() && Number(guideStep.step) > 2 ? (
+              <SwapStep3>
+                <PanelCurrencyInput
+                  label={t('from')}
+                  value={'1,223'}
+                  showMaxButton={!atMaxAmountInput}
+                  currency={currencies[Field.INPUT]}
+                  onUserInput={handleTypeInput}
+                  onMax={handleMaxInput}
+                  onCurrencySelect={handleInputSelect}
+                  otherCurrency={currencies[Field.OUTPUT]}
+                  id="swap-currency-input"
+                />
+              </SwapStep3>
+            ) : (
+              <PanelCurrencyInput
+                label={independentField === Field.OUTPUT && !showWrap && trade ? `${t('from')} (estimated)` : t('from')}
+                value={formattedAmounts[Field.INPUT]}
+                showMaxButton={!atMaxAmountInput}
+                currency={currencies[Field.INPUT]}
+                onUserInput={handleTypeInput}
+                onMax={handleMaxInput}
+                onCurrencySelect={handleInputSelect}
+                otherCurrency={currencies[Field.OUTPUT]}
+                id="swap-currency-input"
+              />
+            )}
             <AutoRow justify="center">
               <IconWrapper clickable>
                 <ArrowDown
@@ -396,18 +436,33 @@ export default function Swap({ history }: RouteComponentProps) {
                 />
               </IconWrapper>
             </AutoRow>
-            <PanelCurrencyInput
-              value={formattedAmounts[Field.OUTPUT]}
-              onUserInput={handleTypeOutput}
-              label={
-                independentField === Field.INPUT && !showWrap && trade ? `${t('to')} (${t('estimated')})` : t('to')
-              }
-              showMaxButton={false}
-              currency={currencies[Field.OUTPUT]}
-              onCurrencySelect={handleOutputSelect}
-              otherCurrency={currencies[Field.INPUT]}
-              id="swap-currency-output"
-            />
+            {handleCheckOpenGuide() && Number(guideStep.step) > 3 ? (
+              <SwapStep4>
+                <PanelCurrencyInput
+                  value={'81.548'}
+                  onUserInput={handleTypeOutput}
+                  label={t('to')}
+                  showMaxButton={false}
+                  currency={tokenToGuide}
+                  onCurrencySelect={handleOutputSelect}
+                  otherCurrency={currencies[Field.INPUT]}
+                  id="swap-currency-output"
+                />
+              </SwapStep4>
+            ) : (
+              <PanelCurrencyInput
+                value={formattedAmounts[Field.OUTPUT]}
+                onUserInput={handleTypeOutput}
+                label={
+                  independentField === Field.INPUT && !showWrap && trade ? `${t('to')} (${t('estimated')})` : t('to')
+                }
+                showMaxButton={false}
+                currency={currencies[Field.OUTPUT]}
+                onCurrencySelect={handleOutputSelect}
+                otherCurrency={currencies[Field.INPUT]}
+                id="swap-currency-output"
+              />
+            )}
 
             {recipient !== null && !showWrap ? (
               <>
@@ -519,7 +574,28 @@ export default function Swap({ history }: RouteComponentProps) {
                 <TYPE.main mb="4px">{t('Unsupported Asset')}</TYPE.main>
               </ButtonPrimary>
             ) : !account ? (
-              <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
+              <>
+                {/* Check guide popup */}
+                {handleCheckOpenGuide() ? (
+                  <>
+                    {Number(guideStep.step) === 1 ? (
+                      <SwapStep1>
+                        <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
+                      </SwapStep1>
+                    ) : (
+                      Number(guideStep.step) > 1 && (
+                        <SwapStep5>
+                          <ButtonPrimary className={`${Number(guideStep.step) > 1 ? 'step-5' : ''}`}>
+                            {t('swap')}
+                          </ButtonPrimary>
+                        </SwapStep5>
+                      )
+                    )}
+                  </>
+                ) : (
+                  <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
+                )}
+              </>
             ) : showWrap ? (
               <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>
                 {wrapInputError ??
@@ -647,6 +723,7 @@ export default function Swap({ history }: RouteComponentProps) {
         </StyledPadding>
       </AppBody>
       <WeeklyRanking />
+      <OpenGuide screen="swap" />
       {swapIsUnsupported && (
         <UnsupportedCurrencyFooter show={swapIsUnsupported} currencies={[currencies.INPUT, currencies.OUTPUT]} />
       )}

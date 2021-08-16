@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Pair, WETH } from '@s-one-finance/sdk-core'
 import { useTranslation } from 'react-i18next'
 import { AutoColumn } from 'components/Column'
@@ -24,6 +25,8 @@ import ModalHeader from './ModalHeader'
 import TransactionDetails from './TransactionDetails'
 import { useGetPairFromSubgraphAndParse } from '../../../graphql/hooks'
 import { StyledArrowDown } from '../../../theme'
+import { useGuideStepManager } from '../../../state/user/hooks'
+import { OneStep4 } from '../../../components/lib/mark/components'
 
 type ModeOneTokenProps = {
   currencyIdA: string | undefined
@@ -33,6 +36,7 @@ type ModeOneTokenProps = {
 export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
+  const [guideStep] = useGuideStepManager()
 
   const history = useHistory()
 
@@ -154,21 +158,23 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
           isLoading={isLoading}
           allPairs={allPairs}
         />
-        {isPairExistAndNotNull && (
-          <>
-            <PanelCurrencyInput
-              id="add-liquidity-simple-input-tokena"
-              label={t('from')}
-              value={typedValue}
-              onUserInput={onFieldInput}
-              showMaxButton
-              onMax={() => {
-                onFieldInput(maxAmount?.toExact() ?? '')
-              }}
-              currency={selectedCurrency}
-              isCurrencySelectOrToggle={SelectOrToggle.TOGGLE}
-              onCurrencyToggle={onCurrencyToggle}
-            />
+        {(isPairExistAndNotNull || Number(guideStep.step) > 4) && (
+          <AutoColumn>
+            <OneStep4>
+              <PanelCurrencyInput
+                id="add-liquidity-simple-input-tokena"
+                label={t('from')}
+                value={Number(guideStep.step) > 5 ? '3.14159' : typedValue}
+                onUserInput={onFieldInput}
+                showMaxButton
+                onMax={() => {
+                  onFieldInput(maxAmount?.toExact() ?? '')
+                }}
+                currency={selectedCurrency}
+                isCurrencySelectOrToggle={SelectOrToggle.TOGGLE}
+                onCurrencyToggle={onCurrencyToggle}
+              />
+            </OneStep4>
 
             {selectedTokenParsedAmount && theOtherTokenParsedAmount && (
               <>
@@ -183,7 +189,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
                 />
               </>
             )}
-          </>
+          </AutoColumn>
         )}
       </AutoColumn>
       <ButtonGrouping

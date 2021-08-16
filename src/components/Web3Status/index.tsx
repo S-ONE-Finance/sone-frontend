@@ -20,6 +20,9 @@ import { darken } from 'polished'
 import { useTranslation } from 'react-i18next'
 import i18next from 'i18next'
 
+import { MarkHeader } from '../lib/mark/components'
+import { useGuideStepManager } from '../../state/user/hooks'
+
 const Text = styled.p`
   flex: 1 1 auto;
   overflow: hidden;
@@ -76,6 +79,8 @@ function Web3StatusInner() {
   const toggleWalletModal = useWalletModalToggle()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const history = useHistory()
+  const [guideStep] = useGuideStepManager()
+
   const getLanguage = () => i18next.language || window.localStorage.i18nextLng
 
   if (account) {
@@ -103,9 +108,19 @@ function Web3StatusInner() {
     )
   } else {
     return (
-      <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
-        {t('connect_wallet')}
-      </ButtonMainRed>
+      <>
+        {guideStep.isGuide && Number(guideStep.step) === 1 ? (
+          <MarkHeader>
+            <ButtonMainRed id="connect-wallet" className="step-1">
+              {t('connect_wallet')}
+            </ButtonMainRed>
+          </MarkHeader>
+        ) : (
+          <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
+            {t('connect_wallet')}
+          </ButtonMainRed>
+        )}
+      </>
     )
   }
 }
