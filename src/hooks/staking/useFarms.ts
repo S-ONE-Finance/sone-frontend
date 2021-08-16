@@ -1,8 +1,7 @@
 // TODO: dungnh: Not refactor yet!
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import _ from 'lodash'
-import orderBy from 'lodash/orderBy'
 import { calculateAPY, ChainId } from '@s-one-finance/sdk-core'
 import { Farm } from '@s-one-finance/sdk-core/'
 
@@ -15,11 +14,11 @@ import { SONE_MASTER_FARMER_ADDRESS, SONE_PRICE_MINIMUM } from '../../constants'
 import { stakingClients, swapClients } from '../../graphql/clients'
 
 const useFarms = () => {
-  const { account, chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
   const [farms, setFarms] = useState<Farm[]>([])
   const sonePrice = useSonePrice()
   const block = useBlockNumber()
-  const masterFarmerAddress: string = SONE_MASTER_FARMER_ADDRESS[chainId as ChainId]
+  const soneMasterFarmerAddress: string = useMemo(() => SONE_MASTER_FARMER_ADDRESS[chainId as ChainId], [chainId])
   const averageBlockTime = useAverageBlockTime()
 
   const fetchSLPFarms = useCallback(async () => {
@@ -29,7 +28,7 @@ const useFarms = () => {
       }),
       swapClients[chainId ?? 1].query({
         query: liquidityPositionSubsetQuery,
-        variables: { user: masterFarmerAddress.toLowerCase() }
+        variables: { user: soneMasterFarmerAddress.toLowerCase() }
       })
     ])
     const pools = results[0]?.data.pools
@@ -60,24 +59,13 @@ const useFarms = () => {
         const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
         const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
         const rewardPerBlock = ((pool.allocPoint / pool.owner.totalAllocPoint) * pool.owner.sonePerBlock) / 1e18
-
         const investedValue = 1000
         const LPTokenPrice = pair.reserveUSD / pair.totalSupply || SONE_PRICE_MINIMUM
-        // console.log(`LPTokenPrice`, LPTokenPrice)
         const LPTokenValue = investedValue / LPTokenPrice
         const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
-        // console.log(`investedValue`, investedValue)
-        // console.log(`LPTokenValue`, LPTokenValue)
         const roiPerBlock = (rewardPerBlock * sonePrice * poolShare) / investedValue
-        // console.log(`rewardPerBlock`, rewardPerBlock)
-        // console.log(`sonePrice`, sonePrice)
-        // console.log(`poolShare`, poolShare)
-        // console.log(`investedValue`, investedValue)
         const multiplierYear = calculateAPY(averageBlockTime, block || 0)
         const roiPerYear = multiplierYear * roiPerBlock
-        // console.log(`roiPerBlock`, roiPerBlock)
-        // console.log(`multiplierYear`, multiplierYear)
-
         const rewardPerDay = rewardPerBlock * blocksPerHour * 24
         const soneHarvested = pool.soneHarvested > 0 ? pool.soneHarvested : 0
         const multiplier = (pool.owner.bonusMultiplier * pool.allocPoint) / 100
@@ -110,19 +98,20 @@ const useFarms = () => {
         return item !== false
       })
 
-    const sorted = orderBy(farms, ['pid'], ['desc'])
+    const sorted = _.orderBy(farms, ['pid'], ['desc'])
     return sorted
-  }, [chainId, masterFarmerAddress, averageBlockTime, sonePrice, block])
+  }, [chainId, soneMasterFarmerAddress, averageBlockTime, sonePrice, block])
 
   useEffect(() => {
     const fetchData = async () => {
       const results = await fetchSLPFarms()
       const uniqResult = _.uniq(results)
-      const sorted = orderBy(uniqResult, ['pid'], ['desc'])
+      const sorted = _.orderBy(uniqResult, ['pid'], ['desc'])
       setFarms(sorted)
     }
     fetchData()
-  }, [account, chainId, fetchSLPFarms])
+  }, [fetchSLPFarms])
+
   return farms
 }
 

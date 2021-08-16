@@ -3,28 +3,26 @@ import styled from 'styled-components'
 import iconArrowDown from '../../assets/images/icon-arrow-down.svg'
 import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import { pxToRem } from '../../utils/PxToRem'
+import { FILTER_KEY, FilterOptions, SORT_KEY, SortOptions } from './index'
+import { useTranslation } from 'react-i18next'
 
-interface Filter {
-  options: Option[]
-  value: string
+interface FilterCProps {
   title: string
   icon: string
-  handleOnchange: (e: any) => void
+  options: SortOptions | FilterOptions
+  optionKey: SORT_KEY | FILTER_KEY
+  onChange: ((value: SORT_KEY) => void) | ((value: FILTER_KEY) => void)
 }
 
-interface Option {
-  label: string
-  value: string
-}
-
-const FilterC: React.FC<Filter> = function({ options, icon, title, value, handleOnchange }): JSX.Element {
+const FilterC = ({ title, icon, options, optionKey, onChange }: FilterCProps) => {
+  const { t } = useTranslation()
   const [toggleOpen, setToggleOpen] = useState(false)
   const node = useRef<HTMLDivElement>()
 
-  const onClickItem = (value: string) => {
+  const onClickItem = (value: SORT_KEY | FILTER_KEY) => {
     setToggleOpen(!toggleOpen)
-    handleOnchange(value)
-    return
+    // Typescript cheating.
+    onChange(value as never)
   }
 
   useOnClickOutside(node, toggleOpen ? () => setToggleOpen(!toggleOpen) : undefined)
@@ -38,7 +36,7 @@ const FilterC: React.FC<Filter> = function({ options, icon, title, value, handle
         </FilterLabel>
         <FilterItemsWrap>
           <FilterSelected onClick={() => setToggleOpen(!toggleOpen)}>
-            {value} <img src={iconArrowDown} alt="icon-arrow-down" />
+            {t(optionKey)} <img src={iconArrowDown} alt="icon-arrow-down" />
           </FilterSelected>
           {toggleOpen && (
             <FilterItems>
@@ -46,9 +44,9 @@ const FilterC: React.FC<Filter> = function({ options, icon, title, value, handle
                 {title}
                 <img src={iconArrowDown} alt="icon-arrow-down" />
               </FilterItemDefault>
-              {options.map((option, opKey) => (
-                <FilterItem key={opKey} onClick={() => onClickItem(option.value)}>
-                  {option.label}
+              {Object.keys(options).map(optionKey => (
+                <FilterItem key={optionKey} onClick={() => onClickItem(optionKey as SORT_KEY | FILTER_KEY)}>
+                  {t(optionKey)}
                 </FilterItem>
               ))}
             </FilterItems>

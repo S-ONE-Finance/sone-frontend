@@ -24,7 +24,7 @@ export default function useSwapReferralCallback() {
         rewardAmount: 100
       }
 
-      axios.post(url, options)
+      axios.post(url, options).then()
     },
     [account, referralId]
   )

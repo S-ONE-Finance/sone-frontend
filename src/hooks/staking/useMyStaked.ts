@@ -4,6 +4,7 @@ import { poolUserQuery } from 'graphql/stakingQueries'
 import { useActiveWeb3React } from 'hooks'
 import { stakingClients } from '../../graphql/clients'
 import { UserInfoSone } from '@s-one-finance/sdk-core'
+import { useMemo } from 'react'
 
 /**
  * TODO: myStaked cái gì? Đặt tên lại.
@@ -25,5 +26,5 @@ export default function useMyStaked(): UserInfoSone[] {
     { enabled: Boolean(chainId && account) }
   )
 
-  return users ?? []
+  return useMemo(() => users ?? [], [users])
 }

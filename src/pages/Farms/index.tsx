@@ -1,5 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+/* eslint-disable @typescript-eslint/camelcase */
+import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Farm, LiquidityPosition, UserInfoSone } from '@s-one-finance/sdk-core'
@@ -16,141 +16,121 @@ import useFarms from '../../hooks/staking/useFarms'
 import useMyStaked from '../../hooks/staking/useMyStaked'
 import useMyLpToken from '../../hooks/staking/useMyLpToken'
 
-type Options = {
-  value: string
-  label: string
-}
+export type SORT_KEY = 'apy' | 'total_liquidity' | 'bonus_campaign' | 'lp_name'
+export type SortOptions = { [p in SORT_KEY]: string }
+export type FILTER_KEY = 'active_pool' | 'inactive' | 'my_lp_tokens' | 'staked'
+export type FilterOptions = { [p in FILTER_KEY]: string }
 
 export default function Farms() {
   const { t } = useTranslation()
-  const [farmData, setFarmData] = useState<Farm[] | undefined>([])
+
+  const [sortedFilteredFarms, setSortedFilteredFarms] = useState<Farm[] | undefined>([])
   const [totalLockValue, setTotalLockValue] = useState<BigNumber>(new BigNumber(0))
   const [circulatingSupplyValue, setCirculatingSupplyValue] = useState<BigNumber>(new BigNumber(0))
-
   const farms: Farm[] = useFarms()
   const myStaked: UserInfoSone[] = useMyStaked()
   const myLpToken: LiquidityPosition[] = useMyLpToken()
 
-  const [sortBy, setSortBy] = useState(t('bonus_campaign'))
-  const [filter, setFilter] = useState(t('active_pool'))
-  const [optionsSort, setOptionsSort] = useState<Options[]>([])
-  const [optionsFilter, setOptionsFilter] = useState<Options[]>([])
+  const [sortBy, setSortBy] = useState<SORT_KEY>('bonus_campaign')
+  const [filterBy, setFilterBy] = useState<FILTER_KEY>('active_pool')
 
-  const orderBy: { [key: string]: any } = {
-    [t('apy')]: {
-      condition: 'roiPerYear',
-      by: 'desc'
-    },
-    [t('total_liquidity')]: {
-      condition: 'balanceUSD',
-      by: 'desc'
-    },
-    [t('bonus_campaign')]: {
-      condition: 'multiplier',
-      by: 'desc'
-    },
-    [t('lp_name')]: {
-      condition: 'name',
-      by: 'desc'
-    }
+  const sortOptions: SortOptions = useMemo(
+    () => ({
+      apy: t('apy'),
+      total_liquidity: t('total_liquidity'),
+      bonus_campaign: t('bonus_campaign'),
+      lp_name: t('lp_name')
+    }),
+    [t]
+  )
+
+  const filterOptions: FilterOptions = useMemo(
+    () => ({
+      active_pool: t('active_pool'),
+      inactive: t('inactive'),
+      my_lp_tokens: t('my_lp_tokens'),
+      staked: t('staked')
+    }),
+    [t]
+  )
+
+  const orderByOptions: { [key in SORT_KEY]: any } = useMemo(
+    () => ({
+      apy: {
+        condition: 'roiPerYear',
+        by: 'desc'
+      },
+      total_liquidity: {
+        condition: 'balanceUSD',
+        by: 'desc'
+      },
+      bonus_campaign: {
+        condition: 'multiplier',
+        by: 'desc'
+      },
+      lp_name: {
+        condition: 'name',
+        by: 'desc'
+      }
+    }),
+    []
+  )
+
+  const onSortByChange = (value: SORT_KEY) => {
+    setSortBy(value)
+  }
+
+  const onFilterByChange = (value: FILTER_KEY) => {
+    setFilterBy(value)
   }
 
   useEffect(() => {
-    setSortBy(t('bonus_campaign'))
-    setFilter(t('active_pool'))
-
-    setOptionsSort([
-      {
-        label: t('apy'),
-        value: t('apy')
-      },
-      {
-        label: t('total_liquidity'),
-        value: t('total_liquidity')
-      },
-      {
-        label: t('bonus_campaign'),
-        value: t('bonus_campaign')
-      },
-      {
-        label: t('lp_name'),
-        value: t('lp_name')
+    if (farms) {
+      let newSortedFilteredFarms: Farm[] = []
+      if (filterBy) {
+        switch (filterBy) {
+          case 'active_pool':
+            newSortedFilteredFarms = farms.filter((farm: Farm) => Number(farm.allocPoint) !== 0)
+            break
+          case 'inactive':
+            newSortedFilteredFarms = farms.filter((farm: Farm) => Number(farm.allocPoint) === 0)
+            break
+          case 'my_lp_tokens':
+            const lpTokens = myLpToken.map((lp: LiquidityPosition) => lp.pair.id)
+            newSortedFilteredFarms = farms.filter((farm: Farm) => lpTokens.includes(farm.pairAddress))
+            break
+          case 'staked':
+            const pairStaked = myStaked.map(pool => Number(pool.pool?.id))
+            newSortedFilteredFarms = farms.filter((farm: Farm) => pairStaked.includes(farm.pid))
+            break
+          default:
+            throw new Error(`filterBy can't be empty.`)
+        }
       }
-    ])
-
-    setOptionsFilter([
-      {
-        label: t('active_pool'),
-        value: t('active_pool')
-      },
-      {
-        label: t('inactive'),
-        value: t('inactive')
-      },
-      {
-        label: t('my_lp_tokens'),
-        value: t('my_lp_tokens')
-      },
-      {
-        label: t('staked'),
-        value: t('staked')
+      if (sortBy) {
+        const orderBy = orderByOptions[sortBy]
+        newSortedFilteredFarms = _.orderBy(newSortedFilteredFarms, [orderBy.condition], [orderBy.by])
+        setSortBy(sortBy)
+      } else {
+        throw new Error(`sortBy can't be empty.`)
       }
-    ])
-  }, [t])
+      setSortedFilteredFarms(newSortedFilteredFarms)
+    }
+  }, [farms, filterBy, myLpToken, myStaked, orderByOptions, sortBy])
 
-  const handlingSortBy = (results: Farm[], sortType: string) => {
-    const item = orderBy[sortType]
-    results = _.orderBy(results, [item.condition], [item.by])
-    return results || {}
-  }
-
-  const handleChangeDropDown = (value: string, callback: (item: string) => void) => {
-    callback(value)
-  }
-
-  const handlingFilterValue = () => {
+  // Calculate totalLockValue & circulatingSupplyValue
+  useEffect(() => {
     if (farms) {
       let totalLock: BigNumber = new BigNumber(0)
       let circulatingSupply: BigNumber = new BigNumber(0)
-      farms.map((farm: Farm) => {
+      farms.forEach((farm: Farm) => {
         totalLock = totalLock.plus(new BigNumber(farm.tvl | 0))
         circulatingSupply = circulatingSupply.plus(new BigNumber(farm.soneHarvested | 0))
-        return farm
       })
       setTotalLockValue(totalLock)
       setCirculatingSupplyValue(circulatingSupply)
-
-      // action filter
-      let result: Farm[] = []
-      switch (filter) {
-        case t('active_pool'):
-          result = farms.filter((farm: Farm) => Number(farm.allocPoint) !== 0)
-          break
-        case t('inactive'):
-          result = farms.filter((farm: Farm) => Number(farm.allocPoint) === 0)
-          break
-        case t('my_lp_tokens'):
-          const lpTokens = myLpToken.map((lp: LiquidityPosition) => lp.pair.id)
-          result = farms.filter((farm: Farm) => lpTokens.includes(farm.pairAddress))
-          break
-        case t('staked'):
-          const pairStaked = myStaked.map(pool => Number(pool.pool?.id))
-          result = farms.filter((farm: Farm) => pairStaked.includes(farm.pid))
-          break
-        default:
-          break
-      }
-
-      const resultsAfterSort = handlingSortBy(result, sortBy)
-
-      result = _.filter(resultsAfterSort, item => !isNaN(item.roiPerYear))
-      setFarmData(result)
     }
-  }
-
-  useEffect(() => {
-    handlingFilterValue()
-  }, [farms, sortBy, filter, myLpToken, myStaked])
+  }, [farms])
 
   return (
     <StakingWrapper>
@@ -171,21 +151,21 @@ export default function Farms() {
           <FilterC
             title={t('sort_by')}
             icon={iconSort}
-            options={optionsSort}
-            value={sortBy}
-            handleOnchange={e => handleChangeDropDown(e, setSortBy)}
+            options={sortOptions}
+            optionKey={sortBy}
+            onChange={onSortByChange}
           />
           <FilterC
             title={t('filter')}
             icon={iconFilter}
-            options={optionsFilter}
-            value={filter}
-            handleOnchange={e => handleChangeDropDown(e, setFilter)}
+            options={filterOptions}
+            optionKey={filterBy}
+            onChange={onFilterByChange}
           />
         </StyledFilter>
       </StyledFilterWrap>
       <Box>
-        <FarmCards farms={farmData} />
+        <FarmCards farms={sortedFilteredFarms} />
       </Box>
     </StakingWrapper>
   )

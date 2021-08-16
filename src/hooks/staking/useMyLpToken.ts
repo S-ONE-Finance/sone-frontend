@@ -4,10 +4,9 @@ import { liquidityPositionSubsetQuery } from 'graphql/stakingQueries'
 import { useActiveWeb3React } from 'hooks'
 import { swapClients } from '../../graphql/clients'
 import { useQuery } from 'react-query'
+import { useMemo } from 'react'
 
-// TODO: useMyLpToken is called many times.
 export default function useMyLpToken(): LiquidityPosition[] {
-  // console.log(`I'm here:`)
   const { account, chainId } = useActiveWeb3React()
 
   const { data: myLpToken } = useQuery(
@@ -22,5 +21,5 @@ export default function useMyLpToken(): LiquidityPosition[] {
     { enabled: Boolean(chainId && account) }
   )
 
-  return myLpToken ?? []
+  return useMemo(() => myLpToken ?? [], [myLpToken])
 }
