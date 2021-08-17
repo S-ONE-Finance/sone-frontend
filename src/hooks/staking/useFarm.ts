@@ -1,8 +1,6 @@
-// TODO: dungnh: Not refactor yet!
-
-import { useCallback, useEffect, useState } from 'react'
-import { Farm } from '@s-one-finance/sdk-core/'
+import { useMemo } from 'react'
 import { calculateAPY } from '@s-one-finance/sdk-core'
+import { useQuery } from 'react-query'
 
 import useAverageBlockTime from 'hooks/staking/useAverageBlockTime'
 import { pairSubsetQuery, poolsQueryDetail, poolUserDetailQuery } from 'graphql/stakingQueries'
@@ -10,36 +8,54 @@ import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
 import { stakingClients, swapClients } from '../../graphql/clients'
-import useUnmountedRef from '../useUnmountedRef'
 
 const useFarm = (id: string) => {
   const { account, chainId } = useActiveWeb3React()
-  const unmountedRef = useUnmountedRef()
   const block = useBlockNumber()
-  const [farm, setFarm] = useState<Farm>()
   const sonePrice = useSonePrice()
   const averageBlockTime = useAverageBlockTime()
 
-  const fetchFarmsDetail = useCallback(async () => {
-    const results = await Promise.all([
-      stakingClients[chainId ?? 1].query({
+  const { data: farm } = useQuery(
+    ['useFarm_poolsQueryDetail', chainId, id],
+    async () => {
+      const data = await stakingClients[chainId ?? 1].query({
         query: poolsQueryDetail,
         variables: { id: id }
-      }),
-      stakingClients[chainId ?? 1].query({
+      })
+      return data?.data.pools[0]
+    },
+    { enabled: Boolean(chainId) }
+  )
+
+  const { data: userInfo } = useQuery(
+    ['useFarm_poolUserDetailQuery', chainId, id, account],
+    async () => {
+      const data = await stakingClients[chainId ?? 1].query({
         query: poolUserDetailQuery,
         variables: {
           id: `${id}-${account?.toLowerCase()}`
         }
       })
-    ])
-    const farm = results[0]?.data.pools[0]
-    const dataPair = await swapClients[chainId ?? 1].query({
-      query: pairSubsetQuery,
-      variables: { pairAddresses: [farm.pair] }
-    })
-    const pair = dataPair?.data.pairs[0]
-    const userInfo = results[1]?.data?.users[0]
+      return data?.data?.users[0]
+    },
+    { enabled: Boolean(chainId && account) }
+  )
+
+  const { data: pair } = useQuery(
+    ['useFarm_pairSubsetQuery', chainId, farm?.pair],
+    async () => {
+      const data = await swapClients[chainId ?? 1].query({
+        query: pairSubsetQuery,
+        variables: { pairAddresses: [farm?.pair] }
+      })
+      return data?.data?.pairs[0]
+    },
+    { enabled: Boolean(chainId && account && farm?.pair) }
+  )
+
+  return useMemo(() => {
+    if (pair === undefined || farm === undefined) return {}
+
     const blocksPerHour = 3600 / Number(averageBlockTime)
     const balance = Number(farm.balance / 1e18)
     const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
@@ -81,16 +97,7 @@ const useFarm = (id: string) => {
       secondsPerBlock: Number(averageBlockTime),
       userInfo: userInfo || {}
     }
-  }, [chainId, id, account, averageBlockTime, sonePrice, block])
-
-  useEffect(() => {
-    ;(async () => {
-      const results = await fetchFarmsDetail()
-      if (!unmountedRef.current) setFarm(results)
-    })()
-  }, [unmountedRef, chainId, fetchFarmsDetail])
-
-  return farm
+  }, [averageBlockTime, block, farm, pair, sonePrice, userInfo])
 }
 
 export default useFarm
