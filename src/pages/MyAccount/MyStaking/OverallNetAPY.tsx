@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import useMyAccountStaked from '../../../hooks/staking/useMyAccountStaked'
 import { UserInfoSone } from '@s-one-finance/sdk-core'
+import useUnmountedRef from '../../../hooks/useUnmountedRef'
 
 const StakingBackground = styled.div`
   width: 100%;
@@ -50,6 +51,7 @@ const OverallNetAPY = memo(function OverallNetAPY() {
   const { t } = useTranslation()
   const [, myAccountStaked] = useMyAccountStaked()
   const [netApy, setNetApy] = useState(0)
+  const unmountedRef = useUnmountedRef()
 
   useEffect(() => {
     let totalSoneHarvestUSD = 0
@@ -58,10 +60,10 @@ const OverallNetAPY = memo(function OverallNetAPY() {
       totalSoneHarvestUSD += Number(user.soneHarvestedUSD)
       totalLPStakeUSD += (Number(user.amount) / 1e18) * Number(user.pool?.LPTokenPrice)
     })
-    if (totalLPStakeUSD) {
+    if (totalLPStakeUSD && !unmountedRef.current) {
       setNetApy(totalSoneHarvestUSD / totalLPStakeUSD)
     }
-  }, [myAccountStaked])
+  }, [unmountedRef, myAccountStaked])
 
   const netApyRender = useMemo(() => (netApy < 10 ? netApy.toFixed(3) : netApy.toFixed(2)) + '%', [netApy])
 

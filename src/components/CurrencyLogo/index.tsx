@@ -64,10 +64,14 @@ const SoneLogoBoundedWrapper = styled.div<{ size: string; sizeMobile: string }>`
   border-radius: 50%;
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
-    width: ${sizeMobile};
-    min-width: ${sizeMobile};
     height: ${sizeMobile};
+    width: ${sizeMobile};
+  `};
+
+  // Đừng gộp cái này vào phía trên, không ăn css, chưa rõ lý do.
+  ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
     min-height: ${sizeMobile};
+    min-width: ${sizeMobile};
   `};
 `
 

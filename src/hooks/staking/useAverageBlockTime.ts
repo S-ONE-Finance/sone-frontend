@@ -31,10 +31,10 @@ export default function useAverageBlockTime(): number {
   }, [chainId, start, end])
 
   const { data: blocks, isSuccess }: { data: BlocksResponse[] | undefined; isSuccess: boolean } = useQuery(
-    'useAverageBlockTime',
+    ['useAverageBlockTime', chainId, start, end],
     queryFn,
     {
-      enabled: Boolean(chainId)
+      enabled: Boolean(chainId && start && end)
     }
   )
 
