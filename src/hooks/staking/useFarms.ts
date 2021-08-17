@@ -1,5 +1,3 @@
-// TODO: dungnh: Not refactor yet!
-
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import _ from 'lodash'
 import { calculateAPY, ChainId } from '@s-one-finance/sdk-core'
@@ -12,6 +10,7 @@ import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
 import { SONE_MASTER_FARMER_ADDRESS, SONE_PRICE_MINIMUM } from '../../constants'
 import { stakingClients, swapClients } from '../../graphql/clients'
+import { useQuery } from 'react-query'
 
 const useFarms = () => {
   const { chainId } = useActiveWeb3React()
@@ -21,36 +20,60 @@ const useFarms = () => {
   const soneMasterFarmerAddress: string = useMemo(() => SONE_MASTER_FARMER_ADDRESS[chainId as ChainId], [chainId])
   const averageBlockTime = useAverageBlockTime()
 
-  const fetchSLPFarms = useCallback(async () => {
-    const results = await Promise.all([
-      stakingClients[chainId ?? 1].query({
+  const { data: pools } = useQuery(
+    ['useFarms_poolsQuery', chainId],
+    async () => {
+      const data = await stakingClients[chainId ?? 1].query({
         query: poolsQuery
-      }),
-      swapClients[chainId ?? 1].query({
+      })
+      return data?.data.pools
+    },
+    { enabled: Boolean(chainId) }
+  )
+  const { data: liquidityPositions } = useQuery(
+    ['useFarms_liquidityPositionSubsetQuery', chainId, soneMasterFarmerAddress],
+    async () => {
+      const data = await swapClients[chainId ?? 1].query({
         query: liquidityPositionSubsetQuery,
         variables: { user: soneMasterFarmerAddress.toLowerCase() }
       })
-    ])
-    const pools = results[0]?.data.pools
-    const pairAddresses = pools
-      .map((pool: any) => {
-        return pool.pair
-      })
-      .sort()
-    const pairsQuery = await swapClients[chainId ?? 1].query({
-      query: pairSubsetQuery,
-      variables: { pairAddresses }
-    })
-    const liquidityPositions = results[1]?.data.liquidityPositions
-    const pairs = pairsQuery?.data.pairs
+      return data?.data.liquidityPositions
+    },
+    { enabled: Boolean(chainId && soneMasterFarmerAddress) }
+  )
 
-    const farms: Farm[] = pools
+  const pairAddresses = useMemo(
+    () =>
+      Array.isArray(pools) && pools.length > 0
+        ? pools
+            .map((pool: any) => {
+              return pool.pair
+            })
+            .sort()
+        : [],
+    [pools]
+  )
+
+  const { data: pairs } = useQuery(
+    ['useFarms_pairSubsetQuery', chainId, pairAddresses],
+    async () => {
+      const data = await swapClients[chainId ?? 1].query({
+        query: pairSubsetQuery,
+        variables: { pairAddresses }
+      })
+      return data?.data.pairs
+    },
+    { enabled: Boolean(chainId && pairAddresses) }
+  )
+
+  const fetchSLPFarms = useCallback(async () => {
+    const farms: Farm[] = (pools ?? [])
       .map((pool: any) => {
-        const pair = pairs.find((pair: any) => pair.id === pool.pair)
+        const pair = (pairs ?? []).find((pair: any) => pair.id === pool.pair)
         if (pair === undefined) {
           return false
         }
-        const liquidityPosition = liquidityPositions.find(
+        const liquidityPosition = (liquidityPositions ?? []).find(
           (liquidityPosition: any) => liquidityPosition.pair?.id === pair?.id
         )
         const blocksPerHour = 3600 / Number(averageBlockTime)
@@ -99,15 +122,14 @@ const useFarms = () => {
       })
 
     const sorted = _.orderBy(farms, ['pid'], ['desc'])
-    return sorted
-  }, [chainId, soneMasterFarmerAddress, averageBlockTime, sonePrice, block])
+    const uniqResult = _.uniq(sorted) // có cần thiết k?
+    return uniqResult
+  }, [pairs, pools, liquidityPositions, averageBlockTime, sonePrice, block])
 
   useEffect(() => {
     const fetchData = async () => {
       const results = await fetchSLPFarms()
-      const uniqResult = _.uniq(results)
-      const sorted = _.orderBy(uniqResult, ['pid'], ['desc'])
-      setFarms(sorted)
+      setFarms(results)
     }
     fetchData()
   }, [fetchSLPFarms])
