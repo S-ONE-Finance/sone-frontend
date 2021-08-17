@@ -9,6 +9,7 @@ const InfoCard = styled.button<{ active?: boolean }>`
   border-radius: 2.1875rem;
   width: 100% !important;
   border: 1px solid ${({ theme, active }) => (active ? 'transparent' : theme.border1Sone)};
+  user-select: none;
 `
 
 const OptionCard = styled(InfoCard as any)`

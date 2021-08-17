@@ -82,7 +82,7 @@ export const initialState: UserState = {
   guideStep: {
     step: 1,
     oldStep: 0,
-    isGuide: true,
+    isGuide: false,
     screen: '',
     showAgain: true
   }
