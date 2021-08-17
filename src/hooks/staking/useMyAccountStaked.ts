@@ -1,9 +1,8 @@
-// TODO: dungnh: Not refactor yet!
-
-import { useCallback, useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { calculateAPY, UserInfoSone } from '@s-one-finance/sdk-core'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
+import { useQuery } from 'react-query'
 
 import useAverageBlockTime from 'hooks/staking/useAverageBlockTime'
 import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'graphql/stakingQueries'
@@ -12,34 +11,50 @@ import { useBlockNumber } from 'state/application/hooks'
 import useSonePrice from './useSonePrice'
 import { stakingClients, swapClients } from '../../graphql/clients'
 
-const useMyAccountStaked = () => {
-  const [isLoading, setIsLoading] = useState(true)
+const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
   const { account, chainId } = useActiveWeb3React()
-  const [users, setUsers] = useState<UserInfoSone[]>([])
   const sonePrice = useSonePrice()
   const block = useBlockNumber()
   const averageBlockTime = useAverageBlockTime()
 
-  const fetchDataStaked = useCallback(async () => {
-    const results = await Promise.all([
-      stakingClients[chainId ?? 1].query({
+  const { data: users, isSuccess: usersIsSuccess } = useQuery(
+    ['useMyAccountStaked_poolUserWithPoolDetailQuery', chainId, account],
+    async () => {
+      const data = await stakingClients[chainId ?? 1].query({
         query: poolUserWithPoolDetailQuery,
         variables: {
           address: account?.toLowerCase()
         }
       })
-    ])
-    const users = results[0]?.data.users
-    const pairAddresses = users
-      .map((user: UserInfoSone) => {
-        return user.pool?.pair
+      return data?.data.users
+    },
+    { enabled: Boolean(chainId && account), initialData: [] }
+  )
+
+  const pairAddresses = useMemo(
+    () =>
+      users
+        .map((user: UserInfoSone) => {
+          return user.pool?.pair
+        })
+        .sort(),
+    [users]
+  )
+
+  const { data: pairs, isSuccess: pairsIsSuccess } = useQuery(
+    ['useMyAccountStaked_pairSubsetQuery', chainId, pairAddresses],
+    async () => {
+      const data = await swapClients[chainId ?? 1].query({
+        query: pairSubsetQuery,
+        variables: { pairAddresses }
       })
-      .sort()
-    const pairsQuery = await swapClients[chainId ?? 1].query({
-      query: pairSubsetQuery,
-      variables: { pairAddresses }
-    })
-    const pairs = pairsQuery?.data.pairs
+      return data?.data.pairs
+    },
+    { enabled: Boolean(chainId && account), initialData: [] }
+  )
+
+  const result = useMemo((): [boolean, UserInfoSone[]] => {
+    const isSuccess = usersIsSuccess && pairsIsSuccess
 
     const userData: UserInfoSone[] = users.map((user: any) => {
       const pair = pairs.find((pair: any) => pair.id === user.pool?.pair)
@@ -95,21 +110,13 @@ const useMyAccountStaked = () => {
     })
 
     const sorted = orderBy(userData, ['id'], ['desc'])
-    return sorted
-  }, [chainId, account, averageBlockTime, sonePrice, block])
+    const unique = _.uniq(sorted) // Is it necessary?
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true)
-      const results: UserInfoSone[] = await fetchDataStaked()
-      const uniqResult = _.uniq(results)
-      const sorted = orderBy(uniqResult, ['id'], ['desc'])
-      setIsLoading(false)
-      setUsers(sorted)
-    }
-    fetchData()
-  }, [account, chainId, fetchDataStaked])
-  return [isLoading, users] as const
+    return [!isSuccess, unique]
+  }, [averageBlockTime, block, pairs, pairsIsSuccess, sonePrice, users, usersIsSuccess])
+
+  console.log(`result[0]`, result[0])
+  return result
 }
 
 export default useMyAccountStaked
