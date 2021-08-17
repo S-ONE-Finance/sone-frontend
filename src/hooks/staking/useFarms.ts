@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import _ from 'lodash'
 import { calculateAPY, ChainId } from '@s-one-finance/sdk-core'
 import { Farm } from '@s-one-finance/sdk-core/'
@@ -12,9 +12,8 @@ import { SONE_MASTER_FARMER_ADDRESS, SONE_PRICE_MINIMUM } from '../../constants'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import { useQuery } from 'react-query'
 
-const useFarms = () => {
+const useFarms = (): Farm[] => {
   const { chainId } = useActiveWeb3React()
-  const [farms, setFarms] = useState<Farm[]>([])
   const sonePrice = useSonePrice()
   const block = useBlockNumber()
   const soneMasterFarmerAddress: string = useMemo(() => SONE_MASTER_FARMER_ADDRESS[chainId as ChainId], [chainId])
@@ -66,7 +65,7 @@ const useFarms = () => {
     { enabled: Boolean(chainId && pairAddresses) }
   )
 
-  const fetchSLPFarms = useCallback(async () => {
+  return useMemo(() => {
     const farms: Farm[] = (pools ?? [])
       .map((pool: any) => {
         const pair = (pairs ?? []).find((pair: any) => pair.id === pool.pair)
@@ -120,21 +119,10 @@ const useFarms = () => {
       .filter((item: Farm | false) => {
         return item !== false
       })
-
     const sorted = _.orderBy(farms, ['pid'], ['desc'])
-    const uniqResult = _.uniq(sorted) // có cần thiết k?
-    return uniqResult
-  }, [pairs, pools, liquidityPositions, averageBlockTime, sonePrice, block])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const results = await fetchSLPFarms()
-      setFarms(results)
-    }
-    fetchData()
-  }, [fetchSLPFarms])
-
-  return farms
+    const unique = _.uniq(sorted) // có cần thiết k?
+    return unique
+  }, [averageBlockTime, block, liquidityPositions, pairs, pools, sonePrice])
 }
 
 export default useFarms
