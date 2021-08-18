@@ -13,9 +13,9 @@ const StakeStep3 = ({ children }: ChildrenProp) => {
     <>
       <Step1Wrapper className="step-3">
         {children}
-        {Number(guideStep.step) === 10 && guideStep.screen === 'stake' && (
+        {Number(guideStep.step) === 3 && guideStep.screen === 'stake' && (
           <>
-            <Step1Intro>{t('lets_click_connect_wallet_to_connect_and_start')}</Step1Intro>
+            <Step1Intro>{t('Lorem Ipsum is simply dummy text')}</Step1Intro>
             <StyledHandIcon>
               <img src={handIcon} alt="hand" />
             </StyledHandIcon>
@@ -47,7 +47,7 @@ const Step1Intro = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    font-size: 26px;
+    font-size: 16px;
     top: -100px;
   `};
 `
@@ -59,9 +59,6 @@ const StyledHandIcon = styled.div`
   transform: rotate(-29.31deg);
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    top: 95px;
-    right: 50%;
-    transform: unset;
     & > img {
       width: 60px;
     }

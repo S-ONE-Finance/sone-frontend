@@ -46,7 +46,7 @@ const HeaderFrame = styled.div`
   position: relative;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: 0 80px;
-  z-index: 2;
+  // z-index: 2;
   background-color: ${({ theme }) => theme.bg1Sone};
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
@@ -189,6 +189,7 @@ const StyledExternalLink = styled(ExternalLink)`
 // Put `display` in props to cast block during dev.
 const SubMenu = styled.div<{ width?: string; borderRadius?: string; display?: string }>`
   position: absolute;
+  z-index: 1002;
   top: calc(70px + 1rem);
   left: 50%;
   transform: translateX(-50%);

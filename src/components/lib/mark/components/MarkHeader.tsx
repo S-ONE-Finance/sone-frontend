@@ -34,4 +34,19 @@ const StyledHandIcon = styled.div`
   position: absolute;
   left: 25px;
   top: 73px;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    left: 120%;
+    top: -55%;
+    transform: rotate(-90deg);
+    & > img {
+      width: 60px;
+    }
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    & > img {
+      width: 50px;
+    }
+  `};
 `

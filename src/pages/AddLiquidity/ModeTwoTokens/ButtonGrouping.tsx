@@ -63,7 +63,7 @@ export default function ButtonGroupping({
         </ButtonPrimary>
       ) : !account ? (
         <>
-          {Number(guideStep.step) === 1 ? (
+          {guideStep.isGuide && Number(guideStep.step) === 1 ? (
             <ConnectButton>
               <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
             </ConnectButton>

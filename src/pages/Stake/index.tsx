@@ -348,10 +348,7 @@ export default function Staking() {
                     <>
                       {Number(guideStep.step) === 3 && guideStep.screen === 'stake' ? (
                         <StakeStep3>
-                          <ButtonPrimary>
-                            {' '}
-                            <img src={iconCheck} alt="iconCheck" />
-                          </ButtonPrimary>
+                          <ButtonPrimary>{t('stake')}</ButtonPrimary>
                         </StakeStep3>
                       ) : (
                         <ButtonPrimary onClick={toggleWalletModal}>{error}</ButtonPrimary>
@@ -364,7 +361,19 @@ export default function Staking() {
                   {error === t('approving...') ? error : `Approve ${symbol} LP Token`}
                 </ButtonPrimary>
               ) : error ? (
-                <ButtonPrimary disabled={true}>{error}</ButtonPrimary>
+                Number(guideStep.step) === 1 && guideStep.screen === 'stake' ? (
+                  <StakeStep1>
+                    <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
+                  </StakeStep1>
+                ) : Number(guideStep.step) === 3 && guideStep.screen === 'stake' ? (
+                  <StakeStep3>
+                    <ButtonPrimary>{t('stake')}</ButtonPrimary>
+                  </StakeStep3>
+                ) : (
+                  <ButtonPrimary disabled={guideStep.screen === 'stake' ? false : true}>
+                    {Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? t('stake') : error}
+                  </ButtonPrimary>
+                )
               ) : (
                 <ButtonPrimary
                   onClick={() => {

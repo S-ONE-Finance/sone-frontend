@@ -72,7 +72,7 @@ export default function PanelPairInput({
 
   return (
     <Container>
-      <BackgroundColor style={{ backgroundColor: Number(guideStep.step) === 2 ? '#c7c7c7' : 'transparent' }}>
+      <BackgroundColor style={{ backgroundColor: Number(guideStep.step) === 2 ? '#f3f3f3' : 'transparent' }}>
         <PanelPairLabelRow>
           <RowBetween align="center">
             <TextPanelLabel>{label}</TextPanelLabel>
