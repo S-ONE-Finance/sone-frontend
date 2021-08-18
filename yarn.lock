@@ -2096,10 +2096,10 @@
   resolved "https://registry.yarnpkg.com/@s-one-finance/core/-/core-0.1.2.tgz#eb119973fdb27ae62e10462985a8feb884b3b2a7"
   integrity sha512-lqljc25HWeOqiH+Mx1KVCyOdnqnniown8cEIEm2c8yQteso7gFbqohUI1U59Xny008tI+FyaZUD4IF/kR5QO3A==
 
-"@s-one-finance/default-token-list@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@s-one-finance/default-token-list/-/default-token-list-1.0.2.tgz#4fec2e146eccb88b08efe2f1d93d00e772df3890"
-  integrity sha512-tS4wU+Q02+m6mSbn1NvJynVuJ1T0Bp7E7543IK7+Fp+D22ncWY3+ZQFsBCGa+Z3+aKOGpz5O3hFaNlRysNaT9w==
+"@s-one-finance/default-token-list@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@s-one-finance/default-token-list/-/default-token-list-1.0.3.tgz#1ade901666c5a24ef1ca8b175b5de2533d08e873"
+  integrity sha512-m+QNybjFvXmtxqojzy4f2vOynQSxfnAE0PbISNLfGtM5vwWf9tK7iaqGJsPYI0V11vFZkRLEzPvj90yfr7NATA==
 
 "@s-one-finance/sdk-core@^1.2.2":
   version "1.2.2"
