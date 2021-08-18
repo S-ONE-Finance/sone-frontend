@@ -44,8 +44,6 @@ export function useBulkPairData() {
       if (!unmountedRef.current) {
         if (Array.isArray(data) && data.length > 0) {
           setSubgraphData(data)
-        } else {
-          console.error('Array trả về lỗi', data)
         }
       }
     },
