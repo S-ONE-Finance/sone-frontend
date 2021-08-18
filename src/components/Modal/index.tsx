@@ -39,8 +39,7 @@ const StyledDialogContent = styled(({ minHeight, maxHeight, maxWidth, isModalBin
     max-width: ${({ isModalBindToBottom }) => (isModalBindToBottom ? '100vw' : 'calc(100vw - 32px)')};
     padding: 0;
     margin: 0;
-    overflow-y: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'scroll' : 'hidden')};
-    overflow-x: hidden;
+    overflow: hidden;
     align-self: ${({ isModalBindToBottom }) => (isModalBindToBottom ? 'flex-end' : 'center')};
 
     ${({ maxHeight }) =>
