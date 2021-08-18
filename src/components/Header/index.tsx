@@ -189,6 +189,7 @@ const StyledExternalLink = styled(ExternalLink)`
 // Put `display` in props to cast block during dev.
 const SubMenu = styled.div<{ width?: string; borderRadius?: string; display?: string }>`
   position: absolute;
+  z-index: 1002;
   top: calc(70px + 1rem);
   left: 50%;
   transform: translateX(-50%);
