@@ -8,6 +8,8 @@ import { ExternalLink, TYPE } from '../../theme'
 import Column from '../Column'
 import TransactionSone from './TransactionSone'
 import Row from '../Row'
+import { useActiveWeb3React } from '../../hooks'
+import { ChainId } from '@s-one-finance/sdk-core'
 
 const ColumnScroll = styled(Column)`
   padding-left: 0;
@@ -56,6 +58,18 @@ function renderTransactions(transactions: string[]) {
 
 export default function RecentTransactions({ isSmall = false }: { isSmall?: boolean }) {
   const { t } = useTranslation()
+  const { chainId, account } = useActiveWeb3React()
+
+  const viewMoreUrl = useMemo(
+    () =>
+      chainId === ChainId.MAINNET
+        ? `https://etherscan.io/address/${account}`
+        : chainId === ChainId.ROPSTEN
+        ? `https://ropsten.etherscan.io/address/${account}`
+        : ``,
+    [chainId, account]
+  )
+
   const allTransactions = useAllTransactions()
 
   const sortedRecentTransactions = useMemo(() => {
@@ -77,7 +91,7 @@ export default function RecentTransactions({ isSmall = false }: { isSmall?: bool
           {renderTransactions(confirmed)}
           <Row justify={'center'}>
             {/* TODO: href chưa fill. */}
-            <ViewMore href="#">{t('view_more')}</ViewMore>
+            <ViewMore href={viewMoreUrl}>{t('view_more')}</ViewMore>
           </Row>
         </>
       ) : (
