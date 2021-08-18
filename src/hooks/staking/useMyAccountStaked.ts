@@ -53,70 +53,70 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
     { enabled: Boolean(chainId && account), initialData: [] }
   )
 
-  const result = useMemo((): [boolean, UserInfoSone[]] => {
+  return useMemo((): [boolean, UserInfoSone[]] => {
     const isSuccess = usersIsSuccess && pairsIsSuccess
 
-    const userData: UserInfoSone[] = users.map((user: any) => {
-      const pair = pairs.find((pair: any) => pair.id === user.pool?.pair)
-      if (pair === undefined) {
-        return false
-      }
-      const blocksPerHour = 3600 / Number(averageBlockTime)
-      const balance = Number(user.pool?.balance / 1e18)
-      const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
-      const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
-      const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
-      const rewardPerBlock =
-        ((user.pool?.allocPoint / user.pool?.owner.totalAllocPoint) * user.pool?.owner.sonePerBlock) / 1e18
+    const userData: UserInfoSone[] = users
+      .map((user: any) => {
+        const pair = pairs.find((pair: any) => pair.id === user.pool?.pair)
+        if (pair === undefined) {
+          return undefined
+        }
+        const blocksPerHour = 3600 / Number(averageBlockTime)
+        const balance = Number(user.pool?.balance / 1e18)
+        const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
+        const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
+        const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
+        const rewardPerBlock =
+          ((user.pool?.allocPoint / user.pool?.owner.totalAllocPoint) * user.pool?.owner.sonePerBlock) / 1e18
 
-      const investedValue = 1000
-      const LPTokenPrice = pair.reserveUSD / pair.totalSupply
-      const LPTokenValue = investedValue / LPTokenPrice
-      const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
-      const roiPerBlock = (rewardPerBlock * sonePrice * poolShare) / investedValue
-      const multiplierYear = calculateAPY(Number(averageBlockTime), block || 0)
-      const roiPerYear = multiplierYear * roiPerBlock
+        const investedValue = 1000
+        const LPTokenPrice = pair.reserveUSD / pair.totalSupply
+        const LPTokenValue = investedValue / LPTokenPrice
+        const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
+        const roiPerBlock = (rewardPerBlock * sonePrice * poolShare) / investedValue
+        const multiplierYear = calculateAPY(Number(averageBlockTime), block || 0)
+        const roiPerYear = multiplierYear * roiPerBlock
 
-      const rewardPerDay = rewardPerBlock * blocksPerHour * 24
-      const soneHarvested = user.pool?.soneHarvested > 0 ? user.pool?.soneHarvested : 0
-      const multiplier = (user.pool?.owner.bonusMultiplier * user.pool?.allocPoint) / 100
+        const rewardPerDay = rewardPerBlock * blocksPerHour * 24
+        const soneHarvested = user.pool?.soneHarvested > 0 ? user.pool?.soneHarvested : 0
+        const multiplier = (user.pool?.owner.bonusMultiplier * user.pool?.allocPoint) / 100
 
-      const poolData = {
-        ...user.pool,
-        contract: 'masterchefv1',
-        type: 'SLP',
-        symbol: pair.token0.symbol + '-' + pair.token1.symbol,
-        name: pair.token0.name + ' ' + pair.token1.name,
-        pid: Number(user.pool.id),
-        pairAddress: pair.id,
-        slpBalance: user.pool.balance,
-        soneRewardPerDay: rewardPerDay,
-        liquidityPair: pair,
-        rewardPerBlock,
-        roiPerBlock,
-        roiPerYear,
-        soneHarvested,
-        multiplier,
-        balanceUSD,
-        sonePrice,
-        LPTokenPrice,
-        secondsPerBlock: Number(averageBlockTime)
-      }
+        const poolData = {
+          ...user.pool,
+          contract: 'masterchefv1',
+          type: 'SLP',
+          symbol: pair.token0.symbol + '-' + pair.token1.symbol,
+          name: pair.token0.name + ' ' + pair.token1.name,
+          pid: Number(user.pool.id),
+          pairAddress: pair.id,
+          slpBalance: user.pool.balance,
+          soneRewardPerDay: rewardPerDay,
+          liquidityPair: pair,
+          rewardPerBlock,
+          roiPerBlock,
+          roiPerYear,
+          soneHarvested,
+          multiplier,
+          balanceUSD,
+          sonePrice,
+          LPTokenPrice,
+          secondsPerBlock: Number(averageBlockTime)
+        }
 
-      return {
-        ...user,
-        pool: poolData
-      }
-    })
+        return {
+          ...user,
+          pool: poolData
+        }
+      })
+      .filter((user: any) => !!user)
 
     const sorted = orderBy(userData, ['id'], ['desc'])
-    const unique = _.uniq(sorted) // Is it necessary?
+    const unique = _.uniq(sorted)
 
+    // TODO: Dùng biến isSuccess để detect loading không đúng lắm nhưng tạm thời ok.
     return [!isSuccess, unique]
   }, [averageBlockTime, block, pairs, pairsIsSuccess, sonePrice, users, usersIsSuccess])
-
-  console.log(`result[0]`, result[0])
-  return result
 }
 
 export default useMyAccountStaked

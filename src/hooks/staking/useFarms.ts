@@ -120,7 +120,7 @@ const useFarms = (): Farm[] => {
         return item !== false
       })
     const sorted = _.orderBy(farms, ['pid'], ['desc'])
-    const unique = _.uniq(sorted) // có cần thiết k?
+    const unique = _.uniq(sorted)
     return unique
   }, [averageBlockTime, block, liquidityPositions, pairs, pools, sonePrice])
 }
