@@ -1,5 +1,5 @@
 import { ChainId, Pair, Token } from '@s-one-finance/sdk-core'
-import flatMap from 'lodash.flatmap'
+import { flatMap } from 'lodash'
 import { useCallback, useMemo } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from '../../constants'
@@ -8,23 +8,24 @@ import { useActiveWeb3React } from '../../hooks'
 import { useAllTokens } from '../../hooks/Tokens'
 import { AppDispatch, AppState } from '../index'
 import {
+  AddLiquidityModeEnum,
   addSerializedPair,
   addSerializedToken,
+  GuideStep,
   removeSerializedToken,
   SerializedPair,
   SerializedToken,
+  toggleShowTransactionDetails,
+  toggleURLWarning,
+  updateAddLiquidityMode,
+  updateGuideStep,
   updateUserDarkMode,
   updateUserDeadline,
   updateUserExpertMode,
-  updateUserSlippageTolerance,
-  toggleURLWarning,
   updateUserSingleHopOnly,
-  toggleShowTransactionDetails,
-  AddLiquidityModeEnum,
-  updateAddLiquidityMode,
-  GuideStep,
-  updateGuideStep
+  updateUserSlippageTolerance
 } from './actions'
+import { useAllPairsThatThisAccountHadLiquidityPosition } from '../../graphql/hooks'
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -298,11 +299,16 @@ export function useTrackedTokenPairs(): [Token, Token][] {
     })
   }, [savedSerializedPairs, chainId])
 
-  const combinedList = useMemo(() => userPairs.concat(generatedPairs).concat(pinnedPairs), [
-    generatedPairs,
-    pinnedPairs,
-    userPairs
-  ])
+  const { pairs: allPairsThatThisAccountHadLiquidityPosition } = useAllPairsThatThisAccountHadLiquidityPosition()
+
+  const combinedList = useMemo(
+    () =>
+      userPairs
+        .concat(generatedPairs)
+        .concat(pinnedPairs)
+        .concat(allPairsThatThisAccountHadLiquidityPosition ?? []),
+    [generatedPairs, pinnedPairs, userPairs, allPairsThatThisAccountHadLiquidityPosition]
+  )
 
   return useMemo(() => {
     // dedupes pairs of tokens in the combined list

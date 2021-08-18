@@ -92,3 +92,31 @@ export const PAIRS_HISTORICAL_BULK = (block: number, pairs: string[]) => {
   `
   return gql(queryString)
 }
+
+/**
+ * Get all the pairs that this account has added liquidity.
+ * @param account
+ * @constructor
+ */
+export const GET_ALL_TOKENS_THAT_THIS_ACCOUNT_HAD_LIQUIDITY_POSITIONS = (account: string) => {
+  const query = `{
+    liquidityPositions(where: { user: "${account}" }) {
+      pair {
+        id
+        token0 {
+          id
+          decimals
+          symbol
+          name
+        }
+        token1 {
+          id
+          decimals
+          symbol
+          name
+        }
+      }
+    }
+  }`
+  return gql(query)
+}

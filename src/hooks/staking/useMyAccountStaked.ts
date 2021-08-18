@@ -17,7 +17,7 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
   const block = useBlockNumber()
   const averageBlockTime = useAverageBlockTime()
 
-  const { data: users, isSuccess: usersIsSuccess } = useQuery(
+  const { data: users, isLoading: usersIsLoading } = useQuery(
     ['useMyAccountStaked_poolUserWithPoolDetailQuery', chainId, account],
     async () => {
       const data = await stakingClients[chainId ?? 1].query({
@@ -28,12 +28,12 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
       })
       return data?.data.users
     },
-    { enabled: Boolean(chainId && account), initialData: [] }
+    { enabled: Boolean(chainId && account) }
   )
 
   const pairAddresses = useMemo(
     () =>
-      users
+      (users ?? [])
         .map((user: UserInfoSone) => {
           return user.pool?.pair
         })
@@ -41,7 +41,7 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
     [users]
   )
 
-  const { data: pairs, isSuccess: pairsIsSuccess } = useQuery(
+  const { data: pairs, isLoading: pairsIsLoading } = useQuery(
     ['useMyAccountStaked_pairSubsetQuery', chainId, pairAddresses],
     async () => {
       const data = await swapClients[chainId ?? 1].query({
@@ -50,15 +50,15 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
       })
       return data?.data.pairs
     },
-    { enabled: Boolean(chainId && account), initialData: [] }
+    { enabled: Boolean(chainId && account) }
   )
 
   return useMemo((): [boolean, UserInfoSone[]] => {
-    const isSuccess = usersIsSuccess && pairsIsSuccess
+    const isLoading = usersIsLoading || pairsIsLoading
 
-    const userData: UserInfoSone[] = users
+    const userData: UserInfoSone[] = (users ?? [])
       .map((user: any) => {
-        const pair = pairs.find((pair: any) => pair.id === user.pool?.pair)
+        const pair = (pairs || []).find((pair: any) => pair.id === user.pool?.pair)
         if (pair === undefined) {
           return undefined
         }
@@ -115,8 +115,8 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
     const unique = _.uniq(sorted)
 
     // TODO: Dùng biến isSuccess để detect loading không đúng lắm nhưng tạm thời ok.
-    return [!isSuccess, unique]
-  }, [averageBlockTime, block, pairs, pairsIsSuccess, sonePrice, users, usersIsSuccess])
+    return [isLoading, unique]
+  }, [averageBlockTime, block, pairs, pairsIsLoading, sonePrice, users, usersIsLoading])
 }
 
 export default useMyAccountStaked

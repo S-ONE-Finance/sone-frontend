@@ -1,6 +1,6 @@
 import { isTradeBetter } from 'utils/trades'
 import { Currency, CurrencyAmount, Pair, Token, Trade } from '@s-one-finance/sdk-core'
-import flatMap from 'lodash.flatmap'
+import { flatMap } from 'lodash'
 import { useMemo } from 'react'
 
 import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES, BETTER_TRADE_LESS_HOPS_THRESHOLD } from '../constants'

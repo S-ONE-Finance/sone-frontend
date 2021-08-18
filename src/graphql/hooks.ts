@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { swapClients } from './clients'
-import { PAIRS_CURRENT } from './swapQueries'
+import { GET_ALL_TOKENS_THAT_THIS_ACCOUNT_HAD_LIQUIDITY_POSITIONS, PAIRS_CURRENT } from './swapQueries'
 
 import getBulkPairData from './utils/getBulkPairData'
 import getPairData from './utils/getPairData'
@@ -12,6 +12,7 @@ import { useIsUpToExtraSmall } from '../hooks/useWindowSize'
 import { Pair, Token } from '@s-one-finance/sdk-core'
 import { PairState, usePairs } from 'data/Reserves'
 import useUnmountedRef from '../hooks/useUnmountedRef'
+import { useQuery } from 'react-query'
 
 async function getPairIds(chainId?: number) {
   if (chainId === undefined) return []
@@ -179,4 +180,51 @@ export function useWeeklyRankingData() {
   )
 
   return weeklyRanking
+}
+
+/**
+ * Không cần dedupe vì hàm useTrackedTokenPairs sử dụng đã dedupe rồi.
+ */
+export function useAllPairsThatThisAccountHadLiquidityPosition(): {
+  isLoading: boolean
+  isSuccess: boolean
+  isError: boolean
+  pairs?: [Token, Token][]
+} {
+  const { account, chainId } = useActiveWeb3React()
+
+  const { data: pairs, isSuccess, isError, isLoading } = useQuery<[Token, Token][]>(
+    ['useAllPairsThatThisAccountHadLiquidityPosition', chainId, account],
+    async () => {
+      if (!chainId) return []
+
+      const data = await swapClients[chainId].query({
+        query: GET_ALL_TOKENS_THAT_THIS_ACCOUNT_HAD_LIQUIDITY_POSITIONS(account?.toLowerCase() as string)
+      })
+
+      return Array.isArray(data?.data?.liquidityPositions)
+        ? data?.data?.liquidityPositions.map((item: any) => {
+            const t0 = item.pair.token0
+            const t1 = item.pair.token1
+            return [
+              new Token(chainId, t0.id, t0.decimals, t0.symbol, t0.name),
+              new Token(chainId, t1.id, t1.decimals, t1.symbol, t1.name)
+            ] as [Token, Token]
+          })
+        : []
+    },
+    {
+      enabled: Boolean(chainId && account)
+    }
+  )
+
+  return useMemo(
+    () => ({
+      isLoading,
+      isSuccess,
+      isError,
+      pairs
+    }),
+    [isError, isLoading, isSuccess, pairs]
+  )
 }
