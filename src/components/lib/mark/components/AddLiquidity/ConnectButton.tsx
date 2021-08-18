@@ -28,8 +28,6 @@ export default ConnectButton
 
 const Step1Wrapper = styled.div`
   position: relative;
-  z-index: 1001;
-  pointer-events: none;
 `
 const Step1Intro = styled.div`
   position: absolute;

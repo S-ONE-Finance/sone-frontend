@@ -97,7 +97,7 @@ function Web3StatusInner() {
           }
         }}
       >
-        {t('my_account')}
+        {guideStep.isGuide && Number(guideStep.step) === 1 ? t('connect_wallet') : t('my_account')}
       </ButtonMainRed>
     )
   } else if (error) {
@@ -118,7 +118,7 @@ function Web3StatusInner() {
           </MarkHeader>
         ) : (
           <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
-            {t('connect_wallet')}
+            {guideStep.isGuide && Number(guideStep.step) > 1 ? t('my_account') : t('connect_wallet')}
           </ButtonMainRed>
         )}
       </>
