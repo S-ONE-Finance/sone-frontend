@@ -41,7 +41,8 @@ export const UNI: { [chainId in ChainId]: Token } = {
 }
 
 const TEMP = '0x0000000000000000000000000000000000000000'
-const SONE_ADDRESS = '0x57bb30bdb0d449bf687ed648acf2467f045c8e74'
+// const SONE_ADDRESS = '0x57bb30bdb0d449bf687ed648acf2467f045c8e74' // SONE của anh Sơn.
+const SONE_ADDRESS = '0x45495be0fe306679ba8001cd4b10a781a7bbb559' // SONE của anh Thanh.
 export const SONE_PRICE_MINIMUM = 0.00001 // 1 SONE >= 0.00001 USDT
 
 // TODO: Need fill address of sone in all 5 networks.
