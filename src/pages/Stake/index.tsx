@@ -32,7 +32,6 @@ import TransactionConfirmationModal, { ConfirmationModalContent } from '../../co
 import useAllowance from '../../hooks/staking/useAllowance'
 import useApproveHandler from '../../hooks/staking/useApproveHandler'
 import { OpenGuide, StakeStep1, StakeStep2, StakeStep3 } from '../../components/lib/mark/components'
-import iconCheck from '../../assets/images/check-icon-guide-popup-white.svg'
 
 export default function Staking() {
   const { t } = useTranslation()
