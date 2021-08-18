@@ -59,9 +59,6 @@ const StyledHandIcon = styled.div`
   transform: rotate(-29.31deg);
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
-    // top: 95px;
-    // right: 50%;
-    // transform: unset;
     & > img {
       width: 60px;
     }
