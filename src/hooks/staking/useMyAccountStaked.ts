@@ -8,12 +8,12 @@ import useAverageBlockTime from 'hooks/staking/useAverageBlockTime'
 import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'graphql/stakingQueries'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
-import useSonePrice from './useSonePrice'
 import { stakingClients, swapClients } from '../../graphql/clients'
+import useOneSoneInUSD from '../useOneSoneInUSD'
 
 const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
   const { account, chainId } = useActiveWeb3React()
-  const sonePrice = useSonePrice()
+  const sonePrice = useOneSoneInUSD()
   const block = useBlockNumber()
   const averageBlockTime = useAverageBlockTime()
 

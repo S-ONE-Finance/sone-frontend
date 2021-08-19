@@ -19,6 +19,7 @@ import useReferrerInformation from './hooks/useReferrerInformation'
 import usePrevious from '../../../hooks/usePrevious'
 import { CountUp } from 'use-count-up'
 import { useTranslation } from 'react-i18next'
+import { useFormattedSoneInUSD } from '../../../hooks/useOneSoneInUSD'
 
 const FriendsAndReward = styled(AutoColumn)`
   display: grid;
@@ -206,6 +207,8 @@ export default function ReferralInformation() {
   const referrerInformation = useReferrerInformation()
 
   const { code, totalPaidReward, totalRewardAmount, pendingAmount, totalFriend } = referrerInformation || {}
+  const formattedTotalPaidRewardInUSD = useFormattedSoneInUSD(totalPaidReward)
+  const formattedTotalRewardAmountInUSD = useFormattedSoneInUSD(totalRewardAmount)
 
   return (
     <FlexibleRow>
@@ -238,8 +241,7 @@ export default function ReferralInformation() {
           </TextAccent>
           <RowFixed>
             <TextSoneUnit>SONE≈</TextSoneUnit>
-            {/* TODO: Pending SONE to DOLLARS */}
-            <TextDollar>88,888.888</TextDollar>
+            <TextDollar>{formattedTotalPaidRewardInUSD}</TextDollar>
           </RowFixed>
         </Row>
         <Row wrap="wrap" gap="5px">
@@ -249,8 +251,7 @@ export default function ReferralInformation() {
           </TextAccent>
           <RowFixed>
             <TextSoneUnit>SONE≈</TextSoneUnit>
-            {/* TODO: Pending SONE to DOLLARS */}
-            <TextDollar>88,888.888</TextDollar>
+            <TextDollar>{formattedTotalRewardAmountInUSD}</TextDollar>
           </RowFixed>
         </Row>
       </FriendsAndReward>

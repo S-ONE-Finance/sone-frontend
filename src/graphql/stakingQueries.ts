@@ -54,28 +54,6 @@ export const poolsQueryDetail = gql`
   }
 `
 
-export const pairsQueryDetail = gql`
-  query pairsQueryDetail($token0: String, $token1: String) {
-    pairs(where: { token0: $token0, token1: $token1 }) {
-      id
-      reserve0
-      token0Price
-      reserve1
-      token1Price
-      token0 {
-        id
-        name
-        symbol
-      }
-      token1 {
-        id
-        name
-        symbol
-      }
-    }
-  }
-`
-
 const blockFieldsQuery = gql`
   fragment blockFields on Block {
     id

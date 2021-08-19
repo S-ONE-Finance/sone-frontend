@@ -120,3 +120,16 @@ export const GET_ALL_TOKENS_THAT_THIS_ACCOUNT_HAD_LIQUIDITY_POSITIONS = (account
   }`
   return gql(query)
 }
+
+export const sonePriceQuery = (soneAddress: string) => gql`
+  {
+    token(id: "${soneAddress}") {
+      id
+      name
+      derivedETH
+    }
+    bundle(id: "1") {
+      ethPrice
+    }
+  }
+`
