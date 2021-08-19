@@ -6,7 +6,7 @@ import { abi as MERKLE_DISTRIBUTOR_ABI } from '@uniswap/merkle-distributor/build
 import { ChainId, WETH } from '@s-one-finance/sdk-core'
 import { abi as IUniswapV2PairABI } from '@s-one-finance/core/build/contracts/IUniswapV2Pair.json'
 import { useMemo } from 'react'
-import { GOVERNANCE_ADDRESS, SONE_MASTER_FARMER_ADDRESS, MERKLE_DISTRIBUTOR_ADDRESS, UNI } from '../constants'
+import { GOVERNANCE_ADDRESS, SONE_MASTER_FARMER, MERKLE_DISTRIBUTOR_ADDRESS, UNI } from '../constants'
 import {
   ARGENT_WALLET_DETECTOR_ABI,
   ARGENT_WALLET_DETECTOR_MAINNET_ADDRESS
@@ -134,7 +134,7 @@ export function useSocksController(): Contract | null {
 
 export function useSoneMasterFarmerContract(withSignerIfPossible?: boolean): Contract | null {
   const { chainId } = useActiveWeb3React()
-  return useContract(chainId && SONE_MASTER_FARMER_ADDRESS[chainId], SoneMasterFarmerABI, withSignerIfPossible)
+  return useContract(chainId && SONE_MASTER_FARMER[chainId], SoneMasterFarmerABI, withSignerIfPossible)
 }
 
 export function useSoneContract(withSignerIfPossible = true): Contract | null {

@@ -7,7 +7,7 @@ import { liquidityPositionSubsetQuery, pairSubsetQuery, poolsQuery } from 'graph
 import useAverageBlockTime from 'hooks/staking/useAverageBlockTime'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
-import { SONE_MASTER_FARMER_ADDRESS, SONE_PRICE_MINIMUM } from '../../constants'
+import { SONE_MASTER_FARMER, SONE_PRICE_MINIMUM } from '../../constants'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import { useQuery } from 'react-query'
 import useOneSoneInUSD from '../useOneSoneInUSD'
@@ -18,7 +18,7 @@ const useFarms = (): Farm[] => {
   const { chainId } = useActiveWeb3React()
   const sonePrice = useOneSoneInUSD()
   const block = useBlockNumber()
-  const soneMasterFarmerAddress: string = useMemo(() => SONE_MASTER_FARMER_ADDRESS[chainId as ChainId], [chainId])
+  const soneMasterFarmerAddress: string = useMemo(() => SONE_MASTER_FARMER[chainId as ChainId], [chainId])
   const averageBlockTime = useAverageBlockTime()
 
   const { data: pools } = useQuery(

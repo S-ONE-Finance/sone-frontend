@@ -6,7 +6,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useLpContract } from 'hooks/useContract'
-import { SONE_MASTER_FARMER_ADDRESS } from '../../constants'
+import { SONE_MASTER_FARMER } from '../../constants'
 
 const MAX_UINT_256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
 
@@ -14,7 +14,7 @@ export default function useApproveHandler(pairAddress?: string) {
   const addTransaction = useTransactionAdder()
   const { chainId } = useWeb3React()
   const lpContract: Contract | null = useLpContract(pairAddress)
-  const masterFarmerAddress = SONE_MASTER_FARMER_ADDRESS[chainId as ChainId]
+  const masterFarmerAddress = SONE_MASTER_FARMER[chainId as ChainId]
 
   return useCallback(
     (symbol?: string) => {

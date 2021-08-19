@@ -21,6 +21,16 @@ export const USDC = new Token(ChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0
 export const USDT = new Token(ChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')
 export const WBTC = new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped BTC')
 
+
+
+
+
+
+
+
+
+
+
 // Block time here is slightly higher (~1s) than average in order to avoid ongoing proposals past the displayed time
 export const AVERAGE_BLOCK_TIME_IN_SECS = 13
 export const PROPOSAL_LENGTH_IN_BLOCKS = 40_320
@@ -53,10 +63,10 @@ export const SONE: { [chainId in ChainId]: Token } = {
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, TEMP, 18, 'SONE', 'S-ONE Finance')
 }
 
-export const SONE_MASTER_FARMER_ADDRESS: { [chainId in ChainId]: string } = {
+export const SONE_MASTER_FARMER: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '',
   [ChainId.RINKEBY]: '',
-  [ChainId.ROPSTEN]: '0xfF219ff53d0f86685968348D96eBdb951341707D',
+  [ChainId.ROPSTEN]: '0x7a62eb5FEEE85FcFF4A40c55Fee6776708580470',
   [ChainId.GÖRLI]: '',
   [ChainId.KOVAN]: ''
 }
