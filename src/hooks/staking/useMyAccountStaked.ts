@@ -82,6 +82,12 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
         const soneHarvested = user.pool?.soneHarvested > 0 ? user.pool?.soneHarvested : 0
         const multiplier = (user.pool?.owner.bonusMultiplier * user.pool?.allocPoint) / 100
 
+        // const roiPerYear = (soneHarvested + pendingReward) / user.amount
+        // console.log(`soneHarvested`, soneHarvested)
+        // console.log(`pendingReward`, pendingReward.toString())
+        // console.log(`user.amount`, user.amount)
+        // console.log(`roiPerYear`, roiPerYear)
+
         const poolData = {
           ...user.pool,
           contract: 'masterchefv1',
