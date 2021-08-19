@@ -80,7 +80,10 @@ export default function Unstake() {
   const { token0, token1 } = farm?.liquidityPair || {}
 
   // Đã fix cứng lp token decimals = 18
-  const tryParse = tryParseAmount(typedValue, farm && chainId && new Token(chainId, farm.pairAddress, 18))
+  const tryParse = tryParseAmount(
+    typedValue,
+    farm && chainId && farm.pairAddress ? new Token(chainId, farm.pairAddress, 18) : undefined
+  )
 
   const error: string | undefined =
     typedValue === '' || +typedValue === 0 || tryParse === undefined

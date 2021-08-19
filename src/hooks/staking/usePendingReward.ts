@@ -20,7 +20,7 @@ export default function usePendingReward(pid?: number): BigNumber {
       }
     },
     {
-      enabled: Boolean(account && pid !== undefined)
+      enabled: Boolean(account && pid !== undefined && !isNaN(pid))
     }
   )
 
