@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import UnstakeTxSectionDetails from './UnstakeTxSectionDetails'
 import MyReward from 'components/MyReward'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { getBalanceNumber, getBalanceStringCommas } from '../../utils/formatNumber'
+import { getBalanceNumber, getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
 import { useParams } from 'react-router-dom'
 import { Farm, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/staking/useFarm'
@@ -21,7 +21,6 @@ import TransactionConfirmationModal, { ConfirmationModalContent } from '../../co
 import { TruncatedText } from '../../components/swap/styleds'
 import useTheme from '../../hooks/useTheme'
 import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenLogo'
-import { getNumberCommas } from '../../utils/formatNumber'
 import useLpTokenBalance from '../../hooks/staking/useLpTokenBalance'
 import usePendingReward from '../../hooks/staking/usePendingReward'
 import { useBlockNumber } from '../../state/application/hooks'
@@ -111,7 +110,6 @@ export default function Unstake() {
       const newTotalLPToken = userInfo.getTotalLPTokenAfterUnstake(
         tokenBalance ? tokenBalance.toString() : '0',
         farm?.userInfo.amount
-        // new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString()
       )
       setTotalLpToken(newTotalLPToken)
       const newTotalStaked = userInfo.getRemainStakedValueAfterUnstake(
