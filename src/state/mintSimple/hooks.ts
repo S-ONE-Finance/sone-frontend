@@ -78,8 +78,15 @@ export function useDerivedMintSimpleInfo(
     selectedToken &&
     selectedCurrencyUserInputAmount &&
     new TokenAmount(selectedToken, selectedCurrencyUserInputAmount.raw.toString())
-  const [selectedTokenParsedAmount, theOtherTokenParsedAmount] =
-    (pair && selectedTokenUserInputAmount && pair.getAmountsOutAddOneToken(selectedTokenUserInputAmount)) ?? []
+
+  let selectedTokenParsedAmount: TokenAmount | undefined, theOtherTokenParsedAmount: TokenAmount | undefined
+  let errorWhenParsedTokenAmount = false
+  try {
+    ;[selectedTokenParsedAmount, theOtherTokenParsedAmount] =
+      (pair && selectedTokenUserInputAmount && pair.getAmountsOutAddOneToken(selectedTokenUserInputAmount)) ?? []
+  } catch {
+    errorWhenParsedTokenAmount = true
+  }
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
@@ -143,6 +150,8 @@ export function useDerivedMintSimpleInfo(
   ) {
     // TODO: i18n.
     error = `Insufficient ${isSelectedToken0 ? pair.token0.symbol : pair.token1.symbol} liquidity for swap`
+  } else if (errorWhenParsedTokenAmount) {
+    error = `Input is too small`
   }
 
   return {
