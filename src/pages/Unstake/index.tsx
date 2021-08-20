@@ -110,7 +110,8 @@ export default function Unstake() {
       const userInfo = new UserInfo(poolInfo, farm.userInfo)
       const newTotalLPToken = userInfo.getTotalLPTokenAfterUnstake(
         tokenBalance ? tokenBalance.toString() : '0',
-        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString()
+        farm?.userInfo.amount
+        // new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString()
       )
       setTotalLpToken(newTotalLPToken)
       const newTotalStaked = userInfo.getRemainStakedValueAfterUnstake(
