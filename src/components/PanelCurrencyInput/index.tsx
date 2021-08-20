@@ -176,6 +176,7 @@ export default function PanelCurrencyInput({
   if (label === 'Input') {
     label = t('input')
   }
+
   const [guideStep] = useGuideStepManager()
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
@@ -206,7 +207,7 @@ export default function PanelCurrencyInput({
     }
 
     return !hideBalance && !!currency && selectedCurrencyBalance
-      ? (customBalanceText ?? '') + selectedCurrencyBalance?.toSignificant(6)
+      ? (customBalanceText ?? '') + selectedCurrencyBalance?.toExact()
       : ''
   }
 
