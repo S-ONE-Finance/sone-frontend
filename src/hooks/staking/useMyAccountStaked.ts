@@ -107,7 +107,8 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
           balanceUSD,
           sonePrice,
           LPTokenPrice,
-          secondsPerBlock: Number(averageBlockTime)
+          secondsPerBlock: Number(averageBlockTime),
+          bonusMultiplier: user.pool?.owner.bonusMultiplier
         }
 
         return {

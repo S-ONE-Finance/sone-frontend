@@ -65,7 +65,8 @@ export default function Staking() {
     earnedRewardAfterStake === undefined ? '--' : getBalanceStringCommas(earnedRewardAfterStake)
   const apyAfterStakeRender = apyAfterStake === undefined ? '--' : getBalanceStringCommas(apyAfterStake)
 
-  const rewardPerBlock = farm && farm.rewardPerBlock
+  const bonusMultiplier = (farm && (farm.owner as any))?.bonusMultiplier ?? 1
+  const rewardPerBlock = farm && farm.rewardPerBlock * bonusMultiplier
   const totalLiquidity = farm && +farm.balanceUSD
 
   const block = useBlockNumber()
