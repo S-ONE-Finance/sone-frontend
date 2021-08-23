@@ -4,13 +4,11 @@ import ReactGA from 'react-ga'
 import { FixedSizeList } from 'react-window'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
-import { useActiveWeb3React } from '../../hooks'
 import { useAllTokens, useToken, useIsUserAddedToken, useFoundOnInactiveList } from '../../hooks/Tokens'
 import { TYPE, ButtonText } from '../../theme'
 import { isAddress } from '../../utils'
 import Column from '../Column'
 import Row, { RowBetween, RowFixed } from '../Row'
-import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import { filterTokens, useSortedTokensByQuery } from './filtering'
 import { useTokenComparator } from './sorting'
@@ -50,7 +48,6 @@ interface CurrencySearchProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
-  showCommonBases?: boolean
   showManageView: () => void
   showImportView: () => void
   setImportToken: (token: Token) => void
@@ -60,7 +57,6 @@ export function CurrencySearch({
   selectedCurrency,
   onCurrencySelect,
   otherSelectedCurrency,
-  showCommonBases,
   onDismiss,
   isOpen,
   showManageView,
@@ -70,8 +66,6 @@ export function CurrencySearch({
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
-
-  const { chainId } = useActiveWeb3React()
 
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>()
@@ -205,9 +199,6 @@ export function CurrencySearch({
             borderRadius={'27px'}
           />
         </Row>
-        {showCommonBases && (
-          <CommonBases chainId={chainId} onSelect={handleCurrencySelect} selectedCurrency={selectedCurrency} />
-        )}
       </PaddedColumn>
       {searchToken && !searchTokenIsAdded ? (
         <Column style={{ margin: '20px 0', height: '100%' }}>

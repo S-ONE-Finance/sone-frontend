@@ -144,7 +144,6 @@ interface PanelCurrencyInputProps {
   disableCurrencyChange?: boolean
   hideBalance?: boolean
   pair?: Pair | null
-  showCommonBases?: boolean
   customBalanceText?: string
   showReceiveWETH?: boolean
   onReceiveWETHToggle?: () => void
@@ -166,7 +165,6 @@ export default function PanelCurrencyInput({
   disableCurrencyChange = false,
   hideBalance = false,
   pair = null, // used for double token logo
-  showCommonBases,
   customBalanceText,
   showReceiveWETH = false,
   onReceiveWETHToggle
@@ -361,7 +359,6 @@ export default function PanelCurrencyInput({
           onCurrencySelect={onCurrencySelect}
           selectedCurrency={currency}
           otherSelectedCurrency={otherCurrency}
-          showCommonBases={showCommonBases}
         />
       )}
     </>

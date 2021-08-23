@@ -164,7 +164,6 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
           showMaxButton={Number(guideStep.step) > 2 ? true : !atMaxAmounts[Field.CURRENCY_A]}
           currency={currencies[Field.CURRENCY_A]}
           id="add-liquidity-input-tokena"
-          showCommonBases
         />
         <AutoColumn justify="space-between">
           <AutoRow justify={'center'}>
@@ -183,7 +182,6 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
           showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
           currency={currencies[Field.CURRENCY_B]}
           id="add-liquidity-input-tokenb"
-          showCommonBases
         />
       </AutoColumn>
       <ButtonGrouping

@@ -15,7 +15,6 @@ interface CurrencySearchModalProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
-  showCommonBases?: boolean
 }
 
 export enum CurrencyModalView {
@@ -30,8 +29,7 @@ export default function CurrencySearchModal({
   onDismiss,
   onCurrencySelect,
   selectedCurrency,
-  otherSelectedCurrency,
-  showCommonBases = false
+  otherSelectedCurrency
 }: CurrencySearchModalProps) {
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.manage)
   const lastOpen = useLast(isOpen)
@@ -72,7 +70,6 @@ export default function CurrencySearchModal({
           onCurrencySelect={handleCurrencySelect}
           selectedCurrency={selectedCurrency}
           otherSelectedCurrency={otherSelectedCurrency}
-          showCommonBases={showCommonBases}
           showImportView={() => setModalView(CurrencyModalView.importToken)}
           setImportToken={setImportToken}
           showManageView={() => setModalView(CurrencyModalView.manage)}
