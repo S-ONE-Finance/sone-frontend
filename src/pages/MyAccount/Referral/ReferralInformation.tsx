@@ -20,6 +20,7 @@ import usePrevious from '../../../hooks/usePrevious'
 import { CountUp } from 'use-count-up'
 import { useTranslation } from 'react-i18next'
 import { useFormattedSoneInUSD } from '../../../hooks/useOneSoneInUSD'
+import { S_ONE_APP_URL } from '../../../constants/urls'
 
 const FriendsAndReward = styled(AutoColumn)`
   display: grid;
@@ -186,9 +187,6 @@ const Copy = styled(CopySvg)`
   ${BaseIcon}
 `
 
-// TODO: Thay đổi url production deploy.
-const S_ONE_FINANCE_URL = 'https://www.lipsum.com/'
-
 function NumberCountUp({ value }: { value: number | undefined }) {
   const curr = value ? +value.toFixed(3) : 0
   const prev = usePrevious(curr)
@@ -209,6 +207,8 @@ export default function ReferralInformation() {
   const { code, totalPaidReward, totalRewardAmount, pendingAmount, totalFriend } = referrerInformation || {}
   const formattedTotalPaidRewardInUSD = useFormattedSoneInUSD(totalPaidReward)
   const formattedTotalRewardAmountInUSD = useFormattedSoneInUSD(totalRewardAmount)
+
+  const shareUrl = S_ONE_APP_URL + '/#/swap?referral-id=' + code
 
   return (
     <FlexibleRow>
@@ -261,18 +261,18 @@ export default function ReferralInformation() {
           <TextReferralID>{code === undefined ? '--' : code}</TextReferralID>
         </RowBetween>
         <StyledQRCode>
-          <QRCode value={S_ONE_FINANCE_URL} size={110} />
+          <QRCode value={shareUrl} size={110} />
         </StyledQRCode>
         <SubText2>{t('share_with')}</SubText2>
         <Row gap="20px" justify="center" marginTop="10px">
-          <ExternalLink href={`https://twitter.com/intent/tweet?url=${S_ONE_FINANCE_URL}&text=`}>
+          <ExternalLink href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=`}>
             <Twitter />
           </ExternalLink>
-          <ExternalLink href={`https://telegram.me/share/url?url=${S_ONE_FINANCE_URL}&text=`}>
+          <ExternalLink href={`https://telegram.me/share/url?url=${shareUrl}&text=`}>
             <Telegram />
           </ExternalLink>
           {/* TODO: Chưa triển khai referral id bên swap và add liquidity. */}
-          {isCopied ? <CheckCircle /> : <Copy onClick={() => setCopied(S_ONE_FINANCE_URL)} />}
+          {isCopied ? <CheckCircle /> : <Copy onClick={() => setCopied(shareUrl)} />}
         </Row>
       </QrCodeShareSection>
     </FlexibleRow>
