@@ -59,32 +59,26 @@ export function useReferral() {
 
   const url = `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-address/code/${referralCodeInQueryString}`
   const shouldQueryRun = Boolean(referralCodeInQueryString && referralCodeInQueryString !== referralInStore.code)
+
   useQuery(
     ['useReferral', referralCodeInQueryString],
     () =>
       axios
         .get<GetReferralIdByCodeResponse>(url)
         .then(data => {
-          if (data.data.data?.id && referralCodeInQueryString) {
+          if (referralCodeInQueryString) {
+            console.log(`I'm here: `, referralCodeInQueryString)
             dispatch(
               updateReferral({
-                id: data.data.data.id,
+                id: data.data.data?.id ? data.data.data.id : undefined,
                 code: referralCodeInQueryString.toString()
               })
             )
-          } else {
-            dispatch(
-              updateReferral({
-                id: undefined,
-                code: undefined
-              })
-            )
-            throw new Error(`${referralCodeInQueryString} might not a valid referral id.`)
           }
           return data.data
         })
         .catch(() => {
-          throw new Error(`${referralCodeInQueryString} might not a valid referral id.`)
+          console.error(`${referralCodeInQueryString} is not a valid referral id.`)
         }),
     { enabled: shouldQueryRun }
   )

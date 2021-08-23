@@ -15,12 +15,18 @@ import { AutoRow, RowBetween, RowFixed } from '../../components/Row'
 import AdvancedSwapDetails from '../../components/swap/AdvancedSwapDetails'
 import BetterTradeLink, { DefaultVersionLink } from '../../components/swap/BetterTradeLink'
 import confirmPriceImpactWithoutFee from '../../components/swap/confirmPriceImpactWithoutFee'
-import { IconWrapper, BottomGrouping, SwapCallbackError } from '../../components/swap/styleds'
+import { BottomGrouping, IconWrapper, SwapCallbackError } from '../../components/swap/styleds'
 import TradePrice from '../../components/swap/TradePrice'
 import TokenWarningModal from '../../components/TokenWarningModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import AppBodyTitleDescriptionSettings from '../../components/AppBodyTitleDescriptionSettings'
-import { useGuideStepManager } from '../../state/user/hooks'
+import {
+  useExpertModeManager,
+  useGuideStepManager,
+  useShowTransactionDetailsManager,
+  useUserSingleHopOnly,
+  useUserSlippageTolerance
+} from '../../state/user/hooks'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
 import { getTradeVersion } from '../../data/V1'
@@ -35,12 +41,6 @@ import {
   useSwapActionHandlers,
   useSwapState
 } from '../../state/swap/hooks'
-import {
-  useExpertModeManager,
-  useShowTransactionDetailsManager,
-  useUserSingleHopOnly,
-  useUserSlippageTolerance
-} from '../../state/user/hooks'
 import { LinkStyledButton, StyledPadding, TYPE } from '../../theme'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
@@ -65,7 +65,7 @@ import {
   useIsReferralWorksOnCurrentNetwork,
   useReferral
 } from '../../state/referral/hooks'
-import { SwapStep1, SwapStep3, SwapStep4, SwapStep5, OpenGuide } from '../../components/lib/mark/components'
+import { OpenGuide, SwapStep1, SwapStep3, SwapStep4, SwapStep5 } from '../../components/lib/mark/components'
 import WeeklyRanking from '../../components/WeeklyRanking'
 import TabSwapLiquidity from '../../components/TabSwapLiquidity'
 import BrandIdentitySoneForMobile from '../../components/BrandIdentitySoneForMobile'
@@ -342,11 +342,13 @@ export default function Swap({ history }: RouteComponentProps) {
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
+  // Từ code mà parse ra được id thì code đó valid.
+  const { id: isValidCode, code: referralCode } = useReferral()
   const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
-  const { code } = useReferral()
   const isAccountReferred = useIsAccountReferred()
   const accountIsReferrer = useAccountIsReferrer()
-  const weCanUseReferral = isReferralWorksOnCurrentNetwork && !isAccountReferred && code && !accountIsReferrer
+  const showReferralCode =
+    isReferralWorksOnCurrentNetwork && !isAccountReferred && referralCode !== undefined && !accountIsReferrer
 
   const tokenToGuide = {
     decimals: 18,
@@ -550,16 +552,16 @@ export default function Swap({ history }: RouteComponentProps) {
                       </Text>
                     </RowBetween>
                   )}
-                  {weCanUseReferral && (
+                  {showReferralCode && (
                     <RowBetween align="center">
                       <RowFixed>
                         <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                          {t('Referral ID')}
+                          {t('Referral ID') + (isValidCode === undefined ? ' (Invalid data)' : '')}
                         </Text>
                         <QuestionHelper1416 text={t('question_helper_referral_id')} />
                       </RowFixed>
                       <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-                        {code}
+                        {referralCode}
                       </Text>
                     </RowBetween>
                   )}

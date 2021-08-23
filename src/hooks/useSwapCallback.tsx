@@ -129,10 +129,11 @@ export function useSwapCallback(
   const recipient = recipientAddressOrName === null ? account : recipientAddress
 
   const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
-  const { id: referralId } = useReferral()
+  const { id: isValidCode } = useReferral()
   const isAccountReferred = useIsAccountReferred()
   const accountIsReferrer = useAccountIsReferrer()
-  const weCanUseReferral = isReferralWorksOnCurrentNetwork && !isAccountReferred && referralId && !accountIsReferrer
+  const weCanUseReferral =
+    isReferralWorksOnCurrentNetwork && !isAccountReferred && isValidCode !== undefined && !accountIsReferrer
   const onSwapReferral = useSwapReferralCallback()
 
   return useMemo(() => {
