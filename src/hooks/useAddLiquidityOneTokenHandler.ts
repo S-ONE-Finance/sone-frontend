@@ -65,18 +65,12 @@ export default function useAddLiquidityOneTokenHandler({
     ] = selectedPair.getAmountsAddOneToken(selectedTokenUserInputAmount, allowedSlippage)
 
     // TODO: Khi nào hiểu logic thì xoá chỗ này đi.
-    const selectedTokenUserInputAmountJSBI2 = selectedPair.getAmountsAddOneToken(
-      selectedTokenUserInputAmount,
-      allowedSlippage
-    )[0]
-
     console.clear()
     console.log(`selectedPair`, selectedPair)
-    console.log('sel', selectedTokenUserInputAmountJSBI2)
-    console.log('selectedTokenUserInputAmountJSBI', +selectedTokenUserInputAmountJSBI.toString() / 1e18)
-    console.log('selectedTokenMinAmountJSBI', +selectedTokenMinAmountJSBI.toString() / 1e18)
-    console.log('theOtherTokenMinAmountJSBI', +theOtherTokenMinAmountJSBI.toString() / 1e18)
-    console.log('theOtherTokenMinOutputAmountJSBI', +theOtherTokenMinOutputAmountJSBI.toString() / 1e18)
+    console.log('selectedTokenUserInputAmountJSBI', +selectedTokenUserInputAmountJSBI.toString())
+    console.log('selectedTokenMinAmountJSBI', +selectedTokenMinAmountJSBI.toString())
+    console.log('theOtherTokenMinAmountJSBI', +theOtherTokenMinAmountJSBI.toString())
+    console.log('theOtherTokenMinOutputAmountJSBI', +theOtherTokenMinOutputAmountJSBI.toString())
 
     let estimate,
       method: (...args: any) => Promise<TransactionResponse>,
