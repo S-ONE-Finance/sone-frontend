@@ -48,7 +48,7 @@ export function useReferral() {
   return referralInStore
 }
 
-interface AccountIsReferrerAndSavedReferralCodeIsOfThisAccountResponse {
+interface ParseReferralCodeByAddressResponse {
   data:
     | {
         id: number
@@ -59,28 +59,32 @@ interface AccountIsReferrerAndSavedReferralCodeIsOfThisAccountResponse {
   time: string
 }
 
-export function useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount(): boolean | undefined {
+export function useParseReferralCodeInformationByAddress(): string | undefined {
   const { account } = useActiveWeb3React()
-  const { code } = useReferral()
 
   const url = useMemo(() => `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-code/address/${account}`, [account])
   const { data } = useQuery(
-    ['useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount', account],
+    ['useParseReferralCodeInformationByAddress', account],
     () =>
       axios
-        .get<AccountIsReferrerAndSavedReferralCodeIsOfThisAccountResponse>(url)
+        .get<ParseReferralCodeByAddressResponse>(url)
         .then(data => data.data)
         .catch(() => {
-          throw new Error('Error in useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount.')
+          throw new Error('Error in useParseReferralCodeInformationByAddress.')
         }),
     { enabled: Boolean(account) }
   )
 
-  if (code === undefined) return undefined
+  return data?.data?.code
+}
 
-  if (data?.data?.code === undefined) return false
+export function useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount(): boolean {
+  const { code } = useReferral()
+  const parsedReferralCode = useParseReferralCodeInformationByAddress()
 
-  return Boolean(data.data.code === code)
+  if (parsedReferralCode === undefined || code === undefined) return false
+
+  return Boolean(parsedReferralCode === code)
 }
 
 interface GetReferralIdByCodeResponse {
