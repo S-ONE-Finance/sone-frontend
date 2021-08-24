@@ -28,7 +28,7 @@ import SoneLogoSvg from '../../../assets/images/logo_token_sone.svg'
 import TickIconSvg from '../../../assets/images/tick-icon.svg'
 import { HideExtraSmall } from '../../../theme'
 import usePendingReward from '../../../hooks/staking/usePendingReward'
-import { getBalanceNumber } from '../../../utils/formatNumber'
+import { getBalanceNumber, getBalanceStringCommas } from '../../../utils/formatNumber'
 import useClaimRewardHandler from '../../../hooks/staking/useClaimRewardHandler'
 import LiquidityProviderTokenLogo from '../../../components/LiquidityProviderTokenLogo'
 
@@ -213,9 +213,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
   const token1Address = userInfo.pool?.liquidityPair.token1.id ?? undefined
 
   const rewardedSone = isNaN(+userInfo.soneHarvested) ? '--' : (+userInfo.soneHarvested).toFixed(6)
-  const availableReward = usePendingReward(Number(userInfo.pool?.pid))
-    .toNumber()
-    .toFixed(6)
+  const availableReward = usePendingReward(Number(userInfo.pool?.pid)).toString()
 
   const myStakedLpToken = getBalanceNumber(userInfo.amount).toFixed(9)
   const apy = userInfo.pool?.roiPerYear === undefined ? '--' : `${userInfo.pool.roiPerYear * 100}%`
@@ -297,7 +295,9 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
                 <RowFixed>
                   <DetailedSectionIcon src={TickIconSvg} alt="tick-icon-svg" />
                   <Column>
-                    <RewardedSoneValue style={{ fontSize: valueFontSize }}>{availableReward}</RewardedSoneValue>
+                    <RewardedSoneValue style={{ fontSize: valueFontSize }}>
+                      {getBalanceStringCommas(availableReward)}
+                    </RewardedSoneValue>
                     <RewardedSone style={{ fontSize: titleFontSize }}>{t('available_reward')}</RewardedSone>
                   </Column>
                 </RowFixed>

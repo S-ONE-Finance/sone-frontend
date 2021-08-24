@@ -14,7 +14,7 @@ import MyReward from 'components/MyReward'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { getBalanceNumber, getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
 import { useParams } from 'react-router-dom'
-import { Farm, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
+import { ChainId, Farm, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/staking/useFarm'
 import useUnstakeHandler from '../../hooks/staking/useUnstakeHandler'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
@@ -27,6 +27,7 @@ import { useBlockNumber } from '../../state/application/hooks'
 import BigNumber from 'bignumber.js'
 import { tryParseAmount } from '../../state/swap/hooks'
 import { useActiveWeb3React } from '../../hooks'
+import { CONFIG_MASTER_FARMER } from '../../constants/index'
 
 export const HeadingSection = styled(AutoColumn)`
   margin: 30px 0;
@@ -104,7 +105,7 @@ export default function Unstake() {
   const block = useBlockNumber()
 
   useEffect(() => {
-    const poolInfo = new PoolInfo(farm)
+    const poolInfo = new PoolInfo(farm, CONFIG_MASTER_FARMER[chainId || (3 as ChainId)])
     if (typedValue && farm?.userInfo) {
       const userInfo = new UserInfo(poolInfo, farm.userInfo)
       const newTotalLPToken = userInfo.getTotalLPTokenAfterUnstake(

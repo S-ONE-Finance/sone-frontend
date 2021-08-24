@@ -7,7 +7,7 @@ import { liquidityPositionSubsetQuery, pairSubsetQuery, poolsQuery } from 'graph
 import useAverageBlockTime from 'hooks/staking/useAverageBlockTime'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
-import { SONE_MASTER_FARMER, SONE_PRICE_MINIMUM } from '../../constants'
+import { CONFIG_MASTER_FARMER, SONE_MASTER_FARMER, SONE_PRICE_MINIMUM } from '../../constants'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import { useQuery } from 'react-query'
 import useOneSoneInUSD from '../useOneSoneInUSD'
@@ -90,7 +90,11 @@ const useFarms = (): Farm[] => {
         const LPTokenValue = investedValue / LPTokenPrice
         const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
         const roiPerBlock = (rewardPerBlock * sonePrice * poolShare) / investedValue
-        const multiplierYear = calculateAPY(averageBlockTime, block || 0)
+        const multiplierYear = calculateAPY(
+          averageBlockTime,
+          block || 0,
+          CONFIG_MASTER_FARMER[chainId || (3 as ChainId)]
+        )
         const roiPerYear = multiplierYear * roiPerBlock
         const rewardPerDay = rewardPerBlock * blocksPerHour * 24
         const soneHarvested = pool.soneHarvested > 0 ? pool.soneHarvested : 0

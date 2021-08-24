@@ -1,4 +1,4 @@
-import { ChainId, JSBI, Percent, Token, WETH } from '@s-one-finance/sdk-core'
+import { ChainId, JSBI, Percent, Token, WETH, ConfigMasterFarmer } from '@s-one-finance/sdk-core'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -59,6 +59,18 @@ export const SONE_MASTER_FARMER: { [chainId in ChainId]: string } = {
   [ChainId.ROPSTEN]: '0xfB3bEEE96FA08c2CAb70E6DbE34084A99B47b9aD',
   [ChainId.GÖRLI]: '',
   [ChainId.KOVAN]: ''
+}
+
+export const CONFIG_MASTER_FARMER: { [chainId in ChainId]: ConfigMasterFarmer | null } = {
+  [ChainId.MAINNET]: null,
+  [ChainId.RINKEBY]: null,
+  [ChainId.ROPSTEN]: {
+    startBlock: 10897613,
+    rewardMultiplier: [32, 32, 32, 32, 16, 8, 4, 2, 1],
+    blocksPerWeek: 45134
+  },
+  [ChainId.GÖRLI]: null,
+  [ChainId.KOVAN]: null
 }
 
 export const COMMON_CONTRACT_NAMES: { [address: string]: string } = {

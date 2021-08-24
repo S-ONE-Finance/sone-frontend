@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { calculateAPY } from '@s-one-finance/sdk-core'
+import { calculateAPY, ChainId } from '@s-one-finance/sdk-core'
 import { useQuery } from 'react-query'
 
 import useAverageBlockTime from 'hooks/staking/useAverageBlockTime'
@@ -8,6 +8,7 @@ import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import useOneSoneInUSD from '../useOneSoneInUSD'
+import { CONFIG_MASTER_FARMER } from '../../constants/index'
 
 const useFarm = (id: string) => {
   const { account, chainId } = useActiveWeb3React()
@@ -68,7 +69,11 @@ const useFarm = (id: string) => {
     const LPTokenValue = investedValue / LPTokenPrice
     const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
     const roiPerBlock = (rewardPerBlock * sonePrice * poolShare) / investedValue
-    const multiplierYear = calculateAPY(Number(averageBlockTime), block || 0)
+    const multiplierYear = calculateAPY(
+      Number(averageBlockTime),
+      block || 0,
+      CONFIG_MASTER_FARMER[chainId || (3 as ChainId)]
+    )
     const roiPerYear = multiplierYear * roiPerBlock
 
     const rewardPerDay = rewardPerBlock * blocksPerHour * 24
