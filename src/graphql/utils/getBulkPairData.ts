@@ -31,6 +31,7 @@ function getTimestampsForChanges() {
 /**
  * Get một đống data trong "hiện tại", "1 day ago", "2 days ago",
  * "1 week ago", "2 week ago" để parse ra data mà UI cần.
+ * @param chainId
  * @param pairIds
  */
 export default async function getBulkPairData(chainId: number | undefined, pairIds: string[]) {

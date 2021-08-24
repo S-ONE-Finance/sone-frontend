@@ -46,5 +46,5 @@ export function useSoneInUSD(numberOfSone?: number): number | undefined {
 export function useFormattedSoneInUSD(numberOfSone?: number): string {
   const soneInUSD = useSoneInUSD(numberOfSone)
 
-  return useMemo(() => (soneInUSD === undefined ? '--' : getNumberCommas(soneInUSD)), [soneInUSD])
+  return useMemo(() => (soneInUSD === undefined ? '--' : getNumberCommas(soneInUSD.toFixed(6))), [soneInUSD])
 }

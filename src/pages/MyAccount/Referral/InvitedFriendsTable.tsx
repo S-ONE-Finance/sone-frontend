@@ -115,12 +115,6 @@ export default function InvitedFriendsTable() {
               </TableData>
             </TableRow>
           ))}
-          {/*<TableRow>*/}
-          {/*  <TableData align="center">9999</TableData>*/}
-          {/*  <TableData breakk="break-all">999999...9999</TableData>*/}
-          {/*  <TableData>99-99-9999</TableData>*/}
-          {/*  <TableData>Etherscan</TableData>*/}
-          {/*</TableRow>*/}
         </tbody>
       </Table>
       <InvitedFriendsTablePagination
