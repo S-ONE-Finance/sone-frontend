@@ -82,9 +82,9 @@ export default function Referral() {
     isRequestRewardPending === undefined ||
     isRequestRewardPending === true ||
     pendingAmount === undefined ||
-    pendingAmount === 0
+    pendingAmount < 0.000001
   const disabledText =
-    pendingAmount === undefined || pendingAmount === 0 ? 'Empty pending reward' : 'Waiting for Approval'
+    pendingAmount === undefined || pendingAmount < 0.000001 ? 'Empty pending reward' : 'Waiting for Approval'
 
   return (
     <Section>
