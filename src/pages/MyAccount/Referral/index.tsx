@@ -91,7 +91,7 @@ export default function Referral() {
       <RowBetween>
         <Heading>{t('referral')}</Heading>
         <AutoColumn>
-          <SectionButton onClick={requestReward} is_disabled={isDisabled ? 'yes' : undefined}>
+          <SectionButton disabled={isDisabled} onClick={requestReward} is_disabled={isDisabled ? 'yes' : undefined}>
             <SectionText>{t('request_reward')}</SectionText>
           </SectionButton>
           {isDisabled && <PendingText>{disabledText}</PendingText>}

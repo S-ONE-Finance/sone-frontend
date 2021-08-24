@@ -95,7 +95,7 @@ export const SectionButton = styled(Button)<{ is_disabled?: 'yes' }>`
   border-radius: 40px;
   background-color: ${({ theme, is_disabled }) => (is_disabled ? theme.text9Sone : theme.red1Sone)};
   box-shadow: 0 4px 39px rgba(0, 0, 0, 0.15);
-  cursor: ${({ is_disabled }) => (is_disabled ? 'normal' : 'pointer')};
+  cursor: ${({ is_disabled }) => (is_disabled ? 'not-allowed' : 'pointer')};
   display: flex;
   justify-content: center;
   align-items: center;
