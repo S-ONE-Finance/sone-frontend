@@ -56,7 +56,7 @@ export const SONE: { [chainId in ChainId]: Token } = {
 export const SONE_MASTER_FARMER: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '',
   [ChainId.RINKEBY]: '',
-  [ChainId.ROPSTEN]: '0x7a62eb5FEEE85FcFF4A40c55Fee6776708580470',
+  [ChainId.ROPSTEN]: '0xfB3bEEE96FA08c2CAb70E6DbE34084A99B47b9aD',
   [ChainId.GÖRLI]: '',
   [ChainId.KOVAN]: ''
 }

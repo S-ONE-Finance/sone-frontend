@@ -21,13 +21,13 @@ export const swapClients: { [chainId: number]: ApolloClient<NormalizedCacheObjec
 export const stakingClients: { [chainId: number]: ApolloClient<NormalizedCacheObject> } = {
   [ChainId.MAINNET]: new ApolloClient({
     link: new HttpLink({
-      uri: 'https://api.thegraph.com/subgraphs/name/thanhnv25/farmer101'
+      uri: 'https://api.thegraph.com/subgraphs/name/s-one-system/sone-farmer-ropsten'
     }),
     cache: new InMemoryCache()
   }),
   [ChainId.ROPSTEN]: new ApolloClient({
     link: new HttpLink({
-      uri: 'https://api.thegraph.com/subgraphs/name/thanhnv25/farmer101'
+      uri: 'https://api.thegraph.com/subgraphs/name/s-one-system/sone-farmer-ropsten'
     }),
     cache: new InMemoryCache()
   })
