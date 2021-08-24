@@ -188,7 +188,7 @@ const Copy = styled(CopySvg)`
 `
 
 function NumberCountUp({ value }: { value: number | undefined }) {
-  const curr = value ? +value.toFixed(3) : 0
+  const curr = value ? +value.toFixed(6) : 0
   const prev = usePrevious(curr)
   const prevReset = prev === curr ? 0 : prev
 

@@ -7,6 +7,7 @@ import { shortenAddress } from '../../../utils'
 import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
 import useNumberOfPages from './hooks/useNumberOfPages'
 import { useTranslation } from 'react-i18next'
+import { useActiveWeb3React } from '../../../hooks'
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -75,6 +76,7 @@ const TableHeading = styled.th<{ align?: string }>`
 
 export default function InvitedFriendsTable() {
   const { t } = useTranslation()
+  const { chainId } = useActiveWeb3React()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const [limit, setLimit] = useState<5 | 10 | 100>(5)
   const [selectedPage, setSelectedPage] = useState(1)
@@ -107,7 +109,9 @@ export default function InvitedFriendsTable() {
               {/* Thằng Date chuẩn ISO thì cứ đẩy substr(0, 10) là ăn :D. */}
               <TableData>{friend.updatedAt.substr(0, 10)}</TableData>
               <TableData>
-                <ExternalLink href={friend.transaction}>Etherscan</ExternalLink>
+                <ExternalLink href={`https://${chainId === 1 ? '' : 'ropsten.'}etherscan.io/tx/` + friend.transaction}>
+                  Etherscan
+                </ExternalLink>
               </TableData>
             </TableRow>
           ))}
