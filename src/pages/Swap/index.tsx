@@ -60,7 +60,7 @@ import { ApprovalState, useApproveCallbackFromTrade } from '../../hooks/useAppro
 import useTheme from '../../hooks/useTheme'
 import { TransactionType } from '../../state/transactions/types'
 import {
-  useAccountIsReferrer,
+  useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount,
   useIsAccountReferred,
   useIsReferralWorksOnCurrentNetwork,
   useReferral
@@ -346,9 +346,12 @@ export default function Swap({ history }: RouteComponentProps) {
   const { id: isValidCode, code: referralCode } = useReferral()
   const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
   const isAccountReferred = useIsAccountReferred()
-  const accountIsReferrer = useAccountIsReferrer()
+  const accountIsReferrerAndSavedReferralCodeIsOfThisAccount = useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount()
   const showReferralCode =
-    isReferralWorksOnCurrentNetwork && !isAccountReferred && referralCode !== undefined && !accountIsReferrer
+    isReferralWorksOnCurrentNetwork &&
+    !isAccountReferred &&
+    referralCode !== undefined &&
+    !accountIsReferrerAndSavedReferralCodeIsOfThisAccount
 
   const tokenToGuide = {
     decimals: 18,

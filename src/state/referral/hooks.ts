@@ -8,43 +8,6 @@ import axios from 'axios'
 import { useActiveWeb3React } from '../../hooks'
 import { useQuery } from 'react-query'
 
-interface AccountIsReferrerResponse {
-  data:
-    | {
-        id: number
-        code: string
-      }
-    | undefined
-  statusCode: number
-  time: string
-}
-
-export function useAccountIsReferrer(): boolean {
-  const { account } = useActiveWeb3React()
-
-  const url = useMemo(() => `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-code/address/${account}`, [account])
-  const { data } = useQuery('useAccountIsReferrer', () =>
-    axios
-      .get<AccountIsReferrerResponse>(url)
-      .then(data => data.data)
-      .catch(() => {
-        throw new Error('Error in useAccountIsReferrer.')
-      })
-  )
-  return Boolean(data?.data)
-}
-
-interface GetReferralIdByCodeResponse {
-  data:
-    | {
-        id: number
-        address: string
-      }
-    | undefined
-  statusCode: number
-  time: string
-}
-
 /**
  * Watch url query string and update referralId state (if any).
  * What user see: referralId = 1A2B3C4D.
@@ -67,7 +30,6 @@ export function useReferral() {
         .get<GetReferralIdByCodeResponse>(url)
         .then(data => {
           if (referralCodeInQueryString) {
-            console.log(`I'm here: `, referralCodeInQueryString)
             dispatch(
               updateReferral({
                 id: data.data.data?.id ? data.data.data.id : undefined,
@@ -84,6 +46,52 @@ export function useReferral() {
   )
 
   return referralInStore
+}
+
+interface AccountIsReferrerAndSavedReferralCodeIsOfThisAccountResponse {
+  data:
+    | {
+        id: number
+        code: string
+      }
+    | undefined
+  statusCode: number
+  time: string
+}
+
+export function useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount(): boolean | undefined {
+  const { account } = useActiveWeb3React()
+  const { code } = useReferral()
+
+  const url = useMemo(() => `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-code/address/${account}`, [account])
+  const { data } = useQuery(
+    ['useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount', account],
+    () =>
+      axios
+        .get<AccountIsReferrerAndSavedReferralCodeIsOfThisAccountResponse>(url)
+        .then(data => data.data)
+        .catch(() => {
+          throw new Error('Error in useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount.')
+        }),
+    { enabled: Boolean(account) }
+  )
+
+  if (code === undefined) return undefined
+
+  if (data?.data?.code === undefined) return false
+
+  return Boolean(data.data.code === code)
+}
+
+interface GetReferralIdByCodeResponse {
+  data:
+    | {
+        id: number
+        address: string
+      }
+    | undefined
+  statusCode: number
+  time: string
 }
 
 interface IsAccountReferredResponse {

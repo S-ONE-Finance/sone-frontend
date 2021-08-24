@@ -16,7 +16,7 @@ import { Version } from './useToggledVersion'
 import { TransactionType } from '../state/transactions/types'
 import useSwapReferralCallback from './useSwapReferralCallback'
 import {
-  useAccountIsReferrer,
+  useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount,
   useIsAccountReferred,
   useIsReferralWorksOnCurrentNetwork,
   useReferral
@@ -131,9 +131,12 @@ export function useSwapCallback(
   const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
   const { id: isValidCode } = useReferral()
   const isAccountReferred = useIsAccountReferred()
-  const accountIsReferrer = useAccountIsReferrer()
+  const accountIsReferrerAndSavedReferralCodeIsOfThisAccount = useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount()
   const weCanUseReferral =
-    isReferralWorksOnCurrentNetwork && !isAccountReferred && isValidCode !== undefined && !accountIsReferrer
+    isReferralWorksOnCurrentNetwork &&
+    !isAccountReferred &&
+    isValidCode !== undefined &&
+    !accountIsReferrerAndSavedReferralCodeIsOfThisAccount
   const onSwapReferral = useSwapReferralCallback()
 
   return useMemo(() => {

@@ -1,6 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useAccountIsReferrer, useIsReferralWorksOnCurrentNetwork } from '../../state/referral/hooks'
+import {
+  useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount,
+  useIsReferralWorksOnCurrentNetwork
+} from '../../state/referral/hooks'
 
 import MyBalance from './MyBalance'
 import MyLiquidity from './MyLiquidity'
@@ -11,7 +14,7 @@ import { MyAccountWrapper, PageTitleMobileOnly, Sections } from './components'
 export default function MyAccount() {
   const { t } = useTranslation()
 
-  const accountIsReferrer = useAccountIsReferrer()
+  const accountIsReferrerAndSavedReferralCodeIsOfThisAccount = useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount()
   const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
 
   return (
@@ -21,7 +24,7 @@ export default function MyAccount() {
         <MyBalance />
         <MyLiquidity />
         <MyStaking />
-        {isReferralWorksOnCurrentNetwork && accountIsReferrer && <Referral />}
+        {isReferralWorksOnCurrentNetwork && accountIsReferrerAndSavedReferralCodeIsOfThisAccount && <Referral />}
       </Sections>
     </MyAccountWrapper>
   )
