@@ -84,7 +84,7 @@ const useFarms = (): Farm[] => {
         const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
         const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
         const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
-        const rewardPerBlock = (pool.allocPoint / pool.owner.totalAllocPoint) * pool.owner.sonePerBlock
+        const rewardPerBlock = ((pool.allocPoint / pool.owner.totalAllocPoint) * pool.owner.sonePerBlock) / 1e18
         const investedValue = 1000
         const LPTokenPrice = pair.reserveUSD / pair.totalSupply || SONE_PRICE_MINIMUM
         const LPTokenValue = investedValue / LPTokenPrice

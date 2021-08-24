@@ -68,7 +68,7 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
         const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
         const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
         const rewardPerBlock =
-          (user.pool?.allocPoint / user.pool?.owner.totalAllocPoint) * user.pool?.owner.sonePerBlock
+          ((user.pool?.allocPoint / user.pool?.owner.totalAllocPoint) * user.pool?.owner.sonePerBlock) / 1e18
 
         const investedValue = 1000
         const LPTokenPrice = pair.reserveUSD / pair.totalSupply
