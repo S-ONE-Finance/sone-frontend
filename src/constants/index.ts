@@ -4,7 +4,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
 
-export const ROUTER_ADDRESS = '0x824291E4Fd77345D18cF7fe4DF0b2b113F7fA61A'
+export const ROUTER_ADDRESS = '0x5065C6C5BCE00739Fb90bC5ab33e397c14f63335'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -20,16 +20,6 @@ export const DAI = new Token(ChainId.MAINNET, '0x6B175474E89094C44Da98b954EedeAC
 export const USDC = new Token(ChainId.MAINNET, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD//C')
 export const USDT = new Token(ChainId.MAINNET, '0xdAC17F958D2ee523a2206206994597C13D831ec7', 6, 'USDT', 'Tether USD')
 export const WBTC = new Token(ChainId.MAINNET, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped BTC')
-
-
-
-
-
-
-
-
-
-
 
 // Block time here is slightly higher (~1s) than average in order to avoid ongoing proposals past the displayed time
 export const AVERAGE_BLOCK_TIME_IN_SECS = 13

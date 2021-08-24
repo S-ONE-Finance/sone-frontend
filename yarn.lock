@@ -2091,22 +2091,22 @@
     redux-thunk "^2.3.0"
     reselect "^4.0.0"
 
-"@s-one-finance/core@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@s-one-finance/core/-/core-0.1.2.tgz#eb119973fdb27ae62e10462985a8feb884b3b2a7"
-  integrity sha512-lqljc25HWeOqiH+Mx1KVCyOdnqnniown8cEIEm2c8yQteso7gFbqohUI1U59Xny008tI+FyaZUD4IF/kR5QO3A==
+"@s-one-finance/core@^2.0.0-rc1":
+  version "2.0.0-rc1"
+  resolved "https://registry.yarnpkg.com/@s-one-finance/core/-/core-2.0.0-rc1.tgz#cb25bef1c75571ae334f46324d414b3a1a3e122f"
+  integrity sha512-t/UIVMEkA0raLEe4XkpPPDrL03FZ2dmd9Vt2beWxhdaWbAwZPfGKgWthNExjM/7OxfIpjj9ng3de2xxic7JQfA==
 
 "@s-one-finance/default-token-list@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@s-one-finance/default-token-list/-/default-token-list-1.0.3.tgz#1ade901666c5a24ef1ca8b175b5de2533d08e873"
   integrity sha512-m+QNybjFvXmtxqojzy4f2vOynQSxfnAE0PbISNLfGtM5vwWf9tK7iaqGJsPYI0V11vFZkRLEzPvj90yfr7NATA==
 
-"@s-one-finance/sdk-core@^1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@s-one-finance/sdk-core/-/sdk-core-1.2.3.tgz#c8842e5244820081ee5d3854315ef1468ab4089d"
-  integrity sha512-pNbH6LCE2wLQMAZzOU3DeAa9RV0JvlnQPk2em6HsblFS9zvV8BLuASNshfCwaz2XvXnZc8YQmDGfFTodSDTU5Q==
+"@s-one-finance/sdk-core@^1.3.0-rc2":
+  version "1.3.0-rc2"
+  resolved "https://registry.yarnpkg.com/@s-one-finance/sdk-core/-/sdk-core-1.3.0-rc2.tgz#9ac0e44bd7f940795d157082105e8a178f07d5a3"
+  integrity sha512-mTb6u4Ko5dlrS0NQ/68ESYb0OlSzw9yNItM/5Rt6AE3rYt1I1vBlDNI9LUHf+aWNiWqHl8b9FYBCEy+OPtyMEQ==
   dependencies:
-    "@s-one-finance/core" "^0.1.2"
+    "@s-one-finance/core" "^2.0.0-rc1"
     big.js "^5.2.2"
     bignumber.js "^9.0.1"
     decimal.js-light "^2.5.0"
