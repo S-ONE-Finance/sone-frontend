@@ -150,6 +150,7 @@
   "receive_eth": "接收ETH",
   "receive_weth": "接收WETH",
   "referral": "转介",
+  "referral_information": "Referral Information",
   "remain_staked_lp": "剩余质押LP",
   "remove": "移除",
   "remove_account": "移除",
