@@ -18,7 +18,7 @@ import useTheme from '../../hooks/useTheme'
 import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenLogo'
 import StakeTxSectionDetails2 from './StakeTxSectionDetails2'
 import { useParams } from 'react-router-dom'
-import { Farm, PoolInfo, UserInfo } from '@s-one-finance/sdk-core'
+import { ChainId, Farm, PoolInfo, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/staking/useFarm'
 import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
 import { useActiveWeb3React } from '../../hooks'
@@ -32,6 +32,7 @@ import TransactionConfirmationModal, { ConfirmationModalContent } from '../../co
 import useAllowance from '../../hooks/staking/useAllowance'
 import useApproveHandler from '../../hooks/staking/useApproveHandler'
 import { OpenGuide, StakeStep1, StakeStep2, StakeStep3 } from '../../components/lib/mark/components'
+import { CONFIG_MASTER_FARMER } from '../../constants/index'
 
 export default function Staking() {
   const { t } = useTranslation()
@@ -52,7 +53,7 @@ export default function Staking() {
   const lpBalance = pairAddress && lpBalanceRaw ? getBalanceNumber(lpBalanceRaw.toString()) : undefined
 
   const toggleWalletModal = useWalletModalToggle()
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
 
   const { token0, token1 } = farm?.liquidityPair || {}
 
@@ -62,8 +63,8 @@ export default function Staking() {
   const totalStakedAfterStakeRender =
     totalStakedAfterStake === undefined ? '--' : getBalanceStringCommas(totalStakedAfterStake)
   const earnedRewardAfterStakeRender =
-    earnedRewardAfterStake === undefined ? '--' : getBalanceStringCommas(earnedRewardAfterStake)
-  const apyAfterStakeRender = apyAfterStake === undefined ? '--' : getBalanceStringCommas(apyAfterStake)
+    earnedRewardAfterStake === undefined ? '--' : getBalanceStringCommas(earnedRewardAfterStake, 0)
+  const apyAfterStakeRender = apyAfterStake === undefined ? '--' : getBalanceStringCommas(apyAfterStake, 0)
 
   const bonusMultiplier = (farm && (farm.owner as any))?.bonusMultiplier ?? 1
   const rewardPerBlock = farm && farm.rewardPerBlock * bonusMultiplier
@@ -78,7 +79,7 @@ export default function Staking() {
       setApyAfterStake(undefined)
       return
     }
-    const poolInfo = new PoolInfo(farm)
+    const poolInfo = new PoolInfo(farm, CONFIG_MASTER_FARMER[chainId || (3 as ChainId)])
     if (typedValue && farm?.userInfo) {
       const userInfo = new UserInfo(poolInfo, farm.userInfo)
       const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
