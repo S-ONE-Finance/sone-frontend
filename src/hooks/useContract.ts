@@ -4,7 +4,7 @@ import { abi as UNI_ABI } from '@uniswap/governance/build/Uni.json'
 import { abi as STAKING_REWARDS_ABI } from '@uniswap/liquidity-staker/build/StakingRewards.json'
 import { abi as MERKLE_DISTRIBUTOR_ABI } from '@uniswap/merkle-distributor/build/MerkleDistributor.json'
 import { ChainId, WETH } from '@s-one-finance/sdk-core'
-import { abi as IUniswapV2PairABI } from '@s-one-finance/core/build/contracts/IUniswapV2Pair.json'
+import { abi as IUniswapV2PairABI } from '@s-one-finance/core/artifacts/contracts/sone-smart-contracts/uniswapv2/interfaces/IUniswapV2Pair.sol/IUniswapV2Pair.json'
 import { useMemo } from 'react'
 import { GOVERNANCE_ADDRESS, SONE_MASTER_FARMER, MERKLE_DISTRIBUTOR_ADDRESS, UNI } from '../constants'
 import {
@@ -22,9 +22,9 @@ import { MULTICALL_ABI, MULTICALL_NETWORKS } from '../constants/multicall'
 import { V1_EXCHANGE_ABI, V1_FACTORY_ABI, V1_FACTORY_ADDRESSES } from '../constants/v1'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
-import { abi as SoneMasterFarmerABI } from '@s-one-finance/core/build/contracts/SoneMasterFarmer.json'
+import { abi as SoneMasterFarmerABI } from '@s-one-finance/core/artifacts/contracts/sone-smart-contracts/SoneMasterFarmer.sol/SoneMasterFarmer.json'
 import { abi as SoneTokenABI } from '../constants/abis/SoneToken.json'
-import { abi as UniswapV2PairABI } from '@s-one-finance/core/build/contracts/UniswapV2Pair.json'
+import { abi as UniswapV2PairABI } from '@s-one-finance/core/artifacts/contracts/sone-smart-contracts/uniswapv2/UniswapV2Pair.sol/UniswapV2Pair.json'
 
 // returns null on errors
 function useContract(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
