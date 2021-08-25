@@ -102,7 +102,7 @@ const useFarm = (id: string) => {
       secondsPerBlock: Number(averageBlockTime),
       userInfo: userInfo || {}
     }
-  }, [averageBlockTime, block, farm, pair, sonePrice, userInfo])
+  }, [averageBlockTime, block, chainId, farm, pair, sonePrice, userInfo])
 }
 
 export default useFarm

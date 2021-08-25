@@ -130,7 +130,7 @@ const useFarms = (): Farm[] => {
     const sorted = _.orderBy(farms, ['pid'], ['desc'])
     const unique = _.uniq(sorted)
     return unique
-  }, [averageBlockTime, block, liquidityPositions, pairs, pools, sonePrice])
+  }, [averageBlockTime, block, chainId, liquidityPositions, pairs, pools, sonePrice])
 }
 
 export default useFarms

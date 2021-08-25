@@ -97,7 +97,7 @@ export default function Staking() {
       )
       setApyAfterStake(newAPY)
     }
-  }, [typedValue, farm, block])
+  }, [typedValue, farm, block, chainId])
 
   const [showConfirm, setShowConfirm] = useState(false)
   const [attemptingTxn, setAttemptingTxn] = useState(false) // Clicked confirm.
