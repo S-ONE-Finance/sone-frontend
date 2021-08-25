@@ -22,8 +22,7 @@ export default function useRequestReward(): [boolean, () => void] {
     const url = `${ADMIN_BACKEND_BASE_URL}/payment-requests`
     axios
       .post(url, {
-        referralId,
-        amount
+        referralId
       })
       .then(() => {
         // TODO: Xử lý lại để không phụ thuộc vào setTimeout??
