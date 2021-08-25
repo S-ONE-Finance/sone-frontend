@@ -6,9 +6,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useLpContract } from 'hooks/useContract'
-import { SONE_MASTER_FARMER } from '../../constants'
-
-const MAX_UINT_256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+import { MAX_UINT_256, SONE_MASTER_FARMER } from '../../constants'
 
 export default function useApproveHandler(pairAddress?: string) {
   const addTransaction = useTransactionAdder()

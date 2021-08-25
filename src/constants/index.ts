@@ -4,6 +4,8 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
 
+export const MAX_UINT_256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+
 export const ROUTER_ADDRESS = '0x5065C6C5BCE00739Fb90bC5ab33e397c14f63335'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'

@@ -361,7 +361,6 @@ export default function WithdrawLiquidity({
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
-    setSignatureData(null) // important that we clear signature data to avoid bad sigs
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onUserInput(Field.LIQUIDITY_PERCENT, '0')
