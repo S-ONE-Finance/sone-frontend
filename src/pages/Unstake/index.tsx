@@ -119,7 +119,7 @@ export default function Unstake() {
       setRemainStakedLp(newTotalStaked)
       setAvailableReward(pendingReward.toString())
     }
-  }, [typedValue, farm, block, tokenBalance, pendingReward])
+  }, [typedValue, farm, block, tokenBalance, pendingReward, chainId])
 
   const [showConfirm, setShowConfirm] = useState(false)
   const [attemptingTxn, setAttemptingTxn] = useState(false) // Clicked confirm.

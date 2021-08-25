@@ -10,7 +10,7 @@ import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import useOneSoneInUSD from '../useOneSoneInUSD'
-import { CONFIG_MASTER_FARMER } from '../../constants/index'
+import { CONFIG_MASTER_FARMER } from '../../constants'
 
 const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
   const { account, chainId } = useActiveWeb3React()
@@ -128,7 +128,7 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
 
     // TODO: Dùng biến isSuccess để detect loading không đúng lắm nhưng tạm thời ok.
     return [isLoading, unique]
-  }, [averageBlockTime, block, pairs, pairsIsLoading, sonePrice, users, usersIsLoading])
+  }, [averageBlockTime, block, chainId, pairs, pairsIsLoading, sonePrice, users, usersIsLoading])
 }
 
 export default useMyAccountStaked
