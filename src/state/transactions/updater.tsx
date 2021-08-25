@@ -4,6 +4,8 @@ import { useActiveWeb3React } from '../../hooks'
 import { useAddPopup, useBlockNumber } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import { checkedTransaction, finalizeTransaction } from './actions'
+import { useClearReferralCallback } from '../referral/hooks'
+import { TransactionType } from './types'
 
 export function shouldCheck(
   lastBlockNumber: number,
@@ -39,6 +41,8 @@ export default function Updater(): null {
   // show popup on confirm
   const addPopup = useAddPopup()
 
+  const clearReferral = useClearReferralCallback()
+
   useEffect(() => {
     if (!chainId || !library || !lastBlockNumber) return
 
@@ -66,16 +70,24 @@ export default function Updater(): null {
                 })
               )
 
+              const success = receipt.status === 1
+              const { summary } = transactions[hash] ?? {}
+
               addPopup(
                 {
                   txn: {
                     hash,
-                    success: receipt.status === 1,
-                    summary: transactions[hash]?.summary
+                    success,
+                    summary
                   }
                 },
                 hash
               )
+
+              // Swap success then delete referral id.
+              if (success && summary && typeof summary !== 'string' && summary.type === TransactionType.SWAP) {
+                clearReferral()
+              }
             } else {
               dispatch(checkedTransaction({ chainId, hash, blockNumber: lastBlockNumber }))
             }
@@ -84,7 +96,7 @@ export default function Updater(): null {
             console.error(`failed to check transaction hash: ${hash}`, error)
           })
       })
-  }, [chainId, library, transactions, lastBlockNumber, dispatch, addPopup])
+  }, [chainId, library, transactions, lastBlockNumber, dispatch, addPopup, clearReferral])
 
   return null
 }
