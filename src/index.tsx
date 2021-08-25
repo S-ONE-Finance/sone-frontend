@@ -64,6 +64,11 @@ function Updaters() {
 
 const queryClient = new QueryClient()
 
+
+
+
+
+
 ReactDOM.render(
   <StrictMode>
     <FixedGlobalStyle />
