@@ -1,12 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, AppState } from '../index'
-import { updateReferral } from './actions'
+import { clearReferral, updateReferral } from './actions'
 import useParsedQueryString from '../../hooks/useParsedQueryString'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { ADMIN_BACKEND_BASE_URL } from '../../constants/urls'
 import axios from 'axios'
 import { useActiveWeb3React } from '../../hooks'
 import { useQuery } from 'react-query'
+
+export function useClearReferralCallback() {
+  const dispatch = useDispatch<AppDispatch>()
+
+  return useCallback(() => {
+    dispatch(clearReferral())
+  }, [dispatch])
+}
 
 /**
  * Watch url query string and update referralId state (if any).

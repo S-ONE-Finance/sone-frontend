@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { updateReferral } from './actions'
+import { clearReferral, updateReferral } from './actions'
 
 export interface ReferralState {
   id?: number
@@ -9,8 +9,13 @@ export interface ReferralState {
 export const initialState: ReferralState = {}
 
 export default createReducer(initialState, builder =>
-  builder.addCase(updateReferral, (state, action) => {
-    state.id = action.payload.id
-    state.code = action.payload.code
-  })
+  builder
+    .addCase(updateReferral, (state, action) => {
+      state.id = action.payload.id
+      state.code = action.payload.code
+    })
+    .addCase(clearReferral, (state, action) => {
+      state.id = undefined
+      state.code = undefined
+    })
 )
