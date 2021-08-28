@@ -508,13 +508,19 @@ export default function Header() {
                 </SubMenu>
               </MenuItem>
               <MenuItem>
-                <StyledExternalLink href={isMobile ? '' : S_ONE_DOCS_URL} target={isMobile ? '_self' : '_blank'}>
+                <StyledExternalLink href={S_ONE_DOCS_URL} target="_blank">
                   {t('docs')}
                 </StyledExternalLink>
                 <ResponsiveTopEndSubMenu>
-                  <SubMenuItemExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('swap_stats')}</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={S_ONE_FAQ_URL}>{t('faq')}</SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={S_ONE_BLOG_URL}>{t('blog')}</SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_WHITE_PAPER_URL} target="_blank">
+                    {t('swap_stats')}
+                  </SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_FAQ_URL} target="_blank">
+                    {t('faq')}
+                  </SubMenuItemExternalLink>
+                  <SubMenuItemExternalLink href={S_ONE_BLOG_URL} target="_blank">
+                    {t('blog')}
+                  </SubMenuItemExternalLink>
                 </ResponsiveTopEndSubMenu>
               </MenuItem>
             </HeaderMenu>
