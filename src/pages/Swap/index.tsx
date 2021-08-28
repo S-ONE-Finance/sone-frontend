@@ -721,7 +721,7 @@ export default function Swap({ history }: RouteComponentProps) {
                 color={theme.text5Sone}
                 onClick={toggleIsShowTransactionDetails}
               >
-                {t('show_more_information')} <ChevronUp size={12} />
+                {t('show_less')} <ChevronUp size={12} />
               </ClickableText>
             </ColumnCenter>
           )}
