@@ -15,9 +15,10 @@ const ColumnScroll = styled(Column)`
   padding-left: 0;
   padding-right: 0;
   padding-bottom: 0.5rem;
-  max-height: 200px;
+  height: auto;
   overflow-x: hidden;
   overflow-y: auto;
+  max-height: 200px;
 
   ${({ theme }) => theme.mediaWidth.upToMedium`
     max-height: 25vh;
@@ -90,7 +91,6 @@ export default function RecentTransactions({ isSmall = false }: { isSmall?: bool
           {renderTransactions(pending)}
           {renderTransactions(confirmed)}
           <Row justify={'center'}>
-            {/* TODO: href chưa fill. */}
             <ViewMore href={viewMoreUrl}>{t('view_more')}</ViewMore>
           </Row>
         </>

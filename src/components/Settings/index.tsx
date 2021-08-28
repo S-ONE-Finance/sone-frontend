@@ -21,8 +21,8 @@ import AppVector from '../AppBodyTitleDescriptionSettings/AppVector'
 import { TransactionType } from '../../state/transactions/types'
 
 const StyledSettingsIcon = styled(SettingsIcon)`
-  height: 24px;
   width: 24px;
+  height: auto;
 
   > * {
     stroke: ${({ theme }) => theme.text5Sone};
@@ -35,6 +35,7 @@ const StyledSettingsIcon = styled(SettingsIcon)`
 
 const StyledGlassesIcon = styled(GlassesIcon)`
   width: 24px;
+  height: auto;
 
   > * {
     stroke: ${({ theme }) => theme.text5Sone};

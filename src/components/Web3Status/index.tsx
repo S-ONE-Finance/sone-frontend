@@ -55,7 +55,6 @@ export const ButtonMainRed = styled.div<{ cursor?: string; padding?: string }>`
   font-size: 16px;
   font-weight: 500;
   cursor: ${({ cursor }) => cursor || 'pointer'};
-  box-shadow: 4px 4px 4px rgb(0 0 0 / 12%);
   user-select: none;
 
   :hover,

@@ -28,7 +28,7 @@ const Container = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     padding: 1rem;
     border-radius: 25px;
-    row-gap: 10px;
+    grid-row-gap: 10px;
     grid-template-columns: repeat(4, 1fr);
   `}
 `
