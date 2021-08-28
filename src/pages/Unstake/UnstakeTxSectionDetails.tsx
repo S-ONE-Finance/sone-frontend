@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { AutoColumn } from '../../components/Column'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 import { useTranslation } from 'react-i18next'
-import { getBalanceStringCommas } from '../../utils/formatNumber'
+import { getBalanceNumber, reduceFractionDigit } from '../../utils/formatNumber'
 
 export const SectionDetails = styled(AutoColumn)`
   padding: 0 14px;
@@ -38,19 +38,19 @@ export default function UnstakeTxSectionDetails({
       <UnstakeTxDetailRow
         fieldName={t('total_lp_token')}
         qhText={t('question_helper_total_lp_token')}
-        value={getBalanceStringCommas(totalLpToken)}
+        value={reduceFractionDigit(getBalanceNumber(totalLpToken) + '', 18)}
         unit="LP"
       />
       <UnstakeTxDetailRow
         fieldName={t('remain_staked_lp')}
         qhText={t('question_helper_remain_staked_lp')}
-        value={getBalanceStringCommas(remainStakedLp)}
+        value={reduceFractionDigit(getBalanceNumber(remainStakedLp) + '', 18)}
         unit="LP"
       />
       <UnstakeTxDetailRow
         fieldName={t('available_reward')}
         qhText={t('question_helper_available_reward')}
-        value={getBalanceStringCommas(availableReward)}
+        value={reduceFractionDigit(getBalanceNumber(availableReward) + '', 18)}
         unit="SONE"
       />
     </SectionDetails>
