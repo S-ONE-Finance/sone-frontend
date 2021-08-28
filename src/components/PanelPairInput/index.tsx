@@ -9,7 +9,7 @@ import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../hooks'
 import { TextPanelLabel, TextPanelLabelAccent } from 'theme'
 import { Container, InputRow, LabelRow, RowBalance, StyledBalanceMax } from '../PanelCurrencyInput'
-import { getNumberCommas } from '../../utils/formatNumber'
+import { getNumberCommas, reduceFractionDigit } from '../../utils/formatNumber'
 import styled from 'styled-components'
 import LiquidityProviderTokenLogo from '../LiquidityProviderTokenLogo'
 import { useGuideStepManager } from '../../state/user/hooks'
@@ -69,6 +69,7 @@ export default function PanelPairInput({
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [guideStep] = useGuideStepManager()
+  const balanceDisplay = balance !== undefined ? reduceFractionDigit(getNumberCommas(balance) + '', 18) : '--'
 
   return (
     <Container>
@@ -87,7 +88,7 @@ export default function PanelPairInput({
                   style={{ marginRight: '0.25rem' }}
                 />
                 <TextPanelLabel>{customBalanceText}</TextPanelLabel>
-                <TextPanelLabelAccent>{balance !== undefined ? getNumberCommas(balance) : '--'}</TextPanelLabelAccent>
+                <TextPanelLabelAccent>{balanceDisplay}</TextPanelLabelAccent>
               </RowBalance>
             )}
           </RowBetween>

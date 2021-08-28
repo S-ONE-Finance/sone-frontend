@@ -27,3 +27,9 @@ export const getBalanceStringCommas = (balance: string, decimals = 18) => {
   const val = getBalanceNumber(balance, decimals)
   return getNumberCommas(val)
 }
+
+export const reduceFractionDigit = (number = '', digitAmount = 0) =>
+  Number(number).toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: digitAmount
+  })

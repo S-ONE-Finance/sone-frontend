@@ -12,7 +12,12 @@ import styled from 'styled-components'
 import UnstakeTxSectionDetails from './UnstakeTxSectionDetails'
 import MyReward from 'components/MyReward'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { getBalanceNumber, getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
+import {
+  getBalanceNumber,
+  getBalanceStringCommas,
+  getNumberCommas,
+  reduceFractionDigit
+} from '../../utils/formatNumber'
 import { useParams } from 'react-router-dom'
 import { ChainId, Farm, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/staking/useFarm'
@@ -27,7 +32,7 @@ import { useBlockNumber } from '../../state/application/hooks'
 import BigNumber from 'bignumber.js'
 import { tryParseAmount } from '../../state/swap/hooks'
 import { useActiveWeb3React } from '../../hooks'
-import { CONFIG_MASTER_FARMER } from '../../constants/index'
+import { CONFIG_MASTER_FARMER } from '../../constants'
 
 export const HeadingSection = styled(AutoColumn)`
   margin: 30px 0;
@@ -64,6 +69,7 @@ export default function Unstake() {
   const fullBalance = useMemo(() => {
     return amountStaked === undefined ? undefined : getBalanceNumber(amountStaked)
   }, [amountStaked])
+  const fullBalanceDisplay = useMemo(() => reduceFractionDigit(fullBalance + '', 18), [fullBalance])
 
   const [typedValue, setTypedValue] = useState('')
 
@@ -73,7 +79,7 @@ export default function Unstake() {
 
   const onMax = () => {
     if (fullBalance) {
-      setTypedValue(fullBalance.toString())
+      setTypedValue(fullBalanceDisplay)
     }
   }
 
