@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { Globe, Menu as MenuIcon, Moon, Sun } from 'react-feather'
@@ -11,6 +11,7 @@ import LogoDark from '../../assets/svg/logo_text_white_sone.svg'
 import { useActiveWeb3React } from '../../hooks'
 import { useDarkModeManager } from '../../state/user/hooks'
 import { useUserHasAvailableClaim } from '../../state/claim/hooks'
+import { useOnClickOutside } from '../../hooks/useOnClickOutside'
 import useLanguage from '../../hooks/useLanguage'
 
 import { ExternalLink, TYPE } from '../../theme'
@@ -459,6 +460,13 @@ export default function Header() {
   const availableClaim: boolean = useUserHasAvailableClaim(account)
   const [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
 
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false)
+
+  const languageNode = useRef<HTMLDivElement>(null)
+  useOnClickOutside(languageNode, () => {
+    setShowLanguageMenu(false)
+  })
+
   return (
     <>
       <Modal isOpen={isShowMobileMenu} onDismiss={() => setIsShowMobileMenu(false)} isBottomOnMobile={true}>
@@ -555,7 +563,25 @@ export default function Header() {
             <StyledMenuButton onClick={() => toggleDarkMode()} cursor="pointer">
               {darkMode ? <Moon size={20} strokeWidth={2.5} /> : <Sun size={20} strokeWidth={2.5} />}
             </StyledMenuButton>
-            <ResponsiveMenuItem style={{ margin: '0' }}>
+            <ResponsiveMenuItem
+              style={{ margin: '0' }}
+              ref={languageNode}
+              onMouseEnter={() => {
+                if (!isMobile) {
+                  setShowLanguageMenu(true)
+                }
+              }}
+              onMouseLeave={() => {
+                if (!isMobile) {
+                  setShowLanguageMenu(false)
+                }
+              }}
+              onClick={() => {
+                if (isMobile) {
+                  setShowLanguageMenu(prev => !prev)
+                }
+              }}
+            >
               <StyledMenuButtonWithText>
                 <Globe size={20} />
                 <TYPE.language style={{ marginLeft: '5px' }} fontSize="13px">
@@ -568,10 +594,28 @@ export default function Header() {
                     : 'EN'}
                 </TYPE.language>
               </StyledMenuButtonWithText>
-              <ResponsiveBottomRightSubMenu>
-                <SubMenuItemText onClick={() => setLanguage('jp')}>日本語</SubMenuItemText>
-                <SubMenuItemText onClick={() => setLanguage('en')}>English</SubMenuItemText>
-                <SubMenuItemText onClick={() => setLanguage('zh-CN')}>中文</SubMenuItemText>
+              <ResponsiveBottomRightSubMenu style={{ display: showLanguageMenu ? 'block' : 'none' }}>
+                <SubMenuItemText
+                  onClick={e => {
+                    setLanguage('jp')
+                  }}
+                >
+                  日本語
+                </SubMenuItemText>
+                <SubMenuItemText
+                  onClick={e => {
+                    setLanguage('en')
+                  }}
+                >
+                  English
+                </SubMenuItemText>
+                <SubMenuItemText
+                  onClick={e => {
+                    setLanguage('zh-CN')
+                  }}
+                >
+                  中文
+                </SubMenuItemText>
               </ResponsiveBottomRightSubMenu>
             </ResponsiveMenuItem>
             <ShowOnlyExtraSmall>
