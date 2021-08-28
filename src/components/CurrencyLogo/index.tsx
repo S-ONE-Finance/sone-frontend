@@ -19,7 +19,7 @@ const StyledEthereumLogo = styled.img<{ size: string; sizeMobile: string }>`
   min-width: ${({ size }) => size};
   height: auto;
   border-radius: ${({ size }) => size};
-  background-color: ${({ theme }) => theme.white};
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.075);
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
     width: ${sizeMobile};
