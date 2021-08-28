@@ -35,7 +35,7 @@ function PairRow({
       onClick={() => (isSelected ? null : onSelect())}
       disabled={isSelected}
     >
-      <CurrencyLogoDouble currency0={currency0} currency1={currency1} size={24} />
+      <CurrencyLogoDouble currency0={currency0} currency1={currency1} size={24} sizeMobile={16} />
       <Column>
         <Text fontWeight={500}>
           {currency0.symbol} - {currency1.symbol}
