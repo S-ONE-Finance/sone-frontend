@@ -1,6 +1,6 @@
 import { Currency, TokenAmount } from '@s-one-finance/sdk-core'
 import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { TransactionType } from 'state/transactions/types'
@@ -125,6 +125,10 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
     }
     setTxHash('')
   }, [onFieldAInput, txHash])
+
+  useEffect(() => {
+    onFieldAInput('')
+  }, [onFieldAInput])
 
   return (
     <>

@@ -48,9 +48,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
   const { onFieldInput } = useMintSimpleActionHandlers()
 
   useEffect(() => {
-    if (currencyIdA === undefined || currencyIdB === undefined) {
-      onFieldInput('')
-    }
+    onFieldInput('')
   }, [onFieldInput, currencyIdA, currencyIdB])
 
   // Đang chọn WETH mà switch sang one token mode thì đổi url thành eth.
