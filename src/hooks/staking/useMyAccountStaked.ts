@@ -109,6 +109,7 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
           roiPerYear,
           soneHarvested,
           multiplier,
+          balance,
           balanceUSD,
           sonePrice,
           LPTokenPrice,

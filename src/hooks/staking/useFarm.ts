@@ -96,6 +96,7 @@ const useFarm = (id: string) => {
       roiPerYear,
       soneHarvested,
       multiplier,
+      balance,
       balanceUSD,
       sonePrice,
       LPTokenPrice,
