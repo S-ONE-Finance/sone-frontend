@@ -208,7 +208,8 @@ export default function ReferralInformation() {
   const formattedTotalPaidRewardInUSD = useFormattedSoneInUSD(totalPaidReward)
   const formattedTotalRewardAmountInUSD = useFormattedSoneInUSD(totalRewardAmount)
 
-  const shareUrl = S_ONE_APP_URL + '/#/swap?referral-id=' + code
+  const shareUrlRaw = S_ONE_APP_URL + '/#/swap?referral-id=' + code
+  const shareUrlEncoded = S_ONE_APP_URL + '%2F%23%2Fswap%3Freferral-id%3D' + code
 
   return (
     <FlexibleRow>
@@ -261,18 +262,18 @@ export default function ReferralInformation() {
           <TextReferralID>{code === undefined ? '--' : code}</TextReferralID>
         </RowBetween>
         <StyledQRCode>
-          <QRCode value={shareUrl} size={110} />
+          <QRCode value={shareUrlRaw} size={110} />
         </StyledQRCode>
         <SubText2>{t('share_with')}</SubText2>
         <Row gap="20px" justify="center" marginTop="10px">
-          <ExternalLink href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=`}>
+          <ExternalLink href={`https://twitter.com/intent/tweet?url=${shareUrlEncoded}&text=`}>
             <Twitter />
           </ExternalLink>
-          <ExternalLink href={`https://telegram.me/share/url?url=${shareUrl}&text=`}>
+          <ExternalLink href={`https://telegram.me/share/url?url=${shareUrlEncoded}&text=`}>
             <Telegram />
           </ExternalLink>
           {/* TODO: Chưa triển khai referral id bên swap và add liquidity. */}
-          {isCopied ? <CheckCircle /> : <Copy onClick={() => setCopied(shareUrl)} />}
+          {isCopied ? <CheckCircle /> : <Copy onClick={() => setCopied(shareUrlRaw)} />}
         </Row>
       </QrCodeShareSection>
     </FlexibleRow>
