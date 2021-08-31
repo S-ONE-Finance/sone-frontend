@@ -10,6 +10,7 @@ import SoneLogoSvg from '../../assets/images/logo_token_sone.svg'
 import { useActiveWeb3React } from '../../hooks'
 import useCurrencyIsSone from '../../hooks/useCurrencyIsSone'
 import { SONE } from '../../constants'
+import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
 
 export const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`
@@ -17,7 +18,8 @@ export const getTokenLogoURL = (address: string) =>
 const StyledEthereumLogo = styled.img<{ size: string; sizeMobile: string }>`
   width: ${({ size }) => size};
   min-width: ${({ size }) => size};
-  height: auto;
+  height: ${({ size }) => size};
+  min-height: ${({ size }) => size};
   border-radius: ${({ size }) => size};
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.075);
 
@@ -90,6 +92,7 @@ export default function CurrencyLogo({
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
   const { chainId } = useActiveWeb3React()
   const passedCurrencyIsSone = useCurrencyIsSone(currency)
+  const isUpToExtraSmall = useIsUpToExtraSmall()
 
   const srcs: string[] = useMemo(() => {
     if (currency === ETHER) return []
@@ -136,7 +139,14 @@ export default function CurrencyLogo({
   }
 
   if (currency === ETHER) {
-    return <StyledEthereumLogo src={EthereumLogo} size={size} sizeMobile={sizeMobile} style={style} />
+    return (
+      <StyledEthereumLogo
+        src={EthereumLogo}
+        size={isUpToExtraSmall ? sizeMobile : size}
+        sizeMobile={sizeMobile}
+        style={style}
+      />
+    )
   }
 
   return (

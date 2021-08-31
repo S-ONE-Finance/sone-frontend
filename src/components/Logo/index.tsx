@@ -3,7 +3,6 @@ import { HelpCircle } from 'react-feather'
 import { ImageProps } from 'rebass'
 import styled from 'styled-components'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { useDarkModeManager } from '../../state/user/hooks'
 
 const BAD_SRCS: { [tokenAddress: string]: true } = {}
 
@@ -27,7 +26,6 @@ const StyledLogo = styled.img<{ size: string }>`
  */
 export default function Logo({ size, sizeMobile, srcs, alt, ...rest }: LogoProps) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-  const [isDarkMode] = useDarkModeManager()
   const [, refresh] = useState<number>(0)
 
   const src: string | undefined = srcs.find(src => !BAD_SRCS[src])
@@ -47,5 +45,12 @@ export default function Logo({ size, sizeMobile, srcs, alt, ...rest }: LogoProps
     )
   }
 
-  return <HelpCircle color={isDarkMode ? '#ffffff' : '#333333'} size={isUpToExtraSmall ? sizeMobile : size} {...rest} />
+  return (
+    <HelpCircle
+      color="#ffffff"
+      size={isUpToExtraSmall ? sizeMobile : size}
+      {...rest}
+      style={{ backgroundColor: '#333333', borderRadius: '50%', ...rest.style }}
+    />
+  )
 }
