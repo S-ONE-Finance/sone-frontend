@@ -107,7 +107,16 @@ interface GetReferralIdByCodeResponse {
 }
 
 interface IsAccountReferredResponse {
-  data: boolean
+  data:
+    | {
+        isReferred: boolean
+        data: {
+          id: number
+          address: string
+          referral_code: string
+        }
+      }
+    | undefined
   statusCode: number
   time: string
 }
@@ -119,7 +128,11 @@ export function useIsAccountReferred(): boolean {
   const { data: isAccountReferred } = useQuery('useIsAccountReferred', () =>
     axios
       .get<IsAccountReferredResponse>(url)
-      .then(data => data.data.data)
+      .then(data => {
+        const { isReferred } = data?.data?.data ?? {}
+        if (typeof isReferred !== 'boolean') throw new Error('Error in useIsAccountReferred.')
+        return isReferred
+      })
       .catch(() => {
         throw new Error('Error in useIsAccountReferred.')
       })
