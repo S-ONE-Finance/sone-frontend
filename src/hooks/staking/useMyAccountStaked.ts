@@ -80,7 +80,8 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
         const rewardPerDay = rewardPerBlock * blocksPerHour * 24
         const soneHarvested = user.pool?.soneHarvested > 0 ? user.pool?.soneHarvested : 0
         const multiplier = (user.pool?.owner.bonusMultiplier * user.pool?.allocPoint) / 100
-        const pendingReward = +pendingRewards[user?.pool.id].toString() / LP_TOKEN_DECIMALS_POWER
+        const pendingReward =
+          +(pendingRewards[user?.pool.id] ? pendingRewards[user?.pool.id].toString() : 0) / LP_TOKEN_DECIMALS_POWER
         const roiPerYear =
           ((soneHarvested + pendingReward) * sonePrice) / ((user.amount * LPTokenPrice) / LP_TOKEN_DECIMALS_POWER)
 
