@@ -81,14 +81,14 @@ export default function PendingView({
         <LoadingWrapper>
           {error ? (
             <ErrorGroup>
-              <div>{t('Error connecting.')}</div>
+              <div>{t('error_connecting')}</div>
               <ErrorButton
                 onClick={() => {
                   setPendingError(false)
                   connector && tryActivation(connector)
                 }}
               >
-                {t('Try Again')}
+                {t('try_again')}
               </ErrorButton>
             </ErrorGroup>
           ) : (

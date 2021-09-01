@@ -220,18 +220,17 @@ export default function Settings({ transactionType }: { transactionType: Transac
             <RowBetween style={{ padding: '0 2rem' }}>
               <div />
               <Text fontWeight={500} fontSize={20}>
-                {t('Are you sure?')}
+                {t('are_you_sure')}
               </Text>
               <StyledCloseIcon onClick={() => setShowConfirmation(false)} />
             </RowBetween>
             <Break />
             <AutoColumn gap="lg" style={{ padding: '0 2rem' }}>
               <Text fontWeight={500} fontSize={20}>
-                {t(`Expert mode turns off the confirm transaction prompt and allows high slippage trades that often result
-                in bad rates and lost funds.`)}
+                {t(`expert_mode_description`)}
               </Text>
               <Text fontWeight={600} fontSize={20}>
-                {t('ONLY USE THIS MODE IF YOU KNOW WHAT YOU ARE DOING.')}
+                {t('expert_mode_warning')}
               </Text>
               <ButtonError
                 error={true}
@@ -244,7 +243,7 @@ export default function Settings({ transactionType }: { transactionType: Transac
                 }}
               >
                 <Text fontSize={20} fontWeight={500} id="confirm-expert-mode">
-                  {t('Turn on Expert Mode')}
+                  {t('turn_on_expert_mode')}
                 </Text>
               </ButtonError>
             </AutoColumn>

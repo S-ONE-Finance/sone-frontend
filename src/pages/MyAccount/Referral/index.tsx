@@ -104,7 +104,7 @@ export default function Referral() {
         </ReferralInformationWrapper>
         <TitleBodyWrapper>
           <Padding20ExtraSmall>
-            <TextSubSection>{t('invite_friends')}</TextSubSection>
+            <TextSubSection>{t('invited_friends')}</TextSubSection>
           </Padding20ExtraSmall>
           <InvitedFriendsTable />
         </TitleBodyWrapper>

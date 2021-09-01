@@ -18,6 +18,7 @@ import { ExternalLink } from '../../theme/components'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import ListLogo from 'components/ListLogo'
 import { PaddedColumn, Checkbox } from './styleds'
+import { useTranslation } from 'react-i18next'
 
 const Wrapper = styled.div`
   position: relative;
@@ -47,6 +48,7 @@ interface ImportProps {
 }
 
 export function ImportToken({ tokens, onBack, onDismiss, handleCurrencySelect }: ImportProps) {
+  const { t } = useTranslation()
   const theme = useTheme()
 
   const { chainId } = useActiveWeb3React()
@@ -103,7 +105,7 @@ export function ImportToken({ tokens, onBack, onDismiss, handleCurrencySelect }:
                     <RowFixed>
                       <AlertTriangle stroke={theme.red1} size="10px" />
                       <TYPE.body color={theme.red1} ml="4px" fontSize="10px" fontWeight={500}>
-                        Unknown Source
+                        {t('unknown_source')}
                       </TYPE.body>
                     </RowFixed>
                   </WarningWrapper>
@@ -119,17 +121,17 @@ export function ImportToken({ tokens, onBack, onDismiss, handleCurrencySelect }:
           <AutoColumn justify="center" style={{ textAlign: 'center', gap: '16px', marginBottom: '12px' }}>
             <AlertTriangle stroke={fromLists ? theme.yellow2 : theme.red1} size={32} />
             <TYPE.body fontWeight={600} fontSize={20} color={fromLists ? theme.yellow2 : theme.red1}>
-              Trade at your own risk!
+              {t('trade_at_your_own_risk')}
             </TYPE.body>
           </AutoColumn>
 
           <AutoColumn style={{ textAlign: 'center', gap: '16px', marginBottom: '12px' }}>
+            `
             <TYPE.body fontWeight={400} color={fromLists ? theme.yellow2 : theme.red1}>
-              Anyone can create a token, including creating fake versions of existing tokens that claim to represent
-              projects.
+              {t('import_token_warning1')}
             </TYPE.body>
             <TYPE.body fontWeight={600} color={fromLists ? theme.yellow2 : theme.red1}>
-              If you purchase this token, you may not be able to sell it back.
+              {t('import_token_warning2')}
             </TYPE.body>
           </AutoColumn>
           <AutoRow justify="center" style={{ cursor: 'pointer' }} onClick={() => setConfirmed(!confirmed)}>
@@ -141,7 +143,7 @@ export function ImportToken({ tokens, onBack, onDismiss, handleCurrencySelect }:
               onChange={() => setConfirmed(!confirmed)}
             />
             <TYPE.body ml="10px" fontSize="16px" color={fromLists ? theme.yellow2 : theme.red1} fontWeight={500}>
-              I understand
+              {t('i_understand')}
             </TYPE.body>
           </AutoRow>
         </Card>

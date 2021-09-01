@@ -13,7 +13,6 @@ export default function MyStaking() {
   // TODO: Is it need another name?
   const [detailUserInfo, setDetailUserInfo] = useState<string | undefined>()
   const [isLoading, myAccountStaked] = useMyAccountStaked()
-  console.log(`myAccountStaked`, myAccountStaked)
 
   return (
     <Section>

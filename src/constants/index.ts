@@ -1,8 +1,8 @@
 import { ChainId, JSBI, Percent, Token, WETH, ConfigMasterFarmer } from '@s-one-finance/sdk-core'
 import { AbstractConnector } from '@web3-react/abstract-connector'
-
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
+import i18next from 'i18next'
 
 export const MAX_UINT_256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
 
@@ -171,7 +171,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     connector: injected,
     name: 'MetaMask',
     iconName: 'metamask.png',
-    description: 'Easy-to-use browser extension.',
+    description: i18next.t('metamask_description'),
     href: null,
     color: '#E8831D'
   },

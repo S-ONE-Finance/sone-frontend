@@ -18,7 +18,7 @@ import { useIsUpToExtraSmall, useIsUpToSmall } from '../../../hooks/useWindowSiz
 import useReferrerInformation from './hooks/useReferrerInformation'
 import usePrevious from '../../../hooks/usePrevious'
 import { CountUp } from 'use-count-up'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { useFormattedSoneInUSD } from '../../../hooks/useOneSoneInUSD'
 import { S_ONE_APP_URL } from '../../../constants/urls'
 
@@ -215,12 +215,11 @@ export default function ReferralInformation() {
     <FlexibleRow>
       <FriendsAndReward>
         <Row gap="5px">
-          {/* TODO: Hỏi khách hàng 15 friends tiếng nhật và hàn highlight ở đâu? */}
-          <TextAccent>
-            <NumberCountUp value={totalFriend} />
-          </TextAccent>
-          <TextAccentSmall>friends</TextAccentSmall>
-          <TextDefault>have used your Referral ID.</TextDefault>
+          <Trans
+            i18nKey="123_friends_have_used_your_referral_id"
+            values={{ numberOfFriends: totalFriend }}
+            components={[<TextAccent key="0" />, <TextAccentSmall key="1" />, <TextDefault key="2" />]}
+          />
           <QuestionHelper1416 text={t('question_helper_123_friends_have_used_your_referral_id')} />
         </Row>
         <PendingRewardRow>

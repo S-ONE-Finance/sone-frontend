@@ -104,7 +104,7 @@ export default function ModalSearchPair({
             <SearchInput
               type="text"
               id="pair-search-input"
-              placeholder={t('Search pair')}
+              placeholder={t('search_pair')}
               autoComplete="off"
               value={searchQuery}
               ref={inputRef as RefObject<HTMLInputElement>}

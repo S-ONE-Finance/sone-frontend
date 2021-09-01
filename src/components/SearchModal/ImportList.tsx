@@ -20,6 +20,7 @@ import { useFetchListCallback } from 'hooks/useFetchListCallback'
 import { removeList, enableList } from 'state/lists/actions'
 import { CurrencyModalView } from './CurrencySearchModal'
 import { useAllLists } from 'state/lists/hooks'
+import { useTranslation } from 'react-i18next'
 
 const Wrapper = styled.div`
   position: relative;
@@ -35,6 +36,7 @@ interface ImportProps {
 }
 
 export function ImportList({ listURL, list, setModalView, onDismiss }: ImportProps) {
+  const { t } = useTranslation()
   const theme = useTheme()
   const dispatch = useDispatch<AppDispatch>()
 
@@ -136,7 +138,7 @@ export function ImportList({ listURL, list, setModalView, onDismiss }: ImportPro
                 onChange={() => setConfirmed(!confirmed)}
               />
               <TYPE.body ml="10px" fontSize="16px" color={theme.red1} fontWeight={500}>
-                I understand
+                {t('i_understand')}
               </TYPE.body>
             </AutoRow>
           </Card>

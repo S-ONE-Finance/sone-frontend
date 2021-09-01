@@ -275,7 +275,7 @@ export default function Staking() {
 
   const modalContent = () => (
     <ConfirmationModalContent
-      title={t('Stake Confirmation')}
+      title={t('stake_confirmation')}
       onDismiss={handleDismissConfirmation}
       topContent={ModalHeader}
       bottomContent={ModalFooter}
@@ -336,7 +336,7 @@ export default function Staking() {
                   balance={Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? 111634 : lpBalance}
                   onMax={onMax}
                   label={t('input')}
-                  customBalanceText={t('LP Balance') + ':'}
+                  customBalanceText={t('lp_balance') + ':'}
                 />
               </StakeStep2>
               {error === t('connect_wallet') ? (
