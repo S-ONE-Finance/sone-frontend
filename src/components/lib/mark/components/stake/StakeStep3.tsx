@@ -15,7 +15,7 @@ const StakeStep3 = ({ children }: ChildrenProp) => {
         {children}
         {Number(guideStep.step) === 3 && guideStep.screen === 'stake' && (
           <>
-            <Step1Intro>{t('Lorem Ipsum is simply dummy text')}</Step1Intro>
+            <Step1Intro>{t('Click here to stake.')}</Step1Intro>
             <StyledHandIcon>
               <img src={handIcon} alt="hand" />
             </StyledHandIcon>

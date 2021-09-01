@@ -69,11 +69,16 @@ export default function PanelPairInput({
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [guideStep] = useGuideStepManager()
-  const balanceDisplay = balance !== undefined ? reduceFractionDigit(getNumberCommas(balance) + '', 18) : '--'
+  const balanceDisplay =
+    Number(guideStep.step) > 1
+      ? '123,456.789'
+      : balance !== undefined
+      ? reduceFractionDigit(getNumberCommas(balance) + '', 18)
+      : '--'
 
   return (
     <Container>
-      <BackgroundColor style={{ backgroundColor: Number(guideStep.step) === 2 ? '#f3f3f3' : 'transparent' }}>
+      <BackgroundColor style={{ backgroundColor: Number(guideStep.step) === 2 ? '#c4c4c4' : 'transparent' }}>
         <PanelPairLabelRow>
           <RowBetween align="center">
             <TextPanelLabel>{label}</TextPanelLabel>
