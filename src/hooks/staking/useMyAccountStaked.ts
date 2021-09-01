@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { calculateAPY, ChainId, UserInfoSone } from '@s-one-finance/sdk-core'
+import { ChainId, UserInfoSone } from '@s-one-finance/sdk-core'
 import _ from 'lodash'
 import orderBy from 'lodash/orderBy'
 import { useQuery } from 'react-query'
@@ -7,16 +7,17 @@ import { useQuery } from 'react-query'
 import useAverageBlockTime from 'hooks/staking/useAverageBlockTime'
 import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'graphql/stakingQueries'
 import { useActiveWeb3React } from 'hooks'
-import { useBlockNumber } from 'state/application/hooks'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import useOneSoneInUSD from '../useOneSoneInUSD'
-import { CONFIG_MASTER_FARMER } from '../../constants'
 import { FAKE_CHAIN_ID } from './useFarm'
+import { useManyPendingReward } from './usePendingReward'
+
+const LP_TOKEN_DECIMALS = 18
+const LP_TOKEN_DECIMALS_POWER = 10 ** LP_TOKEN_DECIMALS
 
 const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
   const { account, chainId } = useActiveWeb3React()
   const sonePrice = useOneSoneInUSD()
-  const block = useBlockNumber()
   const averageBlockTime = useAverageBlockTime()
 
   const { data: users, isLoading: usersIsLoading } = useQuery(
@@ -55,6 +56,9 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
     { enabled: Boolean(chainId && account) }
   )
 
+  const pids = users && users.map((user: any) => +user?.pool.id)
+  const pendingRewards = useManyPendingReward(pids)
+
   return useMemo((): [boolean, UserInfoSone[]] => {
     const isLoading = usersIsLoading || pairsIsLoading
 
@@ -65,34 +69,20 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
           return undefined
         }
         const blocksPerHour = 3600 / Number(averageBlockTime)
-        const balance = Number(user.pool?.balance / 1e18)
+        const balance = Number(user.pool?.balance / LP_TOKEN_DECIMALS_POWER)
         const totalSupply = pair.totalSupply > 0 ? pair.totalSupply : 0.1
         const reserveUSD = pair.reserveUSD > 0 ? pair.reserveUSD : 0.1
         const balanceUSD = (balance / Number(totalSupply)) * Number(reserveUSD)
         const rewardPerBlock =
-          ((user.pool?.allocPoint / user.pool?.owner.totalAllocPoint) * user.pool?.owner.sonePerBlock) / 1e18
-
-        const investedValue = 1000
+          ((user.pool?.allocPoint / user.pool?.owner.totalAllocPoint) * user.pool?.owner.sonePerBlock) /
+          LP_TOKEN_DECIMALS_POWER
         const LPTokenPrice = pair.reserveUSD / pair.totalSupply
-        const LPTokenValue = investedValue / LPTokenPrice
-        const poolShare = LPTokenValue / (LPTokenValue + Number(balance))
-        const roiPerBlock = (rewardPerBlock * sonePrice * poolShare) / investedValue
-        const multiplierYear = calculateAPY(
-          Number(averageBlockTime),
-          block || 0,
-          CONFIG_MASTER_FARMER[chainId || (3 as ChainId)]
-        )
-        const roiPerYear = multiplierYear * roiPerBlock
-
         const rewardPerDay = rewardPerBlock * blocksPerHour * 24
         const soneHarvested = user.pool?.soneHarvested > 0 ? user.pool?.soneHarvested : 0
         const multiplier = (user.pool?.owner.bonusMultiplier * user.pool?.allocPoint) / 100
-
-        // const roiPerYear = (soneHarvested + pendingReward) / user.amount
-        // console.log(`soneHarvested`, soneHarvested)
-        // console.log(`pendingReward`, pendingReward.toString())
-        // console.log(`user.amount`, user.amount)
-        // console.log(`roiPerYear`, roiPerYear)
+        const pendingReward = +pendingRewards[user?.pool.id].toString() / LP_TOKEN_DECIMALS_POWER
+        const roiPerYear =
+          ((soneHarvested + pendingReward) * sonePrice) / ((user.amount * LPTokenPrice) / LP_TOKEN_DECIMALS_POWER)
 
         const poolData = {
           ...user.pool,
@@ -106,7 +96,6 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
           soneRewardPerDay: rewardPerDay,
           liquidityPair: pair,
           rewardPerBlock,
-          roiPerBlock,
           roiPerYear,
           soneHarvested,
           multiplier,
@@ -130,7 +119,7 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
 
     // TODO: Dùng biến isSuccess để detect loading không đúng lắm nhưng tạm thời ok.
     return [isLoading, unique]
-  }, [averageBlockTime, block, chainId, pairs, pairsIsLoading, sonePrice, users, usersIsLoading])
+  }, [averageBlockTime, pairs, pairsIsLoading, pendingRewards, sonePrice, users, usersIsLoading])
 }
 
 export default useMyAccountStaked
