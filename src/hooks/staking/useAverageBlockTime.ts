@@ -20,7 +20,9 @@ export default function useAverageBlockTime(): number {
   const end = getUnixTime(now)
 
   const queryFn = useCallback(async () => {
-    const data = await blockClients[chainId ?? 1].query({
+    if (!chainId) return []
+
+    const data = await blockClients[chainId].query({
       query: blocksQuery,
       variables: {
         start,

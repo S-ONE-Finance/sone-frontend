@@ -15,12 +15,14 @@ export default function useOneSoneInUSD(): number {
   const { data: sonePrice } = useQuery<number>(
     ['useOneSoneInUSD', chainId],
     async () => {
-      const data = await swapClients[chainId ?? 1].query({
-        query: sonePriceQuery(SONE[chainId ?? 1].address.toLowerCase())
+      if (!chainId) return 0
+
+      const data = await swapClients[chainId].query({
+        query: sonePriceQuery(SONE[chainId].address.toLowerCase())
       })
 
-      const ethPrice = +data.data.bundle.ethPrice
-      const derivedETH = +data.data.token.derivedETH
+      const ethPrice = +data?.data?.bundle?.ethPrice || 0
+      const derivedETH = +data?.data?.token?.derivedETH || 0
 
       if (isNaN(ethPrice) || isNaN(derivedETH)) {
         throw new Error('Error when fetch data in useOneSoneInUSD')
@@ -31,7 +33,7 @@ export default function useOneSoneInUSD(): number {
     { enabled: Boolean(chainId) }
   )
 
-  return useMemo(() => sonePrice ?? SONE_PRICE_MINIMUM, [sonePrice])
+  return useMemo(() => sonePrice || SONE_PRICE_MINIMUM, [sonePrice])
 }
 
 export function useSoneInUSD(numberOfSone?: number): number | undefined {

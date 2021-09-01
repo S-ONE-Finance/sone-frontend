@@ -42,17 +42,16 @@ export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'UNI', 'Uniswap')
 }
 
-const TEMP = '0x0000000000000000000000000000000000000000'
 const SONE_ADDRESS = '0x57bb30bdb0d449bf687ed648acf2467f045c8e74'
 export const SONE_PRICE_MINIMUM = 0.00001 // 1 SONE >= 0.00001 USDT
 
 // TODO: Need fill address of sone in all 5 networks.
 export const SONE: { [chainId in ChainId]: Token } = {
-  [ChainId.MAINNET]: new Token(ChainId.MAINNET, TEMP, 18, 'SONE', 'S-ONE Finance'),
-  [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, TEMP, 18, 'SONE', 'S-ONE Finance'),
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, SONE_ADDRESS, 18, 'SONE', 'S-ONE Finance'),
+  [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, ZERO_ADDRESS, 18, 'SONE', 'S-ONE Finance'),
   [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, SONE_ADDRESS, 18, 'SONE', 'S-ONE Finance'),
-  [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, TEMP, 18, 'SONE', 'S-ONE Finance'),
-  [ChainId.KOVAN]: new Token(ChainId.KOVAN, TEMP, 18, 'SONE', 'S-ONE Finance')
+  [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, ZERO_ADDRESS, 18, 'SONE', 'S-ONE Finance'),
+  [ChainId.KOVAN]: new Token(ChainId.KOVAN, ZERO_ADDRESS, 18, 'SONE', 'S-ONE Finance')
 }
 
 export const SONE_MASTER_FARMER: { [chainId in ChainId]: string } = {
@@ -64,7 +63,12 @@ export const SONE_MASTER_FARMER: { [chainId in ChainId]: string } = {
 }
 
 export const CONFIG_MASTER_FARMER: { [chainId in ChainId]: ConfigMasterFarmer | null } = {
-  [ChainId.MAINNET]: null,
+  // TODO: chỉnh chỗ này khi lên mainnet.
+  [ChainId.MAINNET]: {
+    startBlock: 10897613,
+    rewardMultiplier: [32, 32, 32, 32, 16, 8, 4, 2, 1],
+    blocksPerWeek: 45134
+  },
   [ChainId.RINKEBY]: null,
   [ChainId.ROPSTEN]: {
     startBlock: 10897613,

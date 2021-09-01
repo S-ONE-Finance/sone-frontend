@@ -8,7 +8,10 @@ import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import useOneSoneInUSD from '../useOneSoneInUSD'
-import { CONFIG_MASTER_FARMER } from '../../constants/index'
+import { CONFIG_MASTER_FARMER } from '../../constants'
+
+// TODO: Lên môi trường mainnet không fix cứng chainId.
+export const FAKE_CHAIN_ID = 3
 
 const useFarm = (id: string) => {
   const { account, chainId } = useActiveWeb3React()
@@ -19,7 +22,7 @@ const useFarm = (id: string) => {
   const { data: farm } = useQuery(
     ['useFarm_poolsQueryDetail', chainId, id],
     async () => {
-      const data = await stakingClients[chainId ?? 1].query({
+      const data = await stakingClients[FAKE_CHAIN_ID].query({
         query: poolsQueryDetail,
         variables: { id: id }
       })
@@ -31,7 +34,7 @@ const useFarm = (id: string) => {
   const { data: userInfo } = useQuery(
     ['useFarm_poolUserDetailQuery', chainId, id, account],
     async () => {
-      const data = await stakingClients[chainId ?? 1].query({
+      const data = await stakingClients[FAKE_CHAIN_ID].query({
         query: poolUserDetailQuery,
         variables: {
           id: `${id}-${account?.toLowerCase()}`
@@ -45,7 +48,7 @@ const useFarm = (id: string) => {
   const { data: pair } = useQuery(
     ['useFarm_pairSubsetQuery', chainId, farm?.pair],
     async () => {
-      const data = await swapClients[chainId ?? 1].query({
+      const data = await swapClients[FAKE_CHAIN_ID].query({
         query: pairSubsetQuery,
         variables: { pairAddresses: [farm?.pair] }
       })

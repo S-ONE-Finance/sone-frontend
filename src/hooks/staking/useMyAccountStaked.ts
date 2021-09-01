@@ -11,6 +11,7 @@ import { useBlockNumber } from 'state/application/hooks'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import useOneSoneInUSD from '../useOneSoneInUSD'
 import { CONFIG_MASTER_FARMER } from '../../constants'
+import { FAKE_CHAIN_ID } from './useFarm'
 
 const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
   const { account, chainId } = useActiveWeb3React()
@@ -21,7 +22,7 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
   const { data: users, isLoading: usersIsLoading } = useQuery(
     ['useMyAccountStaked_poolUserWithPoolDetailQuery', chainId, account],
     async () => {
-      const data = await stakingClients[chainId ?? 1].query({
+      const data = await stakingClients[FAKE_CHAIN_ID].query({
         query: poolUserWithPoolDetailQuery,
         variables: {
           address: account?.toLowerCase()
@@ -45,7 +46,7 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
   const { data: pairs, isLoading: pairsIsLoading } = useQuery(
     ['useMyAccountStaked_pairSubsetQuery', chainId, pairAddresses],
     async () => {
-      const data = await swapClients[chainId ?? 1].query({
+      const data = await swapClients[chainId as ChainId].query({
         query: pairSubsetQuery,
         variables: { pairAddresses }
       })
