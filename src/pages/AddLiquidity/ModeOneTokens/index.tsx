@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Pair, WETH } from '@s-one-finance/sdk-core'
 import { useTranslation } from 'react-i18next'
 import { AutoColumn } from 'components/Column'
