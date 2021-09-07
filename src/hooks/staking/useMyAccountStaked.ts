@@ -83,8 +83,8 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
         const pendingReward =
           +(pendingRewards[user?.pool.id] ? pendingRewards[user?.pool.id].toString() : 0) / LP_TOKEN_DECIMALS_POWER
         const roiPerYear =
-          ((soneHarvested + pendingReward) * sonePrice) / ((user.amount * LPTokenPrice) / LP_TOKEN_DECIMALS_POWER)
-
+          ((Number(soneHarvested) + pendingReward) * sonePrice) /
+          ((user.amount * LPTokenPrice) / LP_TOKEN_DECIMALS_POWER)
         const poolData = {
           ...user.pool,
           contract: 'masterchefv1',
