@@ -102,6 +102,11 @@ export default function PanelMyAccount() {
             </TextBoxChangeAccount>
           )}
         </Column>
+        <Column>
+          <TYPE.black fontSize={16}>{t('can_unlock')}:</TYPE.black>
+          <TYPE.subText marginTop={'0.25rem'}>12,345.678/888,888,888.888 SONE</TYPE.subText>
+          <TextBoxChangeAccount onClick={() => {}}>{t('unlock')}</TextBoxChangeAccount>
+        </Column>
         <PaddingColumn>
           <MyAccountButton onClick={() => history.push('/my-account')}>{t('my_account')}</MyAccountButton>
         </PaddingColumn>

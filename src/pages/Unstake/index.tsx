@@ -66,6 +66,7 @@ export default function Unstake() {
   const { farmId } = useParams() as any
   const farm: Farm | undefined = useFarm(farmId)
   const amountStaked = farm?.userInfo?.amount
+  console.log(`amountStaked`, amountStaked)
   const fullBalance = useMemo(() => {
     return amountStaked === undefined ? undefined : getBalanceNumber(amountStaked)
   }, [amountStaked])

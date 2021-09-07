@@ -44,8 +44,8 @@ const ColumnWrapper = styled(Column)<{ padding?: string }>`
   }
 `
 
-const TextBoxChangeAccount = styled.div`
-  width: 100%;
+const TextBoxChangeAccount = styled.div<{ width?: string }>`
+  width: ${({ width }) => width ?? '100%'};
   font-size: 14px;
   font-weight: 500;
   color: #3faab0;
@@ -143,6 +143,15 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
           <SoneAmount isSmall={true} />
           <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change_account')}</TextBoxChangeAccount>
         </RowBetween>
+      </Column>
+      <Column>
+        <RowBetween>
+          <TYPE.black fontSize={14}>{t('can_unlock')}:</TYPE.black>
+          <TextBoxChangeAccount width="fit-content" onClick={() => {}}>
+            {t('unlock')}
+          </TextBoxChangeAccount>
+        </RowBetween>
+        <TYPE.subText marginTop="0.25rem">12,345.678/888,888,888.888 SONE</TYPE.subText>
       </Column>
       <Column>
         <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>{t('sone_wallet')}</StyledExternalLink>

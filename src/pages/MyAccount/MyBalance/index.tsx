@@ -11,8 +11,10 @@ import { MouseoverTooltip } from '../../../components/Tooltip'
 import { useActiveWeb3React } from '../../../hooks'
 import usePrevious from '../../../hooks/usePrevious'
 import SoneBigImage from './SoneBigImage'
+import { lighten } from 'polished'
 
 const CardBalance = styled(Card)`
+  flex-direction: column;
   padding: 51px 99px;
   border-radius: 40px;
 
@@ -75,6 +77,39 @@ const RowBaseLine = styled(Row)`
   align-items: baseline;
 `
 
+const TextUnlockTitle = styled.div`
+  color: ${({ theme }) => theme.text6Sone};
+  font-size: 20px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `}
+`
+
+const TextUnlockValue = styled.div`
+  color: ${({ theme }) => theme.text4Sone};
+  font-size: 20px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `}
+`
+
+const TextUnlockButton = styled.div`
+  color: ${({ theme }) => theme.text5Sone};
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+
+  :hover {
+    color: ${({ theme }) => `${lighten(0.05, theme.text5Sone)}`};
+  }
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `}
+`
+
 function SoneLogo() {
   return <CurrencyLogo address="SONE" size="45px" sizeMobile="29px" style={{ alignSelf: 'center' }} />
 }
@@ -83,7 +118,10 @@ function EthLogo() {
   return <CurrencyLogo currency={Currency.ETHER} size="45px" sizeMobile="29px" style={{ alignSelf: 'center' }} />
 }
 
-const BalanceCountUp = forwardRef<HTMLDivElement, { balance: string | undefined }>(({ balance }, ref) => {
+const BalanceCountUp = forwardRef<HTMLDivElement, { balance: string | undefined }>(function BalanceCountUp(
+  { balance },
+  ref
+) {
   const formattedBalance = balance === undefined ? 0 : +balance
   const prevFormattedBalance = usePrevious(formattedBalance)
   const prevFormattedBalanceReset = prevFormattedBalance === formattedBalance ? 0 : prevFormattedBalance
@@ -132,6 +170,11 @@ export default function MyBalance() {
             </RowBaseLine>
           </BalanceSection>
           <SoneBigImage ethBalanceRef={ethBalanceRef} soneBalanceRef={soneBalanceRef} />
+        </Row>
+        <Row gap="10px" marginTop="20px">
+          <TextUnlockTitle>Can unlock:</TextUnlockTitle>
+          <TextUnlockValue>12,345.678/888,888,888.888 SONE</TextUnlockValue>
+          <TextUnlockButton>Unlock</TextUnlockButton>
         </Row>
       </CardBalance>
     </Section>
