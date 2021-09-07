@@ -125,7 +125,7 @@ export default function Farms() {
       let circulatingSupply: BigNumber = new BigNumber(0)
       farms.forEach((farm: Farm) => {
         totalLock = totalLock.plus(new BigNumber(farm.tvl | 0))
-        circulatingSupply = circulatingSupply.plus(new BigNumber(farm.soneHarvested | 0))
+        circulatingSupply = circulatingSupply.plus(new BigNumber(farm.soneHarvested || 0))
       })
       setTotalLockValue(totalLock)
       setCirculatingSupplyValue(circulatingSupply)
@@ -216,7 +216,7 @@ const StyledCurrently = styled.div`
   margin-bottom: ${pxToRem(40)};
   text-align: center;
   font-size: ${pxToRem(45)};
-  
+
   & > span {
     color: #65bac5;
     font-weight: 700;
@@ -234,7 +234,7 @@ const StyledCurrently = styled.div`
     font-size: ${pxToRem(20)};
     text-align: left;
     margin-bottom: ${pxToRem(18)};
-    
+
     & > span {
       font-size: 1.875rem; // 30px.
     }
