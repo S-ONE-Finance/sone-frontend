@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, ETHER, JSBI, Pair, Percent, Price, TokenAmount } from '@s-one-finance/sdk-core'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
@@ -143,21 +143,26 @@ export function useDerivedMintInfo(
       return pair && wrappedCurrencyA ? pair.priceOf(wrappedCurrencyA) : undefined
     }
   }, [chainId, currencyA, noLiquidity, pair, parsedAmounts])
-
-  // liquidity minted
+  console.clear()
+  console.log(`I'm here: `)
+  const isMintLiquidityFailed = useRef(false)
   const liquidityMinted = useMemo(() => {
     const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
     const [tokenAmountA, tokenAmountB] = [
       wrappedCurrencyAmount(currencyAAmount, chainId),
       wrappedCurrencyAmount(currencyBAmount, chainId)
     ]
+    console.log(`I'm here: 1`)
     if (pair && totalSupply && tokenAmountA && tokenAmountB) {
       try {
+        console.log(`I'm here: 2`)
         return pair.getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB)
       } catch {
+        isMintLiquidityFailed.current = true
         return undefined
       }
     } else {
+      console.log(`I'm here: 3`)
       return undefined
     }
   }, [parsedAmounts, chainId, pair, totalSupply])
@@ -183,7 +188,7 @@ export function useDerivedMintInfo(
     error = error ?? t('enter_an_amount')
   }
 
-  if (liquidityMinted === undefined) {
+  if (isMintLiquidityFailed.current) {
     error = t('input_too_small')
   }
 
