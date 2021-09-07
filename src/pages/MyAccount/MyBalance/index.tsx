@@ -12,6 +12,9 @@ import { useActiveWeb3React } from '../../../hooks'
 import usePrevious from '../../../hooks/usePrevious'
 import SoneBigImage from './SoneBigImage'
 import { lighten } from 'polished'
+import useSoneLockBalance from '../../../hooks/staking/useSoneLockBalance'
+import { getBalanceStringCommas } from 'utils/formatNumber'
+import useUnlockHandler from 'hooks/staking/useUnlockHandler'
 
 const CardBalance = styled(Card)`
   flex-direction: column;
@@ -151,6 +154,8 @@ export default function MyBalance() {
   const ethBalanceRef = useRef<HTMLDivElement>(null)
   const soneBalanceRef = useRef<HTMLDivElement>(null)
 
+  const { soneCanUnlock, totalSoneLocked } = useSoneLockBalance()
+  const onUnlockSone = useUnlockHandler()
   return (
     <Section>
       <Heading>{t('my_balance')}</Heading>
@@ -173,8 +178,13 @@ export default function MyBalance() {
         </Row>
         <Row gap="10px" marginTop="20px">
           <TextUnlockTitle>Can unlock:</TextUnlockTitle>
-          <TextUnlockValue>12,345.678/888,888,888.888 SONE</TextUnlockValue>
-          <TextUnlockButton>Unlock</TextUnlockButton>
+          <TextUnlockValue>
+            {getBalanceStringCommas(soneCanUnlock.toString()) +
+              '/' +
+              getBalanceStringCommas(totalSoneLocked.toString())}{' '}
+            SONE
+          </TextUnlockValue>
+          <TextUnlockButton onClick={() => onUnlockSone()}>{t('unlock')}</TextUnlockButton>
         </Row>
       </CardBalance>
     </Section>
