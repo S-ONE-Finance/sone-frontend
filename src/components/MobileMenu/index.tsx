@@ -29,6 +29,9 @@ import {
   S_ONE_BLOG_URL
 } from '../../constants/urls'
 import { injected, walletlink } from '../../connectors'
+import useSoneLockBalance from '../../hooks/staking/useSoneLockBalance'
+import useUnlockHandler from '../../hooks/staking/useUnlockHandler'
+import { getBalanceStringCommas } from 'utils/formatNumber'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
   position: relative;
@@ -128,6 +131,9 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
   const { account, connector } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
+  const { soneCanUnlock, totalSoneLocked } = useSoneLockBalance()
+  const onUnlockSone = useUnlockHandler()
+
   const closeModal = useCallback(() => {
     setIsShowMobileMenu(false)
   }, [setIsShowMobileMenu])
@@ -158,11 +164,22 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
           <Column>
             <RowBetween>
               <TYPE.black fontSize={14}>{t('can_unlock')}:</TYPE.black>
-              <TextBoxChangeAccount width="fit-content" onClick={() => {}}>
+              <TextBoxChangeAccount
+                width="fit-content"
+                onClick={() => {
+                  onUnlockSone()
+                }}
+              >
                 {t('unlock')}
               </TextBoxChangeAccount>
             </RowBetween>
-            <TYPE.subText marginTop="0.25rem">12,345.678/888,888,888.888 SONE</TYPE.subText>
+            <TYPE.subText marginTop="0.25rem">
+              {' '}
+              {getBalanceStringCommas(soneCanUnlock.toString()) +
+                '/' +
+                getBalanceStringCommas(totalSoneLocked.toString())}{' '}
+              SONE
+            </TYPE.subText>
           </Column>
         </>
       )}
