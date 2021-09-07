@@ -10,6 +10,8 @@ import { TransactionType, TransactionSummary } from '../../state/transactions/ty
 import StyledSummary from '../StyledSummary'
 import { ButtonMainRed } from '../Web3Status'
 import useTheme from '../../hooks/useTheme'
+import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
 
 const RowNoFlex = styled(AutoRow)`
   flex-wrap: nowrap;
@@ -25,6 +27,8 @@ export default function TransactionPopup({
   summary?: string | TransactionSummary
 }) {
   const { chainId } = useActiveWeb3React()
+  const { t } = useTranslation()
+  const history = useHistory()
 
   const theme = useTheme()
 
@@ -49,7 +53,7 @@ export default function TransactionPopup({
           typeof summary !== 'string' &&
           (summary?.type === TransactionType.ADD_TWO_TOKENS || summary?.type === TransactionType.ADD_ONE_TOKEN) && (
             <Row justify={'flex-end'}>
-              <ButtonMainRed>Stake now!</ButtonMainRed>
+              <ButtonMainRed onClick={() => history.push('/staking')}>{t('stake_now')}</ButtonMainRed>
             </Row>
           )}
       </AutoColumn>
