@@ -151,7 +151,7 @@ export function useDerivedMintSimpleInfo(
     // TODO: i18n.
     error = `Insufficient ${isSelectedToken0 ? pair.token0.symbol : pair.token1.symbol} liquidity for swap`
   } else if (errorWhenParsedTokenAmount) {
-    error = `Input is too small`
+    error = t('input_too_small')
   }
 
   return {

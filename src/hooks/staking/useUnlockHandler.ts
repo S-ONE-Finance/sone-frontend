@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
-import BigNumber from 'bignumber.js'
 
 import { useSoneContract } from 'hooks/useContract'
 import { useTransactionAdder } from 'state/transactions/hooks'

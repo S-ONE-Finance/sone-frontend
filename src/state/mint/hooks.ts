@@ -152,7 +152,11 @@ export function useDerivedMintInfo(
       wrappedCurrencyAmount(currencyBAmount, chainId)
     ]
     if (pair && totalSupply && tokenAmountA && tokenAmountB) {
-      return pair.getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB)
+      try {
+        return pair.getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB)
+      } catch {
+        return undefined
+      }
     } else {
       return undefined
     }
@@ -172,11 +176,15 @@ export function useDerivedMintInfo(
   }
 
   if (pairState === PairState.INVALID) {
-    error = error ?? 'Invalid Pair'
+    error = error ?? t('invalid_pair')
   }
 
   if (!parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {
     error = error ?? t('enter_an_amount')
+  }
+
+  if (liquidityMinted === undefined) {
+    error = t('input_too_small')
   }
 
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
