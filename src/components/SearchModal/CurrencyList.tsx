@@ -209,7 +209,6 @@ export default function CurrencyList({
                     {t('expanded_results_from_inactive_token_lists')}
                   </TYPE.main>
                 </RowFixed>
-                {/*<QuestionHelper text="Tokens from inactive lists. Import specific tokens below or click 'Manage' to activate more lists." />*/}
                 <QuestionHelper text={t('question_helper_expanded_results_from_inactive_token_lists')} />
               </RowBetween>
             </LightGreyCard>
