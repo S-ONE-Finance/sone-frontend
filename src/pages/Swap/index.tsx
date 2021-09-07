@@ -528,7 +528,6 @@ export default function Swap({ history }: RouteComponentProps) {
                         <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
                           {t('liquidity_provider_fee')}
                         </Text>
-                        {/*<QuestionHelper1416 text="A portion of each trade (0.30%) goes to liquidity providers as a protocol incentive." />*/}
                         <QuestionHelper1416 text={t('question_helper_liquidity_provider_fee')} />
                       </RowFixed>
                       <Text

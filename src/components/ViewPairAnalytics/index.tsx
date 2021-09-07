@@ -3,7 +3,7 @@ import { ExternalLink } from '../../theme'
 import { darken } from 'polished'
 import { Token } from '@s-one-finance/sdk-core'
 import React from 'react'
-import { S_ONE_SWAP_STATISTICS_URL } from '../../constants/urls'
+import { S_ONE_STATISTICS_URL } from '../../constants/urls'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 
 const InfoLink = styled(ExternalLink)`
@@ -53,7 +53,7 @@ export default function ViewPairAnalytics({
   if (!pairAddress || !tokenA || !tokenB) return null
 
   return (
-    <InfoLink href={S_ONE_SWAP_STATISTICS_URL + '/pair/' + pairAddress} target="_blank">
+    <InfoLink href={S_ONE_STATISTICS_URL + '/#/swap/pair/' + pairAddress} target="_blank">
       View {unwrappedToken(tokenA).symbol}-{unwrappedToken(tokenB).symbol} analytics
     </InfoLink>
   )

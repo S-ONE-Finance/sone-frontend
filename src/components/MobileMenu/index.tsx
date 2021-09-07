@@ -28,6 +28,7 @@ import {
   S_ONE_FAQ_URL,
   S_ONE_BLOG_URL
 } from '../../constants/urls'
+import { injected, walletlink } from '../../connectors'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
   position: relative;
@@ -124,7 +125,7 @@ interface MobileMenuProps {
 
 export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { account, connector } = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
   const closeModal = useCallback(() => {
@@ -133,27 +134,42 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
 
   return (
     <ColumnWrapper onClick={closeModal}>
+      {account && (
+        <>
+          <Column>
+            <TYPE.black fontSize={14}>{t('address')}:</TYPE.black>
+            <TYPE.subText marginTop="0.25rem">{account && shortenAddress(account, 14)}</TYPE.subText>
+            <RowBetween marginTop="1rem">
+              <SoneAmount isSmall={true} />
+              <Column gap="8px">
+                <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change_account')}</TextBoxChangeAccount>
+                {connector !== injected && connector !== walletlink && (
+                  <TextBoxChangeAccount
+                    onClick={() => {
+                      ;(connector as any).close()
+                    }}
+                  >
+                    {t('Disconnect')}
+                  </TextBoxChangeAccount>
+                )}
+              </Column>
+            </RowBetween>
+          </Column>
+          <Column>
+            <RowBetween>
+              <TYPE.black fontSize={14}>{t('can_unlock')}:</TYPE.black>
+              <TextBoxChangeAccount width="fit-content" onClick={() => {}}>
+                {t('unlock')}
+              </TextBoxChangeAccount>
+            </RowBetween>
+            <TYPE.subText marginTop="0.25rem">12,345.678/888,888,888.888 SONE</TYPE.subText>
+          </Column>
+        </>
+      )}
       <Column>
         <StyledCloseAbsolute>
           <StyledCloseIcon />
         </StyledCloseAbsolute>
-        <TYPE.black fontSize={14}>{t('address')}:</TYPE.black>
-        <TYPE.subText marginTop="0.25rem">{account && shortenAddress(account, 14)}</TYPE.subText>
-        <RowBetween marginTop="1rem">
-          <SoneAmount isSmall={true} />
-          <TextBoxChangeAccount onClick={toggleWalletModal}>{t('change_account')}</TextBoxChangeAccount>
-        </RowBetween>
-      </Column>
-      <Column>
-        <RowBetween>
-          <TYPE.black fontSize={14}>{t('can_unlock')}:</TYPE.black>
-          <TextBoxChangeAccount width="fit-content" onClick={() => {}}>
-            {t('unlock')}
-          </TextBoxChangeAccount>
-        </RowBetween>
-        <TYPE.subText marginTop="0.25rem">12,345.678/888,888,888.888 SONE</TYPE.subText>
-      </Column>
-      <Column>
         <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>{t('sone_wallet')}</StyledExternalLink>
         <StyledNavLink to="/swap">{t('swap')}</StyledNavLink>
         <StyledNavLink to="/add" isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
@@ -161,7 +177,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         </StyledNavLink>
         <StyledNavLink to="/staking">{t('staking')}</StyledNavLink>
         <StyledExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</StyledExternalLink>
-        <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>{t('Stake Stats')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>{t('staking_stats')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('White Paper')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_FAQ_URL}>{t('faq')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_BLOG_URL}>{t('blog')}</StyledExternalLink>

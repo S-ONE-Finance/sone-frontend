@@ -159,14 +159,14 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     color: '#010101',
     primary: true
   },
-  SONE_WALLET: {
-    name: 'S-One Wallet',
-    iconName: 'logo_token_sone.svg',
-    description: 'Open in S-One Wallet app.',
-    href: 'https://www.lipsum.com/',
-    color: '#F05359',
-    mobile: true
-  },
+  // SONE_WALLET: {
+  //   name: 'S-One Wallet',
+  //   iconName: 'logo_token_sone.svg',
+  //   description: 'Open in S-One Wallet app.',
+  //   href: 'https://www.lipsum.com/',
+  //   color: '#F05359',
+  //   mobile: true
+  // },
   METAMASK: {
     connector: injected,
     name: 'MetaMask',
@@ -183,15 +183,15 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: '#4196FC',
     mobile: true
-  },
-  TRUST_WALLET: {
-    name: 'Trust Wallet',
-    iconName: 'trustWallet.png',
-    description: 'Open in Trust Wallet app.',
-    href: 'https://www.lipsum.com/',
-    color: '#2F73BD',
-    mobile: true
   }
+  // TRUST_WALLET: {
+  //   name: 'Trust Wallet',
+  //   iconName: 'trustWallet.png',
+  //   description: 'Open in Trust Wallet app.',
+  //   href: 'https://www.lipsum.com/',
+  //   color: '#2F73BD',
+  //   mobile: true
+  // }
   // S-ONE doesn't need below options.
   /*
     WALLET_LINK: {
