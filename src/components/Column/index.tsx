@@ -1,11 +1,20 @@
 import styled from 'styled-components'
 
-const Column = styled.div<{ width?: string; justify?: string; align?: string }>`
+const Column = styled.div<{ width?: string; justify?: string; align?: string; gap?: string }>`
   display: flex;
   flex-direction: column;
   justify-content: ${({ justify }) => justify ?? 'flex-start'};
   align-items: ${({ align }) => align};
   width: ${({ width }) => width ?? '100%'};
+
+  ${({ gap }) =>
+    gap
+      ? `
+    > * + * {
+      margin-top: ${gap} !important;
+    }
+  `
+      : ''};
 `
 
 export const ColumnCenter = styled(Column)`
