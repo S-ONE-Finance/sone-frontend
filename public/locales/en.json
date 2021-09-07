@@ -148,7 +148,7 @@
   "question_helper_route": "The Route entity represents one or more ordered Uniswap pairs with a fully specified path from input token to output token.",
   "question_helper_select_a_pair": "Find a pair by searching for its name or symbol or by pasting its address below.",
   "question_helper_select_a_token": "Find a token by searching for its name or symbol or by pasting its address below.",
-  "question_helper_share_of_pair": "Find a pair by searching for its name or symbol or by pasting its address below.",
+  "question_helper_share_of_pair": "question_helper_share_of_pair",
   "question_helper_slippage_tolerance": "Your transaction will revert if the price changes  unfavorably by more than this percentage.",
   "question_helper_total_liquidity": "This is Liquidity converts to dollar.",
   "question_helper_total_lp_token": "question_helper_total_lp_token",
