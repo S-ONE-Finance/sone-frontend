@@ -118,8 +118,6 @@ export default function CurrencyLogo({
         (chainId && address.toLowerCase() === SONE[chainId].address.toLowerCase()))) ||
     (currency && passedCurrencyIsSone)
   ) {
-    console.log(`size`, size)
-    console.log(`sizeMobile`, sizeMobile)
     return (
       <SoneLogoBoundedWrapper size={size} sizeMobile={sizeMobile} style={style}>
         <SoneLogoBounded size={Number.parseInt(size)} sizeMobile={Number.parseInt(sizeMobile)} src={SoneLogoSvg} />
