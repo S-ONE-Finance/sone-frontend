@@ -14,13 +14,14 @@ export function getNumberCommas(x: number | string) {
   return parts.join('.')
 }
 
-export function getFixedNumberCommas(num: number) {
+export function getFixedNumberCommas(_num: string) {
+  const num = new BigNumber(_num)
   let res = ''
-  if (num > 1000000) return getFormattedNumber(num, 1)
-  else if (num > 1000) res = num.toFixed(0)
-  else if (num > 100) res = num.toFixed(1)
-  else if (num > 10) res = num.toFixed(2)
-  else if (num > 1) res = num.toFixed(3)
+  if (num.isGreaterThan(1000000)) return getFormattedNumber(num.toNumber(), 1)
+  else if (num.isGreaterThan(1000)) res = num.toFixed(0)
+  else if (num.isGreaterThan(100)) res = num.toFixed(1)
+  else if (num.isGreaterThan(10)) res = num.toFixed(2)
+  else if (num.isGreaterThan(1)) res = num.toFixed(3)
   return getNumberCommas(res)
 }
 
@@ -30,7 +31,11 @@ export function getFixedNumberCommas(num: number) {
  * @param decimals
  */
 export const getBalanceNumber = (balance: string, decimals = 18) => {
-  return new BigNumber(balance).dividedBy(new BigNumber(10).pow(decimals)).toNumber()
+  const bn = new BigNumber(balance).decimalPlaces(18, 1).dividedBy(new BigNumber(10).pow(decimals))
+  if (bn.eq(0)) return bn.toString()
+  let res = bn.toFixed(18)
+  while (res.charAt(res.length - 1) == '0') res = res.substr(0, res.length - 1)
+  return res
 }
 
 export const getBalanceStringCommas = (balance: string, decimals = 18) => {

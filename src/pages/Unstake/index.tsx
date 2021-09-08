@@ -12,12 +12,7 @@ import styled from 'styled-components'
 import UnstakeTxSectionDetails from './UnstakeTxSectionDetails'
 import MyReward from 'components/MyReward'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import {
-  getBalanceNumber,
-  getBalanceStringCommas,
-  getNumberCommas,
-  reduceFractionDigit
-} from '../../utils/formatNumber'
+import { getBalanceNumber, getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
 import { useParams } from 'react-router-dom'
 import { ChainId, Farm, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/staking/useFarm'
@@ -66,11 +61,10 @@ export default function Unstake() {
   const { farmId } = useParams() as any
   const farm: Farm | undefined = useFarm(farmId)
   const amountStaked = farm?.userInfo?.amount
-  console.log(`amountStaked`, amountStaked)
+
   const fullBalance = useMemo(() => {
     return amountStaked === undefined ? undefined : getBalanceNumber(amountStaked)
   }, [amountStaked])
-  const fullBalanceDisplay = useMemo(() => reduceFractionDigit(fullBalance + '', 18), [fullBalance])
 
   const [typedValue, setTypedValue] = useState('')
 
@@ -80,7 +74,7 @@ export default function Unstake() {
 
   const onMax = () => {
     if (fullBalance) {
-      setTypedValue(fullBalanceDisplay)
+      setTypedValue(fullBalance)
     }
   }
 
@@ -95,7 +89,7 @@ export default function Unstake() {
   const error: string | undefined =
     typedValue === '' || +typedValue === 0 || tryParse === undefined
       ? t('enter_an_amount')
-      : fullBalance !== undefined && +typedValue > fullBalance
+      : fullBalance !== undefined && new BigNumber(fullBalance).isLessThan(typedValue)
       ? t('Insufficient LP Token')
       : undefined
 

@@ -28,14 +28,10 @@ import SoneLogoSvg from '../../../assets/images/logo_token_sone.svg'
 import TickIconSvg from '../../../assets/images/tick-icon.svg'
 import { HideExtraSmall } from '../../../theme'
 import usePendingReward from '../../../hooks/staking/usePendingReward'
-import {
-  getBalanceNumber,
-  getBalanceStringCommas,
-  getFixedNumberCommas,
-  reduceFractionDigit
-} from '../../../utils/formatNumber'
+import { getBalanceNumber, getBalanceStringCommas, getFixedNumberCommas } from '../../../utils/formatNumber'
 import useClaimRewardHandler from '../../../hooks/staking/useClaimRewardHandler'
 import LiquidityProviderTokenLogo from '../../../components/LiquidityProviderTokenLogo'
+import BigNumber from 'bignumber.js'
 
 const DetailedSectionIcon = styled.img`
   width: 90px;
@@ -220,10 +216,10 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
   const rewardedSone = isNaN(+userInfo.soneHarvested) ? '--' : (+userInfo.soneHarvested).toFixed(6)
   const availableReward = usePendingReward(Number(userInfo.pool?.pid)).toString()
 
-  const myStakedLpToken = reduceFractionDigit('' + getBalanceNumber(userInfo.amount), 18)
+  // const myStakedLpToken = reduceFractionDigit('' + getBalanceNumber(userInfo.amount), 18)
+  const myStakedLpToken = getBalanceNumber(userInfo.amount)
   const apy = userInfo.pool?.roiPerYear
-  const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(apy * 100)}%`
-  // const apy = userInfo.pool?.roiPerYear === undefined ? '--' : `${reduceFractionDigit('' + userInfo.pool.roiPerYear * 100, 2)}%`
+  const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString())}%`
 
   const [poolRequestPending, setPoolRequestPending] = useState(false)
   const onClaimReward = useClaimRewardHandler()

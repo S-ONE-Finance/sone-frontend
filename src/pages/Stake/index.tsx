@@ -131,7 +131,7 @@ export default function Staking() {
     ? t('connect_wallet')
     : +typedValue === 0
     ? t('enter_an_amount')
-    : lpBalance === undefined || lpBalance < +typedValue
+    : lpBalance === undefined || new BigNumber(lpBalance).isLessThan(typedValue)
     ? t('insufficient_lp_token')
     : allowance.toString() === '0' && (isApproveTxPushed || isApproving)
     ? t('approving...')
@@ -333,7 +333,7 @@ export default function Staking() {
                 <PanelPairInput
                   value={Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? '100,100' : typedValue}
                   onUserInput={onUserInput}
-                  balance={Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? 111634 : lpBalance}
+                  balance={Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? '111634' : lpBalance}
                   onMax={onMax}
                   label={t('input')}
                   customBalanceText={t('lp_balance') + ':'}

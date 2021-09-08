@@ -5,6 +5,7 @@ import useMyAccountStaked from '../../../hooks/staking/useMyAccountStaked'
 import { UserInfoSone } from '@s-one-finance/sdk-core'
 import useUnmountedRef from '../../../hooks/useUnmountedRef'
 import { getFixedNumberCommas } from '../../../utils/formatNumber'
+import BigNumber from 'bignumber.js'
 
 const StakingBackground = styled.div`
   width: 100%;
@@ -66,7 +67,7 @@ const OverallNetAPY = memo(function OverallNetAPY() {
     }
   }, [unmountedRef, myAccountStaked])
 
-  const netApyRender = useMemo(() => getFixedNumberCommas(netApy) + '%', [netApy])
+  const netApyRender = useMemo(() => getFixedNumberCommas(new BigNumber(netApy).toString()) + '%', [netApy])
 
   return (
     <StakingBackground>
