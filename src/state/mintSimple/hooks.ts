@@ -79,7 +79,8 @@ export function useDerivedMintSimpleInfo(
     selectedCurrencyUserInputAmount &&
     new TokenAmount(selectedToken, selectedCurrencyUserInputAmount.raw.toString())
 
-  let selectedTokenParsedAmount: TokenAmount | undefined, theOtherTokenParsedAmount: TokenAmount | undefined
+  let selectedTokenParsedAmount: TokenAmount | undefined
+  let theOtherTokenParsedAmount: TokenAmount | undefined
   let errorWhenParsedTokenAmount = false
   try {
     ;[selectedTokenParsedAmount, theOtherTokenParsedAmount] =
@@ -152,6 +153,8 @@ export function useDerivedMintSimpleInfo(
     error = `Insufficient ${isSelectedToken0 ? pair.token0.symbol : pair.token1.symbol} liquidity for swap`
   } else if (errorWhenParsedTokenAmount) {
     error = t('input_too_small')
+  } else if (selectedTokenUserInputAmount === undefined) {
+    error = t('enter_an_amount')
   }
 
   return {

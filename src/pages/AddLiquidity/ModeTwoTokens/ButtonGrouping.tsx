@@ -28,7 +28,7 @@ type ButtonGroupingProps = {
   setShowConfirm: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function ButtonGroupping({
+export default function ButtonGrouping({
   currencyA,
   currencyB,
   setAttemptingTxn,
