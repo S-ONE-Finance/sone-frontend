@@ -6,9 +6,7 @@ import CurrencyLogo from '../../../components/CurrencyLogo'
 import { Text } from 'rebass'
 import { Plus } from 'react-feather'
 import { AutoColumn } from '../../../components/Column'
-import { TYPE } from '../../../theme'
 import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
-import { useUserSlippageTolerance } from '../../../state/user/hooks'
 import { Currency, CurrencyAmount } from '@s-one-finance/sdk-core'
 
 export default function ModalHeader({
@@ -19,8 +17,6 @@ export default function ModalHeader({
   parsedAmounts: { [field in Field]?: CurrencyAmount }
 }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-
-  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
 
   return (
     <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>
@@ -54,13 +50,6 @@ export default function ModalHeader({
           </Text>
         </RowFixed>
       </RowBetween>
-      <AutoColumn justify="flex-start" gap="sm">
-        <TYPE.italic textAlign="left" style={{ width: '100%' }}>
-          {'Output is estimated. If the price changes by more than '}
-          <b>{allowedSlippage / 100 + '%'}</b>
-          {' your transaction will revert.'}
-        </TYPE.italic>
-      </AutoColumn>
     </AutoColumn>
   )
 }

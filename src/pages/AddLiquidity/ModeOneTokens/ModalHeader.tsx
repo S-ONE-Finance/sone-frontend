@@ -8,8 +8,6 @@ import CurrencyLogo from '../../../components/CurrencyLogo'
 import { RowBetween, RowFixed } from '../../../components/Row'
 import { TruncatedText } from '../../../components/swap/styleds'
 import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
-import { useUserSlippageTolerance } from '../../../state/user/hooks'
-import { TYPE } from '../../../theme'
 
 export default function ModalHeader({
   selectedTokenParsedAmount,
@@ -23,8 +21,6 @@ export default function ModalHeader({
   theOtherToken?: Token
 }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
-
-  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
 
   const selectedCurrency = selectedToken && unwrappedToken(selectedToken)
   const theOtherCurrency = theOtherToken && unwrappedToken(theOtherToken)
@@ -61,13 +57,6 @@ export default function ModalHeader({
           </Text>
         </RowFixed>
       </RowBetween>
-      <AutoColumn justify="flex-start" gap="sm">
-        <TYPE.italic textAlign="left" style={{ width: '100%' }}>
-          {'Output is estimated. If the price changes by more than '}
-          <b>{allowedSlippage / 100 + '%'}</b>
-          {' your transaction will revert.'}
-        </TYPE.italic>
-      </AutoColumn>
     </AutoColumn>
   )
 }

@@ -11,6 +11,7 @@
   "add_a_list": "リスト追加",
   "add_account": "預入れ",
   "add_liquidity": "トークンを預ける",
+  "add_liquidity_and_get_lp_token": "流動性を提供してLPトークンを受け取る",
   "add_liquidity_description": "流動性を提供してLPトークンを受け取る",
   "add_one_token_mode_is_recommended": "初めての方には簡単モードがお勧めです",
   "address": "アドレス",

@@ -9,7 +9,7 @@ import PanelWithdrawLiquidityInput from '../../components/PanelCurrencyInputAndS
 import { currencyEquals, ETHER, Pair, Percent, WETH } from '@s-one-finance/sdk-core'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { Dots, IconWrapper, TruncatedText } from '../../components/swap/styleds'
-import { StyledArrowDown, StyledPlus, TYPE } from '../../theme'
+import { StyledArrowDown, StyledPlus } from '../../theme'
 import Row, { RowBetween, RowFixed } from '../../components/Row'
 import PanelCurrencyInput from '../../components/PanelCurrencyInput'
 import { Text } from 'rebass'
@@ -24,7 +24,7 @@ import { useActiveWeb3React } from '../../hooks'
 import useTheme from '../../hooks/useTheme'
 import { useBurnActionHandlers, useBurnState, useDerivedBurnInfo } from '../../state/burn/hooks'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
-import { useIsExpertMode, useUserSlippageTolerance } from '../../state/user/hooks'
+import { useIsExpertMode } from '../../state/user/hooks'
 import { Field } from '../../state/burn/actions'
 import { Contract } from '@ethersproject/contracts'
 import { usePairContract } from '../../hooks/useContract'
@@ -135,7 +135,6 @@ export default function WithdrawLiquidity({
   // txn values
   const [txHash, setTxHash] = useState<string>('')
   const deadline = useTransactionDeadline()
-  const [allowedSlippage] = useUserSlippageTolerance()
 
   const formattedAmounts = {
     [Field.LIQUIDITY_PERCENT]: parsedAmounts[Field.LIQUIDITY_PERCENT].equalTo('0')
@@ -305,11 +304,6 @@ export default function WithdrawLiquidity({
             </Text>
           </RowFixed>
         </RowBetween>
-
-        <TYPE.italic fontSize={12} color={theme.text2} textAlign="left">
-          {`Output is estimated. If the price changes by more than ${allowedSlippage /
-            100}% your transaction will revert.`}
-        </TYPE.italic>
       </AutoColumn>
     )
   }
