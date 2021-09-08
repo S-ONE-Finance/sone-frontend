@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef } from 'react'
+import React, { forwardRef, ReactNode, useRef } from 'react'
 import { Currency } from '@s-one-finance/sdk-core'
 import { CountUp } from 'use-count-up'
 import styled from 'styled-components'
@@ -13,8 +13,10 @@ import usePrevious from '../../../hooks/usePrevious'
 import SoneBigImage from './SoneBigImage'
 import { lighten } from 'polished'
 import useSoneLockBalance from '../../../hooks/staking/useSoneLockBalance'
-import { getBalanceStringCommas } from 'utils/formatNumber'
+import { getFixedBalanceStringCommas } from 'utils/formatNumber'
 import useUnlockHandler from 'hooks/staking/useUnlockHandler'
+import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
+import Column from '../../../components/Column'
 
 const CardBalance = styled(Card)`
   flex-direction: column;
@@ -144,6 +146,19 @@ const BalanceCountUp = forwardRef<HTMLDivElement, { balance: string | undefined 
   )
 })
 
+function RowColFlex({ children }: { children: ReactNode }) {
+  const isUpToExtraSmall = useIsUpToExtraSmall()
+  return isUpToExtraSmall ? (
+    <Column gap="10px" style={{ marginTop: '20px' }}>
+      {children}
+    </Column>
+  ) : (
+    <Row gap="10px" marginTop="20px">
+      {children}
+    </Row>
+  )
+}
+
 export default function MyBalance() {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
@@ -176,16 +191,16 @@ export default function MyBalance() {
           </BalanceSection>
           <SoneBigImage ethBalanceRef={ethBalanceRef} soneBalanceRef={soneBalanceRef} />
         </Row>
-        <Row gap="10px" marginTop="20px">
-          <TextUnlockTitle>Can unlock:</TextUnlockTitle>
+        <RowColFlex>
+          <TextUnlockTitle>{t('can_unlock')}:</TextUnlockTitle>
           <TextUnlockValue>
-            {getBalanceStringCommas(soneCanUnlock.toString()) +
+            {getFixedBalanceStringCommas(soneCanUnlock.toString()) +
               '/' +
-              getBalanceStringCommas(totalSoneLocked.toString())}{' '}
+              getFixedBalanceStringCommas(totalSoneLocked.toString())}{' '}
             SONE
           </TextUnlockValue>
           <TextUnlockButton onClick={() => onUnlockSone()}>{t('unlock')}</TextUnlockButton>
-        </Row>
+        </RowColFlex>
       </CardBalance>
     </Section>
   )

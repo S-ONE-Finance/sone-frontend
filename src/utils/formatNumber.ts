@@ -14,6 +14,16 @@ export function getNumberCommas(x: number | string) {
   return parts.join('.')
 }
 
+export function getFixedNumberCommas(num: number) {
+  let res = ''
+  if (num > 1000000) return getFormattedNumber(num, 1)
+  else if (num > 1000) res = num.toFixed(0)
+  else if (num > 100) res = num.toFixed(1)
+  else if (num > 10) res = num.toFixed(2)
+  else if (num > 1) res = num.toFixed(3)
+  return getNumberCommas(res)
+}
+
 /**
  * Chia cho decimals để ra đúng giá trị hiển thị của nó.
  * @param balance
@@ -26,6 +36,11 @@ export const getBalanceNumber = (balance: string, decimals = 18) => {
 export const getBalanceStringCommas = (balance: string, decimals = 18) => {
   const val = getBalanceNumber(balance, decimals)
   return getNumberCommas(val)
+}
+
+export const getFixedBalanceStringCommas = (balance: string, decimals = 18) => {
+  const val = getBalanceNumber(balance, decimals)
+  return getFixedNumberCommas(val)
 }
 
 export const reduceFractionDigit = (number = '', digitAmount = 0) =>

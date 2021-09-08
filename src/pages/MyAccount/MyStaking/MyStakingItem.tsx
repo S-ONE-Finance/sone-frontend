@@ -28,7 +28,12 @@ import SoneLogoSvg from '../../../assets/images/logo_token_sone.svg'
 import TickIconSvg from '../../../assets/images/tick-icon.svg'
 import { HideExtraSmall } from '../../../theme'
 import usePendingReward from '../../../hooks/staking/usePendingReward'
-import { getBalanceNumber, getBalanceStringCommas, reduceFractionDigit } from '../../../utils/formatNumber'
+import {
+  getBalanceNumber,
+  getBalanceStringCommas,
+  getFixedNumberCommas,
+  reduceFractionDigit
+} from '../../../utils/formatNumber'
 import useClaimRewardHandler from '../../../hooks/staking/useClaimRewardHandler'
 import LiquidityProviderTokenLogo from '../../../components/LiquidityProviderTokenLogo'
 
@@ -216,8 +221,9 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
   const availableReward = usePendingReward(Number(userInfo.pool?.pid)).toString()
 
   const myStakedLpToken = reduceFractionDigit('' + getBalanceNumber(userInfo.amount), 18)
-  const apy =
-    userInfo.pool?.roiPerYear === undefined ? '--' : `${reduceFractionDigit('' + userInfo.pool.roiPerYear * 100, 2)}%`
+  const apy = userInfo.pool?.roiPerYear
+  const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(apy * 100)}%`
+  // const apy = userInfo.pool?.roiPerYear === undefined ? '--' : `${reduceFractionDigit('' + userInfo.pool.roiPerYear * 100, 2)}%`
 
   const [poolRequestPending, setPoolRequestPending] = useState(false)
   const onClaimReward = useClaimRewardHandler()
@@ -272,7 +278,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
         </FlexibleRow>
         <Row gap="10px" justify="flex-end">
           <Column width="fit-content" justify="center" align="center">
-            <TextPercentage onClick={() => alert('Not implemented yet!')}>{apy}</TextPercentage>
+            <TextPercentage onClick={() => alert('Not implemented yet!')}>{apyRender}</TextPercentage>
             <TextAPY>{t('apy')}</TextAPY>
           </Column>
           <DownIcon

@@ -24,7 +24,7 @@ import { ButtonPrimary } from '../Button'
 import RecentTransactions from '../RecentTransactions'
 import { injected, walletlink } from 'connectors'
 import useSoneLockBalance from '../../hooks/staking/useSoneLockBalance'
-import { getBalanceStringCommas } from 'utils/formatNumber'
+import { getFixedBalanceStringCommas } from 'utils/formatNumber'
 import useUnlockHandler from '../../hooks/staking/useUnlockHandler'
 
 const PanelMyAccountWrapper = styled.div`
@@ -110,9 +110,9 @@ export default function PanelMyAccount() {
         <Column>
           <TYPE.black fontSize={16}>{t('can_unlock')}:</TYPE.black>
           <TYPE.subText marginTop={'0.25rem'}>
-            {getBalanceStringCommas(soneCanUnlock.toString()) +
+            {getFixedBalanceStringCommas(soneCanUnlock.toString()) +
               '/' +
-              getBalanceStringCommas(totalSoneLocked.toString())}{' '}
+              getFixedBalanceStringCommas(totalSoneLocked.toString())}{' '}
             SONE
           </TYPE.subText>
           <TextBoxChangeAccount onClick={() => onUnlockSone()}>{t('unlock')}</TextBoxChangeAccount>

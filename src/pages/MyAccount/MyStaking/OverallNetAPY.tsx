@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import useMyAccountStaked from '../../../hooks/staking/useMyAccountStaked'
 import { UserInfoSone } from '@s-one-finance/sdk-core'
 import useUnmountedRef from '../../../hooks/useUnmountedRef'
+import { getFixedNumberCommas } from '../../../utils/formatNumber'
 
 const StakingBackground = styled.div`
   width: 100%;
@@ -65,7 +66,7 @@ const OverallNetAPY = memo(function OverallNetAPY() {
     }
   }, [unmountedRef, myAccountStaked])
 
-  const netApyRender = useMemo(() => (netApy < 10 ? netApy.toFixed(3) : netApy.toFixed(2)) + '%', [netApy])
+  const netApyRender = useMemo(() => getFixedNumberCommas(netApy) + '%', [netApy])
 
   return (
     <StakingBackground>

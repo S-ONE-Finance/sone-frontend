@@ -13,25 +13,24 @@ import { useActiveWeb3React } from '../../hooks'
 import { useWalletModalToggle } from '../../state/application/hooks'
 import { shortenAddress } from '../../utils'
 
-import { ExternalLink, TYPE } from '../../theme'
+import { ExternalLink, StyledCloseIcon, TYPE } from '../../theme'
 import SoneAmount from '../SoneAmount'
 import RecentTransactions from '../RecentTransactions'
 import Column from '../Column'
 import { RowBetween } from '../Row'
 import { StyledCloseAbsolute } from '../WalletModal'
-import { StyledCloseIcon } from '../../theme'
 import {
-  S_ONE_WALLET_INTRO_PAGE_URL,
-  S_ONE_SWAP_STATISTICS_URL,
-  S_ONE_STAKING_STATISTICS_URL,
-  S_ONE_WHITE_PAPER_URL,
+  S_ONE_BLOG_URL,
   S_ONE_FAQ_URL,
-  S_ONE_BLOG_URL
+  S_ONE_STAKING_STATISTICS_URL,
+  S_ONE_SWAP_STATISTICS_URL,
+  S_ONE_WALLET_INTRO_PAGE_URL,
+  S_ONE_WHITE_PAPER_URL
 } from '../../constants/urls'
 import { injected, walletlink } from '../../connectors'
 import useSoneLockBalance from '../../hooks/staking/useSoneLockBalance'
 import useUnlockHandler from '../../hooks/staking/useUnlockHandler'
-import { getBalanceStringCommas } from 'utils/formatNumber'
+import { getFixedBalanceStringCommas } from 'utils/formatNumber'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
   position: relative;
@@ -175,9 +174,9 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
             </RowBetween>
             <TYPE.subText marginTop="0.25rem">
               {' '}
-              {getBalanceStringCommas(soneCanUnlock.toString()) +
+              {getFixedBalanceStringCommas(soneCanUnlock.toString()) +
                 '/' +
-                getBalanceStringCommas(totalSoneLocked.toString())}{' '}
+                getFixedBalanceStringCommas(totalSoneLocked.toString())}{' '}
               SONE
             </TYPE.subText>
           </Column>
