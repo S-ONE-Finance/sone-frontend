@@ -89,7 +89,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
     poolTokenPercentage
   } = useDerivedMintSimpleInfo(selectedPairState, selectedPair, selectedCurrency ?? undefined)
 
-  const pendingText = `Supplying ${selectedTokenParsedAmount?.toSignificant(6)} ${
+  const pendingText = `Adding ${selectedTokenParsedAmount?.toSignificant(6)} ${
     selectedPair?.token0?.symbol
   } and ${theOtherTokenParsedAmount?.toSignificant(6)} ${selectedPair?.token0?.symbol}`
 
