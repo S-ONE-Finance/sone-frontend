@@ -153,6 +153,7 @@ export function useDerivedMintInfo(
     ]
     if (pair && totalSupply && tokenAmountA && tokenAmountB) {
       try {
+        isMintLiquidityFailed.current = false
         return pair.getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB)
       } catch {
         isMintLiquidityFailed.current = true
