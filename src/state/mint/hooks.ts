@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, ETHER, JSBI, Pair, Percent, Price, TokenAmount } from '@s-one-finance/sdk-core'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { PairState, usePair } from '../../data/Reserves'
 import { useTotalSupply } from '../../data/TotalSupply'
@@ -144,7 +144,7 @@ export function useDerivedMintInfo(
     }
   }, [chainId, currencyA, noLiquidity, pair, parsedAmounts])
 
-  // liquidity minted
+  const isMintLiquidityFailed = useRef(false)
   const liquidityMinted = useMemo(() => {
     const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
     const [tokenAmountA, tokenAmountB] = [
@@ -153,8 +153,10 @@ export function useDerivedMintInfo(
     ]
     if (pair && totalSupply && tokenAmountA && tokenAmountB) {
       try {
+        isMintLiquidityFailed.current = false
         return pair.getLiquidityMinted(totalSupply, tokenAmountA, tokenAmountB)
       } catch {
+        isMintLiquidityFailed.current = true
         return undefined
       }
     } else {
@@ -183,7 +185,7 @@ export function useDerivedMintInfo(
     error = error ?? t('enter_an_amount')
   }
 
-  if (liquidityMinted === undefined) {
+  if (isMintLiquidityFailed.current) {
     error = t('input_too_small')
   }
 
