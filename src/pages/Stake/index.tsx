@@ -32,7 +32,7 @@ import TransactionConfirmationModal, { ConfirmationModalContent } from '../../co
 import useAllowance from '../../hooks/staking/useAllowance'
 import useApproveHandler from '../../hooks/staking/useApproveHandler'
 import { OpenGuide, StakeStep1, StakeStep2, StakeStep3 } from '../../components/lib/mark/components'
-import { CONFIG_MASTER_FARMER } from '../../constants/index'
+import { CONFIG_MASTER_FARMER } from '../../constants'
 
 export default function Staking() {
   const { t } = useTranslation()
@@ -50,7 +50,7 @@ export default function Staking() {
 
   const { pairAddress, symbol } = farm || {}
   const lpBalanceRaw = useLpTokenBalance(pairAddress)
-  const lpBalance = pairAddress && lpBalanceRaw ? getBalanceNumber(lpBalanceRaw.toString()) : undefined
+  const lpBalance = getBalanceNumber(lpBalanceRaw.toString())
 
   const toggleWalletModal = useWalletModalToggle()
   const { account, chainId } = useActiveWeb3React()

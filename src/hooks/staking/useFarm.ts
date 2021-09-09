@@ -9,6 +9,7 @@ import { useBlockNumber } from 'state/application/hooks'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import useOneSoneInUSD from '../useOneSoneInUSD'
 import { CONFIG_MASTER_FARMER } from '../../constants'
+import { useLastTruthy } from '../useLast'
 
 // TODO: Lên môi trường mainnet không fix cứng chainId.
 export const FAKE_CHAIN_ID = 3
@@ -19,7 +20,7 @@ const useFarm = (id: string) => {
   const sonePrice = useOneSoneInUSD()
   const averageBlockTime = useAverageBlockTime()
 
-  const { data: farm } = useQuery(
+  const { data: farmQuery } = useQuery(
     ['useFarm_poolsQueryDetail', chainId, id, block],
     async () => {
       const data = await stakingClients[FAKE_CHAIN_ID].query({
@@ -32,7 +33,9 @@ const useFarm = (id: string) => {
     { enabled: Boolean(chainId) }
   )
 
-  const { data: userInfo } = useQuery(
+  const farm = useLastTruthy(farmQuery)
+
+  const { data: userInfoQuery } = useQuery(
     ['useFarm_poolUserDetailQuery', chainId, id, account, block],
     async () => {
       const data = await stakingClients[FAKE_CHAIN_ID].query({
@@ -47,7 +50,9 @@ const useFarm = (id: string) => {
     { enabled: Boolean(chainId && account) }
   )
 
-  const { data: pair } = useQuery(
+  const userInfo = useLastTruthy(userInfoQuery)
+
+  const { data: pairQuery } = useQuery(
     ['useFarm_pairSubsetQuery', chainId, farm?.pair, block],
     async () => {
       const data = await swapClients[FAKE_CHAIN_ID].query({
@@ -59,6 +64,8 @@ const useFarm = (id: string) => {
     },
     { enabled: Boolean(chainId && account && farm?.pair) }
   )
+
+  const pair = useLastTruthy(pairQuery)
 
   return useMemo(() => {
     if (pair === undefined || farm === undefined) return {}

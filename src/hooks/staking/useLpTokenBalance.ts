@@ -5,8 +5,9 @@ import { useLpContract } from 'hooks/useContract'
 import { useBlockNumber } from 'state/application/hooks'
 import { useActiveWeb3React } from '../index'
 import { useQuery } from 'react-query'
+import { useLastTruthy } from '../useLast'
 
-export default function useLpTokenBalance(pairAddress: string | undefined): BigNumber | undefined {
+export default function useLpTokenBalance(pairAddress: string | undefined): BigNumber {
   const { account } = useActiveWeb3React()
   const block = useBlockNumber()
   const lpContract: Contract | null = useLpContract(pairAddress || '')
@@ -27,5 +28,7 @@ export default function useLpTokenBalance(pairAddress: string | undefined): BigN
     }
   )
 
-  return balance ?? BigNumber.from(0)
+  const lastBalance = useLastTruthy(balance)
+
+  return balance ? balance : lastBalance ? lastBalance : BigNumber.from(0)
 }
