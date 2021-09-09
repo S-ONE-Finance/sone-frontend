@@ -34,7 +34,8 @@ export const getBalanceNumber = (balance: string, decimals = 18) => {
   const bn = new BigNumber(balance).decimalPlaces(18, 1).dividedBy(new BigNumber(10).pow(decimals))
   if (bn.eq(0)) return bn.toString()
   let res = bn.toFixed(18)
-  while (res.charAt(res.length - 1) === '0') res = res.substr(0, res.length - 1)
+  while (res.charAt(res.length - 1) === '0') res = res.slice(0, -1)
+  if (res.charAt(res.length - 1) === '.') res = res.slice(0, -1)
   return res
 }
 
