@@ -11,6 +11,8 @@ import { stakingClients, swapClients } from '../../graphql/clients'
 import useOneSoneInUSD from '../useOneSoneInUSD'
 import { FAKE_CHAIN_ID } from './useFarm'
 import { useManyPendingReward } from './usePendingReward'
+import { useBlockNumber } from '../../state/application/hooks'
+import { useLastTruthy } from '../useLast'
 
 const LP_TOKEN_DECIMALS = 18
 const LP_TOKEN_DECIMALS_POWER = 10 ** LP_TOKEN_DECIMALS
@@ -19,20 +21,25 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
   const { account, chainId } = useActiveWeb3React()
   const sonePrice = useOneSoneInUSD()
   const averageBlockTime = useAverageBlockTime()
+  const block = useBlockNumber()
 
-  const { data: users, isLoading: usersIsLoading } = useQuery(
-    ['useMyAccountStaked_poolUserWithPoolDetailQuery', chainId, account],
+  const { data: usersQuery, isSuccess: isQueryUserSuccess } = useQuery(
+    ['useMyAccountStaked_poolUserWithPoolDetailQuery', chainId, account, block],
     async () => {
       const data = await stakingClients[FAKE_CHAIN_ID].query({
         query: poolUserWithPoolDetailQuery,
         variables: {
           address: account?.toLowerCase()
-        }
+        },
+        fetchPolicy: 'network-only'
       })
       return data?.data.users
     },
     { enabled: Boolean(chainId && account) }
   )
+
+  const users = useLastTruthy(usersQuery) ?? undefined
+  const isQueryUserSuccessEver = useLastTruthy(isQueryUserSuccess)
 
   const pairAddresses = useMemo(
     () =>
@@ -44,23 +51,27 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
     [users]
   )
 
-  const { data: pairs, isLoading: pairsIsLoading } = useQuery(
-    ['useMyAccountStaked_pairSubsetQuery', chainId, pairAddresses],
+  const { data: pairsQuery, isSuccess: isQueryPairsSuccess } = useQuery(
+    ['useMyAccountStaked_pairSubsetQuery', chainId, pairAddresses, block],
     async () => {
       const data = await swapClients[chainId as ChainId].query({
         query: pairSubsetQuery,
-        variables: { pairAddresses }
+        variables: { pairAddresses },
+        fetchPolicy: 'network-only'
       })
       return data?.data.pairs
     },
     { enabled: Boolean(chainId && account) }
   )
 
+  const pairs = useLastTruthy(pairsQuery) ?? undefined
+  const isQueryPairsSuccessEver = useLastTruthy(isQueryPairsSuccess)
+
   const pids = users && users.map((user: any) => +user?.pool.id)
   const pendingRewards = useManyPendingReward(pids)
 
   return useMemo((): [boolean, UserInfoSone[]] => {
-    const isLoading = usersIsLoading || pairsIsLoading
+    const isLoading = !isQueryUserSuccessEver || !isQueryPairsSuccessEver
 
     const userData: UserInfoSone[] = (users ?? [])
       .map((user: any) => {
@@ -120,7 +131,7 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
 
     // TODO: Dùng biến isSuccess để detect loading không đúng lắm nhưng tạm thời ok.
     return [isLoading, unique]
-  }, [averageBlockTime, pairs, pairsIsLoading, pendingRewards, sonePrice, users, usersIsLoading])
+  }, [averageBlockTime, pairs, pendingRewards, sonePrice, users, isQueryUserSuccessEver, isQueryPairsSuccessEver])
 }
 
 export default useMyAccountStaked
