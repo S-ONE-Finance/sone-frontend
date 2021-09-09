@@ -21,6 +21,7 @@ import { CountUp } from 'use-count-up'
 import { Trans, useTranslation } from 'react-i18next'
 import { useFormattedSoneInUSD } from '../../../hooks/useOneSoneInUSD'
 import { S_ONE_APP_URL } from '../../../constants/urls'
+import BigNumber from 'bignumber.js'
 
 const FriendsAndReward = styled(AutoColumn)`
   display: grid;
@@ -187,12 +188,21 @@ const Copy = styled(CopySvg)`
   ${BaseIcon}
 `
 
-function NumberCountUp({ value }: { value: number | undefined }) {
-  const curr = value ? +value.toFixed(6) : 0
+function NumberCountUp({ value }: { value: BigNumber | undefined }) {
+  const curr = value ? value.toPrecision(6).toString() : '0'
   const prev = usePrevious(curr)
-  const prevReset = prev === curr ? 0 : prev
+  const prevReset = prev === curr ? '0' : prev
 
-  return <CountUp autoResetKey={curr} isCounting start={prevReset} end={curr} thousandsSeparator={','} duration={1} />
+  return (
+    <CountUp
+      autoResetKey={curr}
+      isCounting
+      start={prevReset ? +prevReset : 0}
+      end={+curr}
+      thousandsSeparator={','}
+      duration={1}
+    />
+  )
 }
 
 export default function ReferralInformation() {
@@ -225,9 +235,9 @@ export default function ReferralInformation() {
         <PendingRewardRow>
           <SoneLogo />
           <Column>
-            <Row align="baseline" gap="10px">
+            <Row align="baseline" gap="10px" wrap="wrap">
               <TextAccentBig>
-                <NumberCountUp value={pendingAmount} />
+                <NumberCountUp value={new BigNumber(pendingAmount ?? '0')} />
               </TextAccentBig>
               <TextSoneUnitBig>SONE</TextSoneUnitBig>
             </Row>
@@ -237,7 +247,7 @@ export default function ReferralInformation() {
         <Row wrap="wrap" gap="5px">
           <TextDefault minWidth={isUpToExtraSmall ? 'unset' : 137}>{t('paid_reward') + ':'}</TextDefault>
           <TextAccent>
-            <NumberCountUp value={totalPaidReward} />
+            <NumberCountUp value={new BigNumber(totalPaidReward ?? '0')} />
           </TextAccent>
           <RowFixed>
             <TextSoneUnit>SONE≈</TextSoneUnit>
@@ -247,7 +257,7 @@ export default function ReferralInformation() {
         <Row wrap="wrap" gap="5px">
           <TextDefault minWidth={isUpToExtraSmall ? 'unset' : 137}>{t('reward_amount') + ':'}</TextDefault>
           <TextAccent>
-            <NumberCountUp value={totalRewardAmount} />
+            <NumberCountUp value={new BigNumber(totalRewardAmount ?? '0')} />
           </TextAccent>
           <RowFixed>
             <TextSoneUnit>SONE≈</TextSoneUnit>
@@ -271,7 +281,6 @@ export default function ReferralInformation() {
           <ExternalLink href={`https://telegram.me/share/url?url=${shareUrlEncoded}&text=`}>
             <Telegram />
           </ExternalLink>
-          {/* TODO: Chưa triển khai referral id bên swap và add liquidity. */}
           {isCopied ? <CheckCircle /> : <Copy onClick={() => setCopied(shareUrlRaw)} />}
         </Row>
       </QrCodeShareSection>
