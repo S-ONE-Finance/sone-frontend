@@ -31,6 +31,7 @@ import {
   TextLpTokens,
   TextPercentage
 } from '../components'
+import usePoolIdByPairAddress from 'hooks/staking/usePoolIdByPairAddress'
 
 export default function MyLiquidityItem({
   pair,
@@ -41,6 +42,7 @@ export default function MyLiquidityItem({
   isShowDetailedSection: boolean
   setDetailPair: React.Dispatch<React.SetStateAction<string | undefined>>
 }) {
+  const poolId = usePoolIdByPairAddress(pair.liquidityToken.address)
   const { t } = useTranslation()
   // Style.
   const isUpToExtraSmall = useIsUpToExtraSmall()
@@ -94,8 +96,7 @@ export default function MyLiquidityItem({
             </Text>
             <TextLpTokens>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</TextLpTokens>
           </Column>
-          {/* TODO: Change proper link after code stake page. */}
-          <StakeLink to="/stake">{t('Stake')}</StakeLink>
+          {poolId !== undefined && <StakeLink to={`/staking/${poolId}`}>{t('Stake')}</StakeLink>}
         </FlexibleRow>
         <Row gap="10px" justify="flex-end">
           <Column width="fit-content" justify="center" align="center">

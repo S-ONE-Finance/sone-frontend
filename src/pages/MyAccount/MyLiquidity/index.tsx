@@ -12,12 +12,6 @@ export default function MyLiquidity() {
   const [isLoading, allPairs] = useAddedLiquidityPairs()
   const [detailPair, setDetailPair] = useState<string | undefined>()
 
-  console.clear()
-  console.log(
-    `allPairs`,
-    allPairs.map(pair => pair.liquidityToken.address)
-  )
-
   return (
     <Section>
       <RowBetween>

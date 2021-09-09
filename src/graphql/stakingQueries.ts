@@ -219,3 +219,11 @@ export const poolUserWithPoolDetailQuery = gql`
     }
   }
 `
+
+export const getPoolsByPairAddressQuery = (pairAddress: string) => gql`
+{
+  pools(where: { pair: "${pairAddress}"}) {
+    id
+  }
+}
+`
