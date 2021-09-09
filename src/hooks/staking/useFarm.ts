@@ -20,11 +20,12 @@ const useFarm = (id: string) => {
   const averageBlockTime = useAverageBlockTime()
 
   const { data: farm } = useQuery(
-    ['useFarm_poolsQueryDetail', chainId, id],
+    ['useFarm_poolsQueryDetail', chainId, id, block],
     async () => {
       const data = await stakingClients[FAKE_CHAIN_ID].query({
         query: poolsQueryDetail,
-        variables: { id: id }
+        variables: { id },
+        fetchPolicy: 'network-only'
       })
       return data?.data.pools[0]
     },
@@ -32,13 +33,14 @@ const useFarm = (id: string) => {
   )
 
   const { data: userInfo } = useQuery(
-    ['useFarm_poolUserDetailQuery', chainId, id, account],
+    ['useFarm_poolUserDetailQuery', chainId, id, account, block],
     async () => {
       const data = await stakingClients[FAKE_CHAIN_ID].query({
         query: poolUserDetailQuery,
         variables: {
           id: `${id}-${account?.toLowerCase()}`
-        }
+        },
+        fetchPolicy: 'network-only'
       })
       return data?.data?.users[0]
     },
@@ -46,11 +48,12 @@ const useFarm = (id: string) => {
   )
 
   const { data: pair } = useQuery(
-    ['useFarm_pairSubsetQuery', chainId, farm?.pair],
+    ['useFarm_pairSubsetQuery', chainId, farm?.pair, block],
     async () => {
       const data = await swapClients[FAKE_CHAIN_ID].query({
         query: pairSubsetQuery,
-        variables: { pairAddresses: [farm?.pair] }
+        variables: { pairAddresses: [farm?.pair] },
+        fetchPolicy: 'network-only'
       })
       return data?.data?.pairs[0]
     },

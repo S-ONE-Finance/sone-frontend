@@ -172,8 +172,8 @@ export const poolUserQuery = gql`
 `
 
 export const poolUserDetailQuery = gql`
-  query poolUserQuery($id: String!, $amount_gt: Int! = 0) {
-    users(where: { id: $id, amount_gt: $amount_gt }) {
+  query poolUserQuery($id: String!) {
+    users(where: { id: $id }) {
       id
       address
       pool {
