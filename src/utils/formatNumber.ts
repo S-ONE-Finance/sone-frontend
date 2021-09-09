@@ -46,7 +46,6 @@ export const getBalanceStringCommas = (balance: string, decimals = 18) => {
 
 export const getFixedBalanceStringCommas = (balance: string, decimals = 18) => {
   const val = getBalanceNumber(balance, decimals)
-  console.log('val', getFixedNumberCommas(val))
   return getFixedNumberCommas(val)
 }
 
