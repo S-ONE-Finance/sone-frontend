@@ -12,7 +12,12 @@ export default function FormattedPriceImpact({ priceImpact }: { priceImpact?: Pe
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
   return (
-    <ErrorText fontWeight={700} fontSize={isUpToExtraSmall ? 13 : 16} severity={warningSeverity(priceImpact)}>
+    <ErrorText
+      fontWeight={700}
+      fontSize={isUpToExtraSmall ? 13 : 16}
+      severity={warningSeverity(priceImpact)}
+      onClick={() => alert(priceImpact?.toSignificant(10))}
+    >
       {priceImpact ? (priceImpact.lessThan(ONE_BIPS) ? '<0.01%' : `${priceImpact.toFixed(2)}%`) : '-'}
     </ErrorText>
   )
