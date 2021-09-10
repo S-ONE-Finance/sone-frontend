@@ -24,7 +24,6 @@ import Modal from '../Modal'
 import SoneAmount from '../SoneAmount'
 import MobileMenu from '../MobileMenu'
 import {
-  S_ONE_BLOG_URL,
   S_ONE_DOCS_URL,
   S_ONE_FAQ_URL,
   S_ONE_STAKING_STATISTICS_URL,
@@ -520,14 +519,14 @@ export default function Header() {
                   {t('docs')}
                 </StyledExternalLink>
                 <ResponsiveTopEndSubMenu>
+                  <SubMenuItemExternalLink href={S_ONE_DOCS_URL} target="_blank">
+                    {t('docs')}
+                  </SubMenuItemExternalLink>
                   <SubMenuItemExternalLink href={S_ONE_WHITE_PAPER_URL} target="_blank">
-                    {t('swap_stats')}
+                    {t('White paper')}
                   </SubMenuItemExternalLink>
                   <SubMenuItemExternalLink href={S_ONE_FAQ_URL} target="_blank">
                     {t('faq')}
-                  </SubMenuItemExternalLink>
-                  <SubMenuItemExternalLink href={S_ONE_BLOG_URL} target="_blank">
-                    {t('blog')}
                   </SubMenuItemExternalLink>
                 </ResponsiveTopEndSubMenu>
               </MenuItem>

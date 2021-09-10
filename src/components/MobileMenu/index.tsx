@@ -20,7 +20,7 @@ import Column from '../Column'
 import { RowBetween } from '../Row'
 import { StyledCloseAbsolute } from '../WalletModal'
 import {
-  S_ONE_BLOG_URL,
+  S_ONE_DOCS_URL,
   S_ONE_FAQ_URL,
   S_ONE_STAKING_STATISTICS_URL,
   S_ONE_SWAP_STATISTICS_URL,
@@ -194,9 +194,9 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         <StyledNavLink to="/staking">{t('staking')}</StyledNavLink>
         <StyledExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>{t('staking_stats')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_DOCS_URL}>{t('docs')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('White Paper')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_FAQ_URL}>{t('faq')}</StyledExternalLink>
-        <StyledExternalLink href={S_ONE_BLOG_URL}>{t('blog')}</StyledExternalLink>
       </Column>
       <RecentTransactions isSmall={true} />
     </ColumnWrapper>
