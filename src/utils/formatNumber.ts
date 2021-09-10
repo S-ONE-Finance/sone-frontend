@@ -1,7 +1,7 @@
 import Numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 
-export const getFormattedNumber = (num: number, digits: number): string => {
+export const getFormattedNumber = (num: number | string, digits: number): string => {
   if (num === Number.POSITIVE_INFINITY) return '∞ '
   return Numeral(num)
     .format(`0,0.[${'0'.repeat(digits)}]a`)
@@ -17,7 +17,7 @@ export function getNumberCommas(x: number | string) {
 export function getFixedNumberCommas(_num: string) {
   const num = new BigNumber(_num)
   let res = ''
-  if (num.isGreaterThan(1000000)) res = getFormattedNumber(num.toNumber(), 1)
+  if (num.isGreaterThan(1000000)) res = getFormattedNumber(num.toString(), 1)
   else if (num.isGreaterThan(10000)) res = num.toFixed(0)
   else if (num.isGreaterThan(1000)) res = num.toFixed(1)
   else if (num.isGreaterThan(100)) res = num.toFixed(2)
