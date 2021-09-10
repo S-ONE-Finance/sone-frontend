@@ -11,7 +11,6 @@ import { CONFIG_MASTER_FARMER, SONE_MASTER_FARMER, SONE_PRICE_MINIMUM } from '..
 import { stakingClients, swapClients } from '../../graphql/clients'
 import { useQuery } from 'react-query'
 import useOneSoneInUSD from '../useOneSoneInUSD'
-import { FAKE_CHAIN_ID } from './useFarm'
 
 const useFarms = (): Farm[] => {
   const { chainId } = useActiveWeb3React()
@@ -23,7 +22,7 @@ const useFarms = (): Farm[] => {
   const { data: pools } = useQuery(
     ['useFarms_poolsQuery', chainId],
     async () => {
-      const data = await stakingClients[FAKE_CHAIN_ID].query({
+      const data = await stakingClients[chainId ?? 1].query({
         query: poolsQuery
       })
       return data?.data.pools
@@ -33,7 +32,7 @@ const useFarms = (): Farm[] => {
   const { data: liquidityPositions } = useQuery(
     ['useFarms_liquidityPositionSubsetQuery', chainId, soneMasterFarmerAddress],
     async () => {
-      const data = await swapClients[FAKE_CHAIN_ID].query({
+      const data = await swapClients[chainId ?? 1].query({
         query: liquidityPositionSubsetQuery,
         variables: { user: soneMasterFarmerAddress.toLowerCase() }
       })
@@ -57,7 +56,7 @@ const useFarms = (): Farm[] => {
   const { data: pairs } = useQuery(
     ['useFarms_pairSubsetQuery', chainId, pairAddresses],
     async () => {
-      const data = await swapClients[FAKE_CHAIN_ID].query({
+      const data = await swapClients[chainId ?? 1].query({
         query: pairSubsetQuery,
         variables: { pairAddresses }
       })

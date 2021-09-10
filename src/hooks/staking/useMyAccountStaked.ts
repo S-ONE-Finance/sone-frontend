@@ -9,7 +9,6 @@ import { pairSubsetQuery, poolUserWithPoolDetailQuery } from 'graphql/stakingQue
 import { useActiveWeb3React } from 'hooks'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import useOneSoneInUSD from '../useOneSoneInUSD'
-import { FAKE_CHAIN_ID } from './useFarm'
 import { useManyPendingReward } from './usePendingReward'
 import { useBlockNumber } from '../../state/application/hooks'
 import { useLastTruthy } from '../useLast'
@@ -26,7 +25,7 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
   const { data: usersQuery, isSuccess: isQueryUserSuccess } = useQuery(
     ['useMyAccountStaked_poolUserWithPoolDetailQuery', chainId, account, block],
     async () => {
-      const data = await stakingClients[FAKE_CHAIN_ID].query({
+      const data = await stakingClients[chainId ?? 1].query({
         query: poolUserWithPoolDetailQuery,
         variables: {
           address: account?.toLowerCase()

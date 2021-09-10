@@ -11,9 +11,6 @@ import useOneSoneInUSD from '../useOneSoneInUSD'
 import { CONFIG_MASTER_FARMER } from '../../constants'
 import { useLastTruthy } from '../useLast'
 
-// TODO: Lên môi trường mainnet không fix cứng chainId.
-export const FAKE_CHAIN_ID = 3
-
 const useFarm = (id: string) => {
   const { account, chainId } = useActiveWeb3React()
   const block = useBlockNumber()
@@ -23,7 +20,7 @@ const useFarm = (id: string) => {
   const { data: farmQuery } = useQuery(
     ['useFarm_poolsQueryDetail', chainId, id, block],
     async () => {
-      const data = await stakingClients[FAKE_CHAIN_ID].query({
+      const data = await stakingClients[chainId ?? 1].query({
         query: poolsQueryDetail,
         variables: { id },
         fetchPolicy: 'network-only'
@@ -38,7 +35,7 @@ const useFarm = (id: string) => {
   const { data: userInfoQuery } = useQuery(
     ['useFarm_poolUserDetailQuery', chainId, id, account, block],
     async () => {
-      const data = await stakingClients[FAKE_CHAIN_ID].query({
+      const data = await stakingClients[chainId ?? 1].query({
         query: poolUserDetailQuery,
         variables: {
           id: `${id}-${account?.toLowerCase()}`
@@ -55,7 +52,7 @@ const useFarm = (id: string) => {
   const { data: pairQuery } = useQuery(
     ['useFarm_pairSubsetQuery', chainId, farm?.pair, block],
     async () => {
-      const data = await swapClients[FAKE_CHAIN_ID].query({
+      const data = await swapClients[chainId ?? 1].query({
         query: pairSubsetQuery,
         variables: { pairAddresses: [farm?.pair] },
         fetchPolicy: 'network-only'
