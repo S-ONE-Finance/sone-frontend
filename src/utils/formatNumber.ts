@@ -22,6 +22,7 @@ export function getFixedNumberCommas(_num: string) {
   else if (num.isGreaterThan(100)) res = num.toFixed(2)
   else if (num.isGreaterThan(1)) res = num.toFixed(3)
   else if (num.isZero()) res = num.toFixed()
+  else res = num.toFixed(4)
   return getNumberCommas(res)
 }
 

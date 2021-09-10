@@ -21,7 +21,7 @@ export default function useLast<T>(
 }
 
 function isDefined<T>(x: T | null | undefined): x is T {
-  return x !== null && x !== undefined
+  return !!x
 }
 
 /**
