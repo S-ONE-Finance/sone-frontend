@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Heading, Section, SectionButton, SectionText, PlusIcon, CardLiquidity } from '../components'
+import { CardLiquidity, Heading, PlusIcon, Section, SectionButton, SectionText } from '../components'
 import { RowBetween, RowFitContent } from '../../../components/Row'
 import MyLiquidityItem from './MyLiquidityItem'
 import useAddedLiquidityPairs from '../../../hooks/useAddedLiquidityPairs'
