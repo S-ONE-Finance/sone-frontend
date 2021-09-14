@@ -6,7 +6,7 @@ import i18next from 'i18next'
 
 export const MAX_UINT_256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
 
-export const ROUTER_ADDRESS = '0x5065C6C5BCE00739Fb90bC5ab33e397c14f63335'
+export const ROUTER_ADDRESS = '0xa406C219C16D66B9bE1d159265E95E1A1d97eD99'
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
@@ -42,22 +42,22 @@ export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'UNI', 'Uniswap')
 }
 
-const SONE_ADDRESS = '0x57bb30bdb0d449bf687ed648acf2467f045c8e74'
+const SONE_ADDRESS = '0x4141fA29806e4d0BfD19E4c4E8f6FC18D02168c7'
 export const SONE_PRICE_MINIMUM = 0.00001 // 1 SONE >= 0.00001 USDT
 
 // TODO: Need fill address of sone in all 5 networks.
 export const SONE: { [chainId in ChainId]: Token } = {
-  [ChainId.MAINNET]: new Token(ChainId.MAINNET, SONE_ADDRESS, 18, 'SONE', 'S-ONE Finance'),
-  [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, ZERO_ADDRESS, 18, 'SONE', 'S-ONE Finance'),
-  [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, SONE_ADDRESS, 18, 'SONE', 'S-ONE Finance'),
-  [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, ZERO_ADDRESS, 18, 'SONE', 'S-ONE Finance'),
-  [ChainId.KOVAN]: new Token(ChainId.KOVAN, ZERO_ADDRESS, 18, 'SONE', 'S-ONE Finance')
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, ZERO_ADDRESS, 18, 'SONE', 'SONE Token'),
+  [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, SONE_ADDRESS, 18, 'SONE', 'SONE Token'),
+  [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, ZERO_ADDRESS, 18, 'SONE', 'SONE Token'),
+  [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, ZERO_ADDRESS, 18, 'SONE', 'SONE Token'),
+  [ChainId.KOVAN]: new Token(ChainId.KOVAN, ZERO_ADDRESS, 18, 'SONE', 'SONE Token')
 }
 
 export const SONE_MASTER_FARMER: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '',
-  [ChainId.RINKEBY]: '',
-  [ChainId.ROPSTEN]: '0xfB3bEEE96FA08c2CAb70E6DbE34084A99B47b9aD',
+  [ChainId.RINKEBY]: '0x511FaE7b224F32cB1570d8D747777d4119264859',
+  [ChainId.ROPSTEN]: '',
   [ChainId.GÖRLI]: '',
   [ChainId.KOVAN]: ''
 }
@@ -69,7 +69,11 @@ export const CONFIG_MASTER_FARMER: { [chainId in ChainId]: ConfigMasterFarmer | 
     rewardMultiplier: [32, 32, 32, 32, 16, 8, 4, 2, 1],
     blocksPerWeek: 45134
   },
-  [ChainId.RINKEBY]: null,
+  [ChainId.RINKEBY]: {
+    startBlock: 10897613,
+    rewardMultiplier: [32, 32, 32, 32, 16, 8, 4, 2, 1],
+    blocksPerWeek: 45134
+  },
   [ChainId.ROPSTEN]: {
     startBlock: 10897613,
     rewardMultiplier: [32, 32, 32, 32, 16, 8, 4, 2, 1],
