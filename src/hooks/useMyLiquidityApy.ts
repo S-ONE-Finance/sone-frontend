@@ -75,7 +75,9 @@ export default function useMyLiquidityApy(pairAddress: string): number | undefin
       }
 
       totalSwapAmount = derivedETHTokenSwap * ethPrice.toNumber()
-      const swapFee = 0.002 * totalSwapAmount
+      // 1. 0.2% reward cho LPs
+      // 2. 0.05% chuyển đổi thành SONE token (reward SONE cho LPs thay vì reward token0 trong pool, nhằm tăng giá trị cho SONE)
+      const swapFee = 0.0025 * totalSwapAmount
       const numerator = (userLpToken * swapFee) / totalSupplyLp
       // A USD + B USD
       for (const mint of mints) {
