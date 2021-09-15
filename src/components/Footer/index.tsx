@@ -138,8 +138,6 @@ const Marquee = styled.div<{ pairSize: number; pauseAnimation: boolean }>`
 
 export default function Footer() {
   const [pauseAnimation, setPauseAnimation] = useState(false)
-  const [hoverFooter, setHoverFooter] = useState(false)
-  const [clicked, setClicked] = useState(false)
 
   const data = useOneDayPairPriceChangeData()
 
@@ -149,18 +147,6 @@ export default function Footer() {
       pauseAnimation={pauseAnimation}
       onClick={() => {
         setPauseAnimation(prev => !prev)
-        if (hoverFooter) {
-          setClicked(true)
-        }
-      }}
-      onMouseEnter={() => {
-        !pauseAnimation && setPauseAnimation(true)
-        setHoverFooter(true)
-      }}
-      onMouseLeave={() => {
-        !clicked && pauseAnimation && setPauseAnimation(false)
-        setHoverFooter(false)
-        setClicked(false)
       }}
     >
       <div>
