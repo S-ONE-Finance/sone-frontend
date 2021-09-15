@@ -133,7 +133,7 @@
   "question_helper_expanded_results_from_inactive_token_lists": "question_helper_expanded_results_from_inactive_token_lists",
   "question_helper_expert_mode": "確認モーダルをバイパスし、高スリッページ取引を可能にします。自己責任。",
   "question_helper_liquidity_provider_fee": "これは、トランザクションを続行する場合にこのペアのLPに支払う必要のある料金です。",
-  "question_helper_lp_token_burned": "価格がこのパーセンテージを超えて不利に変化した場合、トランザクションは元に戻ります。",
+  "question_helper_lp_token_burned": "ブロックチェーンでトランザクションが確認されると、ウォレットに選択されたトークンが出力され、LPトークンが書き込まれ、ペアシェアが0に戻ります。",
   "question_helper_manage_lists": "S-ONEウォレットはトークンリストをサポートしています。 IPFS、HTTPS、およびENSを介して独自のカスタムリストを追加できます。トークンリストはオープンな仕様です。詳細については、https://tokenlists.orgをご覧ください。",
   "question_helper_maximum_sold": "question_helper_maximum_sold",
   "question_helper_minimum_received": "これは、ペアの為替レートが変更された場合に受け取る交換トークンの最小量です。",
