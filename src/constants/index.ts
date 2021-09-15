@@ -42,14 +42,13 @@ export const UNI: { [chainId in ChainId]: Token } = {
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'UNI', 'Uniswap')
 }
 
-const SONE_ADDRESS = '0x4141fA29806e4d0BfD19E4c4E8f6FC18D02168c7'
 export const SONE_PRICE_MINIMUM = 0.00001 // 1 SONE >= 0.00001 USDT
 
 // TODO: Need fill address of sone in all 5 networks.
 export const SONE: { [chainId in ChainId]: Token } = {
   [ChainId.MAINNET]: new Token(ChainId.MAINNET, ZERO_ADDRESS, 18, 'SONE', 'SONE Token'),
-  [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, SONE_ADDRESS, 18, 'SONE', 'SONE Token'),
-  [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, ZERO_ADDRESS, 18, 'SONE', 'SONE Token'),
+  [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, '0x4141fA29806e4d0BfD19E4c4E8f6FC18D02168c7', 18, 'SONE', 'SONE Token'),
+  [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, '0x57bb30bdb0D449bf687ed648ACF2467F045c8E74', 18, 'SONE', 'SONE Token'),
   [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, ZERO_ADDRESS, 18, 'SONE', 'SONE Token'),
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, ZERO_ADDRESS, 18, 'SONE', 'SONE Token')
 }
@@ -57,7 +56,7 @@ export const SONE: { [chainId in ChainId]: Token } = {
 export const SONE_MASTER_FARMER: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '',
   [ChainId.RINKEBY]: '0x511FaE7b224F32cB1570d8D747777d4119264859',
-  [ChainId.ROPSTEN]: '',
+  [ChainId.ROPSTEN]: '0xfB3bEEE96FA08c2CAb70E6DbE34084A99B47b9aD',
   [ChainId.GÖRLI]: '',
   [ChainId.KOVAN]: ''
 }
