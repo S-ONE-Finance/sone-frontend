@@ -36,7 +36,7 @@ export default function OpenGuide({ screen }: OpenGuideProps) {
       {!guideStep.isGuide && <SwapStep7 screen={screen} />}
       <StyledOpenGuideWrapper onClick={onClickBtn}>
         <StyledOpenGuide>
-          <QuestionHelper1416 text={t('open_guide_for_beginners')} color={theme.text5Sone} />
+          <QuestionHelper1416 text={t('question_helper_open_guide_for_beginners')} color={theme.text5Sone} />
           {t('open_guide_for_beginners')}
         </StyledOpenGuide>
       </StyledOpenGuideWrapper>

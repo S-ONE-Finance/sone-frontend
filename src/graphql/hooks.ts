@@ -13,6 +13,7 @@ import { Pair, Token } from '@s-one-finance/sdk-core'
 import { PairState, usePairs } from 'data/Reserves'
 import useUnmountedRef from '../hooks/useUnmountedRef'
 import { useQuery } from 'react-query'
+import { useBlockNumber } from '../state/application/hooks'
 
 async function getPairIds(chainId?: number) {
   if (chainId === undefined) return []
@@ -192,9 +193,10 @@ export function useAllPairsThatThisAccountHadLiquidityPosition(): {
   pairs?: [Token, Token][]
 } {
   const { account, chainId } = useActiveWeb3React()
+  const block = useBlockNumber()
 
   const { data: pairs, isSuccess, isError, isLoading } = useQuery<[Token, Token][]>(
-    ['useAllPairsThatThisAccountHadLiquidityPosition', chainId, account],
+    ['useAllPairsThatThisAccountHadLiquidityPosition', chainId, account, block],
     async () => {
       if (!chainId) return []
 

@@ -7,12 +7,14 @@ import { ethPriceQuery, userLiquidityPositionsQuery } from 'graphql/swapQueries'
 import { useActiveWeb3React } from 'hooks'
 import { useLastTruthy } from './useLast'
 import BigNumber from 'bignumber.js'
+import { useBlockNumber } from '../state/application/hooks'
 
 export default function useMyLiquidityApy(pairAddress: string): number | undefined {
   const { account, chainId } = useActiveWeb3React()
+  const block = useBlockNumber()
 
   const { data: userLiquidityPositionsQueryData } = useQuery(
-    ['useMyLiquidityApy_userLiquidityPositionsQueryData', account, chainId],
+    ['useMyLiquidityApy_userLiquidityPositionsQueryData', account, chainId, block],
     async () => {
       if (!account || !chainId) return undefined
       const res = await swapClients[chainId].query({
@@ -26,7 +28,7 @@ export default function useMyLiquidityApy(pairAddress: string): number | undefin
   const userLiquidityPositions = useLastTruthy(userLiquidityPositionsQueryData) ?? []
 
   const { data: ethPriceQueryData } = useQuery(
-    ['useMyLiquidityApy_userLiquidityPositionsQueryData', chainId],
+    ['useMyLiquidityApy_userLiquidityPositionsQueryData', chainId, block],
     async () => {
       if (!chainId) return undefined
       const res = await swapClients[chainId].query({

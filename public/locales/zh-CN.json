@@ -138,7 +138,7 @@
   "question_helper_maximum_sold": "question_helper_maximum_sold",
   "question_helper_minimum_received": "This is the minimum amount of the exchanged token you will receive if the pair's exchange rate is modified.",
   "question_helper_mode": "If you want to add a token to a pair you must have two token types of that pair in your account. Don’t worry if you just have one token type, select “Add with one token” and SONE will do the rest.",
-  "question_helper_open_guide_for_beginner": "Click “Open Guide for Beginners” if you are a new user and SONE will help you perform what you want.",
+  "question_helper_open_guide_for_beginners": "question_helper_open_guide_for_beginners",
   "question_helper_pooled_currency": "question_helper_pooled_currency",
   "question_helper_price": "question_helper_price",
   "question_helper_price_impact": "question_helper_price_impact",

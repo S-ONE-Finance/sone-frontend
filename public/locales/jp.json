@@ -138,7 +138,7 @@
   "question_helper_maximum_sold": "question_helper_maximum_sold",
   "question_helper_minimum_received": "これは、ペアの為替レートが変更された場合に受け取る交換トークンの最小量です。",
   "question_helper_mode": "ペアにトークンを追加する場合は、アカウントにそのペアの2つのトークンタイプが必要です。トークンタイプが1つしかない場合でも心配はいりません。「トークンを1つ追加」を選択すると、残りはSONEが行います。",
-  "question_helper_open_guide_for_beginner": "新規ユーザーの場合は「初心者向けのガイドを開く」をクリックしてください。SONEが目的の実行を支援します。",
+  "question_helper_open_guide_for_beginners": "新規ユーザーの場合は「初心者向けのガイドを開く」をクリックしてください。SONEが目的の実行を支援します。",
   "question_helper_pooled_currency": "question_helper_pooled_currency",
   "question_helper_price": "選択したペアの為替レートがここに表示されます。",
   "question_helper_price_impact": "これは交換後の価格偏差です。",
