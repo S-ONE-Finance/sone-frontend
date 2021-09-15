@@ -117,7 +117,7 @@ export default function PendingView({
               clickable={false}
               color={option.color}
               header={option.name}
-              subheader={option.description}
+              subheader={t(option.descriptionKey)}
               icon={require('../../assets/images/' + option.iconName)}
             />
           )

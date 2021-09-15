@@ -39,10 +39,21 @@ export default async function getBulkPairData(chainId: number | undefined, pairI
     if (chainId === undefined) return []
 
     const [t1Day, t2Day, t1Week, t2Week] = getTimestampsForChanges()
-    const [{ number: b1Day }, { number: b2Day }, { number: b1Week }, { number: b2Week }] =
+    let [{ number: b1Day }, { number: b2Day }, { number: b1Week }, { number: b2Week }] =
       (await getBlocksFromTimestamps(chainId, [t1Day, t2Day, t1Week, t2Week])) || {}
 
-    if (b1Day === undefined || b2Day === undefined || b1Week === undefined || b2Week === undefined) return []
+    // Khắc phục khi subgraph ko sync được block mới.
+    const oldestFoundBlock = b2Week || b1Week || b2Day || b1Day
+    if (oldestFoundBlock === undefined) return []
+    if (b2Week === undefined) {
+      b2Week = b1Week = b2Day = b1Day = oldestFoundBlock
+    } else if (b1Week === undefined) {
+      b1Week = b2Day = b1Day = oldestFoundBlock
+    } else if (b2Day === undefined) {
+      b2Day = b1Day = oldestFoundBlock
+    } else if (b1Day === undefined) {
+      b1Day = oldestFoundBlock
+    }
 
     // Lấy data current.
     const current = await swapClients[chainId].query({

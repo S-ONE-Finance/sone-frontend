@@ -1,8 +1,7 @@
-import { ChainId, JSBI, Percent, Token, WETH, ConfigMasterFarmer } from '@s-one-finance/sdk-core'
+import { ChainId, ConfigMasterFarmer, JSBI, Percent, Token, WETH } from '@s-one-finance/sdk-core'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { fortmatic, injected, portis, walletconnect, walletlink } from '../connectors'
-import i18next from 'i18next'
+import { injected, walletconnect } from '../connectors'
 
 export const MAX_UINT_256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
 
@@ -144,7 +143,7 @@ export interface WalletInfo {
   connector?: AbstractConnector
   name: string
   iconName: string
-  description: string
+  descriptionKey: string
   href: string | null
   color: string
   primary?: true
@@ -157,7 +156,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     connector: injected,
     name: 'Injected',
     iconName: 'arrow-right.svg',
-    description: 'Injected web3 provider.',
+    descriptionKey: 'Injected web3 provider.',
     href: null,
     color: '#010101',
     primary: true
@@ -165,7 +164,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
   // SONE_WALLET: {
   //   name: 'S-One Wallet',
   //   iconName: 'logo_token_sone.svg',
-  //   description: 'Open in S-One Wallet app.',
+  //   descriptionKey: 'Open in S-One Wallet app.',
   //   href: 'https://www.lipsum.com/',
   //   color: '#F05359',
   //   mobile: true
@@ -174,7 +173,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     connector: injected,
     name: 'MetaMask',
     iconName: 'metamask.png',
-    description: i18next.t('metamask_description'),
+    descriptionKey: 'metamask_description',
     href: null,
     color: '#E8831D'
   },
@@ -182,7 +181,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     connector: walletconnect,
     name: 'WalletConnect',
     iconName: 'walletConnectIcon.svg',
-    description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
+    descriptionKey: 'Connect to Trust Wallet, Rainbow Wallet and more...',
     href: null,
     color: '#4196FC',
     mobile: true
@@ -190,7 +189,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
   // TRUST_WALLET: {
   //   name: 'Trust Wallet',
   //   iconName: 'trustWallet.png',
-  //   description: 'Open in Trust Wallet app.',
+  //   descriptionKey: 'Open in Trust Wallet app.',
   //   href: 'https://www.lipsum.com/',
   //   color: '#2F73BD',
   //   mobile: true
@@ -201,14 +200,14 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     connector: walletlink,
     name: 'Coinbase Wallet',
     iconName: 'coinbaseWalletIcon.svg',
-    description: 'Use Coinbase Wallet app on mobile device',
+    descriptionKey: 'Use Coinbase Wallet app on mobile device',
     href: null,
     color: '#315CF5'
   },
   COINBASE_LINK: {
     name: 'Open in Coinbase Wallet',
     iconName: 'coinbaseWalletIcon.svg',
-    description: 'Open in Coinbase Wallet app.',
+    descriptionKey: 'Open in Coinbase Wallet app.',
     href: 'https://go.cb-w.com/mtUDhEZPy1',
     color: '#315CF5',
     mobile: true,
@@ -218,7 +217,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     connector: fortmatic,
     name: 'Fortmatic',
     iconName: 'fortmaticIcon.png',
-    description: 'Login using Fortmatic hosted wallet',
+    descriptionKey: 'Login using Fortmatic hosted wallet',
     href: null,
     color: '#6748FF',
     mobile: true
@@ -227,7 +226,7 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     connector: portis,
     name: 'Portis',
     iconName: 'portisIcon.png',
-    description: 'Login using Portis hosted wallet',
+    descriptionKey: 'Login using Portis hosted wallet',
     href: null,
     color: '#4A6C9B',
     mobile: true

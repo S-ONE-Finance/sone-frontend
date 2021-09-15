@@ -69,10 +69,15 @@ export default async function getBlocksFromTimestamps(
   const blocks = []
   if (fetchedData) {
     for (const t in fetchedData) {
-      if (fetchedData.hasOwnProperty(t) && fetchedData[t].length > 0) {
+      if (fetchedData[t].length > 0) {
         blocks.push({
           timestamp: t.split('t')[1],
           number: fetchedData[t][0]['number']
+        })
+      } else {
+        blocks.push({
+          timestamp: t.split('t')[1],
+          number: undefined
         })
       }
     }
