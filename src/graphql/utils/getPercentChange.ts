@@ -25,7 +25,10 @@ export const get2PeriodPercentChange = (valueNow: number, valueBefore1: number, 
  * @param {*} valueBefore
  */
 export const getPercentChange = (valueNow: number, valueBefore: number) => {
-  if (valueNow === 0 && valueBefore === 0) {
+  if (Object.is(valueNow, NaN) || Object.is(valueBefore, NaN)) {
+    return 0
+  }
+  if (valueBefore === 0) {
     return 0
   }
   return ((valueNow - valueBefore) / valueBefore) * 100
