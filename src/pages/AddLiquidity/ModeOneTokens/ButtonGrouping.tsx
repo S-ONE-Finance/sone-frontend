@@ -47,18 +47,18 @@ export default function ButtonGrouping({
 
   const addIsUnsupported = useIsTransactionUnsupported(selectedPair?.token0, selectedPair?.token1)
 
-  const { account } = useActiveWeb3React()
+  const { account, chainId = 1 } = useActiveWeb3React()
 
   const toggleWalletModal = useWalletModalToggle() // toggle wallet when disconnected
 
   // check whether the user has approved the router on the token
   const [approvalSelectedToken, approvalSelectedTokenCallback] = useApproveCallback(
     selectedTokenParsedAmount,
-    ROUTER_ADDRESS
+    ROUTER_ADDRESS[chainId]
   )
   const [approvalTheOtherToken, approvalTheOtherTokenCallback] = useApproveCallback(
     theOtherTokenParsedAmount,
-    ROUTER_ADDRESS
+    ROUTER_ADDRESS[chainId]
   )
 
   const expertMode = useIsExpertMode()

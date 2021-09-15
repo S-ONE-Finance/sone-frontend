@@ -4,10 +4,15 @@ import { AbstractConnector } from '@web3-react/abstract-connector'
 import { injected, walletconnect } from '../connectors'
 
 export const MAX_UINT_256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-
-export const ROUTER_ADDRESS = '0xa406C219C16D66B9bE1d159265E95E1A1d97eD99'
-
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+
+export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: ZERO_ADDRESS,
+  [ChainId.RINKEBY]: '0xa406C219C16D66B9bE1d159265E95E1A1d97eD99',
+  [ChainId.ROPSTEN]: '0x5065C6C5BCE00739Fb90bC5ab33e397c14f63335',
+  [ChainId.GÖRLI]: ZERO_ADDRESS,
+  [ChainId.KOVAN]: ZERO_ADDRESS
+}
 
 export { PRELOADED_PROPOSALS } from './proposals'
 
