@@ -54,6 +54,7 @@ interface PanelPairInputProps {
   customBalanceText: string
   address0?: string
   address1?: string
+  decimal?: number
 }
 
 export default function PanelPairInput({
@@ -64,7 +65,8 @@ export default function PanelPairInput({
   label,
   customBalanceText,
   address0,
-  address1
+  address1,
+  decimal
 }: PanelPairInputProps) {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
@@ -102,6 +104,7 @@ export default function PanelPairInput({
             onUserInput={val => {
               onUserInput(val)
             }}
+            decimal={decimal}
           />
           {(account || Number(guideStep.step) > 1) && <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>}
         </PanelPairInputRow>

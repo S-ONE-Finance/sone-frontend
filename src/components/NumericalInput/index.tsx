@@ -42,12 +42,13 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   `};
 `
 
-const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
+const inputRegex = (decimal?: number) => RegExp(`^\\d*(?:\\\\[.])?\\d{0,${decimal ?? 9999}}$`) // match escaped "." characters via in a non-capturing group
 
 export const Input = React.memo(function InnerInput({
   value,
   onUserInput,
   placeholder,
+  decimal,
   ...rest
 }: {
   value: string | number
@@ -55,9 +56,10 @@ export const Input = React.memo(function InnerInput({
   error?: boolean
   fontSize?: string
   align?: 'right' | 'left'
+  decimal?: number
 } & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'as'>) {
   const enforcer = (nextUserInput: string) => {
-    if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
+    if (nextUserInput === '' || inputRegex(decimal).test(escapeRegExp(nextUserInput))) {
       onUserInput(nextUserInput)
     }
   }

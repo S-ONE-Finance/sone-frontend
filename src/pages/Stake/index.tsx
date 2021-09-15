@@ -337,6 +337,9 @@ export default function Staking() {
                   onMax={onMax}
                   label={t('input')}
                   customBalanceText={t('lp_balance') + ':'}
+                  address0={token0 && token0.id}
+                  address1={token1 && token1.id}
+                  decimal={18}
                 />
               </StakeStep2>
               {error === t('connect_wallet') ? (

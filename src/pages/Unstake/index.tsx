@@ -302,6 +302,7 @@ export default function Unstake() {
               customBalanceText={t('staked') + ':'}
               address0={token0 && token0.id}
               address1={token1 && token1.id}
+              decimal={18}
             />
             {error ? (
               <ButtonPrimary disabled={true}>{error}</ButtonPrimary>
