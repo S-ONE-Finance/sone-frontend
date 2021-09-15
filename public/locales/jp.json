@@ -148,7 +148,7 @@
   "question_helper_route": "ルートエンティティは、入力トークンから出力トークンへの完全に指定されたパスを持つ1つ以上の順序付けられたUniswapペアを表します。",
   "question_helper_select_a_pair": "名前または記号を検索するか、アドレスを下に貼り付けて、ペアを見つけます。",
   "question_helper_select_a_token": "名前または記号を検索するか、以下にアドレスを貼り付けて、トークンを見つけます。",
-  "question_helper_share_of_pair": "question_helper_share_of_pair",
+  "question_helper_share_of_pair": "選択したペアのトークンの数がここに表示され、入力が変更されると数が自動的に変更されます。",
   "question_helper_slippage_tolerance": "価格がこのパーセンテージを超えて不利に変化した場合、トランザクションは元に戻ります。",
   "question_helper_total_liquidity": "これは流動性がドルに変換されます。",
   "question_helper_total_lp_token": "question_helper_total_lp_token",
