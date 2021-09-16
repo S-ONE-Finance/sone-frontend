@@ -1,12 +1,11 @@
 import { Trade, TradeType } from '@s-one-finance/sdk-core'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { AlertTriangle, ArrowDown } from 'react-feather'
 import { Text } from 'rebass'
 import { TYPE } from '../../theme'
 import { ButtonPrimary } from '../Button'
 import { isAddress, shortenAddress } from '../../utils'
-import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import { AutoColumn } from '../Column'
 import CurrencyLogo from '../CurrencyLogo'
 import { RowBetween, RowFixed } from '../Row'
@@ -30,8 +29,6 @@ export default function SwapModalHeader({
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile20Desktop28 = isUpToExtraSmall ? 20 : 28
-  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
-  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
   const theme = useTheme()
 
@@ -63,13 +60,7 @@ export default function SwapModalHeader({
           <TruncatedText
             fontSize={mobile20Desktop28}
             fontWeight={600}
-            color={
-              priceImpactSeverity > 2
-                ? theme.red1
-                : showAcceptChanges && trade.tradeType === TradeType.EXACT_INPUT
-                ? theme.primary1
-                : ''
-            }
+            color={showAcceptChanges && trade.tradeType === TradeType.EXACT_INPUT ? theme.primary1 : ''}
           >
             {trade.outputAmount.toSignificant(6)}
           </TruncatedText>
