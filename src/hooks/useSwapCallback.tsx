@@ -224,8 +224,8 @@ export function useSwapCallback(
           .then((response: any) => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
-            const inputAmount = trade.inputAmount.toSignificant(3)
-            const outputAmount = trade.outputAmount.toSignificant(3)
+            const inputAmount = trade.inputAmount.toSignificant(6)
+            const outputAmount = trade.outputAmount.toSignificant(6)
 
             addTransaction(response, {
               summary: {
