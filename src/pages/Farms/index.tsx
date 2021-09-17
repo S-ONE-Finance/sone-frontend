@@ -27,7 +27,7 @@ export default function Farms() {
   const [sortedFilteredFarms, setSortedFilteredFarms] = useState<Farm[] | undefined>([])
   const [totalLockValue, setTotalLockValue] = useState<BigNumber>(new BigNumber(0))
   const [circulatingSupplyValue, setCirculatingSupplyValue] = useState<BigNumber>(new BigNumber(0))
-  const farms: Farm[] = useFarms()
+  const [isLoading, farms] = useFarms()
   const myStaked: UserInfoSone[] = useMyStaked()
   const myLpToken: LiquidityPosition[] = useMyLpToken()
 
@@ -70,7 +70,7 @@ export default function Farms() {
       },
       lp_name: {
         condition: 'name',
-        by: 'desc'
+        by: 'asc'
       }
     }),
     []
@@ -165,7 +165,7 @@ export default function Farms() {
         </StyledFilter>
       </StyledFilterWrap>
       <Box>
-        <FarmCards farms={sortedFilteredFarms} />
+        <FarmCards isLoading={isLoading} farms={sortedFilteredFarms} />
       </Box>
     </StakingWrapper>
   )

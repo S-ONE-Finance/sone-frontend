@@ -1,5 +1,4 @@
 import React from 'react'
-import { isEmpty } from 'lodash'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -8,10 +7,10 @@ import IconAPY from '../../assets/images/icon_apy.svg'
 import IconLP from '../../assets/images/icon_lp.svg'
 import Loader from '../../components/Loader'
 
-const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms = [] }) => {
+const FarmCards: React.FC<{ farms: Farm[] | undefined; isLoading: boolean }> = ({ farms = [], isLoading }) => {
   return (
     <>
-      {isEmpty(farms) ? (
+      {isLoading ? (
         <StyledLoadingWrapper>
           <Loader size="30px" />
         </StyledLoadingWrapper>

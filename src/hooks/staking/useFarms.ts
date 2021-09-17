@@ -12,14 +12,14 @@ import { stakingClients, swapClients } from '../../graphql/clients'
 import { useQuery } from 'react-query'
 import useOneSoneInUSD from '../useOneSoneInUSD'
 
-const useFarms = (): Farm[] => {
+const useFarms = (): [boolean, Farm[]] => {
   const { chainId } = useActiveWeb3React()
   const sonePrice = useOneSoneInUSD()
   const block = useBlockNumber()
   const soneMasterFarmerAddress: string = useMemo(() => SONE_MASTER_FARMER[chainId as ChainId], [chainId])
   const averageBlockTime = useAverageBlockTime()
 
-  const { data: pools } = useQuery(
+  const { data: pools, isLoading: isPoolsLoading } = useQuery(
     ['useFarms_poolsQuery', chainId],
     async () => {
       const data = await stakingClients[chainId ?? 1].query({
@@ -29,7 +29,8 @@ const useFarms = (): Farm[] => {
     },
     { enabled: Boolean(chainId) }
   )
-  const { data: liquidityPositions } = useQuery(
+
+  const { data: liquidityPositions, isLoading: isLiquidityPositionsLoading } = useQuery(
     ['useFarms_liquidityPositionSubsetQuery', chainId, soneMasterFarmerAddress],
     async () => {
       const data = await swapClients[chainId ?? 1].query({
@@ -53,7 +54,7 @@ const useFarms = (): Farm[] => {
     [pools]
   )
 
-  const { data: pairs } = useQuery(
+  const { data: pairs, isLoading: isPairsLoading } = useQuery(
     ['useFarms_pairSubsetQuery', chainId, pairAddresses],
     async () => {
       const data = await swapClients[chainId ?? 1].query({
@@ -66,6 +67,8 @@ const useFarms = (): Farm[] => {
   )
 
   return useMemo(() => {
+    const isLoading = isPoolsLoading || isLiquidityPositionsLoading || isPairsLoading
+
     const farms: Farm[] = (pools ?? [])
       .map((pool: any) => {
         const pair = (pairs ?? []).find((pair: any) => pair.id === pool.pair)
@@ -126,8 +129,19 @@ const useFarms = (): Farm[] => {
       })
     const sorted = _.orderBy(farms, ['pid'], ['desc'])
     const unique = _.uniq(sorted)
-    return unique
-  }, [averageBlockTime, block, chainId, liquidityPositions, pairs, pools, sonePrice])
+    return [isLoading, unique]
+  }, [
+    averageBlockTime,
+    block,
+    chainId,
+    liquidityPositions,
+    pairs,
+    pools,
+    sonePrice,
+    isPairsLoading,
+    isPoolsLoading,
+    isLiquidityPositionsLoading
+  ])
 }
 
 export default useFarms
