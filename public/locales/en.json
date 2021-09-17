@@ -272,5 +272,7 @@
   "you_will_get_x123_sone_during_this_period": "You will get x123 SONE during this period",
   "your_available_balance": "Your Available Balance",
   "your_pool_share": "Your pool share",
-  "your_referral_id": "Your Referral ID"
+  "your_referral_id": "Your Referral ID",
+  "swapping_123_eth_for_456_sone": "Swapping {{inputAmount}} {{inputSymbol}} for {{outputAmount}} {{outputSymbol}}",
+  "view_eth_sone_analytics": "View {{currency0Symbol}}-{{currency1Symbol}} analytics"
 }

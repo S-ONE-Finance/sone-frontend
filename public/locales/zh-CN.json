@@ -212,7 +212,7 @@
   "stats": "数据",
   "summary_add_one_token": "Add <0>{{userInputAmount}} </0><1>{{userInputSymbol}}</1>",
   "summary_add_two_tokens": "Add <0>{{currencyAAmount}} </0><1>{{currencyASymbol}}</1> and <0>{{currencyBAmount}} </0><1>{{currencyBSymbol}}</1>",
-  "summary_swap": "Swap <0>{{inputAmount}} </0><1>{{inputSymbol}}</1> for <2>{{outputAmount}} </2><1>{{outputSymbol}}</1>",
+  "summary_swap": "用<0>{{inputAmount}} </0><1>{{inputSymbol}}</1>换取<2>{{outputAmount}} </2><1>{{outputSymbol}}</1>",
   "swap": "币币交易",
   "swap_anyway": "仍然交易",
   "swap_description": "",
@@ -272,5 +272,7 @@
   "you_will_get_x123_sone_during_this_period": "质押期间，您将获得123个SONE作为奖励",
   "your_available_balance": "您的可用余额",
   "your_pool_share": "您的池份额",
-  "your_referral_id": "您的推荐人ID"
+  "your_referral_id": "您的推荐人ID",
+  "swapping_123_eth_for_456_sone": "用{{inputAmount}} {{inputSymbol}}交换{{outputAmount}} {{outputSymbol}}",
+  "view_eth_sone_analytics": "查看{{currency0Symbol}}-{{currency1Symbol}}分析报告"
 }

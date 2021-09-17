@@ -212,7 +212,7 @@
   "stats": "データ",
   "summary_add_one_token": "Add <0>{{userInputAmount}} </0><1>{{userInputSymbol}}</1>",
   "summary_add_two_tokens": "Add <0>{{currencyAAmount}} </0><1>{{currencyASymbol}}</1> and <0>{{currencyBAmount}} </0><1>{{currencyBSymbol}}</1>",
-  "summary_swap": "Swap <0>{{inputAmount}} </0><1>{{inputSymbol}}</1> for <2>{{outputAmount}} </2><1>{{outputSymbol}}</1>",
+  "summary_swap": "<0>{{inputAmount}}</0><1>{{inputSymbol}}</1>を<2>{{outputAmount}}</2><1>{{outputSymbol}}</1>に交換",
   "swap": "取引",
   "swap_anyway": "交換",
   "swap_description": "",
@@ -272,5 +272,7 @@
   "you_will_get_x123_sone_during_this_period": "このLPトークンから得られる報酬は123倍です。",
   "your_available_balance": "利用可能な資産",
   "your_pool_share": "シェア率",
-  "your_referral_id": "紹介者ID"
+  "your_referral_id": "紹介者ID",
+  "swapping_123_eth_for_456_sone": "{{inputAmount}}{{inputSymbol}}を{{outputAmount}}{{outputSymbol}}に交換中",
+  "view_eth_sone_analytics": "{{currency0Symbol}}-{{currency1Symbol}}データを見る"
 }

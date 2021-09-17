@@ -5,6 +5,7 @@ import { Token } from '@s-one-finance/sdk-core'
 import React from 'react'
 import { S_ONE_STATISTICS_URL } from '../../constants/urls'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
+import { useTranslation } from 'react-i18next'
 
 const InfoLink = styled(ExternalLink)`
   width: fit-content;
@@ -50,11 +51,15 @@ export default function ViewPairAnalytics({
   tokenA?: Token
   tokenB?: Token
 }) {
+  const { t } = useTranslation()
   if (!pairAddress || !tokenA || !tokenB) return null
 
   return (
     <InfoLink href={S_ONE_STATISTICS_URL + '/#/swap/pair/' + pairAddress} target="_blank">
-      View {unwrappedToken(tokenA).symbol}-{unwrappedToken(tokenB).symbol} analytics
+      {t('view_eth_sone_analytics', {
+        currency0Symbol: unwrappedToken(tokenA).symbol,
+        currency1Symbol: unwrappedToken(tokenB).symbol
+      })}
     </InfoLink>
   )
 }
