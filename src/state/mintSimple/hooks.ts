@@ -158,6 +158,7 @@ export function useDerivedMintSimpleInfo(
   }
 
   return {
+    theOtherCurrency: theOtherTokenParsedAmount?.currency,
     maxAmount,
     selectedTokenUserInputAmount,
     selectedTokenParsedAmount,
