@@ -20,15 +20,10 @@ export default function useCanRewardSone(currencyA?: Currency, currencyB?: Curre
 
   if (currencyA === undefined || currencyB === undefined) return undefined
 
-  console.clear()
   const isExistAETH = AETHPairState === PairState.EXISTS && AETHPair !== null
-  console.log(`isExistAETH`, isExistAETH)
   const isExistBETH = BETHPairState === PairState.EXISTS && BETHPair !== null
-  console.log(`isExistBETH`, isExistBETH)
   const isExistASONE = ASONEPairState === PairState.EXISTS && ASONEPair !== null
-  console.log(`isExistASONE`, isExistASONE)
   const isExistBSONE = BSONEPairState === PairState.EXISTS && BSONEPair !== null
-  console.log(`isExistBSONE`, isExistBSONE)
 
   if (currencyA === ETHER) return isExistBETH
   if (currencyB === ETHER) return isExistAETH
