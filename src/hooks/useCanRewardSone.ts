@@ -1,4 +1,4 @@
-import { ChainId, Currency, WETH } from '@s-one-finance/sdk-core'
+import { ChainId, Currency, ETHER, WETH, Token } from '@s-one-finance/sdk-core'
 import { PairState, usePair } from '../data/Reserves'
 import { useActiveWeb3React } from './index'
 import { SONE } from '../constants'
@@ -24,6 +24,11 @@ export default function useCanRewardSone(currencyA?: Currency, currencyB?: Curre
   const isExistBETH = BETHPairState === PairState.EXISTS && BETHPair !== null
   const isExistASONE = ASONEPairState === PairState.EXISTS && ASONEPair !== null
   const isExistBSONE = BSONEPairState === PairState.EXISTS && BSONEPair !== null
+
+  if (currencyA === ETHER) return isExistBETH
+  if (currencyB === ETHER) return isExistAETH
+  if ((currencyA as Token).equals(SONE[chainId])) return isExistBSONE
+  if ((currencyB as Token).equals(SONE[chainId])) return isExistASONE
 
   return (isExistAETH || isExistASONE) && (isExistBETH || isExistBSONE)
 }
