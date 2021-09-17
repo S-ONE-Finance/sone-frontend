@@ -81,6 +81,7 @@ const StyledCards = styled.div`
   grid-template-columns: repeat(3, minmax(339px, 396px));
   column-gap: 50px;
   row-gap: 50px;
+  min-height: 200px;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     column-gap: 50px;
