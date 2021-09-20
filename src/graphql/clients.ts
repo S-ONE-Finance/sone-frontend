@@ -12,7 +12,7 @@ export const swapClients: { [chainId: number]: ApolloClient<NormalizedCacheObjec
   }),
   [ChainId.RINKEBY]: new ApolloClient({
     link: new HttpLink({
-      uri: 'https://api.thegraph.com/subgraphs/name/s-one-system/sone-swap-rinkeby'
+      uri: 'https://graph-node.s-one.finance/subgraphs/name/s-one-finance/soneswap'
     }),
     cache: new InMemoryCache()
   }),
@@ -33,7 +33,7 @@ export const stakingClients: { [chainId: number]: ApolloClient<NormalizedCacheOb
   }),
   [ChainId.RINKEBY]: new ApolloClient({
     link: new HttpLink({
-      uri: 'https://api.thegraph.com/subgraphs/name/thanhnv25/farmer-rinkeby1'
+      uri: 'https://graph-node.s-one.finance/subgraphs/name/s-one-finance/master-farmer'
     }),
     cache: new InMemoryCache()
   }),
