@@ -403,6 +403,7 @@ export default function WithdrawLiquidity({
             {pair && (
               <>
                 <PanelWithdrawLiquidityInput
+                  label={t('input')}
                   value={formattedAmounts[Field.LIQUIDITY]}
                   onUserInput={onUserInput}
                   lpToken={pair?.liquidityToken}
@@ -415,7 +416,7 @@ export default function WithdrawLiquidity({
                   </IconWrapper>
                 </Row>
                 <PanelCurrencyInput
-                  label="Output"
+                  label={t('output')}
                   value={formattedAmounts[Field.CURRENCY_A]}
                   onUserInput={onCurrencyAInput}
                   showMaxButton={false}
@@ -432,7 +433,7 @@ export default function WithdrawLiquidity({
                   </IconWrapper>
                 </Row>
                 <PanelCurrencyInput
-                  label="Output"
+                  label={t('output')}
                   value={formattedAmounts[Field.CURRENCY_B]}
                   onUserInput={onCurrencyBInput}
                   showMaxButton={false}

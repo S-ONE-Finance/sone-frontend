@@ -274,5 +274,7 @@
   "your_pool_share": "Your pool share",
   "your_referral_id": "Your Referral ID",
   "swapping_123_eth_for_456_sone": "Swapping {{inputAmount}} {{inputSymbol}} for {{outputAmount}} {{outputSymbol}}",
-  "view_eth_sone_analytics": "View {{currency0Symbol}}-{{currency1Symbol}} analytics"
+  "view_eth_sone_analytics": "View {{currency0Symbol}}-{{currency1Symbol}} analytics",
+  "lp_token": "LP Token",
+  "output": "Output"
 }

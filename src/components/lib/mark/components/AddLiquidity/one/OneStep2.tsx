@@ -28,7 +28,7 @@ const OneStep2 = () => {
               <StyledHandIcon>
                 <img src={handIcon} alt="hand" />
               </StyledHandIcon>
-              <StepIntro>{t('Select a pair you want')}</StepIntro>
+              <StepIntro>{t('select_a_pair_you_want')}</StepIntro>
             </StyledOneStep2>
           )}
         </TextWrapper>

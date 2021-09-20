@@ -269,7 +269,7 @@ export default function Unstake() {
               main={false}
             />
             <AutoColumn justify="center">
-              <Heading>{t('LP TOKEN')}</Heading>
+              <Heading>{t('lp_token').toUpperCase()}</Heading>
               <SubHeading>{symbol} LP</SubHeading>
             </AutoColumn>
           </RowFixed>
@@ -284,7 +284,7 @@ export default function Unstake() {
               sizeMobile={28}
               main={false}
             />
-            <Heading>{t('LP TOKEN')}</Heading>
+            <Heading>{t('lp_token').toUpperCase()}</Heading>
           </RowFixed>
           <SubHeading>{symbol} LP</SubHeading>
         </HeadingSection>

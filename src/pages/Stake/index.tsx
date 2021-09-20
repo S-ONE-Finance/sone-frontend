@@ -304,7 +304,7 @@ export default function Staking() {
               main={false}
             />
             <AutoColumn justify="center">
-              <Heading>{t('LP TOKEN')}</Heading>
+              <Heading>{t('lp_token').toUpperCase()}</Heading>
               <SubHeading>{symbol ? `${symbol} LP` : '--'}</SubHeading>
             </AutoColumn>
           </RowFixed>
@@ -319,7 +319,7 @@ export default function Staking() {
               sizeMobile={28}
               main={false}
             />
-            <Heading>{t('LP TOKEN')}</Heading>
+            <Heading>{t('lp_token').toUpperCase()}</Heading>
           </RowFixed>
           <SubHeading>{symbol ? `${symbol} LP` : '--'}</SubHeading>
         </HeadingSection>

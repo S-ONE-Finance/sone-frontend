@@ -21,7 +21,7 @@ const AddLiquidityStep2 = ({ children }: ChildrenProp) => {
               <StyledHandIcon>
                 <img src={handIcon} alt="hand" />
               </StyledHandIcon>
-              <StepIntro>{t('Add One Token mode is recommended')}</StepIntro>
+              <StepIntro>{t('add_one_token_mode_is_recommended')}</StepIntro>
             </Step2OneToken>
           ) : (
             <>

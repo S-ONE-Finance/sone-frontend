@@ -231,7 +231,7 @@
   "top_tokens": "トークンランキング",
   "total_fees_earned": "獲得済み合計手数料",
   "total_fees_paid": "合計支払い手数料",
-  "total_liquidity": "合計運用額",
+  "total_liquidity": "合計預入額",
   "total_lp_token": "合計LPトークン数",
   "total_staked_value": "合計運用額",
   "total_supply": "総供給数",
@@ -274,5 +274,7 @@
   "your_pool_share": "シェア率",
   "your_referral_id": "紹介者ID",
   "swapping_123_eth_for_456_sone": "{{inputAmount}}{{inputSymbol}}を{{outputAmount}}{{outputSymbol}}に交換中",
-  "view_eth_sone_analytics": "{{currency0Symbol}}-{{currency1Symbol}}データを見る"
+  "view_eth_sone_analytics": "{{currency0Symbol}}-{{currency1Symbol}}データを見る",
+  "lp_token": "LPトークン",
+  "output": "トークン"
 }
