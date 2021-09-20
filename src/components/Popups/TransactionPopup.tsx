@@ -47,7 +47,7 @@ export default function TransactionPopup({
           )}
         </TYPE.body>
         {chainId && (
-          <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>View on Etherscan</ExternalLink>
+          <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')}>{t('view_on_etherscan')}</ExternalLink>
         )}
         {success &&
           typeof summary !== 'string' &&
