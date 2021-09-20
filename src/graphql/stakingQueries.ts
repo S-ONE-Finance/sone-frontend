@@ -22,7 +22,6 @@ export const poolsQuery = gql`
       balance
       userCount
       soneHarvested
-      soneHarvestedUSD
     }
   }
 `
@@ -158,7 +157,6 @@ const poolUserFragment = gql`
     entryUSD
     exitUSD
     soneHarvested
-    soneHarvestedUSD
   }
 `
 
@@ -184,7 +182,6 @@ export const poolUserDetailQuery = gql`
       entryUSD
       exitUSD
       soneHarvested
-      soneHarvestedUSD
     }
   }
 `
@@ -215,7 +212,6 @@ export const poolUserWithPoolDetailQuery = gql`
       entryUSD
       exitUSD
       soneHarvested
-      soneHarvestedUSD
     }
   }
 `
