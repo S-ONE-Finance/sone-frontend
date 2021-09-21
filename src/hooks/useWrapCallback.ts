@@ -23,7 +23,7 @@ export default function useWrapCallback(
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
   typedValue: string | undefined
-): { wrapType: WrapType; execute?: undefined | (() => Promise<void>); inputError?: string } {
+): { wrapType: WrapType; execute?: undefined | (() => Promise<boolean>); inputError?: string } {
   const { chainId, account } = useActiveWeb3React()
   const wethContract = useWETHContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
@@ -45,8 +45,10 @@ export default function useWrapCallback(
                 try {
                   const txReceipt = await wethContract.deposit({ value: `0x${inputAmount.raw.toString(16)}` })
                   addTransaction(txReceipt, { summary: `Wrap ${inputAmount.toSignificant(6)} ETH to WETH` })
+                  return true
                 } catch (error) {
                   console.error('Could not deposit', error)
+                  return false
                 }
               }
             : undefined,
@@ -61,8 +63,10 @@ export default function useWrapCallback(
                 try {
                   const txReceipt = await wethContract.withdraw(`0x${inputAmount.raw.toString(16)}`)
                   addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WETH to ETH` })
+                  return true
                 } catch (error) {
                   console.error('Could not withdraw', error)
+                  return false
                 }
               }
             : undefined,

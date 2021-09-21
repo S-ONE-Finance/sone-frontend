@@ -139,7 +139,7 @@ export default function Swap({ history }: RouteComponentProps) {
     inputError: swapInputError
   } = useDerivedSwapInfo()
 
-  const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
+  const { wrapType, execute: _onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
     currencies[Field.OUTPUT],
     typedValue
@@ -180,12 +180,20 @@ export default function Swap({ history }: RouteComponentProps) {
     },
     [onUserInput]
   )
+
   const handleTypeOutput = useCallback(
     (value: string) => {
       onUserInput(Field.OUTPUT, value)
     },
     [onUserInput]
   )
+
+  const onWrap = useCallback(async () => {
+    if (_onWrap) {
+      const done = await _onWrap().then()
+      if (done) handleTypeInput('')
+    }
+  }, [_onWrap, handleTypeInput])
 
   // reset if they close warning without tokens in params
   const handleDismissTokenWarning = useCallback(() => {
