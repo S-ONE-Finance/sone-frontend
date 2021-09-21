@@ -28,7 +28,7 @@ export const getPercentChange = (valueNow: number, valueBefore: number) => {
   if (Object.is(valueNow, NaN) || Object.is(valueBefore, NaN)) {
     return 0
   }
-  if (valueBefore === 0) {
+  if (!valueBefore) {
     return 0
   }
   return ((valueNow - valueBefore) / valueBefore) * 100

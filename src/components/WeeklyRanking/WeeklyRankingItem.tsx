@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import Row from '../Row'
 import { ExternalLink } from '../../theme'
 import Tooltip from '../Tooltip'
+import { S_ONE_STATISTICS_URL } from '../../constants/urls'
 
 const TextChange = styled.div`
   font-size: 18px;
@@ -61,7 +62,7 @@ export default function WeeklyRankingItem({
     <Tooltip text={isPairLoaded ? `${symbol0}-${symbol1}` : `--`} show={Boolean(isPairLoaded && show)} placement="top">
       {/* TODO: Sau này đổi thành link của sone info. */}
       <StyledExternalLink
-        href={`https://v2.info.uniswap.org/pair/${id}`}
+        href={`${S_ONE_STATISTICS_URL}/#/swap/pair/${id}`}
         style={{ pointerEvents: isPairLoaded ? 'auto' : 'none' }}
         onMouseEnter={open}
         onMouseLeave={close}

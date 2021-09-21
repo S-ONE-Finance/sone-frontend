@@ -114,17 +114,12 @@ export default async function getBulkPairData(chainId: number | undefined, pairI
           const twoWeekHistory = await getHistoryFromData(twoWeekData, b2Week)
 
           // Nếu không có data quá khứ thì trả về null.
-          if (oneDayHistory && twoDayHistory && oneWeekHistory && twoWeekHistory) {
-            data = parseBulkPairData(data, oneDayHistory, twoDayHistory, oneWeekHistory, twoWeekHistory)
-            return data
-          } else {
-            return null
-          }
+          data = parseBulkPairData(data, oneDayHistory, twoDayHistory, oneWeekHistory, twoWeekHistory)
+          return data
         })
     )
 
-    // Lọc những pair nào bị null.
-    return pairs.filter(pair => pair !== null)
+    return pairs
   } catch (e) {
     console.error(e)
     return []
