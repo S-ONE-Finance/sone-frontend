@@ -80,7 +80,7 @@ export default function MyReward({ myReward }: { myReward?: number }) {
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
-  const myRewardFormatted = myReward === undefined ? '--' : getNumberCommas(myReward)
+  const myRewardFormatted = myReward === undefined ? '0' : getNumberCommas(myReward)
 
   return (
     <MyRewardContainer style={{ position: 'relative' }}>
