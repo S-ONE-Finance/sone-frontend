@@ -46,7 +46,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
         <StyledCardBody>
           <StyledItemRow>
             {t('earn')}
-            <span>SONE</span>
+            <span>{farm.soneHarvested} SONE</span>
           </StyledItemRow>
           <StyledItemRow>
             {t('apy')}
