@@ -59,7 +59,8 @@ const useFarms = (): [boolean, Farm[]] => {
     async () => {
       const data = await swapClients[account && chainId ? chainId : DEFAULT_CHAIN_ID].query({
         query: pairSubsetQuery,
-        variables: { pairAddresses }
+        variables: { pairAddresses },
+        fetchPolicy: 'network-only'
       })
       return data?.data.pairs
     },

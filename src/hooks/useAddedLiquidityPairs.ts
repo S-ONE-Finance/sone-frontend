@@ -21,7 +21,6 @@ export default function useAddedLiquidityPairs(): [boolean, Array<Pair>] {
     account ?? undefined,
     liquidityTokens
   )
-
   const liquidityTokensWithBalances = useMemo(
     () =>
       tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
@@ -29,12 +28,10 @@ export default function useAddedLiquidityPairs(): [boolean, Array<Pair>] {
       ),
     [tokenPairsWithLiquidityTokens, v2PairsBalances]
   )
-
   const addedPairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
     .map(([, pair]) => pair)
     .filter((pair): pair is Pair => Boolean(pair))
   const isLoading =
     fetchingV2PairBalances || addedPairs?.length < liquidityTokensWithBalances.length || addedPairs?.some(pair => !pair)
-
   return [isLoading, addedPairs]
 }
