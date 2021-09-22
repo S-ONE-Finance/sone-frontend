@@ -12,6 +12,7 @@ import { ButtonPrimary } from 'components/Button'
 import styled from 'styled-components'
 import { useIsUserAddedToken, useIsTokenActive } from 'hooks/Tokens'
 import { CheckCircle } from 'react-feather'
+import { useTranslation } from 'react-i18next'
 
 const TokenSection = styled.div<{ dim?: boolean }>`
   padding: 4px 2rem;
@@ -57,6 +58,7 @@ export default function ImportRow({
   showImportView: () => void
   setImportToken: (token: Token) => void
 }) {
+  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const theme = useTheme()
 
@@ -98,7 +100,7 @@ export default function ImportRow({
             showImportView()
           }}
         >
-          Import
+          {t('import')}
         </ButtonPrimary>
       ) : (
         <RowFixed style={{ minWidth: 'fit-content' }}>

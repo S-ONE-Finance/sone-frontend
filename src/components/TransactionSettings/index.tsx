@@ -238,10 +238,10 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
             }}
           >
             {slippageError === SlippageError.InvalidInput
-              ? t('Enter a valid slippage tolerance')
+              ? t('enter_a_valid_slippage_tolerance')
               : slippageError === SlippageError.RiskyLow
-              ? t('Your transaction may fail')
-              : t('Your transaction may be frontrun')}
+              ? t('your_transaction_may_fail')
+              : t('your_transaction_may_be_frontrun')}
           </RowBetween>
         )}
       </ResponsiveAutoColumn>

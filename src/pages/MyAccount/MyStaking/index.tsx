@@ -43,7 +43,7 @@ export default function MyStaking() {
             </StakingList>
           </>
         ) : (
-          t('No item to show.')
+          t('no_item_to_show')
         )}
       </CardStaking>
     </Section>

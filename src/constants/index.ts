@@ -7,7 +7,6 @@ export const MAX_UINT_256 = '0xfffffffffffffffffffffffffffffffffffffffffffffffff
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export const DEFAULT_CHAIN_ID = Number(process.env.REACT_APP_DEFAULT_CHAIN_ID)
-console.log(`DEFAULT_CHAIN_ID`, DEFAULT_CHAIN_ID)
 
 export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '',

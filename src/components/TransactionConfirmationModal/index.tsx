@@ -212,7 +212,7 @@ export function TransactionErrorContent({ message, onDismiss }: { message: strin
             {message}
           </Text>
         </AutoColumn>
-        <ButtonPrimary onClick={onDismiss}>{t('Dismiss')}</ButtonPrimary>
+        <ButtonPrimary onClick={onDismiss}>{t('dismiss')}</ButtonPrimary>
       </Section>
     </Wrapper>
   )

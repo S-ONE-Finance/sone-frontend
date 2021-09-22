@@ -168,7 +168,7 @@ export default function Staking() {
     }
   }, [_onStake, error, symbol, typedValue])
 
-  const pendingText = `Staking ${typedValue} LP`
+  const pendingText = t('staking_123_lp', { amount: typedValue })
 
   const ModalHeader = useCallback(
     function ModalHeader() {
@@ -362,7 +362,11 @@ export default function Staking() {
                 </>
               ) : error === t('approve') || error === t('approving...') ? (
                 <ButtonPrimary disabled={error === t('approving...')} onClick={() => onApprove(symbol)}>
-                  {error === t('approving...') ? error : `Approve ${symbol} LP Token`}
+                  {error === t('approving...')
+                    ? error
+                    : t('approve_eth_sone_lp_token', {
+                        symbol
+                      })}
                 </ButtonPrimary>
               ) : error ? (
                 Number(guideStep.step) === 1 && guideStep.screen === 'stake' ? (

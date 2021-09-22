@@ -150,7 +150,7 @@ export default function MyLiquidityItem({
                     : `/my-account/withdraw/${pair.token0.address}/${pair.token1.address}`
                 }
               >
-                {t('remove_account')}
+                {t('remove')}
               </ButtonRemove>
               <ButtonAdd
                 as={Link}

@@ -98,9 +98,9 @@ export default function ButtonGrouping({
                     width={approvalB !== ApprovalState.APPROVED ? '48%' : '100%'}
                   >
                     {approvalA === ApprovalState.PENDING ? (
-                      <Dots>Approving {currencies[Field.CURRENCY_A]?.symbol}</Dots>
+                      <Dots>{t('approving_token', { symbol: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
                     ) : (
-                      'Approve ' + currencies[Field.CURRENCY_A]?.symbol
+                      t('approve_token', { symbol: currencies[Field.CURRENCY_A]?.symbol })
                     )}
                   </ButtonPrimary>
                 )}
@@ -111,9 +111,9 @@ export default function ButtonGrouping({
                     width={approvalA !== ApprovalState.APPROVED ? '48%' : '100%'}
                   >
                     {approvalB === ApprovalState.PENDING ? (
-                      <Dots>Approving {currencies[Field.CURRENCY_B]?.symbol}</Dots>
+                      <Dots>{t('approving_token', { symbol: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
                     ) : (
-                      'Approve ' + currencies[Field.CURRENCY_B]?.symbol
+                      t('approve_token', { symbol: currencies[Field.CURRENCY_B]?.symbol })
                     )}
                   </ButtonPrimary>
                 )}

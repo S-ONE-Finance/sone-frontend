@@ -4,8 +4,10 @@ import { TransactionResponse } from '@ethersproject/providers'
 
 import { useSoneMasterFarmerContract } from 'hooks/useContract'
 import { useTransactionAdder } from 'state/transactions/hooks'
+import { useTranslation } from 'react-i18next'
 
 export default function useClaimRewardHandler() {
+  const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
 
   const masterContract: Contract | null = useSoneMasterFarmerContract()
@@ -17,7 +19,7 @@ export default function useClaimRewardHandler() {
           ?.claimReward(pid)
           .then((txResponse: TransactionResponse) => {
             addTransaction(txResponse, {
-              summary: 'Claim reward success'
+              summary: t('claim_reward')
             })
             return txResponse
           })
@@ -28,6 +30,6 @@ export default function useClaimRewardHandler() {
         return false
       }
     },
-    [masterContract, addTransaction]
+    [masterContract, addTransaction, t]
   )
 }

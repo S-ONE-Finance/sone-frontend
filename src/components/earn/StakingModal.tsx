@@ -20,6 +20,7 @@ import { wrappedCurrencyAmount } from '../../utils/wrappedCurrency'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import { LoadingView, SubmittedView } from '../ModalViews'
+import { useTranslation } from 'react-i18next'
 
 const HypotheticalRewardRate = styled.div<{ dim: boolean }>`
   display: flex;
@@ -43,6 +44,7 @@ interface StakingModalProps {
 }
 
 export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiquidityUnstaked }: StakingModalProps) {
+  const { t } = useTranslation()
   const { account, chainId, library } = useActiveWeb3React()
 
   // track and parse user input
@@ -231,7 +233,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
               confirmed={approval === ApprovalState.APPROVED || signatureData !== null}
               disabled={approval !== ApprovalState.NOT_APPROVED || signatureData !== null}
             >
-              Approve
+              {t('approve')}
             </ButtonConfirmed>
             <ButtonError
               disabled={!!error || (signatureData === null && approval !== ApprovalState.APPROVED)}
@@ -255,7 +257,7 @@ export default function StakingModal({ isOpen, onDismiss, stakingInfo, userLiqui
       {attempting && hash && (
         <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.largeHeader>Transaction Submitted</TYPE.largeHeader>
+            <TYPE.largeHeader>{t('transaction_submitted')}</TYPE.largeHeader>
             <TYPE.body fontSize={20}>Deposited {parsedAmount?.toSignificant(4)} UNI-V2</TYPE.body>
           </AutoColumn>
         </SubmittedView>

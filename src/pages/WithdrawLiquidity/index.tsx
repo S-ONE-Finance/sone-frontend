@@ -349,9 +349,12 @@ export default function WithdrawLiquidity({
 
   const expertMode = useIsExpertMode()
 
-  const pendingText = `Removing ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
-    currencyA?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencyB?.symbol}`
+  const pendingText = t('removing_123_eth_and_456_sone', {
+    token0Amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6),
+    token0Symbol: currencyA?.symbol,
+    token1Amount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6),
+    token1Symbol: currencyB?.symbol
+  })
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
@@ -380,7 +383,7 @@ export default function WithdrawLiquidity({
         hash={txHash ? txHash : ''}
         content={() => (
           <ConfirmationModalContent
-            title="You will receive"
+            title="you_will_receive"
             onDismiss={handleDismissConfirmation}
             topContent={modalHeader}
             bottomContent={modalBottom}
@@ -481,7 +484,13 @@ export default function WithdrawLiquidity({
                     </ButtonPrimary>
                   ) : (
                     <ButtonPrimary onClick={onAttemptToApprove} disabled={approval !== ApprovalState.NOT_APPROVED}>
-                      {approval === ApprovalState.PENDING ? <Dots>Approving</Dots> : isValid ? 'Approve' : error}
+                      {approval === ApprovalState.PENDING ? (
+                        <Dots>{t('approving')}</Dots>
+                      ) : isValid ? (
+                        t('approve')
+                      ) : (
+                        error
+                      )}
                     </ButtonPrimary>
                   )}
                 </RowButton>

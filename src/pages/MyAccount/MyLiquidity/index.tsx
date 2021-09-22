@@ -36,7 +36,7 @@ export default function MyLiquidity() {
             />
           ))
         ) : (
-          t('No item to show.')
+          t('no_item_to_show')
         )}
       </CardLiquidity>
     </Section>

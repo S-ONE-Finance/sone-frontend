@@ -113,9 +113,12 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
     setTxHash
   })
 
-  const pendingText = `Adding ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
-    currencies[Field.CURRENCY_A]?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencies[Field.CURRENCY_B]?.symbol}`
+  const pendingText = t('adding_123_eth_and_456_sone', {
+    input0Amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6),
+    input0Symbol: currencies[Field.CURRENCY_A]?.symbol,
+    input1Amount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6),
+    input1Symbol: currencies[Field.CURRENCY_B]?.symbol
+  })
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)

@@ -89,9 +89,12 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
     poolTokenPercentage
   } = useDerivedMintSimpleInfo(selectedPairState, selectedPair, selectedCurrency ?? undefined)
 
-  const pendingText = `Adding ${selectedTokenParsedAmount?.toSignificant(6)} ${
-    selectedPair?.token0?.symbol
-  } and ${theOtherTokenParsedAmount?.toSignificant(6)} ${selectedPair?.token0?.symbol}`
+  const pendingText = t('adding_123_eth_and_456_sone', {
+    input0Amount: selectedTokenParsedAmount?.toSignificant(6),
+    input0Symbol: selectedPair?.token0?.symbol,
+    input1Amount: theOtherTokenParsedAmount?.toSignificant(6),
+    input1Symbol: selectedPair?.token0?.symbol
+  })
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)

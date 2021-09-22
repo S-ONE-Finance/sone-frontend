@@ -95,7 +95,7 @@ export default function RecentTransactions({ isSmall = false }: { isSmall?: bool
           </Row>
         </>
       ) : (
-        <TYPE.subText paddingBottom={'0.75rem'}>{t('Your recent transactions will appear here...')}</TYPE.subText>
+        <TYPE.subText paddingBottom={'0.75rem'}>{t('your_recent_transactions_will_appear_here')}</TYPE.subText>
       )}
     </ColumnScroll>
   )

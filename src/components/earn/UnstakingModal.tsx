@@ -111,7 +111,7 @@ export default function UnstakingModal({ isOpen, onDismiss, stakingInfo }: Staki
       {hash && (
         <SubmittedView onDismiss={wrappedOnDismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.largeHeader>Transaction Submitted</TYPE.largeHeader>
+            <TYPE.largeHeader>{t('transaction_submitted')}</TYPE.largeHeader>
             <TYPE.body fontSize={20}>Withdrew UNI-V2!</TYPE.body>
             <TYPE.body fontSize={20}>Claimed UNI!</TYPE.body>
           </AutoColumn>
