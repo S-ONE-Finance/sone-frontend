@@ -201,7 +201,8 @@ export function useAllPairsThatThisAccountHadLiquidityPosition(): {
       if (!chainId) return []
 
       const data = await swapClients[chainId].query({
-        query: GET_ALL_TOKENS_THAT_THIS_ACCOUNT_HAD_LIQUIDITY_POSITIONS(account?.toLowerCase() as string)
+        query: GET_ALL_TOKENS_THAT_THIS_ACCOUNT_HAD_LIQUIDITY_POSITIONS(account?.toLowerCase() as string),
+        fetchPolicy: 'network-only'
       })
 
       return Array.isArray(data?.data?.liquidityPositions)
