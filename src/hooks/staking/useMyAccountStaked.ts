@@ -12,6 +12,7 @@ import useOneSoneInUSD from '../useOneSoneInUSD'
 import { useManyPendingReward } from './usePendingReward'
 import { useBlockNumber } from '../../state/application/hooks'
 import { useLastTruthy } from '../useLast'
+import { DEFAULT_CHAIN_ID } from '../../constants'
 
 const LP_TOKEN_DECIMALS = 18
 const LP_TOKEN_DECIMALS_POWER = 10 ** LP_TOKEN_DECIMALS
@@ -25,7 +26,7 @@ const useMyAccountStaked = (): [boolean, UserInfoSone[]] => {
   const { data: usersQuery, isSuccess: isQueryUserSuccess } = useQuery(
     ['useMyAccountStaked_poolUserWithPoolDetailQuery', chainId, account, block],
     async () => {
-      const data = await stakingClients[chainId ?? 1].query({
+      const data = await stakingClients[account && chainId ? chainId : DEFAULT_CHAIN_ID].query({
         query: poolUserWithPoolDetailQuery,
         variables: {
           address: account?.toLowerCase()

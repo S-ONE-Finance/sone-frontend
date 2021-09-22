@@ -8,7 +8,7 @@ import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import useOneSoneInUSD from '../useOneSoneInUSD'
-import { CONFIG_MASTER_FARMER } from '../../constants'
+import { CONFIG_MASTER_FARMER, DEFAULT_CHAIN_ID } from '../../constants'
 import { useLastTruthy } from '../useLast'
 
 const useFarm = (id: string) => {
@@ -20,7 +20,7 @@ const useFarm = (id: string) => {
   const { data: farmQuery } = useQuery(
     ['useFarm_poolsQueryDetail', chainId, id, block],
     async () => {
-      const data = await stakingClients[chainId ?? 1].query({
+      const data = await stakingClients[account && chainId ? chainId : DEFAULT_CHAIN_ID].query({
         query: poolsQueryDetail,
         variables: { id },
         fetchPolicy: 'network-only'
@@ -35,7 +35,7 @@ const useFarm = (id: string) => {
   const { data: userInfoQuery } = useQuery(
     ['useFarm_poolUserDetailQuery', chainId, id, account, block],
     async () => {
-      const data = await stakingClients[chainId ?? 1].query({
+      const data = await stakingClients[account && chainId ? chainId : DEFAULT_CHAIN_ID].query({
         query: poolUserDetailQuery,
         variables: {
           id: `${id}-${account?.toLowerCase()}`
@@ -52,7 +52,7 @@ const useFarm = (id: string) => {
   const { data: pairQuery } = useQuery(
     ['useFarm_pairSubsetQuery', chainId, farm?.pair, block],
     async () => {
-      const data = await swapClients[chainId ?? 1].query({
+      const data = await swapClients[account && chainId ? chainId : DEFAULT_CHAIN_ID].query({
         query: pairSubsetQuery,
         variables: { pairAddresses: [farm?.pair] },
         fetchPolicy: 'network-only'

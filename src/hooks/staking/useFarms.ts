@@ -7,22 +7,22 @@ import { liquidityPositionSubsetQuery, pairSubsetQuery, poolsQuery } from 'graph
 import useAverageBlockTime from 'hooks/staking/useAverageBlockTime'
 import { useActiveWeb3React } from 'hooks'
 import { useBlockNumber } from 'state/application/hooks'
-import { CONFIG_MASTER_FARMER, SONE_MASTER_FARMER, SONE_PRICE_MINIMUM } from '../../constants'
+import { CONFIG_MASTER_FARMER, DEFAULT_CHAIN_ID, SONE_MASTER_FARMER, SONE_PRICE_MINIMUM } from '../../constants'
 import { stakingClients, swapClients } from '../../graphql/clients'
 import { useQuery } from 'react-query'
 import useOneSoneInUSD from '../useOneSoneInUSD'
 
 const useFarms = (): [boolean, Farm[]] => {
-  const { chainId } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const sonePrice = useOneSoneInUSD()
   const block = useBlockNumber()
   const soneMasterFarmerAddress: string = useMemo(() => SONE_MASTER_FARMER[chainId as ChainId], [chainId])
   const averageBlockTime = useAverageBlockTime()
 
   const { data: pools, isLoading: isPoolsLoading } = useQuery(
-    ['useFarms_poolsQuery', chainId],
+    ['useFarms_poolsQuery', account, chainId],
     async () => {
-      const data = await stakingClients[chainId ?? 1].query({
+      const data = await stakingClients[account && chainId ? chainId : DEFAULT_CHAIN_ID].query({
         query: poolsQuery
       })
       return data?.data.pools
@@ -33,7 +33,7 @@ const useFarms = (): [boolean, Farm[]] => {
   const { data: liquidityPositions, isLoading: isLiquidityPositionsLoading } = useQuery(
     ['useFarms_liquidityPositionSubsetQuery', chainId, soneMasterFarmerAddress],
     async () => {
-      const data = await swapClients[chainId ?? 1].query({
+      const data = await swapClients[account && chainId ? chainId : DEFAULT_CHAIN_ID].query({
         query: liquidityPositionSubsetQuery,
         variables: { user: soneMasterFarmerAddress.toLowerCase() }
       })
@@ -57,7 +57,7 @@ const useFarms = (): [boolean, Farm[]] => {
   const { data: pairs, isLoading: isPairsLoading } = useQuery(
     ['useFarms_pairSubsetQuery', chainId, pairAddresses],
     async () => {
-      const data = await swapClients[chainId ?? 1].query({
+      const data = await swapClients[account && chainId ? chainId : DEFAULT_CHAIN_ID].query({
         query: pairSubsetQuery,
         variables: { pairAddresses },
         fetchPolicy: 'network-only'
