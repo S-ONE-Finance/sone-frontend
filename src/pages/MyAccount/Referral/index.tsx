@@ -76,13 +76,15 @@ export default function Referral() {
   // ngay sau khi POST lệnh "request reward" thành công. Sau 15000ms (FETCH_DATA_REFERRAL_INTERVAL) sẽ nhả ra.
   const { t } = useTranslation()
   const [justClicked, requestReward] = useRequestReward()
-  const { isRequestRewardPending, pendingAmount } = useReferrerInformation() || {}
+  const { isRequestRewardPending, pendingAmount, status } = useReferrerInformation() || {}
   const isDisabled =
     justClicked ||
     isRequestRewardPending === undefined ||
     isRequestRewardPending === true ||
     pendingAmount === undefined ||
-    pendingAmount < 0.000001
+    pendingAmount < 0.000001 ||
+    status == 'Disable'
+
   const disabledText = pendingAmount === undefined || pendingAmount < 0.000001 ? '' : 'Waiting for Approval'
 
   return (
