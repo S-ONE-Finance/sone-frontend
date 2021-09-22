@@ -6,12 +6,15 @@ import { injected, walletconnect } from '../connectors'
 export const MAX_UINT_256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
+export const DEFAULT_CHAIN_ID = Number(process.env.REACT_APP_DEFAULT_CHAIN_ID)
+console.log(`DEFAULT_CHAIN_ID`, DEFAULT_CHAIN_ID)
+
 export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: ZERO_ADDRESS,
+  [ChainId.MAINNET]: '',
   [ChainId.RINKEBY]: '0xa406C219C16D66B9bE1d159265E95E1A1d97eD99',
   [ChainId.ROPSTEN]: '0x5065C6C5BCE00739Fb90bC5ab33e397c14f63335',
-  [ChainId.GÖRLI]: ZERO_ADDRESS,
-  [ChainId.KOVAN]: ZERO_ADDRESS
+  [ChainId.GÖRLI]: '',
+  [ChainId.KOVAN]: ''
 }
 
 export { PRELOADED_PROPOSALS } from './proposals'
@@ -50,11 +53,11 @@ export const SONE_PRICE_MINIMUM = 0.00001 // 1 SONE >= 0.00001 USDT
 
 // TODO: Need fill address of sone in all 5 networks.
 export const SONE: { [chainId in ChainId]: Token } = {
-  [ChainId.MAINNET]: new Token(ChainId.MAINNET, ZERO_ADDRESS, 18, 'SONE', 'SONE Token'),
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'SONE', 'SONE Token'),
   [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, '0x4141fA29806e4d0BfD19E4c4E8f6FC18D02168c7', 18, 'SONE', 'SONE Token'),
   [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, '0x57bb30bdb0D449bf687ed648ACF2467F045c8E74', 18, 'SONE', 'SONE Token'),
-  [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, ZERO_ADDRESS, 18, 'SONE', 'SONE Token'),
-  [ChainId.KOVAN]: new Token(ChainId.KOVAN, ZERO_ADDRESS, 18, 'SONE', 'SONE Token')
+  [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, UNI_ADDRESS, 18, 'SONE', 'SONE Token'),
+  [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'SONE', 'SONE Token')
 }
 
 export const SONE_MASTER_FARMER: { [chainId in ChainId]: string } = {
