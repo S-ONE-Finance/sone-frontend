@@ -73,7 +73,7 @@ export const CONFIG_MASTER_FARMER: { [chainId in ChainId]: ConfigMasterFarmer | 
     blocksPerWeek: 45134
   },
   [ChainId.RINKEBY]: {
-    startBlock: 10897613,
+    startBlock: 9283344,
     rewardMultiplier: [32, 32, 32, 32, 16, 8, 4, 2, 1],
     blocksPerWeek: 45134
   },
