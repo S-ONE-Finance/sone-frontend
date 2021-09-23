@@ -33,6 +33,7 @@ import useAllowance from '../../hooks/staking/useAllowance'
 import useApproveHandler from '../../hooks/staking/useApproveHandler'
 import { OpenGuide, StakeStep1, StakeStep2, StakeStep3 } from '../../components/lib/mark/components'
 import { CONFIG_MASTER_FARMER } from '../../constants'
+import BubbleMessage from 'components/BubbleMessage'
 
 export default function Staking() {
   const { t } = useTranslation()
@@ -42,6 +43,8 @@ export default function Staking() {
   const [guideStep] = useGuideStepManager()
 
   const [isShowRewardInformation, toggleIsShowRewardInformation] = useShowTransactionDetailsManager()
+
+  const [isShowBubbleBonus, setIsShowBubbleBonus] = useState(true)
 
   const { farmId } = useParams() as any
   const farm: Farm | undefined = useFarm(farmId)
@@ -391,6 +394,10 @@ export default function Staking() {
                   {t('stake')}
                 </ButtonPrimary>
               )}
+
+              <Row padding={isUpToExtraSmall ? '0 10px' : '0 30px'}>
+                <BubbleMessage bonus={bonusMultiplier} show={isShowBubbleBonus} setShow={setIsShowBubbleBonus} />
+              </Row>
 
               {!error && (
                 <StakeTxSectionDetails1

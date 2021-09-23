@@ -9,7 +9,7 @@ import { getBalanceStringCommas } from '../../utils/formatNumber'
 import { useActiveWeb3React } from '../../hooks'
 
 interface BalanceProps {
-  circulatingSupplyValue: number
+  circulatingSupplyValue: string
 }
 
 const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
