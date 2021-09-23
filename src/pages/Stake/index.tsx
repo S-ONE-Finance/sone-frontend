@@ -395,9 +395,11 @@ export default function Staking() {
                 </ButtonPrimary>
               )}
 
-              <Row padding={isUpToExtraSmall ? '0 10px' : '0 30px'}>
-                <BubbleMessage bonus={bonusMultiplier} show={isShowBubbleBonus} setShow={setIsShowBubbleBonus} />
-              </Row>
+              {isShowBubbleBonus && (
+                <Row padding={isUpToExtraSmall ? '0 10px' : '0 30px'}>
+                  <BubbleMessage bonus={bonusMultiplier} setShow={setIsShowBubbleBonus} />
+                </Row>
+              )}
 
               {!error && (
                 <StakeTxSectionDetails1

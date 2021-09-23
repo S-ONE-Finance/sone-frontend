@@ -91,40 +91,35 @@ const Triangle = styled.div<{ size: string }>`
 `
 
 export default memo(function BubbleMessage({
-  show,
   setShow,
   bonus
 }: {
-  show: boolean
   setShow: Dispatch<SetStateAction<boolean>>
   bonus: any
 }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
-  if (show)
-    return (
-      <Row gap={isUpToExtraSmall ? '10px' : '20px'}>
-        <Bubble>
-          <Row gap={isUpToExtraSmall ? '8px' : '16px'}>
-            <CheckIcon size={isUpToExtraSmall ? '24px' : '32px'} color="#ffffff" />
-            <BubbleText>
-              You will get<span> x{bonus} SONE </span>during this period.
-            </BubbleText>
-            <StyledCloseIcon
-              size="16px"
-              sizeMobile="13px"
-              color="#767676"
-              style={{ alignSelf: 'flex-start' }}
-              onClick={() => setShow(false)}
-            />
-          </Row>
-          <TriangleWrapper size={20}>
-            <Triangle size="20px" />
-          </TriangleWrapper>
-        </Bubble>
-        <Chibi src={ChibiSvg} alt="chibi" />
-      </Row>
-    )
-
-  return null
+  return (
+    <Row gap={isUpToExtraSmall ? '10px' : '20px'}>
+      <Bubble>
+        <Row gap={isUpToExtraSmall ? '8px' : '16px'}>
+          <CheckIcon size={isUpToExtraSmall ? '24px' : '32px'} color="#ffffff" />
+          <BubbleText>
+            You will get<span> x{bonus} SONE </span>during this period.
+          </BubbleText>
+          <StyledCloseIcon
+            size="16px"
+            sizeMobile="13px"
+            color="#767676"
+            style={{ alignSelf: 'flex-start' }}
+            onClick={() => setShow(false)}
+          />
+        </Row>
+        <TriangleWrapper size={20}>
+          <Triangle size="20px" />
+        </TriangleWrapper>
+      </Bubble>
+      <Chibi src={ChibiSvg} alt="chibi" />
+    </Row>
+  )
 })
