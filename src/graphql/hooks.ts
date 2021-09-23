@@ -14,6 +14,7 @@ import { PairState, usePairs } from 'data/Reserves'
 import useUnmountedRef from '../hooks/useUnmountedRef'
 import { useQuery } from 'react-query'
 import { useBlockNumber } from '../state/application/hooks'
+import { useLastTruthy } from '../hooks/useLast'
 
 async function getPairIds(chainId?: number) {
   if (chainId === undefined) return []
@@ -195,7 +196,7 @@ export function useAllPairsThatThisAccountHadLiquidityPosition(): {
   const { account, chainId } = useActiveWeb3React()
   const block = useBlockNumber()
 
-  const { data: pairs, isSuccess, isError, isLoading } = useQuery<[Token, Token][]>(
+  const { data: pairsQueryResult, isSuccess, isError, isLoading } = useQuery<[Token, Token][]>(
     ['useAllPairsThatThisAccountHadLiquidityPosition', chainId, account, block],
     async () => {
       if (!chainId) return []
@@ -220,6 +221,8 @@ export function useAllPairsThatThisAccountHadLiquidityPosition(): {
       enabled: Boolean(chainId && account)
     }
   )
+
+  const pairs = useLastTruthy(pairsQueryResult) ?? undefined
 
   return useMemo(
     () => ({
