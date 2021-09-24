@@ -163,8 +163,8 @@ export default function MyBalance() {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 
-  const soneBalance: string | undefined = useAggregateSoneBalance()?.toFixed(2)
-  const ethBalance = useCurrencyBalance(account ?? undefined, Currency.ETHER)?.toFixed(6)
+  const soneBalance: string | undefined = useAggregateSoneBalance()?.toSignificant(12)
+  const ethBalance = useCurrencyBalance(account ?? undefined, Currency.ETHER)?.toSignificant(6)
 
   const ethBalanceRef = useRef<HTMLDivElement>(null)
   const soneBalanceRef = useRef<HTMLDivElement>(null)
