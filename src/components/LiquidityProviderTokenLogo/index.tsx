@@ -1,9 +1,5 @@
-/* eslint @typescript-eslint/no-unused-vars: 0 */ // --> OFF
-
 import React from 'react'
-import LpTokenSrc from '../../assets/svg/lp_token.svg'
 import { ReactComponent as LpToken } from '../../assets/svg/lp_token.svg'
-import LpTokenRedSrc from '../../assets/svg/lp_token_red.svg'
 import { ReactComponent as LpTokenRed } from '../../assets/svg/lp_token_red.svg'
 import CurrencyLogo from '../CurrencyLogo'
 import styled from 'styled-components'

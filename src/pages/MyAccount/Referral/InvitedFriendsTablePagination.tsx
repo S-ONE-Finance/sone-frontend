@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Row from '../../../components/Row'
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'react-feather'
 import { useIsUpToExtraSmall, useIsUpToSmall } from '../../../hooks/useWindowSize'
+import { useTranslation } from 'react-i18next'
 
 // "styled-components" version 5 trở lên mới hỗ trợ attr boolean.
 const PaginationItem = styled.div<{ is_active?: 'yes'; no_border?: 'yes'; is_disabled?: 'yes' }>`
@@ -56,6 +57,7 @@ export default function InvitedFriendsTablePagination({
 
   handleChangePaginationLimit: () => void
 }) {
+  const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const isUpToSmall = useIsUpToSmall()
 
@@ -95,7 +97,9 @@ export default function InvitedFriendsTablePagination({
         <PaginationItem is_disabled={isNextButtonDisabled ? 'yes' : undefined} onClick={handleNextButtonClick}>
           <ChevronRight size={18} />
         </PaginationItem>
-        <PaginationLastItem onClick={handleChangePaginationLimit}>{limit} / page</PaginationLastItem>
+        <PaginationLastItem onClick={handleChangePaginationLimit}>
+          {limit} / {t('page')}
+        </PaginationLastItem>
       </Row>
     )
 
@@ -140,7 +144,9 @@ export default function InvitedFriendsTablePagination({
       <PaginationItem is_disabled={isNextButtonDisabled ? 'yes' : undefined} onClick={handleNextButtonClick}>
         <ChevronRight size={18} />
       </PaginationItem>
-      <PaginationLastItem onClick={handleChangePaginationLimit}>{limit} / page</PaginationLastItem>
+      <PaginationLastItem onClick={handleChangePaginationLimit}>
+        {limit} / {t('page')}
+      </PaginationLastItem>
     </Row>
   )
 }

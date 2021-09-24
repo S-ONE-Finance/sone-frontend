@@ -14,6 +14,7 @@ import { getEtherscanLink } from '../../utils'
 import { ExternalLink } from '../../theme/components'
 import { TokenAmount } from '@s-one-finance/sdk-core'
 import useTheme from '../../hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -43,6 +44,7 @@ interface VoteModalProps {
 }
 
 export default function VoteModal({ isOpen, onDismiss, proposalId, support }: VoteModalProps) {
+  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const {
     voteCallback
@@ -130,7 +132,7 @@ export default function VoteModal({ isOpen, onDismiss, proposalId, support }: Vo
           </ConfirmedIcon>
           <AutoColumn gap="100px" justify={'center'}>
             <AutoColumn gap="12px" justify={'center'}>
-              <TYPE.largeHeader>Transaction Submitted</TYPE.largeHeader>
+              <TYPE.largeHeader>{t('transaction_submitted')}</TYPE.largeHeader>
             </AutoColumn>
             {chainId && (
               <ExternalLink href={getEtherscanLink(chainId, hash, 'transaction')} style={{ marginLeft: '4px' }}>

@@ -13,6 +13,8 @@ import { Pair, Token } from '@s-one-finance/sdk-core'
 import { PairState, usePairs } from 'data/Reserves'
 import useUnmountedRef from '../hooks/useUnmountedRef'
 import { useQuery } from 'react-query'
+import { useBlockNumber } from '../state/application/hooks'
+import { useLastTruthy } from '../hooks/useLast'
 
 async function getPairIds(chainId?: number) {
   if (chainId === undefined) return []
@@ -192,14 +194,16 @@ export function useAllPairsThatThisAccountHadLiquidityPosition(): {
   pairs?: [Token, Token][]
 } {
   const { account, chainId } = useActiveWeb3React()
+  const block = useBlockNumber()
 
-  const { data: pairs, isSuccess, isError, isLoading } = useQuery<[Token, Token][]>(
-    ['useAllPairsThatThisAccountHadLiquidityPosition', chainId, account],
+  const { data: pairsQueryResult, isSuccess, isError, isLoading } = useQuery<[Token, Token][]>(
+    ['useAllPairsThatThisAccountHadLiquidityPosition', chainId, account, block],
     async () => {
       if (!chainId) return []
 
       const data = await swapClients[chainId].query({
-        query: GET_ALL_TOKENS_THAT_THIS_ACCOUNT_HAD_LIQUIDITY_POSITIONS(account?.toLowerCase() as string)
+        query: GET_ALL_TOKENS_THAT_THIS_ACCOUNT_HAD_LIQUIDITY_POSITIONS(account?.toLowerCase() as string),
+        fetchPolicy: 'network-only'
       })
 
       return Array.isArray(data?.data?.liquidityPositions)
@@ -217,6 +221,8 @@ export function useAllPairsThatThisAccountHadLiquidityPosition(): {
       enabled: Boolean(chainId && account)
     }
   )
+
+  const pairs = useLastTruthy(pairsQueryResult) ?? undefined
 
   return useMemo(
     () => ({

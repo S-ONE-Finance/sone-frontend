@@ -82,7 +82,7 @@ export function ImportList({ listURL, list, setModalView, onDismiss }: ImportPro
       <PaddedColumn gap="14px" style={{ width: '100%', flex: '1 1' }}>
         <RowBetween>
           <ArrowLeft style={{ cursor: 'pointer' }} onClick={() => setModalView(CurrencyModalView.manage)} />
-          <TYPE.mediumHeader>Import List</TYPE.mediumHeader>
+          <TYPE.mediumHeader>{t('import_list')}</TYPE.mediumHeader>
           <StyledCloseIcon onClick={onDismiss} />
         </RowBetween>
       </PaddedColumn>
@@ -116,18 +116,16 @@ export function ImportList({ listURL, list, setModalView, onDismiss }: ImportPro
             <AutoColumn justify="center" style={{ textAlign: 'center', gap: '16px', marginBottom: '12px' }}>
               <AlertTriangle stroke={theme.red1} size={32} />
               <TYPE.body fontWeight={500} fontSize={20} color={theme.red1}>
-                Import at your own risk{' '}
+                {t('import_at_your_own_risk')}
               </TYPE.body>
             </AutoColumn>
 
             <AutoColumn style={{ textAlign: 'center', gap: '16px', marginBottom: '12px' }}>
               <TYPE.body fontWeight={500} color={theme.red1}>
-                By adding this list you are implicitly trusting that the data is correct. Anyone can create a list,
-                including creating fake versions of existing lists and lists that claim to represent projects that do
-                not have one.
+                {t('import_list_warning_1')}
               </TYPE.body>
               <TYPE.body fontWeight={600} color={theme.red1}>
-                If you purchase a token from this list, you may not be able to sell it back.
+                {t('import_list_warning_2')}
               </TYPE.body>
             </AutoColumn>
             <AutoRow justify="center" style={{ cursor: 'pointer' }} onClick={() => setConfirmed(!confirmed)}>
@@ -150,7 +148,7 @@ export function ImportList({ listURL, list, setModalView, onDismiss }: ImportPro
             padding="10px 1rem"
             onClick={handleAddList}
           >
-            Import
+            {t('import')}
           </ButtonPrimary>
           {addError ? (
             <TYPE.error title={addError} style={{ textOverflow: 'ellipsis', overflow: 'hidden' }} error>

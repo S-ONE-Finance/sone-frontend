@@ -69,7 +69,7 @@ export default function SwapModalFooter({
         <RowBetween>
           <RowFixed>
             <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-              {trade.tradeType === TradeType.EXACT_INPUT ? t('minimum_received') : t('Maximum sold')}
+              {trade.tradeType === TradeType.EXACT_INPUT ? t('minimum_received') : t('maximum_sold')}
             </Text>
           </RowFixed>
           <RowFixed>
@@ -107,7 +107,7 @@ export default function SwapModalFooter({
 
       <ButtonError onClick={onConfirm} disabled={disabledConfirm} error={severity > 2} id="confirm-swap-or-send">
         <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
-          {severity > 2 ? t('swap_anyway') : t('Swap')}
+          {severity > 2 ? t('swap_anyway') : t('swap')}
         </Text>
       </ButtonError>
       {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}

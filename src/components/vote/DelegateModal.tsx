@@ -15,6 +15,7 @@ import { useDelegateCallback } from '../../state/governance/hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { UNI } from '../../constants'
 import { LoadingView, SubmittedView } from '../ModalViews'
+import { useTranslation } from 'react-i18next'
 
 const ContentWrapper = styled(AutoColumn)`
   width: 100%;
@@ -40,6 +41,7 @@ interface VoteModalProps {
 }
 
 export default function DelegateModal({ isOpen, onDismiss, title }: VoteModalProps) {
+  const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
 
   // state for delegate input
@@ -123,7 +125,7 @@ export default function DelegateModal({ isOpen, onDismiss, title }: VoteModalPro
       {hash && (
         <SubmittedView onDismiss={wrappedOndismiss} hash={hash}>
           <AutoColumn gap="12px" justify={'center'}>
-            <TYPE.largeHeader>Transaction Submitted</TYPE.largeHeader>
+            <TYPE.largeHeader>{t('transaction_submitted')}</TYPE.largeHeader>
             <TYPE.main fontSize={36}>{uniBalance?.toSignificant(4)}</TYPE.main>
           </AutoColumn>
         </SubmittedView>

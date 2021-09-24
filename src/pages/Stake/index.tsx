@@ -33,6 +33,7 @@ import useAllowance from '../../hooks/staking/useAllowance'
 import useApproveHandler from '../../hooks/staking/useApproveHandler'
 import { OpenGuide, StakeStep1, StakeStep2, StakeStep3 } from '../../components/lib/mark/components'
 import { CONFIG_MASTER_FARMER } from '../../constants'
+import BubbleMessage from 'components/BubbleMessage'
 
 export default function Staking() {
   const { t } = useTranslation()
@@ -42,6 +43,8 @@ export default function Staking() {
   const [guideStep] = useGuideStepManager()
 
   const [isShowRewardInformation, toggleIsShowRewardInformation] = useShowTransactionDetailsManager()
+
+  const [isShowBubbleBonus, setIsShowBubbleBonus] = useState(true)
 
   const { farmId } = useParams() as any
   const farm: Farm | undefined = useFarm(farmId)
@@ -168,7 +171,7 @@ export default function Staking() {
     }
   }, [_onStake, error, symbol, typedValue])
 
-  const pendingText = `Staking ${typedValue} LP`
+  const pendingText = t('staking_123_lp', { amount: typedValue })
 
   const ModalHeader = useCallback(
     function ModalHeader() {
@@ -304,7 +307,7 @@ export default function Staking() {
               main={false}
             />
             <AutoColumn justify="center">
-              <Heading>{t('LP TOKEN')}</Heading>
+              <Heading>{t('lp_token').toUpperCase()}</Heading>
               <SubHeading>{symbol ? `${symbol} LP` : '--'}</SubHeading>
             </AutoColumn>
           </RowFixed>
@@ -319,7 +322,7 @@ export default function Staking() {
               sizeMobile={28}
               main={false}
             />
-            <Heading>{t('LP TOKEN')}</Heading>
+            <Heading>{t('lp_token').toUpperCase()}</Heading>
           </RowFixed>
           <SubHeading>{symbol ? `${symbol} LP` : '--'}</SubHeading>
         </HeadingSection>
@@ -337,6 +340,9 @@ export default function Staking() {
                   onMax={onMax}
                   label={t('input')}
                   customBalanceText={t('lp_balance') + ':'}
+                  address0={token0 && token0.id}
+                  address1={token1 && token1.id}
+                  decimal={18}
                 />
               </StakeStep2>
               {error === t('connect_wallet') ? (
@@ -359,7 +365,11 @@ export default function Staking() {
                 </>
               ) : error === t('approve') || error === t('approving...') ? (
                 <ButtonPrimary disabled={error === t('approving...')} onClick={() => onApprove(symbol)}>
-                  {error === t('approving...') ? error : `Approve ${symbol} LP Token`}
+                  {error === t('approving...')
+                    ? error
+                    : t('approve_eth_sone_lp_token', {
+                        symbol
+                      })}
                 </ButtonPrimary>
               ) : error ? (
                 Number(guideStep.step) === 1 && guideStep.screen === 'stake' ? (
@@ -383,6 +393,12 @@ export default function Staking() {
                 >
                   {t('stake')}
                 </ButtonPrimary>
+              )}
+
+              {isShowBubbleBonus && (
+                <Row padding={isUpToExtraSmall ? '0 10px' : '0 30px'}>
+                  <BubbleMessage bonus={bonusMultiplier} setShow={setIsShowBubbleBonus} />
+                </Row>
               )}
 
               {!error && (

@@ -5,6 +5,7 @@ import { useTransactionAdder } from '../state/transactions/hooks'
 import { useCurrencyBalance } from '../state/wallet/hooks'
 import { useActiveWeb3React } from './index'
 import { useWETHContract } from './useContract'
+import { useTranslation } from 'react-i18next'
 
 export enum WrapType {
   NOT_APPLICABLE,
@@ -23,7 +24,8 @@ export default function useWrapCallback(
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
   typedValue: string | undefined
-): { wrapType: WrapType; execute?: undefined | (() => Promise<void>); inputError?: string } {
+): { wrapType: WrapType; execute?: undefined | (() => Promise<boolean>); inputError?: string } {
+  const { t } = useTranslation()
   const { chainId, account } = useActiveWeb3React()
   const wethContract = useWETHContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
@@ -45,12 +47,19 @@ export default function useWrapCallback(
                 try {
                   const txReceipt = await wethContract.deposit({ value: `0x${inputAmount.raw.toString(16)}` })
                   addTransaction(txReceipt, { summary: `Wrap ${inputAmount.toSignificant(6)} ETH to WETH` })
+                  return true
                 } catch (error) {
                   console.error('Could not deposit', error)
+                  return false
                 }
               }
             : undefined,
-        inputError: sufficientBalance ? undefined : 'Insufficient ETH balance'
+        inputError:
+          inputAmount === undefined
+            ? t('enter_an_amount')
+            : sufficientBalance
+            ? undefined
+            : t('insufficient_eth_balance', { symbol: 'ETH' })
       }
     } else if (currencyEquals(WETH[chainId], inputCurrency) && outputCurrency === ETHER) {
       return {
@@ -61,15 +70,22 @@ export default function useWrapCallback(
                 try {
                   const txReceipt = await wethContract.withdraw(`0x${inputAmount.raw.toString(16)}`)
                   addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WETH to ETH` })
+                  return true
                 } catch (error) {
                   console.error('Could not withdraw', error)
+                  return false
                 }
               }
             : undefined,
-        inputError: sufficientBalance ? undefined : 'Insufficient WETH balance'
+        inputError:
+          inputAmount === undefined
+            ? t('enter_an_amount')
+            : sufficientBalance
+            ? undefined
+            : t('insufficient_eth_balance', { symbol: 'WETH' })
       }
     } else {
       return NOT_APPLICABLE
     }
-  }, [wethContract, chainId, inputCurrency, outputCurrency, inputAmount, balance, addTransaction])
+  }, [t, wethContract, chainId, inputCurrency, outputCurrency, inputAmount, balance, addTransaction])
 }

@@ -91,7 +91,7 @@ export default function WithdrawLiquidity({
   const [showInverted, setShowInverted] = useState(false)
 
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId = 1, library } = useActiveWeb3React()
   const [tokenA, tokenB] = useMemo(() => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)], [
     currencyA,
     currencyB,
@@ -155,7 +155,7 @@ export default function WithdrawLiquidity({
 
   // allowance handling
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
-  const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
+  const [approval, approveCallback] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS[chainId])
 
   const isArgentWallet = useIsArgentWallet()
 
@@ -192,7 +192,7 @@ export default function WithdrawLiquidity({
     ]
     const message = {
       owner: account,
-      spender: ROUTER_ADDRESS,
+      spender: ROUTER_ADDRESS[chainId],
       value: liquidityAmount.raw.toString(),
       nonce: nonce.toHexString(),
       deadline: deadline.toNumber()
@@ -349,9 +349,12 @@ export default function WithdrawLiquidity({
 
   const expertMode = useIsExpertMode()
 
-  const pendingText = `Removing ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
-    currencyA?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencyB?.symbol}`
+  const pendingText = t('removing_123_eth_and_456_sone', {
+    token0Amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6),
+    token0Symbol: currencyA?.symbol,
+    token1Amount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6),
+    token1Symbol: currencyB?.symbol
+  })
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
@@ -380,7 +383,7 @@ export default function WithdrawLiquidity({
         hash={txHash ? txHash : ''}
         content={() => (
           <ConfirmationModalContent
-            title="You will receive"
+            title="you_will_receive"
             onDismiss={handleDismissConfirmation}
             topContent={modalHeader}
             bottomContent={modalBottom}
@@ -403,6 +406,7 @@ export default function WithdrawLiquidity({
             {pair && (
               <>
                 <PanelWithdrawLiquidityInput
+                  label={t('input')}
                   value={formattedAmounts[Field.LIQUIDITY]}
                   onUserInput={onUserInput}
                   lpToken={pair?.liquidityToken}
@@ -415,7 +419,7 @@ export default function WithdrawLiquidity({
                   </IconWrapper>
                 </Row>
                 <PanelCurrencyInput
-                  label="Output"
+                  label={t('output')}
                   value={formattedAmounts[Field.CURRENCY_A]}
                   onUserInput={onCurrencyAInput}
                   showMaxButton={false}
@@ -432,7 +436,7 @@ export default function WithdrawLiquidity({
                   </IconWrapper>
                 </Row>
                 <PanelCurrencyInput
-                  label="Output"
+                  label={t('output')}
                   value={formattedAmounts[Field.CURRENCY_B]}
                   onUserInput={onCurrencyBInput}
                   showMaxButton={false}
@@ -480,7 +484,13 @@ export default function WithdrawLiquidity({
                     </ButtonPrimary>
                   ) : (
                     <ButtonPrimary onClick={onAttemptToApprove} disabled={approval !== ApprovalState.NOT_APPROVED}>
-                      {approval === ApprovalState.PENDING ? <Dots>Approving</Dots> : isValid ? 'Approve' : error}
+                      {approval === ApprovalState.PENDING ? (
+                        <Dots>{t('approving')}</Dots>
+                      ) : isValid ? (
+                        t('approve')
+                      ) : (
+                        error
+                      )}
                     </ButtonPrimary>
                   )}
                 </RowButton>

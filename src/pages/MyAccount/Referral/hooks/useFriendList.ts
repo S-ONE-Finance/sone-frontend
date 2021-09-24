@@ -23,7 +23,7 @@ interface GetFriendListResponse {
 export default function useFriendList(limit: number, page: number): Friend[] {
   const { account } = useActiveWeb3React()
   const url = `${ADMIN_BACKEND_BASE_URL}/friends-manager?page=${page}&limit=${limit}&referralAddress=${account}&fromDate=2000-01-01&toDate=9999-12-31`
-  const { data } = useQuery('useFriendList', () =>
+  const { data } = useQuery(['useFriendList', limit, page], () =>
     axios
       .get<GetFriendListResponse>(url)
       .then(data => data.data)

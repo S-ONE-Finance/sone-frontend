@@ -134,7 +134,7 @@ const StyledNavLink = styled(NavLink).attrs({
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
   width: fit-content;
-  font-weight: 400;
+  font-weight: 500;
   height: 70px;
   display: flex;
   align-items: center;
@@ -168,7 +168,7 @@ const StyledExternalLink = styled(ExternalLink)`
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
   width: fit-content;
-  font-weight: 400;
+  font-weight: 500;
   height: 70px;
   display: flex;
   align-items: center;
@@ -239,7 +239,7 @@ const SubMenuItemNavLink = styled(NavLink)`
   text-decoration: none;
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 500;
   height: 50px;
   width: 100%;
   display: flex;
@@ -262,7 +262,7 @@ const SubMenuItemExternalLink = styled(ExternalLink)<{ isActive?: boolean }>`
   text-decoration: none;
   color: ${({ theme }) => theme.text1Sone};
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 500;
   height: 50px;
   width: 100%;
   display: flex;
@@ -343,7 +343,7 @@ const MenuItem = styled.div`
   font-size: 18px;
   width: fit-content;
   margin: 0 0 0 60px;
-  font-weight: 400;
+  font-weight: 500;
   height: 70px;
   display: flex;
   align-items: center;

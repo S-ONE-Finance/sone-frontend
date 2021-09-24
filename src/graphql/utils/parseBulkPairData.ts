@@ -64,7 +64,7 @@ export default function parseBulkPairData(
 
   // get token1Price changes in 24h
   // BUG: Chả hiểu sao token0Price ở đây lại thành token1Price (nguồn: uniswap-info)
-  const oneDayToken1PriceChange = getPercentChange(data.token1Price, oneDayData.token1Price)
+  const oneDayToken1PriceChange = getPercentChange(data.token1Price, oneDayData?.token1Price)
 
   // set token1Price properties
   data.oneDayToken1PriceChange = oneDayToken1PriceChange

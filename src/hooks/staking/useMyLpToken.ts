@@ -5,6 +5,7 @@ import { useActiveWeb3React } from 'hooks'
 import { swapClients } from '../../graphql/clients'
 import { useQuery } from 'react-query'
 import { useMemo } from 'react'
+import { DEFAULT_CHAIN_ID } from '../../constants'
 
 export default function useMyLpToken(): LiquidityPosition[] {
   const { account, chainId } = useActiveWeb3React()
@@ -12,7 +13,7 @@ export default function useMyLpToken(): LiquidityPosition[] {
   const { data: myLpToken } = useQuery(
     ['useMyLpToken', account, chainId],
     async () => {
-      const result = await swapClients[chainId ?? 1].query({
+      const result = await swapClients[account && chainId ? chainId : DEFAULT_CHAIN_ID].query({
         query: liquidityPositionSubsetQuery,
         variables: { user: account?.toLowerCase() }
       })

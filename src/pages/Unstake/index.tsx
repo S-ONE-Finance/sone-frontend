@@ -238,7 +238,7 @@ export default function Unstake() {
   // Not show AppVector ==> `transactionType={undefined}`.
   const modalContent = () => (
     <ConfirmationModalContent
-      title={t('You will receive')}
+      title={t('you_will_receive')}
       onDismiss={handleDismissConfirmation}
       topContent={ModalHeader}
       bottomContent={ModalFooter}
@@ -269,7 +269,7 @@ export default function Unstake() {
               main={false}
             />
             <AutoColumn justify="center">
-              <Heading>{t('LP TOKEN')}</Heading>
+              <Heading>{t('lp_token').toUpperCase()}</Heading>
               <SubHeading>{symbol} LP</SubHeading>
             </AutoColumn>
           </RowFixed>
@@ -284,7 +284,7 @@ export default function Unstake() {
               sizeMobile={28}
               main={false}
             />
-            <Heading>{t('LP TOKEN')}</Heading>
+            <Heading>{t('lp_token').toUpperCase()}</Heading>
           </RowFixed>
           <SubHeading>{symbol} LP</SubHeading>
         </HeadingSection>
@@ -302,6 +302,7 @@ export default function Unstake() {
               customBalanceText={t('staked') + ':'}
               address0={token0 && token0.id}
               address1={token1 && token1.id}
+              decimal={18}
             />
             {error ? (
               <ButtonPrimary disabled={true}>{error}</ButtonPrimary>

@@ -16,10 +16,11 @@ const TransactionWrapper = styled.div``
 const TransactionStatusText = styled.div`
   padding: 0 0.5rem;
   display: flex;
-  align-items: center;
   white-space: pre-wrap;
   flex-wrap: wrap;
   align-items: flex-end; /* Need it to render text pretty with Japanese */
+
+  display: inline;
 
   ::after {
     font-family: 'Inter var', sans-serif;

@@ -133,3 +133,42 @@ export const sonePriceQuery = (soneAddress: string) => gql`
     }
   }
 `
+
+export const userLiquidityPositionsQuery = (id: string) => gql`
+  {
+    user(id: "${id}") {
+      liquidityPositions {
+        liquidityTokenBalance
+        pair {
+          id
+          totalSupply
+          mints{
+            amountUSD
+          }
+          swaps {
+            pair{
+              token0{
+                derivedETH
+              }
+              token1{
+                derivedETH
+              }
+            }
+            amount0In
+            amount1In
+            amount0Out
+            amount1Out
+          }
+        }
+      }
+    }
+  }
+`
+
+export const ethPriceQuery = gql`
+  {
+    bundle(id: "1") {
+      ethPrice
+    }
+  }
+`

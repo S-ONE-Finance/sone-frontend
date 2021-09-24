@@ -12,7 +12,7 @@ const StakeStep4 = () => {
           <img src={swapMessage} alt="message" />
         </Step6Box>
         <Step6Instruction>
-          <Step6InstructionText>{t('Let’s stake LP tokens to get rewards!')}</Step6InstructionText>
+          <Step6InstructionText>{t('let’s_stake_lp_tokens_to_get_rewards')}</Step6InstructionText>
           <img src={handIcon} alt="hand" />
         </Step6Instruction>
       </Step6Wrapper>

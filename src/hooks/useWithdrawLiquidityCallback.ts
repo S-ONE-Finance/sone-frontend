@@ -27,7 +27,7 @@ export default function useWithdrawLiquidityCallback({
   setAttemptingTxn: React.Dispatch<React.SetStateAction<boolean>>
   setTxHash: React.Dispatch<React.SetStateAction<string>>
 }) {
-  const { account, chainId, library } = useActiveWeb3React()
+  const { account, chainId = 1, library } = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
   const deadline = useTransactionDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -37,7 +37,7 @@ export default function useWithdrawLiquidityCallback({
     currencyB,
     chainId
   ])
-  const [approval] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS)
+  const [approval] = useApproveCallback(parsedAmounts[Field.LIQUIDITY], ROUTER_ADDRESS[chainId])
 
   return useCallback(async () => {
     if (!chainId || !library || !account || !deadline) throw new Error('missing dependencies')
@@ -128,6 +128,9 @@ export default function useWithdrawLiquidityCallback({
     } else {
       throw new Error('Attempting to confirm without approval or a signature. Please contact support.')
     }
+
+    console.log(`methodNames`, methodNames)
+    console.log(`args`, args)
 
     const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
       methodNames.map(methodName =>

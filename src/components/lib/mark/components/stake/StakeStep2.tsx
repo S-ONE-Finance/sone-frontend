@@ -15,7 +15,7 @@ const StakeStep2 = ({ children }: ChildrenProp) => {
         {children}
         {Number(guideStep.step) === 2 && guideStep.screen === 'stake' && (
           <>
-            <Step1Intro>{t('Input your LP Token here to stake.')}</Step1Intro>
+            <Step1Intro>{t('input_your_lp_token_here_to_stake')}</Step1Intro>
             <StyledHandIcon>
               <img src={handIcon} alt="hand" />
             </StyledHandIcon>

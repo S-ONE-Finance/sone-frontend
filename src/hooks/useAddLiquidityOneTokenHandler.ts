@@ -167,7 +167,7 @@ export default function useAddLiquidityOneTokenHandler({
           addTransaction(response, {
             summary: {
               type: TransactionType.ADD_ONE_TOKEN,
-              userInputAmount: selectedTokenUserInputAmount?.toSignificant(3),
+              userInputAmount: selectedTokenUserInputAmount?.toSignificant(6),
               userInputSymbol: selectedTokenUserInputAmount?.currency.symbol
             }
           })

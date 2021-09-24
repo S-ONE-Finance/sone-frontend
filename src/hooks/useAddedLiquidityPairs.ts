@@ -21,8 +21,6 @@ export default function useAddedLiquidityPairs(): [boolean, Array<Pair>] {
     account ?? undefined,
     liquidityTokens
   )
-
-  // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
     () =>
       tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
@@ -34,6 +32,7 @@ export default function useAddedLiquidityPairs(): [boolean, Array<Pair>] {
   const addedPairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
     .map(([, pair]) => pair)
     .filter((pair): pair is Pair => Boolean(pair))
+
   const isLoading =
     fetchingV2PairBalances || addedPairs?.length < liquidityTokensWithBalances.length || addedPairs?.some(pair => !pair)
 

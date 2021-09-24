@@ -10,6 +10,12 @@ export const swapClients: { [chainId: number]: ApolloClient<NormalizedCacheObjec
     }),
     cache: new InMemoryCache()
   }),
+  [ChainId.RINKEBY]: new ApolloClient({
+    link: new HttpLink({
+      uri: 'https://graph-node.s-one.finance/subgraphs/name/s-one-finance/soneswap'
+    }),
+    cache: new InMemoryCache()
+  }),
   [ChainId.ROPSTEN]: new ApolloClient({
     link: new HttpLink({
       uri: 'https://api.thegraph.com/subgraphs/name/s-one-system/sone-swap-ropsten'
@@ -21,7 +27,13 @@ export const swapClients: { [chainId: number]: ApolloClient<NormalizedCacheObjec
 export const stakingClients: { [chainId: number]: ApolloClient<NormalizedCacheObject> } = {
   [ChainId.MAINNET]: new ApolloClient({
     link: new HttpLink({
-      uri: 'https://api.thegraph.com/subgraphs/name/thanhnv25/farmer07091'
+      uri: ''
+    }),
+    cache: new InMemoryCache()
+  }),
+  [ChainId.RINKEBY]: new ApolloClient({
+    link: new HttpLink({
+      uri: 'https://graph-node.s-one.finance/subgraphs/name/s-one-finance/master-farmer'
     }),
     cache: new InMemoryCache()
   }),
@@ -37,6 +49,12 @@ export const blockClients: { [chainId: number]: ApolloClient<NormalizedCacheObje
   [ChainId.MAINNET]: new ApolloClient({
     link: new HttpLink({
       uri: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks'
+    }),
+    cache: new InMemoryCache()
+  }),
+  [ChainId.RINKEBY]: new ApolloClient({
+    link: new HttpLink({
+      uri: 'https://api.thegraph.com/subgraphs/name/blocklytics/rinkeby-blocks'
     }),
     cache: new InMemoryCache()
   }),

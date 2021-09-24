@@ -25,7 +25,6 @@ export default function useRequestReward(): [boolean, () => void] {
         referralId
       })
       .then(() => {
-        // TODO: Xử lý lại để không phụ thuộc vào setTimeout??
         setTimeout(() => setJustClicked(false), 15000)
       })
       .catch(err => {

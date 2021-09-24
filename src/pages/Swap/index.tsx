@@ -139,7 +139,7 @@ export default function Swap({ history }: RouteComponentProps) {
     inputError: swapInputError
   } = useDerivedSwapInfo()
 
-  const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
+  const { wrapType, execute: _onWrap, inputError: wrapInputError } = useWrapCallback(
     currencies[Field.INPUT],
     currencies[Field.OUTPUT],
     typedValue
@@ -180,12 +180,20 @@ export default function Swap({ history }: RouteComponentProps) {
     },
     [onUserInput]
   )
+
   const handleTypeOutput = useCallback(
     (value: string) => {
       onUserInput(Field.OUTPUT, value)
     },
     [onUserInput]
   )
+
+  const onWrap = useCallback(async () => {
+    if (_onWrap) {
+      const done = await _onWrap().then()
+      if (done) handleTypeInput('')
+    }
+  }, [_onWrap, handleTypeInput])
 
   // reset if they close warning without tokens in params
   const handleDismissTokenWarning = useCallback(() => {
@@ -281,7 +289,7 @@ export default function Swap({ history }: RouteComponentProps) {
           attemptingTxn: false,
           tradeToConfirm,
           showConfirm,
-          swapErrorMessage: error.message,
+          swapErrorMessage: undefined,
           txHash: undefined
         })
       })
@@ -556,7 +564,7 @@ export default function Swap({ history }: RouteComponentProps) {
                     <RowBetween align="center">
                       <RowFixed>
                         <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                          {t('Referral ID') + (isValidCode === undefined ? ' (Invalid data)' : '')}
+                          {t('referral_id') + (isValidCode === undefined ? ' (Invalid data)' : '')}
                         </Text>
                         <QuestionHelper1416 text={t('question_helper_referral_id')} />
                       </RowFixed>
@@ -606,7 +614,7 @@ export default function Swap({ history }: RouteComponentProps) {
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <ButtonError disabled>
                 <Text fontSize={mobile16Desktop22} fontWeight={700}>
-                  {t('Insufficient liquidity for this trade')}
+                  {t('insufficient_liquidity_for_this_trade')}
                 </Text>
               </ButtonError>
             ) : showApproveFlow ? (
@@ -620,12 +628,12 @@ export default function Swap({ history }: RouteComponentProps) {
                 >
                   {approval === ApprovalState.PENDING ? (
                     <AutoRow gap="6px" justify="center">
-                      {t('Approving')} <Loader stroke="white" />
+                      {t('approving')} <Loader stroke="white" />
                     </AutoRow>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                    t('Approved')
+                    t('approved')
                   ) : (
-                    `${t('Approve')} ` + currencies[Field.INPUT]?.symbol
+                    `${t('approve')} ` + currencies[Field.INPUT]?.symbol
                   )}
                 </ButtonConfirmed>
                 <ButtonError

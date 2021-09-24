@@ -4,10 +4,12 @@ import { TransactionResponse } from '@ethersproject/providers'
 
 import { useSoneContract } from 'hooks/useContract'
 import { useTransactionAdder } from 'state/transactions/hooks'
+import { useTranslation } from 'react-i18next'
 
 export default function useUnlockHandler() {
   const addTransaction = useTransactionAdder()
   const soneContract: Contract | null = useSoneContract()
+  const { t } = useTranslation()
 
   return useCallback(async () => {
     try {
@@ -15,7 +17,7 @@ export default function useUnlockHandler() {
         ?.unlock()
         .then((txResponse: TransactionResponse) => {
           addTransaction(txResponse, {
-            summary: `Unlock SONE transaction completed`
+            summary: t('unlock_sone')
           })
           return txResponse
         })
@@ -25,5 +27,5 @@ export default function useUnlockHandler() {
       console.error(e)
       return false
     }
-  }, [soneContract, addTransaction])
+  }, [soneContract, addTransaction, t])
 }

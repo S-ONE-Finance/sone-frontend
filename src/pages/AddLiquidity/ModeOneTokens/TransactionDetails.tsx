@@ -16,6 +16,7 @@ import { useDerivedMintSimpleInfo } from 'state/mintSimple/hooks'
 import { useShowTransactionDetailsManager, useUserSlippageTolerance } from 'state/user/hooks'
 import { INITIAL_ALLOWED_SLIPPAGE, ONE_BIPS } from '../../../constants'
 import ViewPairAnalytics from '../../../components/ViewPairAnalytics'
+import useCanRewardSone from '../../../hooks/useCanRewardSone'
 
 type TransactionDetailsProps = {
   selectedPairState: PairState
@@ -36,6 +37,7 @@ export default function TransactionDetails({
   const {
     selectedTokenUserInputAmount,
     selectedTokenParsedAmount,
+    theOtherCurrency,
     theOtherTokenParsedAmount,
     noLiquidity,
     price,
@@ -57,6 +59,8 @@ export default function TransactionDetails({
     () => !!(selectedTokenUserInputAmount && selectedTokenParsedAmount && theOtherTokenParsedAmount),
     [selectedTokenUserInputAmount, selectedTokenParsedAmount, theOtherTokenParsedAmount]
   )
+
+  const canRewardSone = useCanRewardSone(selectedCurrency, theOtherCurrency)
 
   return (
     <>
@@ -122,6 +126,17 @@ export default function TransactionDetails({
                   ? '100'
                   : (poolTokenPercentage?.lessThan(ONE_BIPS) ? '<0.01' : poolTokenPercentage?.toFixed(2)) ?? '0'}
                 %
+              </Text>
+            </RowBetween>
+            <RowBetween>
+              <RowFixed>
+                <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                  {t('reward_0.05%_by_sone')}
+                </Text>
+                <QuestionHelper1416 text={t('question_helper_reward_0.05%_by_sone')} color={theme.text4Sone} />
+              </RowFixed>
+              <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+                {canRewardSone === true ? t('yes') : canRewardSone === false ? t('no') : '--'}
               </Text>
             </RowBetween>
           </AutoColumn>

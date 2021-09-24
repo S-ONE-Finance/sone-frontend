@@ -347,7 +347,7 @@ export default function PanelCurrencyInput({
           )}
           {showReceiveWETH && (
             <ButtonReceiveWETH onClick={onReceiveWETHToggle}>
-              {currency === Currency.ETHER ? t('Receive WETH') : t('Receive ETH')}
+              {currency === Currency.ETHER ? t('receive_weth') : t('receive_eth')}
             </ButtonReceiveWETH>
           )}
         </InputRow>

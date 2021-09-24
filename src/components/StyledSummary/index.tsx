@@ -17,20 +17,6 @@ const Green = styled(Bold)`
 `
 
 export default function StyledSummary({ summary }: { summary: TransactionSummary }) {
-  // let i18nKey
-  // switch (summary.type) {
-  //   case TransactionType.SWAP:
-  //     i18nKey = 'summary_swap'
-  //     break
-  //   case TransactionType.ADD_ONE_TOKEN:
-  //     i18nKey = 'summary_add_one_token'
-  //     break
-  //   case TransactionType.ADD_TWO_TOKENS:
-  //     i18nKey = 'summary_add_two_tokens'
-  //     break
-  //   default:
-  //     throw new Error(summary)
-  // }
   if (summary.type === TransactionType.SWAP) {
     const i18nKey = 'summary_swap'
     const { inputAmount, inputSymbol, outputAmount, outputSymbol } = summary

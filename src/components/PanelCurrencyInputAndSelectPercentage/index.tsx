@@ -52,7 +52,7 @@ const RowPercentage = styled(RowBetween)`
 interface PanelLpTokenInputProps {
   value: string
   onUserInput: (field: Field, typedValue: string) => void
-  label?: string
+  label: string
   lpToken?: Token
   hideBalance?: boolean
   id: string
@@ -63,7 +63,7 @@ interface PanelLpTokenInputProps {
 export default function PanelCurrencyInputAndSelectPercentage({
   value,
   onUserInput,
-  label = 'Input',
+  label,
   lpToken,
   hideBalance = false,
   id,

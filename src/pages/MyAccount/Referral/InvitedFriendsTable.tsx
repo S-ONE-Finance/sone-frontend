@@ -54,9 +54,9 @@ const TableRow = styled.tr`
   `}
 `
 
-const TableData = styled.td<{ align?: string; breakk?: string }>`
+const TableData = styled.td<{ align?: string; wordBreak?: string }>`
   text-align: ${({ align }) => (align ? align : 'left')};
-  word-break: ${({ breakk }) => (breakk ? breakk : 'normal')};
+  word-break: ${({ wordBreak }) => (wordBreak ? wordBreak : 'normal')};
   padding: 0 15px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -105,7 +105,7 @@ export default function InvitedFriendsTable() {
           {friendList.map((friend, index) => (
             <TableRow key={friend.id}>
               <TableData align="center">{limit * (selectedPage - 1) + index + 1}</TableData>
-              <TableData breakk="break-all">{shortenAddress(friend.address, isUpToExtraSmall ? 6 : 14)}</TableData>
+              <TableData wordBreak="break-all">{shortenAddress(friend.address, isUpToExtraSmall ? 6 : 14)}</TableData>
               {/* Thằng Date chuẩn ISO thì cứ đẩy substr(0, 10) là ăn :D. */}
               <TableData>{friend.updatedAt.substr(0, 10)}</TableData>
               <TableData>

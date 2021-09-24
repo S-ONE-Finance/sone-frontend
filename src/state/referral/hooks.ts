@@ -7,6 +7,7 @@ import { ADMIN_BACKEND_BASE_URL } from '../../constants/urls'
 import axios from 'axios'
 import { useActiveWeb3React } from '../../hooks'
 import { useQuery } from 'react-query'
+import { useBlockNumber } from '../application/hooks'
 
 export function useClearReferralCallback() {
   const dispatch = useDispatch<AppDispatch>()
@@ -123,9 +124,10 @@ interface IsAccountReferredResponse {
 
 export function useIsAccountReferred(): boolean {
   const { account } = useActiveWeb3React()
+  const block = useBlockNumber()
 
   const url = `${ADMIN_BACKEND_BASE_URL}/friends-manager/is-address-referred/${account}`
-  const { data: isAccountReferred } = useQuery('useIsAccountReferred', () =>
+  const { data: isAccountReferred } = useQuery(['useIsAccountReferred', account, block], () =>
     axios
       .get<IsAccountReferredResponse>(url)
       .then(data => {

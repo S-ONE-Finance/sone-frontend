@@ -92,7 +92,7 @@ const Blurb = styled.div`
 
 const StyledExternalLink = styled(ExternalLink)`
   font-weight: 700;
-  color: ${({ theme }) => theme.text4Sone};
+  color: ${({ theme }) => theme.text5Sone};
 `
 
 const OptionGrid = styled.div`

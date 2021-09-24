@@ -16,25 +16,27 @@ interface PairInfoProps {
 const PairInfoWrapper = styled(RowFixed)`
   align-items: center;
   height: 100%;
-  width: 350px;
-  padding: 0 2rem;
   display: flex;
   justify-content: center;
+  padding: 0 48px;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 200px;
-    padding: 0 12.5px;
+    padding: 0 32px;
   `};
 `
 
 const Text = {
   PairName: styled(TYPE.black)`
+    min-width: fit-content !important;
+
     ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: 11px;
     `};
   `,
   ChangeAmount: styled(TYPE.black)`
     margin-left: 10px !important;
+    min-width: fit-content !important;
+
     ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: 11px;
     margin-left: 5px !important;
@@ -45,6 +47,8 @@ const Text = {
     align-items: center;
     font-weight: 400 !important;
     margin-left: 10px !important;
+    min-width: fit-content !important;
+
     ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: 11px;
     margin-left: 5px !important;
@@ -55,6 +59,8 @@ const Text = {
     align-items: center;
     font-weight: 400 !important;
     margin-left: 10px !important;
+    min-width: fit-content !important;
+
     ${({ theme }) => theme.mediaWidth.upToSmall`
     font-size: 11px;
     margin-left: 5px !important;

@@ -195,7 +195,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         <StyledExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>{t('staking_stats')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_DOCS_URL}>{t('docs')}</StyledExternalLink>
-        <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('White Paper')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('white_paper')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_FAQ_URL}>{t('faq')}</StyledExternalLink>
       </Column>
       <RecentTransactions isSmall={true} />

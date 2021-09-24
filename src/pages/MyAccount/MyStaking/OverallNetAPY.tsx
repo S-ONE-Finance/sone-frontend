@@ -6,6 +6,7 @@ import { UserInfoSone } from '@s-one-finance/sdk-core'
 import useUnmountedRef from '../../../hooks/useUnmountedRef'
 import { getFixedNumberCommas } from '../../../utils/formatNumber'
 import BigNumber from 'bignumber.js'
+import useOneSoneInUSD from '../../../hooks/useOneSoneInUSD'
 
 const StakingBackground = styled.div`
   width: 100%;
@@ -54,20 +55,22 @@ const OverallNetAPY = memo(function OverallNetAPY() {
   const [, myAccountStaked] = useMyAccountStaked()
   const [netApy, setNetApy] = useState(0)
   const unmountedRef = useUnmountedRef()
+  const sonePrice = useOneSoneInUSD()
 
   useEffect(() => {
     let totalSoneHarvestUSD = 0
     let totalLPStakeUSD = 0
     myAccountStaked.forEach((user: UserInfoSone) => {
-      totalSoneHarvestUSD += Number(user.soneHarvestedUSD)
+      const { soneHarvested } = user
+      totalSoneHarvestUSD += sonePrice * +soneHarvested
       totalLPStakeUSD += (Number(user.amount) / 1e18) * Number(user.pool?.LPTokenPrice)
     })
     if (totalLPStakeUSD && !unmountedRef.current) {
       setNetApy(totalSoneHarvestUSD / totalLPStakeUSD)
     }
-  }, [unmountedRef, myAccountStaked])
+  }, [sonePrice, unmountedRef, myAccountStaked])
 
-  const netApyRender = useMemo(() => getFixedNumberCommas(new BigNumber(netApy).toString()) + '%', [netApy])
+  const netApyRender = useMemo(() => getFixedNumberCommas(new BigNumber(netApy).toString(), 5) + '%', [netApy])
 
   return (
     <StakingBackground>

@@ -1,17 +1,17 @@
 import React from 'react'
-import { isEmpty } from 'lodash'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Farm } from '@s-one-finance/sdk-core/'
 import IconAPY from '../../assets/images/icon_apy.svg'
-import IconLP from '../../assets/images/icon_lp.svg'
 import Loader from '../../components/Loader'
+import { getFixedNumberCommas, getNumberCommas } from '../../utils/formatNumber'
+import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenLogo'
 
-const FarmCards: React.FC<{ farms: Farm[] | undefined }> = ({ farms = [] }) => {
+const FarmCards: React.FC<{ farms: Farm[] | undefined; isLoading: boolean }> = ({ farms = [], isLoading }) => {
   return (
     <>
-      {isEmpty(farms) ? (
+      {isLoading ? (
         <StyledLoadingWrapper>
           <Loader size="30px" />
         </StyledLoadingWrapper>
@@ -32,6 +32,8 @@ interface FarmCardProps {
 
 const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
   const { t } = useTranslation()
+  const { token0, token1 } = farm?.liquidityPair || {}
+
   return (
     <>
       <CardWrap>
@@ -41,24 +43,30 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             <StyledMultiplier>{farm.multiplier}X</StyledMultiplier>
           </StyledCardHeaderTitle>
           <StyledCardHeaderIcon>
-            <img src={IconLP} alt="" />
+            <LiquidityProviderTokenLogo
+              address0={token0 && token0.id}
+              address1={token1 && token1.id}
+              size={50}
+              sizeMobile={38}
+              main={false}
+            />
           </StyledCardHeaderIcon>
         </StyledCardHeader>
         <StyledCardBody>
           <StyledItemRow>
             {t('earn')}
-            <span>SONE</span>
+            <span>{getFixedNumberCommas(farm.soneHarvested.toString(), 6)} SONE</span>
           </StyledItemRow>
           <StyledItemRow>
             {t('apy')}
             <StyledItemRowImage>
               <img src={IconAPY} alt="" />
-              <div>&nbsp;{`${farm.roiPerYear * 100}%`}</div>
+              <div>&nbsp;{`${getNumberCommas(farm.roiPerYear * 100)}%`}</div>
             </StyledItemRowImage>
           </StyledItemRow>
           <StyledLastItemRow>
             {t('total_liquidity')}
-            <span>${farm.balanceUSD && farm.balanceUSD}</span>
+            <span>${farm.balanceUSD && getNumberCommas(farm.balanceUSD)}</span>
           </StyledLastItemRow>
           <StyledButton>
             <NavLink to={`/staking/${farm.id}`}>{t('select')}</NavLink>
@@ -82,6 +90,7 @@ const StyledCards = styled.div`
   grid-template-columns: repeat(3, minmax(339px, 396px));
   column-gap: 50px;
   row-gap: 50px;
+  min-height: 200px;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     column-gap: 50px;

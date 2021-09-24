@@ -28,6 +28,7 @@ import { BackArrow, ExternalLink, TYPE } from '../../theme'
 import { getEtherscanLink, isAddress } from '../../utils'
 import { AppBody } from 'theme/components'
 import { EmptyState } from './EmptyState'
+import { useTranslation } from 'react-i18next'
 
 const WEI_DENOM = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
 const ZERO = JSBI.BigInt(0)
@@ -87,6 +88,7 @@ export function V1LiquidityInfo({
 }
 
 function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount: TokenAmount; token: Token }) {
+  const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
   const totalSupply = useTotalSupply(liquidityTokenAmount.token)
   const exchangeETHBalance = useETHBalances([liquidityTokenAmount.token.address])?.[liquidityTokenAmount.token.address]
@@ -278,11 +280,11 @@ function V1PairMigration({ liquidityTokenAmount, token }: { liquidityTokenAmount
               onClick={approve}
             >
               {approval === ApprovalState.PENDING ? (
-                <Dots>Approving</Dots>
+                <Dots>{t('approving')}</Dots>
               ) : approval === ApprovalState.APPROVED ? (
-                'Approved'
+                t('approved')
               ) : (
-                'Approve'
+                t('approve')
               )}
             </ButtonConfirmed>
           </AutoColumn>

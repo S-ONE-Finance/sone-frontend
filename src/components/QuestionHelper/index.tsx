@@ -3,6 +3,7 @@ import { HelpCircle as Question } from 'react-feather'
 import styled from 'styled-components'
 import Tooltip from '../Tooltip'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import useTheme from '../../hooks/useTheme'
 
 const QuestionWrapper = styled.div`
   display: flex;
@@ -50,11 +51,13 @@ export default function QuestionHelper({ text, size = 16, color }: { text: strin
   const open = useCallback(() => setShow(true), [setShow])
   const close = useCallback(() => setShow(false), [setShow])
 
+  const theme = useTheme()
+
   return (
     <span style={{ marginLeft: 4 }}>
       <Tooltip text={text} show={show}>
         <QuestionWrapper onClick={open} onMouseEnter={open} onMouseLeave={close}>
-          <Question size={size} color={color} />
+          <Question size={size} color={color ?? theme.text3Sone} />
         </QuestionWrapper>
       </Tooltip>
     </span>
