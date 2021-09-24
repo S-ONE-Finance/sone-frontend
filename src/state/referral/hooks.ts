@@ -143,7 +143,9 @@ export function useIsAccountReferred(): boolean {
   return useMemo(() => (isAccountReferred === undefined ? true : isAccountReferred), [isAccountReferred])
 }
 
+// TODO:
 const REFERRAL_NETWORK = process.env.REACT_APP_REFERRAL_NETWORK
+// const REFERRAL_NETWORK = '4'
 
 if (REFERRAL_NETWORK === undefined) {
   throw new Error(`REACT_APP_REFERRAL_NETWORK must be a defined environment variable.`)
