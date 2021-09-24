@@ -76,7 +76,7 @@ export default function MyLiquidityItem({
         ]
       : [undefined, undefined]
   const apy = useMyLiquidityApy(pair.liquidityToken.address)
-  const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString(), 6)}%`
+  const apyRender = apy === undefined ? '0%' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString(), 6)}%`
 
   return (
     <MyLiquidityAndStakingContainer>
