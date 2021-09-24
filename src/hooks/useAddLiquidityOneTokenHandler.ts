@@ -56,7 +56,7 @@ export default function useAddLiquidityOneTokenHandler({
       return
 
     const router = getRouterContract(chainId, library, account)
-    // const isSelectedToken0 = selectedTokenParsedAmount.token.equals(selectedPair.token0)
+    const isSelectedToken0 = selectedTokenParsedAmount.token.equals(selectedPair.token0)
     const [
       selectedTokenUserInputAmountJSBI,
       selectedTokenMinAmountJSBI,
@@ -85,17 +85,14 @@ export default function useAddLiquidityOneTokenHandler({
       method = router.addLiquidityOneTokenETHExactETH
       // args = [amountTokenMin, amountETHMin, amountOutTokenMin, path, to, deadline]
       args = [
-        0,
-        0,
-        0,
-        // theOtherTokenMinAmountJSBI.toString(),
-        // selectedTokenMinAmountJSBI.toString(),
-        // theOtherTokenMinOutputAmountJSBI.toString(),
+        theOtherTokenMinAmountJSBI.toString(),
+        selectedTokenMinAmountJSBI.toString(),
+        theOtherTokenMinOutputAmountJSBI.toString(),
         [selectedTokenParsedAmount.token.address, theOtherTokenParsedAmount.token.address],
         account,
         deadline.toHexString()
       ]
-      value = BigNumber.from(theOtherTokenMinAmountJSBI.toString())
+      value = BigNumber.from(selectedTokenUserInputAmount.raw.toString())
     } else if (ETHER === theOtherCurrency) {
       /**
        * If user select a token, and the other currency is ETHER.
@@ -105,12 +102,9 @@ export default function useAddLiquidityOneTokenHandler({
       // args = [amountIn, amountTokenMin, amountETHMin, amountOutETHMin, path, to, deadline]
       args = [
         selectedTokenUserInputAmountJSBI.toString(),
-        // selectedTokenMinAmountJSBI.toString(),
-        // theOtherTokenMinAmountJSBI.toString(),
-        // theOtherTokenMinOutputAmountJSBI.toString(),
-        0,
-        0,
-        0,
+        selectedTokenMinAmountJSBI.toString(),
+        theOtherTokenMinAmountJSBI.toString(),
+        theOtherTokenMinOutputAmountJSBI.toString(),
         [selectedTokenParsedAmount.token.address, theOtherTokenParsedAmount.token.address],
         account,
         deadline.toHexString()
@@ -141,12 +135,9 @@ export default function useAddLiquidityOneTokenHandler({
       // args = [amountIn, amountAMin, amountBMin, amountOutMin, path, to, deadline]
       args = [
         selectedTokenUserInputAmountJSBI.toString(),
-        // isSelectedToken0 ? selectedTokenMinAmountJSBI.toString() : theOtherTokenMinAmountJSBI.toString(),
-        // isSelectedToken0 ? theOtherTokenMinAmountJSBI.toString() : selectedTokenMinAmountJSBI.toString(),
-        // theOtherTokenMinOutputAmountJSBI.toString(),
-        0,
-        0,
-        0,
+        isSelectedToken0 ? selectedTokenMinAmountJSBI.toString() : theOtherTokenMinAmountJSBI.toString(),
+        isSelectedToken0 ? theOtherTokenMinAmountJSBI.toString() : selectedTokenMinAmountJSBI.toString(),
+        theOtherTokenMinOutputAmountJSBI.toString(),
         [selectedTokenParsedAmount.token.address, theOtherTokenParsedAmount.token.address],
         account,
         deadline.toHexString()
@@ -177,7 +168,7 @@ export default function useAddLiquidityOneTokenHandler({
       )
       .catch(error => {
         setAttemptingTxn(false)
-        // we only care if the error is something _other_ than the user rejected the tx
+        // we only care if the error is something other than the user rejected the tx
         if (error?.code !== 4001) {
           console.error(error)
         }

@@ -159,7 +159,7 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
           allPairs={allPairs}
         />
         {(isPairExistAndNotNull || Number(guideStep.step) > 4) && (
-          <AutoColumn>
+          <AutoColumn gap="12px">
             <OneStep4>
               <PanelCurrencyInput
                 id="add-liquidity-simple-input-tokena"
