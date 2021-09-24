@@ -274,7 +274,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
         </FlexibleRow>
         <Row gap="10px" justify="flex-end">
           <Column width="fit-content" justify="center" align="center">
-            <TextPercentage onClick={() => alert('Not implemented yet!')}>{apyRender}</TextPercentage>
+            <TextPercentage>{apyRender}</TextPercentage>
             <TextAPY>{t('apy')}</TextAPY>
           </Column>
           <DownIcon

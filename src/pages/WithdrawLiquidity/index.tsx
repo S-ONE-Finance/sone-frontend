@@ -284,7 +284,7 @@ export default function WithdrawLiquidity({
             {parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}
           </TruncatedText>
           <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align={'center'}>
-            <CurrencyLogo currency={currencyA} size="24px" style={{ marginRight: '5px' }} />
+            <CurrencyLogo currency={currencyA} size="28px" sizeMobile="16px" style={{ marginRight: '5px' }} />
             <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
               {currencyA?.symbol}
             </Text>
@@ -298,7 +298,7 @@ export default function WithdrawLiquidity({
             {parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}
           </TruncatedText>
           <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align={'center'}>
-            <CurrencyLogo currency={currencyB} size="24px" style={{ marginRight: '5px' }} />
+            <CurrencyLogo currency={currencyB} size="28px" sizeMobile="16px" style={{ marginRight: '5px' }} />
             <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
               {currencyB?.symbol}
             </Text>
@@ -383,7 +383,7 @@ export default function WithdrawLiquidity({
         hash={txHash ? txHash : ''}
         content={() => (
           <ConfirmationModalContent
-            title="you_will_receive"
+            title={t('you_will_receive')}
             onDismiss={handleDismissConfirmation}
             topContent={modalHeader}
             bottomContent={modalBottom}
