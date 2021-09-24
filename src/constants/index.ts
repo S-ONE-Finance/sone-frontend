@@ -6,14 +6,20 @@ import { injected, walletconnect } from '../connectors'
 export const MAX_UINT_256 = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
-// TODO:
 export const DEFAULT_CHAIN_ID = Number(process.env.REACT_APP_DEFAULT_CHAIN_ID)
-// export const DEFAULT_CHAIN_ID = 4
 
 export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '',
   [ChainId.RINKEBY]: '0x5E9705FF88F548cba6BBF91F8C9Ae2611f5E83BB',
   [ChainId.ROPSTEN]: '0x5065C6C5BCE00739Fb90bC5ab33e397c14f63335',
+  [ChainId.GÖRLI]: '',
+  [ChainId.KOVAN]: ''
+}
+
+export const ETHERSCAN_URLS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: 'https://etherscan.io',
+  [ChainId.RINKEBY]: 'https://rinkeby.etherscan.io',
+  [ChainId.ROPSTEN]: 'https://ropsten.etherscan.io',
   [ChainId.GÖRLI]: '',
   [ChainId.KOVAN]: ''
 }

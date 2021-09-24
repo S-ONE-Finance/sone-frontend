@@ -5,7 +5,7 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers'
 import { BigNumber } from '@ethersproject/bignumber'
 // import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import { abi as ISoneSwapRouter } from '@s-one-finance/core/artifacts/contracts/sone-smart-contracts/interfaces/ISoneSwapRouter.sol/ISoneSwapRouter.json'
-import { ROUTER_ADDRESS } from '../constants'
+import { DEFAULT_CHAIN_ID, ETHERSCAN_URLS, ROUTER_ADDRESS } from '../constants'
 import { ChainId, JSBI, Percent, Token, CurrencyAmount, Currency, ETHER } from '@s-one-finance/sdk-core'
 import { TokenAddressMap } from '../state/lists/hooks'
 
@@ -18,34 +18,24 @@ export function isAddress(value: any): string | false {
   }
 }
 
-const ETHERSCAN_PREFIXES: { [chainId in ChainId]: string } = {
-  1: '',
-  3: 'ropsten.',
-  4: 'rinkeby.',
-  5: 'goerli.',
-  42: 'kovan.'
-}
-
 export function getEtherscanLink(
   chainId: ChainId,
   data: string,
   type: 'transaction' | 'token' | 'address' | 'block'
 ): string {
-  const prefix = `https://${ETHERSCAN_PREFIXES[chainId] || ETHERSCAN_PREFIXES[1]}etherscan.io`
-
   switch (type) {
     case 'transaction': {
-      return `${prefix}/tx/${data}`
+      return `${ETHERSCAN_URLS[chainId ?? (DEFAULT_CHAIN_ID as ChainId)]}/tx/${data}`
     }
     case 'token': {
-      return `${prefix}/token/${data}`
+      return `${ETHERSCAN_URLS[chainId ?? (DEFAULT_CHAIN_ID as ChainId)]}/token/${data}`
     }
     case 'block': {
-      return `${prefix}/block/${data}`
+      return `${ETHERSCAN_URLS[chainId ?? (DEFAULT_CHAIN_ID as ChainId)]}/block/${data}`
     }
     case 'address':
     default: {
-      return `${prefix}/address/${data}`
+      return `${ETHERSCAN_URLS[chainId ?? (DEFAULT_CHAIN_ID as ChainId)]}/address/${data}`
     }
   }
 }
