@@ -374,6 +374,10 @@ export default function WithdrawLiquidity({
     )
   }
 
+  useEffect(() => {
+    onUserInput(Field.LIQUIDITY_PERCENT, '0')
+  }, [onUserInput])
+
   return (
     <>
       <TransactionConfirmationModal
