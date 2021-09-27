@@ -10,7 +10,6 @@ import LoaderSone from '../../../components/LoaderSone'
 
 export default function MyStaking() {
   const { t } = useTranslation()
-  // TODO: Is it need another name?
   const [detailUserInfo, setDetailUserInfo] = useState<string | undefined>()
   const [isLoading, myAccountStaked] = useMyAccountStaked()
 

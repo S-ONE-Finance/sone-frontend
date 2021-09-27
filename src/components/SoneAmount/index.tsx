@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { TokenAmount } from '@s-one-finance/sdk-core'
 import { useAggregateSoneBalance } from '../../state/wallet/hooks'
 import usePrevious from '../../hooks/usePrevious'
+import { formatSONE } from '../../utils/formatNumber'
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ const Wrapper = styled.div`
 
 export default function SoneAmount({ isSmall = false }: { isSmall?: boolean }) {
   const aggregateBalance: TokenAmount | undefined = useAggregateSoneBalance()
-  const countUpValue = aggregateBalance?.toFixed(2) ?? '0'
+  const countUpValue = formatSONE(aggregateBalance, false, false) ?? '0'
   const countUpValuePrevious = usePrevious(countUpValue) ?? '0'
 
   return (

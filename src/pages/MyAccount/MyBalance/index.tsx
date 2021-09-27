@@ -13,7 +13,7 @@ import usePrevious from '../../../hooks/usePrevious'
 import SoneBigImage from './SoneBigImage'
 import { lighten } from 'polished'
 import useSoneLockBalance from '../../../hooks/staking/useSoneLockBalance'
-import { getFixedBalanceStringCommas } from 'utils/formatNumber'
+import { formatSONE, getFixedBalanceStringCommas } from 'utils/formatNumber'
 import useUnlockHandler from 'hooks/staking/useUnlockHandler'
 import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
 import Column from '../../../components/Column'
@@ -163,7 +163,8 @@ export default function MyBalance() {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 
-  const soneBalance: string | undefined = useAggregateSoneBalance()?.toSignificant(12)
+  const soneBalanceTokenAmount = useAggregateSoneBalance()
+  const soneBalance: string | undefined = formatSONE(soneBalanceTokenAmount, false, true)
   const ethBalance = useCurrencyBalance(account ?? undefined, Currency.ETHER)?.toSignificant(6)
 
   const ethBalanceRef = useRef<HTMLDivElement>(null)

@@ -373,3 +373,68 @@ export const FlexibleRow = styled(Row)`
     flex-direction: column;
   `}
 `
+
+export const MyStakingButton = styled.button`
+  min-width: min(192px, 20vw);
+  min-height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+  text-decoration: none;
+
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+    font-size: 16px;
+  `}
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+    min-height: 45px;
+    min-width: 93px;
+    padding: unset 10px;
+  `}
+`
+
+export const ButtonUnstake = styled(MyStakingButton)`
+  background-color: ${({ theme }) => theme.text9Sone};
+  color: #333333;
+
+  &:focus {
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.text9Sone)};
+    background-color: ${({ theme }) => darken(0.05, theme.text9Sone)};
+  }
+
+  &:hover {
+    background-color: ${({ theme }) => darken(0.05, theme.text9Sone)};
+  }
+
+  &:active {
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.text9Sone)};
+    background-color: ${({ theme }) => darken(0.1, theme.text9Sone)};
+  }
+`
+
+export const ButtonStake = styled(MyStakingButton)`
+  background-color: ${({ theme }) => theme.red1Sone};
+  color: white;
+
+  &:focus {
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.red1Sone)};
+    background-color: ${({ theme }) => darken(0.05, theme.red1Sone)};
+  }
+
+  &:hover {
+    background-color: ${({ theme }) => darken(0.05, theme.red1Sone)};
+  }
+
+  &:active {
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.red1Sone)};
+    background-color: ${({ theme }) => darken(0.1, theme.red1Sone)};
+  }
+`
