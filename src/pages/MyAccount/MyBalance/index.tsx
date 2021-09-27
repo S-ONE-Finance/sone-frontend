@@ -1,5 +1,5 @@
 import React, { forwardRef, ReactNode, useRef } from 'react'
-import { Currency, Fraction } from '@s-one-finance/sdk-core'
+import { Currency } from '@s-one-finance/sdk-core'
 import { CountUp } from 'use-count-up'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -13,7 +13,7 @@ import usePrevious from '../../../hooks/usePrevious'
 import SoneBigImage from './SoneBigImage'
 import { lighten } from 'polished'
 import useSoneLockBalance from '../../../hooks/staking/useSoneLockBalance'
-import { getFixedBalanceStringCommas } from 'utils/formatNumber'
+import { formatSONE, getFixedBalanceStringCommas } from 'utils/formatNumber'
 import useUnlockHandler from 'hooks/staking/useUnlockHandler'
 import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
 import Column from '../../../components/Column'
@@ -164,12 +164,7 @@ export default function MyBalance() {
   const { account } = useActiveWeb3React()
 
   const soneBalanceTokenAmount = useAggregateSoneBalance()
-  const soneBalance: string | undefined =
-    soneBalanceTokenAmount === undefined
-      ? undefined
-      : soneBalanceTokenAmount.lessThan(new Fraction('1', '10000'))
-      ? '0'
-      : soneBalanceTokenAmount.toSignificant(8)
+  const soneBalance: string | undefined = formatSONE(soneBalanceTokenAmount, false, true)
   const ethBalance = useCurrencyBalance(account ?? undefined, Currency.ETHER)?.toSignificant(6)
 
   const ethBalanceRef = useRef<HTMLDivElement>(null)
