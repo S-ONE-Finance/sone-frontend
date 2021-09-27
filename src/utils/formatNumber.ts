@@ -77,9 +77,6 @@ export const formatSONE = (
   if (_amount === undefined) {
     return undefined
   } else if (typeof _amount === 'string') {
-    console.log(`====================`)
-    console.log(`_amount`, _amount)
-    console.log(plainNumber(new BigNumber(_amount).multipliedBy(isDividedFrom1e18 ? 1e18 : 1).toString()))
     amount = new Fraction(
       plainNumber(new BigNumber(_amount).multipliedBy(isDividedFrom1e18 ? 1e18 : 1).toString()),
       (1e18).toString()
