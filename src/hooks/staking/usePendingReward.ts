@@ -5,13 +5,15 @@ import { useWeb3React } from '@web3-react/core'
 import { useQuery } from 'react-query'
 
 import { useSoneMasterFarmerContract } from 'hooks/useContract'
+import { useBlockNumber } from 'state/application/hooks'
 
 export default function usePendingReward(pid?: number): BigNumber {
   const { account } = useWeb3React()
+  const block = useBlockNumber()
   const masterContract: Contract | null = useSoneMasterFarmerContract()
 
   const { data: pendingReward } = useQuery(
-    ['usePendingReward', account, pid],
+    ['usePendingReward', account, pid, block],
     async () => {
       try {
         return await masterContract?.pendingReward(pid, account)
