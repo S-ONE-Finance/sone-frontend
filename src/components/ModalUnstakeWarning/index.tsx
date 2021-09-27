@@ -24,6 +24,7 @@ const Chibi = styled.img`
 `
 
 const ModalContent = styled(Column)`
+  background: ${({ theme }) => theme.bg1Sone};
   padding: 40px 40px 60px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
