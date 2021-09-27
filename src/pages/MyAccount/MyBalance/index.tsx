@@ -1,5 +1,5 @@
 import React, { forwardRef, ReactNode, useRef } from 'react'
-import { Currency } from '@s-one-finance/sdk-core'
+import { Currency, Fraction } from '@s-one-finance/sdk-core'
 import { CountUp } from 'use-count-up'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
@@ -163,7 +163,13 @@ export default function MyBalance() {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 
-  const soneBalance: string | undefined = useAggregateSoneBalance()?.toSignificant(12)
+  const soneBalanceTokenAmount = useAggregateSoneBalance()
+  const soneBalance: string | undefined =
+    soneBalanceTokenAmount === undefined
+      ? undefined
+      : soneBalanceTokenAmount.lessThan(new Fraction('1', '10000'))
+      ? '0'
+      : soneBalanceTokenAmount.toSignificant(8)
   const ethBalance = useCurrencyBalance(account ?? undefined, Currency.ETHER)?.toSignificant(6)
 
   const ethBalanceRef = useRef<HTMLDivElement>(null)
