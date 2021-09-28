@@ -589,7 +589,7 @@ export default function Header() {
                     : language?.startsWith('jp')
                     ? '日本語'
                     : language?.startsWith('zh')
-                    ? '中文'
+                    ? '簡体中文'
                     : 'EN'}
                 </TYPE.language>
               </StyledMenuButtonWithText>
@@ -613,7 +613,7 @@ export default function Header() {
                     setLanguage('zh-CN')
                   }}
                 >
-                  中文
+                  簡体中文
                 </SubMenuItemText>
               </ResponsiveBottomRightSubMenu>
             </ResponsiveMenuItem>
