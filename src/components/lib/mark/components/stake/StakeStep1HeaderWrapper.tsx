@@ -316,14 +316,14 @@ export default function Header() {
                     : language?.startsWith('jp')
                     ? '日本語'
                     : language?.startsWith('zh')
-                    ? '中文'
+                    ? '簡体中文'
                     : 'N/A'}
                 </TYPE.language>
               </StyledMenuButtonWithText>
               <ResponsiveBottomRightSubMenu>
                 <SubMenuItemText>日本語</SubMenuItemText>
                 <SubMenuItemText>English</SubMenuItemText>
-                <SubMenuItemText>中文</SubMenuItemText>
+                <SubMenuItemText>簡体中文</SubMenuItemText>
               </ResponsiveBottomRightSubMenu>
             </ResponsiveMenuItem>
             <ShowOnlyExtraSmall>
