@@ -12,7 +12,7 @@ i18next
       loadPath: `./locales/{{lng}}.json`
     },
     react: {
-      useSuspense: true
+      useSuspense: false
     },
     fallbackLng: 'en',
     preload: ['en'],
