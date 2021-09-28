@@ -54,6 +54,7 @@ interface PanelLpTokenInputProps {
   onUserInput: (field: Field, typedValue: string) => void
   label: string
   lpToken?: Token
+  LPTokenName: string
   hideBalance?: boolean
   id: string
   customBalanceText?: string
@@ -65,6 +66,7 @@ export default function PanelCurrencyInputAndSelectPercentage({
   onUserInput,
   label,
   lpToken,
+  LPTokenName,
   hideBalance = false,
   id,
   customBalanceText,
@@ -86,7 +88,7 @@ export default function PanelCurrencyInputAndSelectPercentage({
                   ? (customBalanceText ?? '') + selectedCurrencyBalance?.toExact()
                   : ''}
               </TextPanelLabel>
-              {lpToken && lpToken.symbol && <TextSmaller>&nbsp;{lpToken.symbol + ' LP'}</TextSmaller>}
+              {lpToken && <TextSmaller>&nbsp;{LPTokenName}</TextSmaller>}
             </RowBalance>
           )}
         </RowBetween>

@@ -276,6 +276,8 @@ export default function WithdrawLiquidity({
     setTxHash
   })
 
+  const LPTokenName = pair?.token0.symbol + '-' + pair?.token1.symbol + ' ' + t('lp_token')
+
   function modalHeader() {
     return (
       <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>
@@ -321,7 +323,7 @@ export default function WithdrawLiquidity({
               {t('lp_token_burned')}
             </Text>
             <Text fontWeight={500} fontSize={16}>
-              {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + pair.liquidityToken.symbol}
+              {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + LPTokenName}
             </Text>
           </RowBetween>
           <RowBetween>
@@ -414,6 +416,7 @@ export default function WithdrawLiquidity({
                   value={formattedAmounts[Field.LIQUIDITY]}
                   onUserInput={onUserInput}
                   lpToken={pair?.liquidityToken}
+                  LPTokenName={LPTokenName}
                   id="withdraw-input-lptoken"
                   selectedPercentage={selectedPercentage}
                 />
@@ -458,7 +461,7 @@ export default function WithdrawLiquidity({
                       <QuestionHelper1416 text={t('question_helper_lp_token_burned')} />
                     </RowFixed>
                     <Text fontWeight={500} fontSize={16}>
-                      {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + pair.liquidityToken.symbol}
+                      {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + LPTokenName}
                     </Text>
                   </RowBetween>
                   <RowBetween>

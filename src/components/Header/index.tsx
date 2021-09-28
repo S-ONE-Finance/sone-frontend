@@ -488,10 +488,10 @@ export default function Header() {
                     Boolean(match) || pathname.startsWith('/swap') || pathname.startsWith('/add')
                   }
                 >
-                  {t('swap')}
+                  {t('swap_noun')}
                 </StyledNavLink>
                 <SubMenu>
-                  <SubMenuItemNavLink to="/swap">{t('swap')}</SubMenuItemNavLink>
+                  <SubMenuItemNavLink to="/swap">{t('swap_noun')}</SubMenuItemNavLink>
                   <SubMenuItemNavLink id="pool-nav-link" to="/add">
                     {t('liquidity')}
                   </SubMenuItemNavLink>

@@ -92,6 +92,7 @@
   "invalid_pair": "Invalid Pair",
   "invalid_pair_no_liquidity": "Invalid Pair (No Liquidity)",
   "invited_friends": "Invited Friends",
+  "later": "Later",
   "lets_click_connect_wallet_to_connect_and_start": "Let’s click “Connect wallet” to connect and start.",
   "lets_confirm_your_reward_on_my_account": "Let’s confirm your reward on “My account”",
   "lets_stake_lp_tokens_to_get_rewards": "Let’s stake LP tokens to get rewards!",
@@ -244,12 +245,13 @@
   "summary_add_one_token": "Add <0>{{userInputAmount}} </0><1>{{userInputSymbol}}</1>",
   "summary_add_two_tokens": "Add <0>{{currencyAAmount}} </0><1>{{currencyASymbol}}</1> and <0>{{currencyBAmount}} </0><1>{{currencyBSymbol}}</1>",
   "summary_swap": "Swap <0>{{inputAmount}} </0><1>{{inputSymbol}}</1> for <2>{{outputAmount}} </2><1>{{outputSymbol}}</1>",
-  "swap": "Swap",
   "swap_anyway": "Swap Anyway",
   "swap_description": "",
+  "swap_noun": "Swap",
   "swap_settings": "Swap Settings",
   "swap_stats": "Swap Stats",
   "swap_successfully": "Swap successfully",
+  "swap_verb": "Swap",
   "swapping_123_eth_for_456_sone": "Swapping {{inputAmount}} {{inputSymbol}} for {{outputAmount}} {{outputSymbol}}",
   "symbol": "Symbol",
   "time": "Time",
@@ -316,6 +318,5 @@
   "your_recent_transactions_will_appear_here": "Your recent transactions will appear here...",
   "your_referral_id": "Your Referral ID",
   "your_transaction_may_be_frontrun": "Your transaction may be frontrun",
-  "your_transaction_may_fail": "Your transaction may fail",
-  "later": "Later"
+  "your_transaction_may_fail": "Your transaction may fail"
 }
