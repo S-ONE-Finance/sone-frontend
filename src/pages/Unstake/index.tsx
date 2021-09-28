@@ -238,7 +238,7 @@ export default function Unstake() {
   // Not show AppVector ==> `transactionType={undefined}`.
   const modalContent = () => (
     <ConfirmationModalContent
-      title={t('you_will_receive')}
+      title={t('you_will_receive_unstake')}
       onDismiss={handleDismissConfirmation}
       topContent={ModalHeader}
       bottomContent={ModalFooter}

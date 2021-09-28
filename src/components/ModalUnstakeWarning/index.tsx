@@ -15,7 +15,7 @@ import Column, { ColumnCenter } from '../Column'
 import Row from 'components/Row'
 import { Link } from 'react-router-dom'
 
-const Chibi = styled.img`
+export const Chibi = styled.img`
   width: 150px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -23,7 +23,7 @@ const Chibi = styled.img`
   `}
 `
 
-const ModalContent = styled(Column)`
+export const ModalContent = styled(Column)`
   background: ${({ theme }) => theme.bg1Sone};
   padding: 40px 40px 60px;
 
@@ -32,7 +32,7 @@ const ModalContent = styled(Column)`
   `}
 `
 
-const TextDefault = styled(Text)`
+export const TextDefault = styled(Text)`
   width: fit-content;
   color: ${({ theme }) => theme.text3Sone};
   font-size: 20px;
@@ -43,13 +43,13 @@ const TextDefault = styled(Text)`
   `}
 `
 
-const TextPrimary = styled(TextDefault)`
+export const TextPrimary = styled(TextDefault)`
   display: inline;
   color: ${({ theme }) => theme.red1Sone};
   font-weight: 700;
 `
 
-function RowDesktopColumnMobile({ gaps, children }: { gaps: [string, string]; children: ReactNode }) {
+export function RowDesktopColumnMobile({ gaps, children }: { gaps: [string, string]; children: ReactNode }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
 
   if (isUpToExtraSmall) {
@@ -57,13 +57,13 @@ function RowDesktopColumnMobile({ gaps, children }: { gaps: [string, string]; ch
   }
 
   return (
-    <Row align="center" gap={gaps[1]}>
+    <Row align="center" justify="center" gap={gaps[1]}>
       {children}
     </Row>
   )
 }
 
-const ButtonUnstakeAnyway = styled(ButtonUnstake)`
+export const ButtonUnstakeAnyway = styled(ButtonUnstake)`
   min-width: 240px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -71,7 +71,7 @@ const ButtonUnstakeAnyway = styled(ButtonUnstake)`
   `}
 `
 
-const ButtonStayTuned = styled(ButtonStake)`
+export const ButtonStayTuned = styled(ButtonStake)`
   min-width: 240px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`

@@ -308,11 +308,14 @@
   "yes": "はい",
   "you_have_rewarded_from_this_lp_token": "このLPトークンから得られた報酬",
   "you_will_get_x123_sone_during_this_period": "このLPトークンから得られる報酬は123倍です。",
-  "you_will_receive": "あなたの受取り",
+  "you_will_receive_request_reward": "受取り額",
+  "you_will_receive_unstake": "償還内容の確認",
+  "you_will_receive_withdraw": "引き出し内容の確認",
   "your_available_balance": "利用可能な資産",
   "your_pool_share": "シェア率",
   "your_recent_transactions_will_appear_here": "最近の取引はここに表示されます…",
   "your_referral_id": "紹介者ID",
   "your_transaction_may_be_frontrun": "あなたの取引はフロントランニングかもしれません",
-  "your_transaction_may_fail": "取引が失敗する可能性があります"
+  "your_transaction_may_fail": "取引が失敗する可能性があります",
+  "later": "戻る"
 }
