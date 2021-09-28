@@ -387,7 +387,7 @@ export default function WithdrawLiquidity({
         hash={txHash ? txHash : ''}
         content={() => (
           <ConfirmationModalContent
-            title={t('you_will_receive')}
+            title={t('you_will_receive_withdraw')}
             onDismiss={handleDismissConfirmation}
             topContent={modalHeader}
             bottomContent={modalBottom}

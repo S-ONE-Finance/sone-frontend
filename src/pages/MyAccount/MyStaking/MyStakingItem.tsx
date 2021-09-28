@@ -36,6 +36,7 @@ import useClaimRewardHandler from '../../../hooks/staking/useClaimRewardHandler'
 import LiquidityProviderTokenLogo from '../../../components/LiquidityProviderTokenLogo'
 import BigNumber from 'bignumber.js'
 import ModalUnstakeWarning from '../../../components/ModalUnstakeWarning'
+import ModalRequestRewardWarning from 'components/ModalRequestRewardWarning'
 
 const DetailedSectionIcon = styled.img`
   width: 90px;
@@ -163,7 +164,6 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
 
   const [poolRequestPending, setPoolRequestPending] = useState(false)
   const onClaimReward = useClaimRewardHandler()
-  // TODO: Use-case claim reward là gì?
   const claimReward = async (farmId: number | undefined) => {
     if (farmId !== undefined) {
       setPoolRequestPending(true)
@@ -192,6 +192,12 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
     setIsModalUnstakeWarningOpen(false)
   }, [])
 
+  const [isModalRequestRewardOpen, setIsModalRequestRewardOpen] = useState(false)
+
+  const onModalRequestRewardDismiss = useCallback(() => {
+    setIsModalRequestRewardOpen(false)
+  }, [])
+
   return (
     <MyLiquidityAndStakingContainer>
       <ModalUnstakeWarning
@@ -199,6 +205,12 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
         formattedAvailableSONE={availableReward}
         isOpen={isModalUnstakeWarningOpen}
         onDismiss={onModalUnstakeWarningDismiss}
+      />
+      <ModalRequestRewardWarning
+        onRequestReward={() => claimReward(userInfo.pool?.pid)}
+        formattedAvailableSONE={availableReward}
+        isOpen={isModalRequestRewardOpen}
+        onDismiss={onModalRequestRewardDismiss}
       />
       <SummarySection>
         <RowFitContent
@@ -262,7 +274,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
                 <ButtonStake as={Link} to={`/staking/${userInfo.pool?.pid}`}>
                   {t('stake_more')}
                 </ButtonStake>
-                <ButtonRequestReward disabled={poolRequestPending} onClick={() => claimReward(userInfo.pool?.pid)}>
+                <ButtonRequestReward disabled={poolRequestPending} onClick={() => setIsModalRequestRewardOpen(true)}>
                   {t('request_reward')}
                 </ButtonRequestReward>
               </RowButtons>
