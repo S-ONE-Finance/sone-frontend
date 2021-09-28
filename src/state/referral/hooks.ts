@@ -39,10 +39,12 @@ export function useReferral() {
         .get<GetReferralIdByCodeResponse>(url)
         .then(data => {
           if (referralCodeInQueryString) {
+            console.log(' data.data', data.data)
             dispatch(
               updateReferral({
                 id: data.data.data?.id ? data.data.data.id : undefined,
-                code: referralCodeInQueryString.toString()
+                code: referralCodeInQueryString.toString(),
+                status: data.data.data?.status
               })
             )
           }
@@ -51,7 +53,7 @@ export function useReferral() {
         .catch(() => {
           console.error(`${referralCodeInQueryString} is not a valid referral id.`)
         }),
-    { enabled: shouldQueryRun }
+    { cacheTime: undefined }
   )
 
   return referralInStore
@@ -101,6 +103,7 @@ interface GetReferralIdByCodeResponse {
     | {
         id: number
         address: string
+        status: string
       }
     | undefined
   statusCode: number
