@@ -6,28 +6,26 @@ import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { pxToRem } from '../../utils/PxToRem'
 import { getBalanceStringCommas } from '../../utils/formatNumber'
-import { useActiveWeb3React } from '../../hooks'
 
 interface BalanceProps {
-  circulatingSupplyValue: number
+  circulatingSupplyValue: string
 }
 
 const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
   const [totalSupply, setTotalSupply] = useState<string>()
 
   const soneContract: Contract | null = useSoneContract()
 
   useEffect(() => {
     ;(async () => {
-      if (account) {
+      if (soneContract) {
         const balanceDataRaw: BigNumber = await soneContract?.totalSupply()
         const balanceData = getBalanceStringCommas(balanceDataRaw.toString())
         setTotalSupply(balanceData)
       }
     })()
-  }, [soneContract, account])
+  }, [soneContract])
 
   return (
     <>

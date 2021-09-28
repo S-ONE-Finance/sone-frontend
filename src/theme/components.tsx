@@ -78,13 +78,15 @@ export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColo
   }
 `
 
-export const StyledCloseIcon = styled(Close)<{ size?: string; sizeMobile?: string }>`
+export const StyledCloseIcon = styled(Close)<{ size?: string; sizeMobile?: string; color?: string }>`
   cursor: pointer;
   width: ${({ size }) => size || '21px'};
+  min-width: ${({ size }) => size || '21px'};
+  min-height: ${({ size }) => size || '21px'};
   height: auto;
 
   path {
-    stroke: ${({ theme }) => theme.closeIcon};
+    stroke: ${({ theme, color }) => color ?? theme.closeIcon};
   }
 
   &:hover {
@@ -93,6 +95,8 @@ export const StyledCloseIcon = styled(Close)<{ size?: string; sizeMobile?: strin
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
     width: ${sizeMobile || '11px'};
+    min-width: ${sizeMobile || '11px'};
+    min-height: ${sizeMobile || '11px'};
   `};
 `
 

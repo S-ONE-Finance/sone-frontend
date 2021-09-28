@@ -5,13 +5,16 @@ import { useWeb3React } from '@web3-react/core'
 import { useQuery } from 'react-query'
 
 import { useSoneMasterFarmerContract } from 'hooks/useContract'
+import { useBlockNumber } from 'state/application/hooks'
+import { useLastTruthy } from 'hooks/useLast'
 
 export default function usePendingReward(pid?: number): BigNumber {
   const { account } = useWeb3React()
+  const block = useBlockNumber()
   const masterContract: Contract | null = useSoneMasterFarmerContract()
 
-  const { data: pendingReward } = useQuery(
-    ['usePendingReward', account, pid],
+  const { data: pendingRewardQueryResult } = useQuery(
+    ['usePendingReward', account, pid, block],
     async () => {
       try {
         return await masterContract?.pendingReward(pid, account)
@@ -23,6 +26,8 @@ export default function usePendingReward(pid?: number): BigNumber {
       enabled: Boolean(account && pid !== undefined && !isNaN(pid))
     }
   )
+
+  const pendingReward = useLastTruthy(pendingRewardQueryResult) ?? undefined
 
   return useMemo(() => pendingReward ?? BigNumber.from(0), [pendingReward])
 }

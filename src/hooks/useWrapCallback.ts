@@ -55,7 +55,11 @@ export default function useWrapCallback(
               }
             : undefined,
         inputError:
-          inputAmount === undefined ? t('enter_an_amount') : sufficientBalance ? undefined : 'Insufficient ETH balance'
+          inputAmount === undefined
+            ? t('enter_an_amount')
+            : sufficientBalance
+            ? undefined
+            : t('insufficient_eth_balance', { symbol: 'ETH' })
       }
     } else if (currencyEquals(WETH[chainId], inputCurrency) && outputCurrency === ETHER) {
       return {
@@ -74,7 +78,11 @@ export default function useWrapCallback(
               }
             : undefined,
         inputError:
-          inputAmount === undefined ? t('enter_an_amount') : sufficientBalance ? undefined : 'Insufficient WETH balance'
+          inputAmount === undefined
+            ? t('enter_an_amount')
+            : sufficientBalance
+            ? undefined
+            : t('insufficient_eth_balance', { symbol: 'WETH' })
       }
     } else {
       return NOT_APPLICABLE

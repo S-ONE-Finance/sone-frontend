@@ -33,6 +33,7 @@ import useAllowance from '../../hooks/staking/useAllowance'
 import useApproveHandler from '../../hooks/staking/useApproveHandler'
 import { OpenGuide, StakeStep1, StakeStep2, StakeStep3 } from '../../components/lib/mark/components'
 import { CONFIG_MASTER_FARMER } from '../../constants'
+import BubbleMessage from 'components/BubbleMessage'
 
 export default function Staking() {
   const { t } = useTranslation()
@@ -42,6 +43,8 @@ export default function Staking() {
   const [guideStep] = useGuideStepManager()
 
   const [isShowRewardInformation, toggleIsShowRewardInformation] = useShowTransactionDetailsManager()
+
+  const [isShowBubbleBonus, setIsShowBubbleBonus] = useState(true)
 
   const { farmId } = useParams() as any
   const farm: Farm | undefined = useFarm(farmId)
@@ -168,7 +171,7 @@ export default function Staking() {
     }
   }, [_onStake, error, symbol, typedValue])
 
-  const pendingText = `Staking ${typedValue} LP`
+  const pendingText = t('staking_123_lp', { amount: typedValue })
 
   const ModalHeader = useCallback(
     function ModalHeader() {
@@ -362,7 +365,11 @@ export default function Staking() {
                 </>
               ) : error === t('approve') || error === t('approving...') ? (
                 <ButtonPrimary disabled={error === t('approving...')} onClick={() => onApprove(symbol)}>
-                  {error === t('approving...') ? error : `Approve ${symbol} LP Token`}
+                  {error === t('approving...')
+                    ? error
+                    : t('approve_eth_sone_lp_token', {
+                        symbol
+                      })}
                 </ButtonPrimary>
               ) : error ? (
                 Number(guideStep.step) === 1 && guideStep.screen === 'stake' ? (
@@ -386,6 +393,12 @@ export default function Staking() {
                 >
                   {t('stake')}
                 </ButtonPrimary>
+              )}
+
+              {isShowBubbleBonus && (
+                <Row padding={isUpToExtraSmall ? '0 10px' : '0 30px'}>
+                  <BubbleMessage bonus={bonusMultiplier} setShow={setIsShowBubbleBonus} />
+                </Row>
               )}
 
               {!error && (

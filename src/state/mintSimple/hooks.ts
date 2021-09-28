@@ -149,8 +149,9 @@ export function useDerivedMintSimpleInfo(
     selectedTokenParsedAmount &&
     selectedTokenParsedAmount.greaterThan(isSelectedToken0 ? pair.reserve0 : pair.reserve1)
   ) {
-    // TODO: i18n.
-    error = `Insufficient ${isSelectedToken0 ? pair.token0.symbol : pair.token1.symbol} liquidity for swap`
+    error = t('insufficient_eth_liquidity_for_swap', {
+      symbol: isSelectedToken0 ? pair.token0.symbol : pair.token1.symbol
+    })
   } else if (errorWhenParsedTokenAmount) {
     error = t('input_too_small')
   } else if (selectedTokenUserInputAmount === undefined) {

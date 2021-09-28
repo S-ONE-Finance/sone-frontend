@@ -488,10 +488,10 @@ export default function Header() {
                     Boolean(match) || pathname.startsWith('/swap') || pathname.startsWith('/add')
                   }
                 >
-                  {t('swap')}
+                  {t('swap_noun')}
                 </StyledNavLink>
                 <SubMenu>
-                  <SubMenuItemNavLink to="/swap">{t('swap')}</SubMenuItemNavLink>
+                  <SubMenuItemNavLink to="/swap">{t('swap_noun')}</SubMenuItemNavLink>
                   <SubMenuItemNavLink id="pool-nav-link" to="/add">
                     {t('liquidity')}
                   </SubMenuItemNavLink>
@@ -589,7 +589,7 @@ export default function Header() {
                     : language?.startsWith('jp')
                     ? '日本語'
                     : language?.startsWith('zh')
-                    ? '中文'
+                    ? '簡体中文'
                     : 'EN'}
                 </TYPE.language>
               </StyledMenuButtonWithText>
@@ -613,7 +613,7 @@ export default function Header() {
                     setLanguage('zh-CN')
                   }}
                 >
-                  中文
+                  簡体中文
                 </SubMenuItemText>
               </ResponsiveBottomRightSubMenu>
             </ResponsiveMenuItem>

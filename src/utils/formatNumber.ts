@@ -1,5 +1,6 @@
 import Numeral from 'numeral'
 import BigNumber from 'bignumber.js'
+import { Fraction } from '@s-one-finance/sdk-core'
 
 export const getFormattedNumber = (num: number | string, digits: number): string => {
   if (num === Number.POSITIVE_INFINITY) return '∞ '
@@ -60,3 +61,33 @@ export const reduceFractionDigit = (number = '', digitAmount = 0) =>
     minimumFractionDigits: 0,
     maximumFractionDigits: digitAmount
   })
+
+export const plainNumber = (value: string): string => {
+  return value.replace(/(-?)(\d*)\.?(\d*)e([+-]\d+)/, function(a, b, c, d, e) {
+    return e < 0 ? b + '0.' + Array(1 - e - c.length).join('0') + c + d : b + c + d + Array(e - d.length + 1).join('0')
+  })
+}
+
+export const formatSONE = (
+  _amount: Fraction | string | undefined,
+  withComma: boolean,
+  isDividedFrom1e18: boolean
+): string | undefined => {
+  let amount: Fraction
+  if (_amount === undefined) {
+    return undefined
+  } else if (typeof _amount === 'string') {
+    amount = new Fraction(
+      plainNumber(new BigNumber(_amount).multipliedBy(isDividedFrom1e18 ? 1e18 : 1).toString()),
+      (1e18).toString()
+    )
+  } else {
+    amount = _amount
+  }
+  const res = amount.lessThan(new Fraction('1', '10000'))
+    ? '0'
+    : withComma
+    ? getNumberCommas(amount.toSignificant(8))
+    : amount.toSignificant(8)
+  return res
+}

@@ -76,7 +76,7 @@ export default function MyLiquidityItem({
         ]
       : [undefined, undefined]
   const apy = useMyLiquidityApy(pair.liquidityToken.address)
-  const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString(), 6)}%`
+  const apyRender = apy === undefined ? '0%' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString(), 6)}%`
 
   return (
     <MyLiquidityAndStakingContainer>
@@ -105,7 +105,7 @@ export default function MyLiquidityItem({
         </FlexibleRow>
         <Row gap="10px" justify="flex-end">
           <Column width="fit-content" justify="center" align="center">
-            <TextPercentage onClick={() => alert('Not implemented yet!')}>{apyRender}</TextPercentage>
+            <TextPercentage>{apyRender}</TextPercentage>
             <TextAPY>{t('apy')}</TextAPY>
           </Column>
           <DownIcon
@@ -150,7 +150,7 @@ export default function MyLiquidityItem({
                     : `/my-account/withdraw/${pair.token0.address}/${pair.token1.address}`
                 }
               >
-                {t('remove_account')}
+                {t('remove')}
               </ButtonRemove>
               <ButtonAdd
                 as={Link}

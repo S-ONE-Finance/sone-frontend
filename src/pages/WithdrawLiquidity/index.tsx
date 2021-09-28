@@ -276,6 +276,8 @@ export default function WithdrawLiquidity({
     setTxHash
   })
 
+  const LPTokenName = pair?.token0.symbol + '-' + pair?.token1.symbol + ' ' + t('lp_token')
+
   function modalHeader() {
     return (
       <AutoColumn gap={isUpToExtraSmall ? '10px' : '15px'} style={{ marginTop: '20px' }}>
@@ -284,7 +286,7 @@ export default function WithdrawLiquidity({
             {parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}
           </TruncatedText>
           <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align={'center'}>
-            <CurrencyLogo currency={currencyA} size="24px" style={{ marginRight: '5px' }} />
+            <CurrencyLogo currency={currencyA} size="28px" sizeMobile="16px" style={{ marginRight: '5px' }} />
             <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
               {currencyA?.symbol}
             </Text>
@@ -298,7 +300,7 @@ export default function WithdrawLiquidity({
             {parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}
           </TruncatedText>
           <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align={'center'}>
-            <CurrencyLogo currency={currencyB} size="24px" style={{ marginRight: '5px' }} />
+            <CurrencyLogo currency={currencyB} size="28px" sizeMobile="16px" style={{ marginRight: '5px' }} />
             <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
               {currencyB?.symbol}
             </Text>
@@ -321,7 +323,7 @@ export default function WithdrawLiquidity({
               {t('lp_token_burned')}
             </Text>
             <Text fontWeight={500} fontSize={16}>
-              {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + pair.liquidityToken.symbol}
+              {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + LPTokenName}
             </Text>
           </RowBetween>
           <RowBetween>
@@ -349,9 +351,12 @@ export default function WithdrawLiquidity({
 
   const expertMode = useIsExpertMode()
 
-  const pendingText = `Removing ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)} ${
-    currencyA?.symbol
-  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)} ${currencyB?.symbol}`
+  const pendingText = t('removing_123_eth_and_456_sone', {
+    token0Amount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6),
+    token0Symbol: currencyA?.symbol,
+    token1Amount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6),
+    token1Symbol: currencyB?.symbol
+  })
 
   const handleDismissConfirmation = useCallback(() => {
     setShowConfirm(false)
@@ -371,6 +376,10 @@ export default function WithdrawLiquidity({
     )
   }
 
+  useEffect(() => {
+    onUserInput(Field.LIQUIDITY_PERCENT, '0')
+  }, [onUserInput])
+
   return (
     <>
       <TransactionConfirmationModal
@@ -380,7 +389,7 @@ export default function WithdrawLiquidity({
         hash={txHash ? txHash : ''}
         content={() => (
           <ConfirmationModalContent
-            title="You will receive"
+            title={t('you_will_receive_withdraw')}
             onDismiss={handleDismissConfirmation}
             topContent={modalHeader}
             bottomContent={modalBottom}
@@ -407,6 +416,7 @@ export default function WithdrawLiquidity({
                   value={formattedAmounts[Field.LIQUIDITY]}
                   onUserInput={onUserInput}
                   lpToken={pair?.liquidityToken}
+                  LPTokenName={LPTokenName}
                   id="withdraw-input-lptoken"
                   selectedPercentage={selectedPercentage}
                 />
@@ -451,7 +461,7 @@ export default function WithdrawLiquidity({
                       <QuestionHelper1416 text={t('question_helper_lp_token_burned')} />
                     </RowFixed>
                     <Text fontWeight={500} fontSize={16}>
-                      {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + pair.liquidityToken.symbol}
+                      {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + LPTokenName}
                     </Text>
                   </RowBetween>
                   <RowBetween>
@@ -481,7 +491,13 @@ export default function WithdrawLiquidity({
                     </ButtonPrimary>
                   ) : (
                     <ButtonPrimary onClick={onAttemptToApprove} disabled={approval !== ApprovalState.NOT_APPROVED}>
-                      {approval === ApprovalState.PENDING ? <Dots>Approving</Dots> : isValid ? 'Approve' : error}
+                      {approval === ApprovalState.PENDING ? (
+                        <Dots>{t('approving')}</Dots>
+                      ) : isValid ? (
+                        t('approve')
+                      ) : (
+                        error
+                      )}
                     </ButtonPrimary>
                   )}
                 </RowButton>

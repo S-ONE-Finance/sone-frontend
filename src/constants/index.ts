@@ -7,12 +7,19 @@ export const MAX_UINT_256 = '0xfffffffffffffffffffffffffffffffffffffffffffffffff
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export const DEFAULT_CHAIN_ID = Number(process.env.REACT_APP_DEFAULT_CHAIN_ID)
-console.log(`DEFAULT_CHAIN_ID`, DEFAULT_CHAIN_ID)
 
 export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '',
-  [ChainId.RINKEBY]: '0xa406C219C16D66B9bE1d159265E95E1A1d97eD99',
+  [ChainId.RINKEBY]: '0x5E9705FF88F548cba6BBF91F8C9Ae2611f5E83BB',
   [ChainId.ROPSTEN]: '0x5065C6C5BCE00739Fb90bC5ab33e397c14f63335',
+  [ChainId.GÖRLI]: '',
+  [ChainId.KOVAN]: ''
+}
+
+export const ETHERSCAN_URLS: { [chainId in ChainId]: string } = {
+  [ChainId.MAINNET]: 'https://etherscan.io',
+  [ChainId.RINKEBY]: 'https://rinkeby.etherscan.io',
+  [ChainId.ROPSTEN]: 'https://ropsten.etherscan.io',
   [ChainId.GÖRLI]: '',
   [ChainId.KOVAN]: ''
 }
@@ -54,7 +61,7 @@ export const SONE_PRICE_MINIMUM = 0.00001 // 1 SONE >= 0.00001 USDT
 // TODO: Need fill address of sone in all 5 networks.
 export const SONE: { [chainId in ChainId]: Token } = {
   [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'SONE', 'SONE Token'),
-  [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, '0x4141fA29806e4d0BfD19E4c4E8f6FC18D02168c7', 18, 'SONE', 'SONE Token'),
+  [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, '0x5FEA1f4aEf9c78BC56cEd5083fb59d351396748f', 18, 'SONE', 'SONE Token'),
   [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, '0x57bb30bdb0D449bf687ed648ACF2467F045c8E74', 18, 'SONE', 'SONE Token'),
   [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, UNI_ADDRESS, 18, 'SONE', 'SONE Token'),
   [ChainId.KOVAN]: new Token(ChainId.KOVAN, UNI_ADDRESS, 18, 'SONE', 'SONE Token')
@@ -62,7 +69,7 @@ export const SONE: { [chainId in ChainId]: Token } = {
 
 export const SONE_MASTER_FARMER: { [chainId in ChainId]: string } = {
   [ChainId.MAINNET]: '',
-  [ChainId.RINKEBY]: '0x511FaE7b224F32cB1570d8D747777d4119264859',
+  [ChainId.RINKEBY]: '0x05bf874f71AAbf40966489e45DE3E5FcDC823927',
   [ChainId.ROPSTEN]: '0xfB3bEEE96FA08c2CAb70E6DbE34084A99B47b9aD',
   [ChainId.GÖRLI]: '',
   [ChainId.KOVAN]: ''
@@ -76,7 +83,7 @@ export const CONFIG_MASTER_FARMER: { [chainId in ChainId]: ConfigMasterFarmer | 
     blocksPerWeek: 45134
   },
   [ChainId.RINKEBY]: {
-    startBlock: 9283344,
+    startBlock: 9342011,
     rewardMultiplier: [32, 32, 32, 32, 16, 8, 4, 2, 1],
     blocksPerWeek: 45134
   },

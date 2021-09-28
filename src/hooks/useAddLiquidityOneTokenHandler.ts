@@ -95,7 +95,7 @@ export default function useAddLiquidityOneTokenHandler({
         account,
         deadline.toHexString()
       ]
-      value = BigNumber.from(theOtherTokenMinAmountJSBI.toString())
+      value = BigNumber.from(selectedTokenUserInputAmount.raw.toString())
     } else if (ETHER === theOtherCurrency) {
       /**
        * If user select a token, and the other currency is ETHER.
@@ -177,7 +177,7 @@ export default function useAddLiquidityOneTokenHandler({
       )
       .catch(error => {
         setAttemptingTxn(false)
-        // we only care if the error is something _other_ than the user rejected the tx
+        // we only care if the error is something other than the user rejected the tx
         if (error?.code !== 4001) {
           console.error(error)
         }

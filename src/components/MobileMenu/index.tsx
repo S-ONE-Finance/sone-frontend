@@ -187,7 +187,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
           <StyledCloseIcon />
         </StyledCloseAbsolute>
         <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>{t('sone_wallet')}</StyledExternalLink>
-        <StyledNavLink to="/swap">{t('swap')}</StyledNavLink>
+        <StyledNavLink to="/swap">{t('swap_noun')}</StyledNavLink>
         <StyledNavLink to="/add" isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
           {t('liquidity')}
         </StyledNavLink>
@@ -195,7 +195,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         <StyledExternalLink href={S_ONE_SWAP_STATISTICS_URL}>{t('swap_stats')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_STAKING_STATISTICS_URL}>{t('staking_stats')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_DOCS_URL}>{t('docs')}</StyledExternalLink>
-        <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('White Paper')}</StyledExternalLink>
+        <StyledExternalLink href={S_ONE_WHITE_PAPER_URL}>{t('white_paper')}</StyledExternalLink>
         <StyledExternalLink href={S_ONE_FAQ_URL}>{t('faq')}</StyledExternalLink>
       </Column>
       <RecentTransactions isSmall={true} />

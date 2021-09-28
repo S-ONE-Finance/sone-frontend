@@ -101,11 +101,11 @@ export default function ButtonGrouping({
                     width={approvalTheOtherToken !== ApprovalState.APPROVED ? '48%' : '100%'}
                   >
                     {approvalSelectedToken === ApprovalState.PENDING ? (
-                      <Dots>
-                        {t('Approving')} {token0?.symbol}
-                      </Dots>
+                      <Dots>{t('approving_token', { symbol: token0?.symbol })}</Dots>
                     ) : (
-                      t('Approve ') + token0?.symbol
+                      t('approve_token', {
+                        symbol: token0?.symbol
+                      })
                     )}
                   </ButtonPrimary>
                 )}
@@ -116,11 +116,9 @@ export default function ButtonGrouping({
                     width={approvalSelectedToken !== ApprovalState.APPROVED ? '48%' : '100%'}
                   >
                     {approvalTheOtherToken === ApprovalState.PENDING ? (
-                      <Dots>
-                        {t('Approving')} {token1?.symbol}
-                      </Dots>
+                      <Dots>{t('approving_token', { symbol: token1?.symbol })}</Dots>
                     ) : (
-                      t('Approve ') + token1?.symbol
+                      t('approve_token', { symbol: token1?.symbol })
                     )}
                   </ButtonPrimary>
                 )}

@@ -23,7 +23,8 @@ const useFarms = (): [boolean, Farm[]] => {
     ['useFarms_poolsQuery', account, chainId],
     async () => {
       const data = await stakingClients[account && chainId ? chainId : DEFAULT_CHAIN_ID].query({
-        query: poolsQuery
+        query: poolsQuery,
+        fetchPolicy: 'network-only'
       })
       return data?.data.pools
     },
@@ -35,7 +36,8 @@ const useFarms = (): [boolean, Farm[]] => {
     async () => {
       const data = await swapClients[account && chainId ? chainId : DEFAULT_CHAIN_ID].query({
         query: liquidityPositionSubsetQuery,
-        variables: { user: soneMasterFarmerAddress.toLowerCase() }
+        variables: { user: soneMasterFarmerAddress.toLowerCase() },
+        fetchPolicy: 'network-only'
       })
       return data?.data.liquidityPositions
     },

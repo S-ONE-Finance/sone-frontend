@@ -8,6 +8,8 @@ import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
 import useNumberOfPages from './hooks/useNumberOfPages'
 import { useTranslation } from 'react-i18next'
 import { useActiveWeb3React } from '../../../hooks'
+import { DEFAULT_CHAIN_ID, ETHERSCAN_URLS } from '../../../constants'
+import { ChainId } from '@s-one-finance/sdk-core'
 
 const Table = styled.table`
   border-collapse: collapse;
@@ -109,7 +111,9 @@ export default function InvitedFriendsTable() {
               {/* Thằng Date chuẩn ISO thì cứ đẩy substr(0, 10) là ăn :D. */}
               <TableData>{friend.updatedAt.substr(0, 10)}</TableData>
               <TableData>
-                <ExternalLink href={`https://${chainId === 1 ? '' : 'ropsten.'}etherscan.io/tx/` + friend.transaction}>
+                <ExternalLink
+                  href={`${ETHERSCAN_URLS[chainId ?? (DEFAULT_CHAIN_ID as ChainId)]}/tx/` + friend.transaction}
+                >
                   Etherscan
                 </ExternalLink>
               </TableData>

@@ -24,6 +24,7 @@ import { AddressZero } from '@ethersproject/constants'
 import { Dots } from '../../components/swap/styleds'
 import { Contract } from '@ethersproject/contracts'
 import { useTotalSupply } from '../../data/TotalSupply'
+import { useTranslation } from 'react-i18next'
 
 const WEI_DENOM = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
 const ZERO = JSBI.BigInt(0)
@@ -39,6 +40,7 @@ function V1PairRemoval({
   liquidityTokenAmount: TokenAmount
   token: Token
 }) {
+  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const totalSupply = useTotalSupply(liquidityTokenAmount.token)
   const exchangeETHBalance = useETHBalances([liquidityTokenAmount.token.address])?.[liquidityTokenAmount.token.address]
@@ -113,7 +115,7 @@ function V1PairRemoval({
             disabled={isSuccessfullyRemoved || noLiquidityTokens || isRemovalPending || confirmingRemoval}
             onClick={remove}
           >
-            {isSuccessfullyRemoved ? 'Success' : isRemovalPending ? <Dots>Removing</Dots> : 'Remove'}
+            {isSuccessfullyRemoved ? t('success') : isRemovalPending ? <Dots>{t('removing')}</Dots> : t('remove')}
           </ButtonConfirmed>
         </div>
       </LightCard>

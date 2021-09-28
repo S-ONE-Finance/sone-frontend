@@ -12,7 +12,7 @@ const SwapStep6 = () => {
           <img src={swapMessage} alt="message" />
         </Step6Box>
         <Step6Instruction>
-          <Step6InstructionText>{t('let’s_stake_lp_tokens_to_get_rewards')}</Step6InstructionText>
+          <Step6InstructionText>{t('lets_stake_lp_tokens_to_get_rewards')}</Step6InstructionText>
           <img src={handIcon} alt="hand" />
         </Step6Instruction>
       </Step6Wrapper>

@@ -35,7 +35,7 @@ const SUPPORTED_CHAIN_IDS = [1, 4, 3, 42, 5]
 
 export const network = new NetworkConnector({
   urls: NETWORK_URLS,
-  defaultChainId: 1
+  defaultChainId: Number(process.env.REACT_APP_DEFAULT_CHAIN_ID)
 })
 
 let networkLibrary: Web3Provider | undefined

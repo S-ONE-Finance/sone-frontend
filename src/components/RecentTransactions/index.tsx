@@ -10,6 +10,7 @@ import TransactionSone from './TransactionSone'
 import Row from '../Row'
 import { useActiveWeb3React } from '../../hooks'
 import { ChainId } from '@s-one-finance/sdk-core'
+import { DEFAULT_CHAIN_ID, ETHERSCAN_URLS } from '../../constants'
 
 const ColumnScroll = styled(Column)`
   padding-left: 0;
@@ -61,15 +62,7 @@ export default function RecentTransactions({ isSmall = false }: { isSmall?: bool
   const { t } = useTranslation()
   const { chainId, account } = useActiveWeb3React()
 
-  const viewMoreUrl = useMemo(
-    () =>
-      chainId === ChainId.MAINNET
-        ? `https://etherscan.io/address/${account}`
-        : chainId === ChainId.ROPSTEN
-        ? `https://ropsten.etherscan.io/address/${account}`
-        : ``,
-    [chainId, account]
-  )
+  const viewMoreUrl = ETHERSCAN_URLS[chainId ?? (DEFAULT_CHAIN_ID as ChainId)] + `/address/${account}`
 
   const allTransactions = useAllTransactions()
 
@@ -95,7 +88,7 @@ export default function RecentTransactions({ isSmall = false }: { isSmall?: bool
           </Row>
         </>
       ) : (
-        <TYPE.subText paddingBottom={'0.75rem'}>{t('Your recent transactions will appear here...')}</TYPE.subText>
+        <TYPE.subText paddingBottom={'0.75rem'}>{t('your_recent_transactions_will_appear_here')}</TYPE.subText>
       )}
     </ColumnScroll>
   )

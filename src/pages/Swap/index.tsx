@@ -564,7 +564,7 @@ export default function Swap({ history }: RouteComponentProps) {
                     <RowBetween align="center">
                       <RowFixed>
                         <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                          {t('Referral ID') + (isValidCode === undefined ? ' (Invalid data)' : '')}
+                          {t('referral_id') + (isValidCode === undefined ? ' (Invalid data)' : '')}
                         </Text>
                         <QuestionHelper1416 text={t('question_helper_referral_id')} />
                       </RowFixed>
@@ -596,7 +596,7 @@ export default function Swap({ history }: RouteComponentProps) {
                       Number(guideStep.step) > 1 && (
                         <SwapStep5>
                           <ButtonPrimary className={`${Number(guideStep.step) > 1 ? 'step-5' : ''}`}>
-                            {t('swap')}
+                            {t('swap_verb')}
                           </ButtonPrimary>
                         </SwapStep5>
                       )
@@ -614,7 +614,7 @@ export default function Swap({ history }: RouteComponentProps) {
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <ButtonError disabled>
                 <Text fontSize={mobile16Desktop22} fontWeight={700}>
-                  {t('Insufficient liquidity for this trade')}
+                  {t('insufficient_liquidity_for_this_trade')}
                 </Text>
               </ButtonError>
             ) : showApproveFlow ? (
@@ -628,12 +628,12 @@ export default function Swap({ history }: RouteComponentProps) {
                 >
                   {approval === ApprovalState.PENDING ? (
                     <AutoRow gap="6px" justify="center">
-                      {t('Approving')} <Loader stroke="white" />
+                      {t('approving')} <Loader stroke="white" />
                     </AutoRow>
                   ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
-                    t('Approved')
+                    t('approved')
                   ) : (
-                    `${t('Approve')} ` + currencies[Field.INPUT]?.symbol
+                    `${t('approve')} ` + currencies[Field.INPUT]?.symbol
                   )}
                 </ButtonConfirmed>
                 <ButtonError
