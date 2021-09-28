@@ -9,6 +9,7 @@ import useRequestReward from './hooks/useRequestReward'
 import useReferrerInformation from './hooks/useReferrerInformation'
 import { AutoColumn } from '../../../components/Column'
 import { useTranslation } from 'react-i18next'
+import { REFERRAL_STATUS } from '../../../constants'
 
 const CardReferral = styled(Card)`
   padding: 40px 40px 30px 40px;
@@ -83,7 +84,7 @@ export default function Referral() {
     isRequestRewardPending === true ||
     pendingAmount === undefined ||
     pendingAmount < 0.000001 ||
-    status == 'Disable'
+    status == REFERRAL_STATUS.DISABLE
 
   const disabledText = pendingAmount === undefined || pendingAmount < 0.000001 ? '' : t('waiting_for_approval')
 

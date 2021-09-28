@@ -30,7 +30,6 @@ export function useReferral() {
   const referralInStore = useSelector<AppState, AppState['referral']>(state => state.referral)
 
   const url = `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-address/code/${referralCodeInQueryString}`
-  const shouldQueryRun = Boolean(referralCodeInQueryString && referralCodeInQueryString !== referralInStore.code)
 
   useQuery(
     ['useReferral', referralCodeInQueryString],

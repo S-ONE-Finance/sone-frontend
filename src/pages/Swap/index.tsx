@@ -28,7 +28,7 @@ import {
   useUserSlippageTolerance
 } from '../../state/user/hooks'
 
-import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
+import { INITIAL_ALLOWED_SLIPPAGE, REFERRAL_STATUS } from '../../constants'
 import { getTradeVersion } from '../../data/V1'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
@@ -352,7 +352,6 @@ export default function Swap({ history }: RouteComponentProps) {
 
   // Từ code mà parse ra được id thì code đó valid.
   const { id: isValidCode, code: referralCode, status: referralStatus } = useReferral()
-  console.log('referralStatus', referralStatus)
   const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
   const isAccountReferred = useIsAccountReferred()
   const accountIsReferrerAndSavedReferralCodeIsOfThisAccount = useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount()
@@ -361,7 +360,7 @@ export default function Swap({ history }: RouteComponentProps) {
     !isAccountReferred &&
     referralCode !== undefined &&
     !accountIsReferrerAndSavedReferralCodeIsOfThisAccount &&
-    referralStatus == 'Enable'
+    referralStatus == REFERRAL_STATUS.ENABLE
 
   const tokenToGuide = {
     decimals: 18,
