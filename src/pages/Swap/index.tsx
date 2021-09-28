@@ -596,7 +596,7 @@ export default function Swap({ history }: RouteComponentProps) {
                       Number(guideStep.step) > 1 && (
                         <SwapStep5>
                           <ButtonPrimary className={`${Number(guideStep.step) > 1 ? 'step-5' : ''}`}>
-                            {t('swap')}
+                            {t('swap_verb')}
                           </ButtonPrimary>
                         </SwapStep5>
                       )

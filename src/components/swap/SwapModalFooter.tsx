@@ -107,7 +107,7 @@ export default function SwapModalFooter({
 
       <ButtonError onClick={onConfirm} disabled={disabledConfirm} error={severity > 2} id="confirm-swap-or-send">
         <Text fontSize={isUpToExtraSmall ? 16 : 20} fontWeight={700}>
-          {severity > 2 ? t('swap_anyway') : t('swap')}
+          {severity > 2 ? t('swap_anyway') : t('swap_verb')}
         </Text>
       </ButtonError>
       {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}

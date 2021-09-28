@@ -92,6 +92,7 @@
   "invalid_pair": "无效的货币对",
   "invalid_pair_no_liquidity": "无效的货币对(无流动性)",
   "invited_friends": "被邀请的朋友",
+  "later": "返回",
   "lets_click_connect_wallet_to_connect_and_start": "点击 \"连接钱包\"，开始连接",
   "lets_confirm_your_reward_on_my_account": "在“我的账户”中确认奖励吧",
   "lets_stake_lp_tokens_to_get_rewards": "质押LP代币来获得奖励吧!",
@@ -244,12 +245,13 @@
   "summary_add_one_token": "Add <0>{{userInputAmount}} </0><1>{{userInputSymbol}}</1>",
   "summary_add_two_tokens": "Add <0>{{currencyAAmount}} </0><1>{{currencyASymbol}}</1> and <0>{{currencyBAmount}} </0><1>{{currencyBSymbol}}</1>",
   "summary_swap": "用<0>{{inputAmount}} </0><1>{{inputSymbol}}</1>换取<2>{{outputAmount}} </2><1>{{outputSymbol}}</1>",
-  "swap": "币币交易",
   "swap_anyway": "仍然交易",
   "swap_description": "",
+  "swap_noun": "币币交易",
   "swap_settings": "交易设置",
   "swap_stats": "交易数据",
   "swap_successfully": "交换成功",
+  "swap_verb": "币币交易",
   "swapping_123_eth_for_456_sone": "用{{inputAmount}} {{inputSymbol}}交换{{outputAmount}} {{outputSymbol}}",
   "symbol": "符号",
   "time": "时间",
@@ -316,6 +318,5 @@
   "your_recent_transactions_will_appear_here": "您最近的交易显示如下...",
   "your_referral_id": "您的推荐人ID",
   "your_transaction_may_be_frontrun": "您的交易可能会被优先处理",
-  "your_transaction_may_fail": "您的交易可能会失败",
-  "later": "返回"
+  "your_transaction_may_fail": "您的交易可能会失败"
 }
