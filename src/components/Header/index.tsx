@@ -391,7 +391,7 @@ const ResponsiveMenuItem = styled(MenuItem)`
       top: -1rem;
     `}
     // Khi màn hình nhỏ (thiết bị touch) thì phải disable đi để touch được cái footer.
-    ${({ theme }) => theme.mediaWidth.upToMedium`
+    ${({ theme }) => theme.mediaWidth.upToExtraSmall`
       display: none;
     `}
   }

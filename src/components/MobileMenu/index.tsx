@@ -30,7 +30,7 @@ import {
 import { injected, walletlink } from '../../connectors'
 import useSoneLockBalance from '../../hooks/staking/useSoneLockBalance'
 import useUnlockHandler from '../../hooks/staking/useUnlockHandler'
-import { getFixedBalanceStringCommas } from 'utils/formatNumber'
+import { formatSONE } from 'utils/formatNumber'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
   position: relative;
@@ -174,9 +174,9 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
             </RowBetween>
             <TYPE.subText marginTop="0.25rem">
               {' '}
-              {getFixedBalanceStringCommas(soneCanUnlock.toString()) +
+              {formatSONE(soneCanUnlock.toString(), true, false) +
                 '/' +
-                getFixedBalanceStringCommas(totalSoneLocked.toString())}{' '}
+                formatSONE(totalSoneLocked.toString(), true, false)}{' '}
               SONE
             </TYPE.subText>
           </Column>

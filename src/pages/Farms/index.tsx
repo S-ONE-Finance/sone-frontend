@@ -15,7 +15,7 @@ import iconSort from '../../assets/images/icon-sort.svg'
 import useFarms from '../../hooks/staking/useFarms'
 import useMyStaked from '../../hooks/staking/useMyStaked'
 import useMyLpToken from '../../hooks/staking/useMyLpToken'
-import { getNumberCommas } from '../../utils/formatNumber'
+import { formatSONE } from '../../utils/formatNumber'
 
 export type SORT_KEY = 'apy' | 'total_liquidity' | 'bonus_campaign' | 'lp_name'
 export type SortOptions = { [p in SORT_KEY]: string }
@@ -145,7 +145,9 @@ export default function Farms() {
             })
           }}
         />
-        <Balances circulatingSupplyValue={getNumberCommas(circulatingSupplyValue.toString())} />
+        <Balances
+          circulatingSupplyValue={formatSONE(circulatingSupplyValue.multipliedBy(1e18).toString(), true, false) ?? '0'}
+        />
       </WrapTitle>
       <StyledFilterWrap>
         <StyledFilter>
