@@ -173,6 +173,7 @@ const AbsoluteVector = styled.div`
   right: 2rem;
   width: 177.1px;
   height: 177.1px;
+  opacity: 0.5;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     bottom: 1rem;
