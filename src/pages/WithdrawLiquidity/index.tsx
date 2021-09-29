@@ -276,7 +276,8 @@ export default function WithdrawLiquidity({
     setTxHash
   })
 
-  const LPTokenName = pair?.token0.symbol + '-' + pair?.token1.symbol + ' ' + t('lp_token')
+  // const LPTokenName = pair?.token0.symbol + '-' + pair?.token1.symbol + ' ' + t('lp_token')
+  const LPTokenName = t('lp_token')
 
   function modalHeader() {
     return (
@@ -322,9 +323,14 @@ export default function WithdrawLiquidity({
             <Text fontWeight={500} fontSize={isUpToExtraSmall ? 13 : 16} color={theme.text4Sone}>
               {t('lp_token_burned')}
             </Text>
-            <Text fontWeight={500} fontSize={16}>
-              {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + LPTokenName}
-            </Text>
+            <RowFixed align="baseline">
+              <Text fontWeight={700} fontSize={isUpToExtraSmall ? 13 : 16}>
+                {parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0}
+              </Text>
+              <Text fontWeight={700} fontSize={13}>
+                &nbsp;{LPTokenName}
+              </Text>
+            </RowFixed>
           </RowBetween>
           <RowBetween>
             <Text fontWeight={500} fontSize={isUpToExtraSmall ? 13 : 16} color={theme.text4Sone}>
@@ -460,9 +466,14 @@ export default function WithdrawLiquidity({
                       <TextPrice>{t('lp_token_burned')}</TextPrice>
                       <QuestionHelper1416 text={t('question_helper_lp_token_burned')} />
                     </RowFixed>
-                    <Text fontWeight={500} fontSize={16}>
-                      {(parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0) + ' ' + LPTokenName}
-                    </Text>
+                    <RowFixed align="baseline">
+                      <Text fontWeight={700} fontSize={isUpToExtraSmall ? 13 : 16}>
+                        {parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0}
+                      </Text>
+                      <Text fontWeight={700} fontSize={13}>
+                        &nbsp;{LPTokenName}
+                      </Text>
+                    </RowFixed>
                   </RowBetween>
                   <RowBetween>
                     <RowFixed>

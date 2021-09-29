@@ -18,11 +18,10 @@ export function getNumberCommas(x: number | string) {
 export function getFixedNumberCommas(_num: string, fixedDigits = 18) {
   const num = new BigNumber(_num)
   let res = ''
-  if (num.isGreaterThan(1000000)) res = getFormattedNumber(num.toString(), 1)
-  else if (num.isGreaterThan(10000)) res = num.toFixed(0)
-  else if (num.isGreaterThan(1000)) res = num.toFixed(1)
-  else if (num.isGreaterThan(100)) res = num.toFixed(2)
-  else if (num.isGreaterThan(1)) res = num.toFixed(3)
+  if (num.isGreaterThan(10000)) res = getFormattedNumber(num.toString(), 1)
+  else if (num.isGreaterThan(1000)) res = num.toFixed(0)
+  else if (num.isGreaterThan(100)) res = num.toFixed(1)
+  else if (num.isGreaterThan(1)) res = num.toFixed(2)
   else if (num.isZero()) res = num.toFixed()
   else {
     res = num.toFixed(fixedDigits)
