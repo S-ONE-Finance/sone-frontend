@@ -360,7 +360,7 @@ export default function Swap({ history }: RouteComponentProps) {
     !isAccountReferred &&
     referralCode !== undefined &&
     !accountIsReferrerAndSavedReferralCodeIsOfThisAccount &&
-    referralStatus == REFERRAL_STATUS.ENABLE
+    referralStatus === REFERRAL_STATUS.ENABLE
 
   const tokenToGuide = {
     decimals: 18,
