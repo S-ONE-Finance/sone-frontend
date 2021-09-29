@@ -70,7 +70,7 @@ const OverallNetAPY = memo(function OverallNetAPY() {
     }
   }, [sonePrice, unmountedRef, myAccountStaked])
 
-  const netApyRender = useMemo(() => getFixedNumberCommas(new BigNumber(netApy).toString(), 5) + '%', [netApy])
+  const netApyRender = useMemo(() => getFixedNumberCommas(new BigNumber(netApy).toString(), 4) + '%', [netApy])
 
   return (
     <StakingBackground>
