@@ -287,7 +287,7 @@ export const ExtraSmallOnly = styled.span`
 `
 
 export const TextPanelLabel = styled.div`
-  color: ${({ theme }) => theme.text8Sone};
+  color: ${({ theme }) => theme.text6Sone};
   font-size: 16px;
   font-weight: 500;
 

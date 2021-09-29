@@ -323,7 +323,7 @@ export default function WithdrawLiquidity({
             <Text fontWeight={500} fontSize={isUpToExtraSmall ? 13 : 16} color={theme.text4Sone}>
               {t('lp_token_burned')}
             </Text>
-            <RowFixed align="baseline">
+            <RowFixed align="baseline" color={theme.text6Sone}>
               <Text fontWeight={700} fontSize={isUpToExtraSmall ? 13 : 16}>
                 {parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0}
               </Text>
@@ -466,7 +466,7 @@ export default function WithdrawLiquidity({
                       <TextPrice>{t('lp_token_burned')}</TextPrice>
                       <QuestionHelper1416 text={t('question_helper_lp_token_burned')} />
                     </RowFixed>
-                    <RowFixed align="baseline">
+                    <RowFixed align="baseline" color={theme.text6Sone}>
                       <Text fontWeight={700} fontSize={isUpToExtraSmall ? 13 : 16}>
                         {parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? 0}
                       </Text>
