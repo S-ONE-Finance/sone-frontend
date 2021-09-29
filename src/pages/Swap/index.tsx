@@ -661,7 +661,7 @@ export default function Swap({ history }: RouteComponentProps) {
                   <Text fontSize={mobile16Desktop22} fontWeight={700}>
                     {priceImpactSeverity > 3 && !isExpertMode
                       ? t(`Price Impact High`)
-                      : t(`swap${priceImpactSeverity > 2 ? '_anyway' : ''}`)}
+                      : t(`swap${priceImpactSeverity > 2 ? '_anyway' : '_verb'}`)}
                   </Text>
                 </ButtonError>
               </RowBetween>
@@ -689,7 +689,7 @@ export default function Swap({ history }: RouteComponentProps) {
                     ? swapInputError
                     : priceImpactSeverity > 3 && !isExpertMode
                     ? t('price_impact_too_high')
-                    : t(`swap${priceImpactSeverity > 2 ? '_anyway' : ''}`)}
+                    : t(`swap${priceImpactSeverity > 2 ? '_anyway' : '_verb'}`)}
                 </Text>
               </ButtonError>
             )}
