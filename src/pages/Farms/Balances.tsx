@@ -5,7 +5,7 @@ import { Contract } from '@ethersproject/contracts'
 import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { pxToRem } from '../../utils/PxToRem'
-import { getBalanceStringCommas } from '../../utils/formatNumber'
+import { formatSONE } from '../../utils/formatNumber'
 
 interface BalanceProps {
   circulatingSupplyValue: string
@@ -21,7 +21,7 @@ const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
     ;(async () => {
       if (soneContract) {
         const balanceDataRaw: BigNumber = await soneContract?.totalSupply()
-        const balanceData = getBalanceStringCommas(balanceDataRaw.toString())
+        const balanceData = formatSONE(balanceDataRaw.toString(), true, false)
         setTotalSupply(balanceData)
       }
     })()

@@ -13,7 +13,7 @@ import usePrevious from '../../../hooks/usePrevious'
 import SoneBigImage from './SoneBigImage'
 import { lighten } from 'polished'
 import useSoneLockBalance from '../../../hooks/staking/useSoneLockBalance'
-import { formatSONE, getFixedBalanceStringCommas } from 'utils/formatNumber'
+import { formatSONE } from 'utils/formatNumber'
 import useUnlockHandler from 'hooks/staking/useUnlockHandler'
 import { useIsUpToExtraSmall } from '../../../hooks/useWindowSize'
 import Column from '../../../components/Column'
@@ -195,9 +195,9 @@ export default function MyBalance() {
         <RowColFlex>
           <TextUnlockTitle>{t('can_unlock')}:</TextUnlockTitle>
           <TextUnlockValue>
-            {getFixedBalanceStringCommas(soneCanUnlock.toString()) +
+            {formatSONE(soneCanUnlock.toString(), true, false) +
               '/' +
-              getFixedBalanceStringCommas(totalSoneLocked.toString())}{' '}
+              formatSONE(totalSoneLocked.toString(), true, false)}{' '}
             SONE
           </TextUnlockValue>
           <TextUnlockButton onClick={() => onUnlockSone()}>{t('unlock')}</TextUnlockButton>
