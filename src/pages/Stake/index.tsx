@@ -137,7 +137,7 @@ export default function Staking() {
     : lpBalance === undefined || new BigNumber(lpBalance).isLessThan(typedValue)
     ? t('insufficient_lp_token')
     : allowance.toString() === '0' && (isApproveTxPushed || isApproving)
-    ? t('approving...')
+    ? t('approving')
     : allowance.toString() === '0' && !isApproveTxPushed
     ? t('approve')
     : undefined
@@ -363,9 +363,9 @@ export default function Staking() {
                     </>
                   )}
                 </>
-              ) : error === t('approve') || error === t('approving...') ? (
-                <ButtonPrimary disabled={error === t('approving...')} onClick={() => onApprove(symbol)}>
-                  {error === t('approving...')
+              ) : error === t('approve') || error === t('approving') ? (
+                <ButtonPrimary disabled={error === t('approving')} onClick={() => onApprove(symbol)}>
+                  {error === t('approving')
                     ? error
                     : t('approve_eth_sone_lp_token', {
                         symbol
