@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from '@s-one-finance/sdk-core'
 import { useMemo } from 'react'
-import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE } from '../constants'
+import { BIPS_BASE, INITIAL_ALLOWED_SLIPPAGE, REFERRAL_STATUS } from '../constants'
 import { getTradeVersion, useV1TradeExchangeAddress } from '../data/V1'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { calculateGasMargin, getRouterContract } from '../utils'
@@ -129,14 +129,15 @@ export function useSwapCallback(
   const recipient = recipientAddressOrName === null ? account : recipientAddress
 
   const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
-  const { id: isValidCode } = useReferral()
+  const { id: isValidCode, status: referralCode } = useReferral()
   const isAccountReferred = useIsAccountReferred()
   const accountIsReferrerAndSavedReferralCodeIsOfThisAccount = useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount()
   const weCanUseReferral =
     isReferralWorksOnCurrentNetwork &&
     !isAccountReferred &&
     isValidCode !== undefined &&
-    !accountIsReferrerAndSavedReferralCodeIsOfThisAccount
+    !accountIsReferrerAndSavedReferralCodeIsOfThisAccount &&
+    referralCode == REFERRAL_STATUS.ENABLE
   const onSwapReferral = useSwapReferralCallback()
 
   return useMemo(() => {

@@ -30,7 +30,6 @@ export function useReferral() {
   const referralInStore = useSelector<AppState, AppState['referral']>(state => state.referral)
 
   const url = `${ADMIN_BACKEND_BASE_URL}/referral-manager/get-address/code/${referralCodeInQueryString}`
-  const shouldQueryRun = Boolean(referralCodeInQueryString && referralCodeInQueryString !== referralInStore.code)
 
   useQuery(
     ['useReferral', referralCodeInQueryString],
@@ -42,7 +41,8 @@ export function useReferral() {
             dispatch(
               updateReferral({
                 id: data.data.data?.id ? data.data.data.id : undefined,
-                code: referralCodeInQueryString.toString()
+                code: referralCodeInQueryString.toString(),
+                status: data.data.data?.status
               })
             )
           }
@@ -51,7 +51,7 @@ export function useReferral() {
         .catch(() => {
           console.error(`${referralCodeInQueryString} is not a valid referral id.`)
         }),
-    { enabled: shouldQueryRun }
+    { cacheTime: undefined }
   )
 
   return referralInStore
@@ -101,6 +101,7 @@ interface GetReferralIdByCodeResponse {
     | {
         id: number
         address: string
+        status: string
       }
     | undefined
   statusCode: number
