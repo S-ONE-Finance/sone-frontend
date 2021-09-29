@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Text } from 'rebass'
 import styled from 'styled-components'
@@ -54,6 +54,11 @@ export default memo(function ModalRequestRewardWarning({
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const { t } = useTranslation()
 
+  const _onRequestReward = useCallback(() => {
+    onRequestReward()
+    onDismiss()
+  }, [onDismiss, onRequestReward])
+
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss}>
       <ModalContent gap={isUpToExtraSmall ? '23px' : '32px'}>
@@ -67,13 +72,13 @@ export default memo(function ModalRequestRewardWarning({
         <RowDesktopColumnMobile gaps={['15px', '20px']}>
           {isUpToExtraSmall ? (
             <>
-              <ButtonStayTuned onClick={onRequestReward}>{t('request_reward')}</ButtonStayTuned>
+              <ButtonStayTuned onClick={_onRequestReward}>{t('request_reward')}</ButtonStayTuned>
               <ButtonUnstakeAnyway onClick={onDismiss}>{t('later')}</ButtonUnstakeAnyway>
             </>
           ) : (
             <>
               <ButtonUnstakeAnyway onClick={onDismiss}>{t('later')}</ButtonUnstakeAnyway>
-              <ButtonStayTuned onClick={onRequestReward}>{t('request_reward')}</ButtonStayTuned>
+              <ButtonStayTuned onClick={_onRequestReward}>{t('request_reward')}</ButtonStayTuned>
             </>
           )}
         </RowDesktopColumnMobile>
