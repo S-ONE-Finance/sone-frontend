@@ -268,7 +268,7 @@ export default function Settings({ transactionType }: { transactionType: Transac
             </AbsoluteVector>
             <TitleBodyMarginer>
               <RowBetween>
-                <Title>{t('swap_settings')}</Title>
+                <Title>{t('settings')}</Title>
                 <StyledCloseIcon onClick={toggle} />
               </RowBetween>
               <SectionWrapper>
