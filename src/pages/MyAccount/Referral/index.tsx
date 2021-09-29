@@ -84,7 +84,7 @@ export default function Referral() {
     isRequestRewardPending === true ||
     pendingAmount === undefined ||
     pendingAmount < 0.000001 ||
-    status == REFERRAL_STATUS.DISABLE
+    status === REFERRAL_STATUS.DISABLE
 
   const disabledText = pendingAmount === undefined || pendingAmount < 0.000001 ? '' : t('waiting_for_approval')
 

@@ -137,7 +137,7 @@ export function useSwapCallback(
     !isAccountReferred &&
     isValidCode !== undefined &&
     !accountIsReferrerAndSavedReferralCodeIsOfThisAccount &&
-    referralCode == REFERRAL_STATUS.ENABLE
+    referralCode === REFERRAL_STATUS.ENABLE
   const onSwapReferral = useSwapReferralCallback()
 
   return useMemo(() => {
