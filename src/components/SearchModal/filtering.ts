@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { isAddress } from '../../utils'
-import { Pair, Token } from '@s-one-finance/sdk-core'
+import { ChainId, Pair, Token, WETH } from '@s-one-finance/sdk-core'
 
 export function filterTokens(tokens: Token[], search: string): Token[] {
   if (search.length === 0) return tokens
@@ -92,4 +92,15 @@ export function filterPairs(pairs: Pair[], rawQuery: string): Pair[] {
   })
 
   return res
+}
+
+/**
+ * Tạo ra pairName để tiện sort
+ */
+export function addPairNameToListPairs(pairs: Pair[], chainId: ChainId) {
+  return pairs.map(pair => {
+    const token0Name = pair.token0.equals(WETH[chainId]) ? 'eth' : pair.token0.symbol?.toLowerCase()
+    const token1Name = pair.token1.equals(WETH[chainId]) ? 'eth' : pair.token1.symbol?.toLowerCase()
+    return { pair, pairName: token0Name + '-' + token1Name }
+  })
 }
