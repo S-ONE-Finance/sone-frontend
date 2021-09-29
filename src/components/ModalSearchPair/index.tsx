@@ -1,4 +1,4 @@
-import { Pair } from '@s-one-finance/sdk-core'
+import { ChainId, Pair } from '@s-one-finance/sdk-core'
 import Modal from 'components/Modal'
 import useDebounce from 'hooks/useDebounce'
 import useTheme from 'hooks/useTheme'
@@ -12,9 +12,11 @@ import { PanelSearchContentWrapper, SortDownIcon, SortUpIcon, StyledCloseIcon, T
 import Column from '../Column'
 import { QuestionHelper1416 } from '../QuestionHelper'
 import Row, { RowBetween, RowFixed } from '../Row'
-import { filterPairs } from '../SearchModal/filtering'
+import { addPairNameToListPairs, filterPairs } from '../SearchModal/filtering'
 import { PaddedColumn, SearchInput } from '../SearchModal/styleds'
 import PairList from './PairList'
+import _ from 'lodash'
+import { useActiveWeb3React } from '../../hooks'
 
 type ModalSearchPairProps = {
   isOpen: boolean
@@ -36,6 +38,7 @@ export default function ModalSearchPair({
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
+  const { chainId } = useActiveWeb3React()
 
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>()
@@ -50,8 +53,11 @@ export default function ModalSearchPair({
   }, [allPairs, debouncedQuery])
 
   const sortedPairs: Pair[] = useMemo(() => {
-    return invertSearchOrder ? filteredPairs.slice().reverse() : filteredPairs
-  }, [filteredPairs, invertSearchOrder])
+    const filteredPairsWithPairName = addPairNameToListPairs(filteredPairs, chainId ?? ChainId.MAINNET)
+    const sortedPairs = _.orderBy(filteredPairsWithPairName, ['pairName'], [invertSearchOrder ? 'desc' : 'asc'])
+    console.log(`sortedPairs`, sortedPairs)
+    return sortedPairs.map(pairWithPairName => pairWithPairName.pair)
+  }, [filteredPairs, invertSearchOrder, chainId])
 
   const handlePairSelect = useCallback(
     (pair: Pair) => {
