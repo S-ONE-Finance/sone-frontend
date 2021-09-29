@@ -28,7 +28,7 @@ import {
   useUserSlippageTolerance
 } from '../../state/user/hooks'
 
-import { INITIAL_ALLOWED_SLIPPAGE } from '../../constants'
+import { INITIAL_ALLOWED_SLIPPAGE, REFERRAL_STATUS } from '../../constants'
 import { getTradeVersion } from '../../data/V1'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
@@ -351,7 +351,7 @@ export default function Swap({ history }: RouteComponentProps) {
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
   // Từ code mà parse ra được id thì code đó valid.
-  const { id: isValidCode, code: referralCode } = useReferral()
+  const { id: isValidCode, code: referralCode, status: referralStatus } = useReferral()
   const isReferralWorksOnCurrentNetwork = useIsReferralWorksOnCurrentNetwork()
   const isAccountReferred = useIsAccountReferred()
   const accountIsReferrerAndSavedReferralCodeIsOfThisAccount = useAccountIsReferrerAndSavedReferralCodeIsOfThisAccount()
@@ -359,7 +359,8 @@ export default function Swap({ history }: RouteComponentProps) {
     isReferralWorksOnCurrentNetwork &&
     !isAccountReferred &&
     referralCode !== undefined &&
-    !accountIsReferrerAndSavedReferralCodeIsOfThisAccount
+    !accountIsReferrerAndSavedReferralCodeIsOfThisAccount &&
+    referralStatus == REFERRAL_STATUS.ENABLE
 
   const tokenToGuide = {
     decimals: 18,
@@ -564,12 +565,12 @@ export default function Swap({ history }: RouteComponentProps) {
                     <RowBetween align="center">
                       <RowFixed>
                         <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                          {t('referral_id') + (isValidCode === undefined ? ' (Invalid data)' : '')}
+                          {t('referral_id')}
                         </Text>
                         <QuestionHelper1416 text={t('question_helper_referral_id')} />
                       </RowFixed>
                       <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-                        {referralCode}
+                        {isValidCode === undefined ? ' (Invalid data)' : referralCode}
                       </Text>
                     </RowBetween>
                   )}

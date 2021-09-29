@@ -24,6 +24,11 @@ export const ETHERSCAN_URLS: { [chainId in ChainId]: string } = {
   [ChainId.KOVAN]: ''
 }
 
+export enum REFERRAL_STATUS {
+  ENABLE = 'Enable',
+  DISABLE = 'Disable'
+}
+
 export { PRELOADED_PROPOSALS } from './proposals'
 
 // a list of tokens by chain
