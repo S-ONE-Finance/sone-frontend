@@ -101,6 +101,20 @@ const useFarms = (): [boolean, Farm[]] => {
         const rewardPerDay = rewardPerBlock * blocksPerHour * 24
         const soneHarvested = pool.soneHarvested > 0 ? pool.soneHarvested : 0
         const multiplier = (pool.owner.bonusMultiplier * pool.allocPoint) / 100
+
+        console.log(`-----------pool id: ${Number(pool.id)}-----------`)
+        console.log('block', block)
+        console.log('pool.allocPoint', pool.allocPoint)
+        console.log('pool.owner.totalAllocPoint', pool.owner.totalAllocPoint)
+        console.log('pair.reserveUSD', pair.reserveUSD)
+        console.log('pair.totalSupply', pair.totalSupply)
+        console.log('balance', balance)
+        console.log('sonePrice', sonePrice)
+        console.log('multiplierYear', multiplierYear)
+        console.log('averageBlockTime', averageBlockTime)
+        console.log('roiPerYear', roiPerYear)
+        console.log('--------------------------------------------------')
+
         return {
           ...pool,
           contract: 'masterchefv1',
