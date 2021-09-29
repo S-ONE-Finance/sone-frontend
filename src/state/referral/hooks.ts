@@ -38,7 +38,6 @@ export function useReferral() {
         .get<GetReferralIdByCodeResponse>(url)
         .then(data => {
           if (referralCodeInQueryString) {
-            console.log(' data.data', data.data)
             dispatch(
               updateReferral({
                 id: data.data.data?.id ? data.data.data.id : undefined,
