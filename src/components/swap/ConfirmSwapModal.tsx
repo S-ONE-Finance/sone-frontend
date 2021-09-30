@@ -80,7 +80,7 @@ export default function ConfirmSwapModal({
     ) : null
   }, [allowedSlippage, onConfirm, showAcceptChanges, swapErrorMessage, trade])
 
-  const pendingText = t('swapping_123_eth_for_456_sone', {
+  const pendingText = t('swapping_123_eth_to_456_sone', {
     inputAmount: trade?.inputAmount?.toSignificant(6),
     inputSymbol: trade?.inputAmount?.currency?.symbol,
     outputAmount: trade?.outputAmount?.toSignificant(6),

@@ -22,6 +22,7 @@ import AppVector from '../AppBodyTitleDescriptionSettings/AppVector'
 const Wrapper = styled.div`
   width: 100%;
 `
+
 const Section = styled(AutoColumn)`
   padding: 30px 57px 25px;
   background-color: ${({ theme }) => theme.bg1Sone};
@@ -29,6 +30,10 @@ const Section = styled(AutoColumn)`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     padding: 18px 22px 20px;
   `}
+`
+
+const PendingSection = styled(Section)`
+  padding: 30px 37px 25px;
 `
 
 const BottomSection = styled(Section)`
@@ -82,7 +87,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
   const { t } = useTranslation()
   return (
     <Wrapper>
-      <Section>
+      <PendingSection>
         <RowBetween>
           <div />
           <StyledCloseIcon onClick={onDismiss} />
@@ -103,7 +108,7 @@ function ConfirmationPendingContent({ onDismiss, pendingText }: { onDismiss: () 
             {t('confirm_this_transaction_in_your_wallet')}
           </Text>
         </AutoColumn>
-      </Section>
+      </PendingSection>
     </Wrapper>
   )
 }
