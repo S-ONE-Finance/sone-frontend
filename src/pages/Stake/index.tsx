@@ -9,7 +9,7 @@ import { ButtonPrimary } from '../../components/Button'
 import MyReward from '../../components/MyReward'
 import { useTranslation } from 'react-i18next'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { Heading, HeadingSection, SubHeading } from '../Unstake'
+import { Heading } from '../Unstake'
 import StakeTxSectionDetails1 from './StakeTxSectionDetails1'
 import { useGuideStepManager, useShowTransactionDetailsManager } from '../../state/user/hooks'
 import { ClickableText } from '../Pool/styleds'
@@ -296,37 +296,22 @@ export default function Staking() {
         pendingText={pendingText}
         content={modalContent}
       />
-      {isUpToExtraSmall ? (
-        <Row justify="center" gap="0.75rem" style={{ margin: '1.25rem 0 1.75rem 0' }}>
-          <RowFixed gap="0.75rem">
-            <LiquidityProviderTokenLogo
-              address0={token0 && token0.id}
-              address1={token1 && token1.id}
-              size={44}
-              sizeMobile={28}
-              main={false}
-            />
-            <AutoColumn justify="center">
-              <Heading>{t('lp_token').toUpperCase()}</Heading>
-              <SubHeading>{symbol ? `${symbol} LP` : '--'}</SubHeading>
-            </AutoColumn>
-          </RowFixed>
-        </Row>
-      ) : (
-        <HeadingSection justify="center" gap="0.125rem">
-          <RowFixed gap="1.25rem">
-            <LiquidityProviderTokenLogo
-              address0={token0 && token0.id}
-              address1={token1 && token1.id}
-              size={44}
-              sizeMobile={28}
-              main={false}
-            />
-            <Heading>{t('lp_token').toUpperCase()}</Heading>
-          </RowFixed>
-          <SubHeading>{symbol ? `${symbol} LP` : '--'}</SubHeading>
-        </HeadingSection>
-      )}
+      <Row
+        justify="center"
+        gap="0.75rem"
+        style={{ margin: isUpToExtraSmall ? '1.25rem 0 1.75rem 0' : '1.75rem 0 2.25rem 0' }}
+      >
+        <RowFixed gap="0.75rem">
+          <LiquidityProviderTokenLogo
+            address0={token0 && token0.id}
+            address1={token1 && token1.id}
+            size={44}
+            sizeMobile={28}
+            main={false}
+          />
+          <Heading>{(symbol ? symbol : '--') + ' ' + t('lp_token').toUpperCase()}</Heading>
+        </RowFixed>
+      </Row>
       <AutoColumn gap={isUpToExtraSmall ? '1.25rem' : '2.1875rem'} style={{ width: '100%' }} justify="center">
         <AppBody>
           <AppBodyTitleDescriptionSettings transactionType={TransactionType.STAKE} />
