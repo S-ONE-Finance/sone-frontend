@@ -258,37 +258,22 @@ export default function Unstake() {
         pendingText={pendingText}
         content={modalContent}
       />
-      {isUpToExtraSmall ? (
-        <Row justify="center" gap="0.75rem" style={{ margin: '1.25rem 0 1.75rem 0' }}>
-          <RowFixed gap="0.75rem">
-            <LiquidityProviderTokenLogo
-              address0={token0 && token0.id}
-              address1={token1 && token1.id}
-              size={44}
-              sizeMobile={28}
-              main={false}
-            />
-            <AutoColumn justify="center">
-              <Heading>{t('lp_token').toUpperCase()}</Heading>
-              <SubHeading>{symbol} LP</SubHeading>
-            </AutoColumn>
-          </RowFixed>
-        </Row>
-      ) : (
-        <HeadingSection justify="center" gap="0.125rem">
-          <RowFixed gap="1.25rem">
-            <LiquidityProviderTokenLogo
-              address0={token0 && token0.id}
-              address1={token1 && token1.id}
-              size={44}
-              sizeMobile={28}
-              main={false}
-            />
-            <Heading>{t('lp_token').toUpperCase()}</Heading>
-          </RowFixed>
-          <SubHeading>{symbol} LP</SubHeading>
-        </HeadingSection>
-      )}
+      <Row
+        justify="center"
+        gap="0.75rem"
+        style={{ margin: isUpToExtraSmall ? '1.25rem 0 1.75rem 0' : '1.75rem 0 2.25rem 0' }}
+      >
+        <RowFixed gap="0.75rem">
+          <LiquidityProviderTokenLogo
+            address0={token0 && token0.id}
+            address1={token1 && token1.id}
+            size={44}
+            sizeMobile={28}
+            main={false}
+          />
+          <Heading>{(symbol ? symbol : '--') + ' ' + t('lp_token').toUpperCase()}</Heading>
+        </RowFixed>
+      </Row>
       <AppBody>
         <AppBodyTitleDescriptionSettings transactionType={TransactionType.UNSTAKE} />
         <StyledPadding>
