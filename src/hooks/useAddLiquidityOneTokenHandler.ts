@@ -141,8 +141,8 @@ export default function useAddLiquidityOneTokenHandler({
       // args = [amountIn, amountAMin, amountBMin, amountOutMin, path, to, deadline]
       args = [
         selectedTokenUserInputAmountJSBI.toString(),
-        selectedTokenMinAmountJSBI.toString(),
-        theOtherTokenMinAmountJSBI.toString(),
+        isSelectedToken0 ? selectedTokenMinAmountJSBI.toString() : theOtherTokenMinAmountJSBI.toString(),
+        isSelectedToken0 ? theOtherTokenMinAmountJSBI.toString() : selectedTokenMinAmountJSBI.toString(),
         theOtherTokenMinOutputAmountJSBI.toString(),
         // 0,
         // 0,
