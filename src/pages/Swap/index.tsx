@@ -33,7 +33,7 @@ import { getTradeVersion } from '../../data/V1'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
 import useWrapCallback, { WrapType } from '../../hooks/useWrapCallback'
-import { useToggleSettingsMenu, useWalletModalToggle } from '../../state/application/hooks'
+import { useWalletModalToggle } from '../../state/application/hooks'
 import { Field } from '../../state/swap/actions'
 import {
   useDefaultsFromURLSearch,
@@ -119,7 +119,6 @@ export default function Swap({ history }: RouteComponentProps) {
   const toggleWalletModal = useWalletModalToggle()
 
   // for expert mode
-  const toggleSettings = useToggleSettingsMenu()
   const [isExpertMode] = useExpertModeManager()
 
   // get custom setting values for user
@@ -511,24 +510,14 @@ export default function Swap({ history }: RouteComponentProps) {
                   {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
                     <RowBetween align="center">
                       <RowFixed>
-                        <ClickableText
-                          fontWeight={500}
-                          fontSize={mobile13Desktop16}
-                          color={theme.text4Sone}
-                          onClick={toggleSettings}
-                        >
+                        <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
                           {t('slippage_tolerance')}
-                        </ClickableText>
+                        </Text>
                         <QuestionHelper1416 text={t('question_helper_slippage_tolerance')} />
                       </RowFixed>
-                      <ClickableText
-                        fontWeight={700}
-                        fontSize={mobile13Desktop16}
-                        color={theme.text6Sone}
-                        onClick={toggleSettings}
-                      >
+                      <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
                         {allowedSlippage / 100}%
-                      </ClickableText>
+                      </Text>
                     </RowBetween>
                   )}
                   {Boolean(trade) && (
