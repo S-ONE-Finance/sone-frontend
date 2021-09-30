@@ -86,6 +86,9 @@ export default function useMyLiquidityApy(pairAddress: string): number | undefin
         totalTokenAmount += +mint.amountUSD
       }
       const denominator = totalTokenAmount
+      if (denominator === 0) {
+        return undefined
+      }
       return numerator / denominator
     } catch (err) {
       console.log(`err`, err)
