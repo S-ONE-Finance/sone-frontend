@@ -252,7 +252,7 @@
   "swap_stats": "交易数据",
   "swap_successfully": "交换成功",
   "swap_verb": "币币交易",
-  "swapping_123_eth_for_456_sone": "用{{inputAmount}} {{inputSymbol}}交换{{outputAmount}} {{outputSymbol}}",
+  "swapping_123_eth_to_456_sone": "用{{inputAmount}} {{inputSymbol}}交换{{outputAmount}} {{outputSymbol}}",
   "symbol": "符号",
   "time": "时间",
   "to": "交换后",

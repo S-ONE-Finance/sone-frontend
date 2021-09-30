@@ -252,7 +252,7 @@
   "swap_stats": "Swap Stats",
   "swap_successfully": "Swap successfully",
   "swap_verb": "Swap",
-  "swapping_123_eth_for_456_sone": "Swapping {{inputAmount}} {{inputSymbol}} for {{outputAmount}} {{outputSymbol}}",
+  "swapping_123_eth_to_456_sone": "Swapping {{inputAmount}} {{inputSymbol}} to {{outputAmount}} {{outputSymbol}}",
   "symbol": "Symbol",
   "time": "Time",
   "to": "To",
