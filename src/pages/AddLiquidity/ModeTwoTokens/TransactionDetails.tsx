@@ -11,7 +11,6 @@ import { ClickableText } from 'pages/Pool/styleds'
 import React, { useMemo, useState } from 'react'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import { Text } from 'rebass'
-import { useToggleSettingsMenu } from 'state/application/hooks'
 import { Field } from 'state/mint/actions'
 import { useDerivedMintInfo } from 'state/mint/hooks'
 import { useShowTransactionDetailsManager, useUserSlippageTolerance } from 'state/user/hooks'
@@ -40,8 +39,6 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
 
   // Show price invert or not.
   const [showInverted, setShowInverted] = useState<boolean>(false)
-
-  const toggleSettings = useToggleSettingsMenu()
 
   // txn values
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
@@ -85,24 +82,14 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
             {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
               <RowBetween align="center">
                 <RowFixed>
-                  <ClickableText
-                    fontWeight={500}
-                    fontSize={mobile13Desktop16}
-                    color={theme.text4Sone}
-                    onClick={toggleSettings}
-                  >
+                  <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
                     {t('slippage_tolerance')}
-                  </ClickableText>
+                  </Text>
                   <QuestionHelper1416 text={t('question_helper_slippage_tolerance')} color={theme.text4Sone} />
                 </RowFixed>
-                <ClickableText
-                  fontWeight={700}
-                  fontSize={mobile13Desktop16}
-                  color={theme.text6Sone}
-                  onClick={toggleSettings}
-                >
+                <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
                   {allowedSlippage / 100}%
-                </ClickableText>
+                </Text>
               </RowBetween>
             )}
             <RowBetween>
@@ -142,24 +129,14 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
         allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
           <RowBetween align="center" padding={isUpToExtraSmall ? '17.5px 8px 0' : '17.5px 14px 0'}>
             <RowFixed>
-              <ClickableText
-                fontWeight={500}
-                fontSize={mobile13Desktop16}
-                color={theme.text4Sone}
-                onClick={toggleSettings}
-              >
+              <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
                 {t('slippage_tolerance')}
-              </ClickableText>
+              </Text>
               <QuestionHelper1416 text={t('question_helper_slippage_tolerance')} color={theme.text4Sone} />
             </RowFixed>
-            <ClickableText
-              fontWeight={700}
-              fontSize={mobile13Desktop16}
-              color={theme.text6Sone}
-              onClick={toggleSettings}
-            >
+            <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
               {allowedSlippage / 100}%
-            </ClickableText>
+            </Text>
           </RowBetween>
         )
       )}
