@@ -52,10 +52,10 @@ export default function ModalFooter({
           >
             <>
               {/*{showInverted ? price?.invert().toSignificant(4) : price?.toSignificant(4)}*/}
-              {formatExecutionPriceWithCurrencies2(selectedCurrency, theOtherCurrency, price, showInverted)}
-              <StyledBalanceMaxMini onClick={() => setShowInverted(prev => !prev)} style={{ margin: '0 0 0 0.5rem' }}>
+              <StyledBalanceMaxMini onClick={() => setShowInverted(prev => !prev)} style={{ margin: '0 0.5rem 0 0' }}>
                 <RepeatIcon />
               </StyledBalanceMaxMini>
+              {formatExecutionPriceWithCurrencies2(selectedCurrency, theOtherCurrency, price, showInverted)}
             </>
           </Text>
         </RowBetween>

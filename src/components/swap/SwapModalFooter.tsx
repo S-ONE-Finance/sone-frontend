@@ -58,10 +58,10 @@ export default function SwapModalFooter({
             style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
           >
             <>
-              {formatExecutionPrice(trade, showInverted)}
-              <StyledBalanceMaxMini onClick={() => setShowInverted(prev => !prev)} style={{ margin: '0 0 0 0.5rem' }}>
+              <StyledBalanceMaxMini onClick={() => setShowInverted(prev => !prev)} style={{ margin: '0 0.5rem 0 0' }}>
                 <RepeatIcon />
               </StyledBalanceMaxMini>
+              {formatExecutionPrice(trade, showInverted)}
             </>
           </Text>
         </RowBetween>
