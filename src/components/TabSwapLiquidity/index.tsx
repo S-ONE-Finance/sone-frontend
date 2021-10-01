@@ -59,7 +59,7 @@ function TabSwapLiquidity() {
       <TabItem is_active={isSwap ? 1 : 0} as={Link} to="/swap">
         {t('swap_noun')}
       </TabItem>
-      <TabItem is_active={isSwap ? 0 : 1} as={Link} to="/add">
+      <TabItem is_active={isSwap ? 0 : 1} as={Link} to="/add/ETH">
         {t('liquidity')}
       </TabItem>
     </TabContainer>

@@ -492,7 +492,7 @@ export default function Header() {
                 </StyledNavLink>
                 <SubMenu>
                   <SubMenuItemNavLink to="/swap">{t('swap_noun')}</SubMenuItemNavLink>
-                  <SubMenuItemNavLink id="pool-nav-link" to="/add">
+                  <SubMenuItemNavLink id="pool-nav-link" to="/add/ETH">
                     {t('liquidity')}
                   </SubMenuItemNavLink>
                 </SubMenu>

@@ -188,7 +188,7 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
         </StyledCloseAbsolute>
         <StyledExternalLink href={S_ONE_WALLET_INTRO_PAGE_URL}>{t('sone_wallet')}</StyledExternalLink>
         <StyledNavLink to="/swap">{t('swap_noun')}</StyledNavLink>
-        <StyledNavLink to="/add" isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add')}>
+        <StyledNavLink to="/add" isActive={(match, { pathname }) => Boolean(match) || pathname.startsWith('/add/ETH')}>
           {t('liquidity')}
         </StyledNavLink>
         <StyledNavLink to="/staking">{t('staking')}</StyledNavLink>
