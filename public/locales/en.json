@@ -245,7 +245,7 @@
   "stay_tuned": "Stay tuned",
   "summary_add_one_token": "Add <0>{{userInputAmount}} </0><1>{{userInputSymbol}}</1>",
   "summary_add_two_tokens": "Add <0>{{currencyAAmount}} </0><1>{{currencyASymbol}}</1> and <0>{{currencyBAmount}} </0><1>{{currencyBSymbol}}</1>",
-  "summary_swap": "Swap <0>{{inputAmount}} </0><1>{{inputSymbol}}</1> for <2>{{outputAmount}} </2><1>{{outputSymbol}}</1>",
+  "summary_swap": "Swap <0>{{inputAmount}} </0><1>{{inputSymbol}}</1> to <2>{{outputAmount}} </2><1>{{outputSymbol}}</1>",
   "swap_anyway": "Swap Anyway",
   "swap_description": "",
   "swap_noun": "Swap",
