@@ -319,24 +319,18 @@ export const ThemedGlobalStyle = createGlobalStyle`
     overflow-x: hidden;
   }
 
-  /* width */
   ::-webkit-scrollbar {
     width: 10px;
   }
 
-  /* Track */
   ::-webkit-scrollbar-track {
     background-color: ${({ theme }) => theme.divider1Sone};
-    /* border-radius: 10px; */
   }
 
-  /* Handle */
   ::-webkit-scrollbar-thumb {
     background-color: ${({ theme }) => theme.scrollbarThumb};
-    /* border-radius: 10px; */
   }
 
-  /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background-color: ${({ theme }) => `${darken(0.05, theme.scrollbarThumb)}`};
   }
