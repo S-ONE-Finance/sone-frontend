@@ -17,6 +17,7 @@ import { PaddedColumn, SearchInput } from '../SearchModal/styleds'
 import PairList from './PairList'
 import _ from 'lodash'
 import { useActiveWeb3React } from '../../hooks'
+import { useDarkModeManager } from '../../state/user/hooks'
 
 type ModalSearchPairProps = {
   isOpen: boolean
@@ -47,6 +48,7 @@ export default function ModalSearchPair({
   const debouncedQuery = useDebounce(searchQuery, 200)
 
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
+  const [darkMode] = useDarkModeManager()
 
   const filteredPairs: Pair[] = useMemo(() => {
     return filterPairs(allPairs, debouncedQuery)
@@ -131,7 +133,13 @@ export default function ModalSearchPair({
               <Text fontWeight={500} fontSize={16}>
                 {t('pair_name')}
               </Text>
-              {invertSearchOrder === false ? (
+              {invertSearchOrder ? (
+                darkMode ? (
+                  <SortUpIcon onClick={handleSort} />
+                ) : (
+                  <SortDownIcon onClick={handleSort} />
+                )
+              ) : darkMode ? (
                 <SortDownIcon onClick={handleSort} />
               ) : (
                 <SortUpIcon onClick={handleSort} />
