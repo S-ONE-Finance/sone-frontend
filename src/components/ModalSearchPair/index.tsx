@@ -55,7 +55,6 @@ export default function ModalSearchPair({
   const sortedPairs: Pair[] = useMemo(() => {
     const filteredPairsWithPairName = addPairNameToListPairs(filteredPairs, chainId ?? ChainId.MAINNET)
     const sortedPairs = _.orderBy(filteredPairsWithPairName, ['pairName'], [invertSearchOrder ? 'desc' : 'asc'])
-    console.log(`sortedPairs`, sortedPairs)
     return sortedPairs.map(pairWithPairName => pairWithPairName.pair)
   }, [filteredPairs, invertSearchOrder, chainId])
 
