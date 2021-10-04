@@ -2,6 +2,7 @@ import axios from 'axios'
 import { ADMIN_BACKEND_BASE_URL } from '../../../../constants/urls'
 import { useActiveWeb3React } from '../../../../hooks'
 import { useQuery } from 'react-query'
+import { useLastTruthy } from '../../../../hooks/useLast'
 
 export interface Friend {
   id: number
@@ -32,5 +33,6 @@ export default function useFriendList(limit: number, page: number): Friend[] {
       })
   )
 
-  return data?.data.friends || []
+  const lastTruthyData = useLastTruthy(data?.data.friends)
+  return lastTruthyData ?? []
 }

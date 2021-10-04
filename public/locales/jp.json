@@ -310,7 +310,7 @@
   "withdraw_liquidity_description": "",
   "yes": "はい",
   "you_have_rewarded_from_this_lp_token": "このLPトークンから得られた報酬",
-  "you_will_get_x123_sone_during_this_period": "このLPトークンから得られる報酬は123倍です。",
+  "you_will_get_x123_sone_during_this_period": "このLPトークンから得られる報酬は<0>{{amount}}倍</0>です。",
   "you_will_receive_request_reward": "受取り額",
   "you_will_receive_unstake": "償還内容の確認",
   "you_will_receive_withdraw": "引き出し内容の確認",
