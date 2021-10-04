@@ -30,10 +30,6 @@ const TitleBodyWrapper = styled.div`
   grid-row-gap: 20px;
   width: 100%;
   overflow-x: hidden;
-
-  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    grid-row-gap: 10px;
-  `}
 `
 
 const ReferralInformationWrapper = styled(TitleBodyWrapper)`
@@ -69,8 +65,6 @@ const PendingText = styled(Text)`
     padding-top: 3px;
   `}
 `
-
-// export const FETCH_REFERRAL_DATA_INTERVAL = 15000
 
 export default function Referral() {
   // Ở đây dùng tạm hàm biến cờ "justClicked" để set "Waiting for Approval"
