@@ -29,7 +29,7 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const mobile13Desktop16 = isUpToExtraSmall ? 13 : 16
 
-  const { currencies, noLiquidity, pair, pairState, price, poolTokenPercentage } = useDerivedMintInfo(
+  const { noLiquidity, pair, pairState, price, poolTokenPercentage, parsedAmounts } = useDerivedMintInfo(
     currencyA,
     currencyB
   )
@@ -44,8 +44,8 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
 
   const isPairFilledAndValid = useMemo(
-    () => currencies[Field.CURRENCY_A] && currencies[Field.CURRENCY_B] && pairState !== PairState.INVALID,
-    [currencies, pairState]
+    () => parsedAmounts[Field.CURRENCY_A] && parsedAmounts[Field.CURRENCY_B] && pairState !== PairState.INVALID,
+    [parsedAmounts, pairState]
   )
 
   const canRewardSone = useCanRewardSone(currencyA, currencyB)
