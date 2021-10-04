@@ -34,8 +34,6 @@ import { formatSONE } from 'utils/formatNumber'
 
 const ColumnWrapper = styled(Column)<{ padding?: string }>`
   position: relative;
-  padding-top: 1rem;
-  padding-bottom: 72px;
   background-color: ${({ theme }) => theme.bg1Sone};
 
   & > * {
