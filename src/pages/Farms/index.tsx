@@ -70,7 +70,7 @@ export default function Farms() {
         by: 'desc'
       },
       lp_name: {
-        condition: 'name',
+        condition: 'symbol',
         by: 'asc'
       }
     }),
