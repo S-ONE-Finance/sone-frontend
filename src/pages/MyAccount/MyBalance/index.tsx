@@ -172,6 +172,11 @@ export default function MyBalance() {
 
   const { soneCanUnlock, totalSoneLocked } = useSoneLockBalance()
   const onUnlockSone = useUnlockHandler()
+
+  const formattedSoneCanUnlock = formatSONE(soneCanUnlock.toString(), true, false) ?? '--'
+  const formattedTotalSoneLocked = formatSONE(totalSoneLocked.toString(), true, false) ?? '--'
+  const canUnlockValue = formattedSoneCanUnlock + '/' + formattedTotalSoneLocked + ' SONE'
+
   return (
     <Section>
       <Heading>{t('my_balance')}</Heading>
@@ -194,13 +199,8 @@ export default function MyBalance() {
         </Row>
         <RowColFlex>
           <TextUnlockTitle>{t('can_unlock')}:</TextUnlockTitle>
-          <TextUnlockValue>
-            {formatSONE(soneCanUnlock.toString(), true, false) +
-              '/' +
-              formatSONE(totalSoneLocked.toString(), true, false)}{' '}
-            SONE
-          </TextUnlockValue>
-          <TextUnlockButton onClick={() => onUnlockSone()}>{t('unlock')}</TextUnlockButton>
+          <TextUnlockValue>{canUnlockValue}</TextUnlockValue>
+          <TextUnlockButton onClick={() => onUnlockSone(formattedSoneCanUnlock)}>{t('unlock')}</TextUnlockButton>
         </RowColFlex>
       </CardBalance>
     </Section>

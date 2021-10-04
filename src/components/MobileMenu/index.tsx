@@ -137,6 +137,10 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
     setIsShowMobileMenu(false)
   }, [setIsShowMobileMenu])
 
+  const formattedSoneCanUnlock = formatSONE(soneCanUnlock.toString(), true, false) ?? '--'
+  const formattedTotalSoneLocked = formatSONE(totalSoneLocked.toString(), true, false) ?? '--'
+  const canUnlockValue = formattedSoneCanUnlock + '/' + formattedTotalSoneLocked + ' SONE'
+
   return (
     <ColumnWrapper onClick={closeModal}>
       {account && (
@@ -163,22 +167,11 @@ export default function MobileMenu({ setIsShowMobileMenu }: MobileMenuProps) {
           <Column>
             <RowBetween>
               <TYPE.black fontSize={14}>{t('can_unlock')}:</TYPE.black>
-              <TextBoxChangeAccount
-                width="fit-content"
-                onClick={() => {
-                  onUnlockSone()
-                }}
-              >
+              <TextBoxChangeAccount width="fit-content" onClick={() => onUnlockSone(formattedSoneCanUnlock)}>
                 {t('unlock')}
               </TextBoxChangeAccount>
             </RowBetween>
-            <TYPE.subText marginTop="0.25rem">
-              {' '}
-              {formatSONE(soneCanUnlock.toString(), true, false) +
-                '/' +
-                formatSONE(totalSoneLocked.toString(), true, false)}{' '}
-              SONE
-            </TYPE.subText>
+            <TYPE.subText marginTop="0.25rem">{canUnlockValue}</TYPE.subText>
           </Column>
         </>
       )}

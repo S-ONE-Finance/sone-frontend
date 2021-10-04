@@ -5,12 +5,11 @@ import { TransactionResponse } from '@ethersproject/providers'
 
 import { useSoneMasterFarmerContract } from 'hooks/useContract'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useTranslation } from 'react-i18next'
+import { TransactionType } from '../../state/transactions/types'
 
 export default function useUnstakeHandler(pid: number) {
   const addTransaction = useTransactionAdder()
   const masterContract: Contract | null = useSoneMasterFarmerContract()
-  const { t } = useTranslation()
 
   return useCallback(
     async (amount: string, symbol: string) => {
@@ -19,7 +18,11 @@ export default function useUnstakeHandler(pid: number) {
           ?.withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
           .then((txResponse: TransactionResponse) => {
             addTransaction(txResponse, {
-              summary: t('unstake_123_eth_lp_token', { amount, symbol })
+              summary: {
+                type: TransactionType.UNSTAKE,
+                amount,
+                symbol
+              }
             })
             return txResponse
           })
@@ -30,6 +33,6 @@ export default function useUnstakeHandler(pid: number) {
         return false
       }
     },
-    [masterContract, pid, addTransaction, t]
+    [masterContract, pid, addTransaction]
   )
 }

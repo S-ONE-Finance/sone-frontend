@@ -12,7 +12,7 @@ import { calculateGasMargin } from '../utils'
 import { useTokenContract } from './useContract'
 import { useActiveWeb3React } from './index'
 import { Version } from './useToggledVersion'
-import { useTranslation } from 'react-i18next'
+import { TransactionType } from '../state/transactions/types'
 
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',
@@ -26,7 +26,6 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
@@ -88,7 +87,10 @@ export function useApproveCallback(
       })
       .then((response: TransactionResponse) => {
         addTransaction(response, {
-          summary: t('approve_token', { symbol: amountToApprove.currency.symbol }),
+          summary: {
+            type: TransactionType.APPROVE,
+            symbol: amountToApprove.currency.symbol
+          },
           approval: { tokenAddress: token.address, spender: spender }
         })
       })
@@ -96,7 +98,7 @@ export function useApproveCallback(
         console.debug('Failed to approve token', error)
         throw error
       })
-  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction, t])
+  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction])
 
   return [approvalState, approve]
 }

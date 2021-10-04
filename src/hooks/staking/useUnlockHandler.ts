@@ -4,28 +4,33 @@ import { TransactionResponse } from '@ethersproject/providers'
 
 import { useSoneContract } from 'hooks/useContract'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useTranslation } from 'react-i18next'
+import { TransactionType } from '../../state/transactions/types'
 
 export default function useUnlockHandler() {
   const addTransaction = useTransactionAdder()
   const soneContract: Contract | null = useSoneContract()
-  const { t } = useTranslation()
 
-  return useCallback(async () => {
-    try {
-      const tx = soneContract
-        ?.unlock()
-        .then((txResponse: TransactionResponse) => {
-          addTransaction(txResponse, {
-            summary: t('unlock_sone')
+  return useCallback(
+    async (amount: string) => {
+      try {
+        const tx = soneContract
+          ?.unlock()
+          .then((txResponse: TransactionResponse) => {
+            addTransaction(txResponse, {
+              summary: {
+                type: TransactionType.UNLOCK_SONE,
+                amount
+              }
+            })
+            return txResponse
           })
-          return txResponse
-        })
-        .catch((err: any) => console.log('err', err))
-      return tx
-    } catch (e) {
-      console.error(e)
-      return false
-    }
-  }, [soneContract, addTransaction, t])
+          .catch((err: any) => console.log('err', err))
+        return tx
+      } catch (e) {
+        console.error(e)
+        return false
+      }
+    },
+    [soneContract, addTransaction]
+  )
 }
