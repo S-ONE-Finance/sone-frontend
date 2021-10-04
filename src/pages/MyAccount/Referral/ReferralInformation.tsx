@@ -251,7 +251,7 @@ export default function ReferralInformation() {
           </TextAccent>
           <RowFixed>
             <TextSoneUnit>SONE≈</TextSoneUnit>
-            <TextDollar>{formattedTotalPaidRewardInUSD}</TextDollar>
+            <TextDollar>{'$' + formattedTotalPaidRewardInUSD}</TextDollar>
           </RowFixed>
         </Row>
         <Row wrap="wrap" gap="5px">
@@ -261,7 +261,7 @@ export default function ReferralInformation() {
           </TextAccent>
           <RowFixed>
             <TextSoneUnit>SONE≈</TextSoneUnit>
-            <TextDollar>{formattedTotalRewardAmountInUSD}</TextDollar>
+            <TextDollar>{'$' + formattedTotalRewardAmountInUSD}</TextDollar>
           </RowFixed>
         </Row>
       </FriendsAndReward>
