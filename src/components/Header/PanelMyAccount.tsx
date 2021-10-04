@@ -90,6 +90,10 @@ export default function PanelMyAccount() {
     return null
   }
 
+  const formattedSoneCanUnlock = formatSONE(soneCanUnlock.toString(), true, false) ?? '--'
+  const formattedTotalSoneLocked = formatSONE(totalSoneLocked.toString(), true, false) ?? '--'
+  const canUnlockValue = formattedSoneCanUnlock + '/' + formattedTotalSoneLocked + ' SONE'
+
   return (
     <PanelMyAccountWrapper>
       <ColumnWrapper>
@@ -109,13 +113,10 @@ export default function PanelMyAccount() {
         </Column>
         <Column>
           <TYPE.black fontSize={16}>{t('can_unlock')}:</TYPE.black>
-          <TYPE.subText marginTop={'0.25rem'}>
-            {formatSONE(soneCanUnlock.toString(), true, false) +
-              '/' +
-              formatSONE(totalSoneLocked.toString(), true, false)}{' '}
-            SONE
-          </TYPE.subText>
-          <TextBoxChangeAccount onClick={() => onUnlockSone()}>{t('unlock')}</TextBoxChangeAccount>
+          <TYPE.subText marginTop={'0.25rem'}>{canUnlockValue}</TYPE.subText>
+          <TextBoxChangeAccount onClick={() => onUnlockSone(formattedSoneCanUnlock)}>
+            {t('unlock')}
+          </TextBoxChangeAccount>
         </Column>
         <PaddingColumn>
           <MyAccountButton onClick={() => history.push('/my-account')}>{t('my_account')}</MyAccountButton>

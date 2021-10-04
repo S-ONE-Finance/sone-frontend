@@ -13,6 +13,7 @@ import { useDerivedBurnInfo } from '../state/burn/hooks'
 import { useUserSlippageTolerance } from '../state/user/hooks'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { ROUTER_ADDRESS } from '../constants'
+import { TransactionType } from '../state/transactions/types'
 
 export default function useWithdrawLiquidityCallback({
   currencyA,
@@ -162,15 +163,13 @@ export default function useWithdrawLiquidityCallback({
           setAttemptingTxn(false)
 
           addTransaction(response, {
-            summary:
-              'Remove ' +
-              parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) +
-              ' ' +
-              currencyA?.symbol +
-              ' and ' +
-              parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) +
-              ' ' +
-              currencyB?.symbol
+            summary: {
+              type: TransactionType.WITHDRAW,
+              currencyAAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
+              currencyASymbol: currencyA?.symbol,
+              currencyBAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
+              currencyBSymbol: currencyB?.symbol
+            }
           })
 
           setTxHash(response.hash)

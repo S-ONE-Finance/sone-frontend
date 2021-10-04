@@ -167,7 +167,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
   const claimReward = async (farmId: number | undefined) => {
     if (farmId !== undefined) {
       setPoolRequestPending(true)
-      await onClaimReward(farmId)
+      await onClaimReward(farmId, availableReward)
       setPoolRequestPending(false)
     }
   }

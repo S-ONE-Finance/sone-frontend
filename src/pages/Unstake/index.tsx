@@ -246,7 +246,7 @@ export default function Unstake() {
     />
   )
 
-  const pendingText = `Unstaking ${typedValue} LP`
+  const pendingText = t('unstaking_123_lp', { amount: typedValue })
 
   return (
     <>

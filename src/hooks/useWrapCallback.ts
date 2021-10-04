@@ -6,6 +6,7 @@ import { useCurrencyBalance } from '../state/wallet/hooks'
 import { useActiveWeb3React } from './index'
 import { useWETHContract } from './useContract'
 import { useTranslation } from 'react-i18next'
+import { TransactionType } from '../state/transactions/types'
 
 export enum WrapType {
   NOT_APPLICABLE,
@@ -46,7 +47,13 @@ export default function useWrapCallback(
             ? async () => {
                 try {
                   const txReceipt = await wethContract.deposit({ value: `0x${inputAmount.raw.toString(16)}` })
-                  addTransaction(txReceipt, { summary: `Wrap ${inputAmount.toSignificant(6)} ETH to WETH` })
+                  const wrapAmount = inputAmount.toSignificant(6)
+                  addTransaction(txReceipt, {
+                    summary: {
+                      type: TransactionType.WRAP,
+                      wrapAmount
+                    }
+                  })
                   return true
                 } catch (error) {
                   console.error('Could not deposit', error)
@@ -69,7 +76,13 @@ export default function useWrapCallback(
             ? async () => {
                 try {
                   const txReceipt = await wethContract.withdraw(`0x${inputAmount.raw.toString(16)}`)
-                  addTransaction(txReceipt, { summary: `Unwrap ${inputAmount.toSignificant(6)} WETH to ETH` })
+                  const unwrapAmount = inputAmount.toSignificant(6)
+                  addTransaction(txReceipt, {
+                    summary: {
+                      type: TransactionType.UNWRAP,
+                      unwrapAmount
+                    }
+                  })
                   return true
                 } catch (error) {
                   console.error('Could not withdraw', error)
