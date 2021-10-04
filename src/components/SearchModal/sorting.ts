@@ -37,14 +37,35 @@ function getTokenComparator(balances: {
   }
 }
 
-export function useTokenComparator(inverted: boolean): (tokenA: Token, tokenB: Token) => number {
+/**
+ * Kết quả: fix cứng token balance giảm dần + sort tên token
+ * VD: [ POS: 403 > ALA: 200 > AKIA: 2 ] > [ AAA: 0 > BBB: 0 > CCC: 0 > ... ]
+ * @param inverted
+ */
+export function useSortedTokens(tokens: Token[], inverted: boolean): Token[] {
   const balances = useAllTokenBalances()
+  const tokensWithBalance = useMemo(
+    () =>
+      (Object.values(balances).filter(tokenAmount => tokenAmount !== undefined) as TokenAmount[]).filter(
+        tokenAmount => tokens.some(token => token.address === tokenAmount.token.address) && tokenAmount.greaterThan('0')
+      ),
+    [balances, tokens]
+  )
   const comparator = useMemo(() => getTokenComparator(balances ?? {}), [balances])
-  return useMemo(() => {
-    if (inverted) {
-      return (tokenA: Token, tokenB: Token) => comparator(tokenA, tokenB) * -1
-    } else {
-      return comparator
-    }
-  }, [inverted, comparator])
+  const sortedTokensWithBalance = useMemo(
+    () => tokensWithBalance.map(tokenAmount => tokenAmount.token).sort(comparator),
+    [comparator, tokensWithBalance]
+  )
+  const tokensWithoutBalance = useMemo(
+    () => tokens.filter(token => !sortedTokensWithBalance.some((twb: Token) => twb.address === token.address)),
+    [sortedTokensWithBalance, tokens]
+  )
+  const sortedTokensWithoutBalance = useMemo(
+    () => (inverted ? [...tokensWithoutBalance.reverse()] : tokensWithoutBalance),
+    [inverted, tokensWithoutBalance]
+  )
+  return useMemo(() => [...sortedTokensWithBalance, ...sortedTokensWithoutBalance], [
+    sortedTokensWithBalance,
+    sortedTokensWithoutBalance
+  ])
 }
