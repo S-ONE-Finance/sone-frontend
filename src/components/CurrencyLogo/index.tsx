@@ -47,10 +47,8 @@ const SoneLogoBoundedWrapper = styled.div<{ size: string; sizeMobile: string }>`
   height: ${({ size }) => size};
   min-height: ${({ size }) => size};
   background-color: ${({ theme }) => theme.white};
-  display: flex;
-  justify-content: center;
-  align-items: center;
   border-radius: 50%;
+  position: relative;
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
     height: ${sizeMobile};
@@ -69,6 +67,10 @@ const SoneLogoBounded = styled.img<{ size: number; sizeMobile: number }>`
   min-width: ${({ size }) => size * 0.75 + 'px'};
   height: auto;
   background-color: transparent;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
   ${({ theme, sizeMobile }) => theme.mediaWidth.upToExtraSmall`
     width: ${sizeMobile * 0.75 + 'px'};

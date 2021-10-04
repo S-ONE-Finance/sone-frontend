@@ -189,7 +189,7 @@ export default function Staking() {
                 address0={token0 && token0.id}
                 address1={token1 && token1.id}
                 size={28}
-                sizeMobile={14}
+                sizeMobile={20}
                 main={false}
                 style={{ marginRight: '0.625rem' }}
               />

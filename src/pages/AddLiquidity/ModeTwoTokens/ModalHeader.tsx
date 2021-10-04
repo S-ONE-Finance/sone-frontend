@@ -28,7 +28,12 @@ export default function ModalHeader({
         </RowFixed>
         {/* zIndex để hiển thị đè lên SwapVector. */}
         <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align="center">
-          <CurrencyLogo currency={currencies[Field.CURRENCY_A]} size="24px" style={{ marginRight: '5px' }} />
+          <CurrencyLogo
+            currency={currencies[Field.CURRENCY_A]}
+            size="24px"
+            sizeMobile="20px"
+            style={{ marginRight: '5px' }}
+          />
           <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
             {currencies[Field.CURRENCY_A]?.symbol}
           </Text>
@@ -44,7 +49,12 @@ export default function ModalHeader({
           </TruncatedText>
         </RowFixed>
         <RowFixed gap="0" style={{ height: '100%' }} align="center">
-          <CurrencyLogo currency={currencies[Field.CURRENCY_B]} size="24px" style={{ marginRight: '5px' }} />
+          <CurrencyLogo
+            currency={currencies[Field.CURRENCY_B]}
+            size="24px"
+            sizeMobile="20px"
+            style={{ marginRight: '5px' }}
+          />
           <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
             {currencies[Field.CURRENCY_B]?.symbol}
           </Text>

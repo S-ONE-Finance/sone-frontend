@@ -51,7 +51,7 @@ export default function AppBodyTitleDescriptionSettings({ transactionType }: { t
     transactionType === TransactionType.SWAP
       ? t('swap_noun')
       : transactionType === TransactionType.ADD_ONE_TOKEN || transactionType === TransactionType.ADD_TWO_TOKENS
-      ? t('add_liquidity')
+      ? t('liquidity')
       : transactionType === TransactionType.WITHDRAW
       ? t('withdraw_liquidity')
       : transactionType === TransactionType.STAKE

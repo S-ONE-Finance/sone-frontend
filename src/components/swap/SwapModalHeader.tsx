@@ -46,7 +46,12 @@ export default function SwapModalHeader({
         </RowFixed>
         {/* zIndex để hiển thị đè lên SwapVector. */}
         <RowFixed gap="0" style={{ height: '100%', zIndex: 1 }} align={'center'}>
-          <CurrencyLogo currency={trade.inputAmount.currency} size="24px" style={{ marginRight: '5px' }} />
+          <CurrencyLogo
+            currency={trade.inputAmount.currency}
+            size="24px"
+            sizeMobile="20px"
+            style={{ marginRight: '5px' }}
+          />
           <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
             {trade.inputAmount.currency.symbol}
           </Text>
@@ -66,7 +71,12 @@ export default function SwapModalHeader({
           </TruncatedText>
         </RowFixed>
         <RowFixed gap="0" style={{ height: '100%' }} align={'center'}>
-          <CurrencyLogo currency={trade.outputAmount.currency} size={'24px'} style={{ marginRight: '5px' }} />
+          <CurrencyLogo
+            currency={trade.outputAmount.currency}
+            size={'24px'}
+            sizeMobile="20px"
+            style={{ marginRight: '5px' }}
+          />
           <Text fontSize={isUpToExtraSmall ? 16 : 24} fontWeight={500}>
             {trade.outputAmount.currency.symbol}
           </Text>
