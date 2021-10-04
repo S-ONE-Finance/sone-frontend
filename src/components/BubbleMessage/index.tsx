@@ -5,6 +5,7 @@ import ChibiSvg from 'assets/svg/chibi_1.svg'
 import { Check } from 'react-feather'
 import { StyledCloseIcon } from '../../theme'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import { Trans, useTranslation } from 'react-i18next'
 
 const Bubble = styled.div`
   position: relative;
@@ -25,14 +26,15 @@ const BubbleText = styled.div`
   font-weight: 400;
   color: #767676;
 
-  > span {
-    color: ${({ theme }) => theme.red1Sone};
-    font-weight: 700;
-  }
-
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 13px;
   `}
+`
+
+const BubbleTextHighlight = styled(BubbleText)`
+  display: inline;
+  color: ${({ theme }) => theme.red1Sone};
+  font-weight: 700;
 `
 
 const Chibi = styled.img`
@@ -98,6 +100,8 @@ export default memo(function BubbleMessage({
   bonus: any
 }) {
   const isUpToExtraSmall = useIsUpToExtraSmall()
+  // Trigger re-render "You will get..."
+  useTranslation()
 
   return (
     <Row gap={isUpToExtraSmall ? '10px' : '20px'}>
@@ -105,7 +109,11 @@ export default memo(function BubbleMessage({
         <Row gap={isUpToExtraSmall ? '8px' : '16px'}>
           <CheckIcon size={isUpToExtraSmall ? '24px' : '32px'} color="#ffffff" />
           <BubbleText>
-            You will get<span> x{bonus} SONE </span>during this period.
+            <Trans
+              i18nKey="you_will_get_x123_sone_during_this_period"
+              values={{ amount: bonus }}
+              components={[<BubbleTextHighlight key="1" />]}
+            />
           </BubbleText>
           <StyledCloseIcon
             size="16px"
