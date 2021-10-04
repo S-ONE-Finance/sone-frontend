@@ -84,11 +84,11 @@ export function AdvancedSwapDetailsContent({ trade }: AdvancedSwapDetailsProps) 
         <>
           <TradeSummary trade={trade} allowedSlippage={allowedSlippage} />
           {showRoute && (
-            <Row padding={'15px 16px 0'}>
+            <Row padding={isUpToExtraSmall ? '10px 8px 0' : '15px 16px 0'}>
               <AutoColumn gap={'15px'} style={{ width: '100%' }}>
                 <RowBetween>
                   <RowFixed>
-                    <Text fontWeight={500} fontSize={16} color={theme.text4Sone}>
+                    <Text fontWeight={500} fontSize={isUpToExtraSmall ? 13 : 16} color={theme.text4Sone}>
                       {t('route')}
                     </Text>
                     <QuestionHelper1416 text={t('question_helper_route')} />
