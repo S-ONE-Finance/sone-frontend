@@ -11,7 +11,7 @@ import Column from '../Column'
 import Row, { RowBetween, RowFixed } from '../Row'
 import CurrencyList from './CurrencyList'
 import { filterTokens, useSortedTokensByQuery } from './filtering'
-import { useTokenComparator } from './sorting'
+import { useSortedTokens } from './sorting'
 import { PaddedColumn, SearchInput, SeparatorDark } from './styleds'
 import { PanelSearchContentWrapper, SortDownIcon, SortUpIcon } from 'theme'
 import AutoSizer from 'react-virtualized-auto-sizer'
@@ -29,6 +29,7 @@ import { useSelector } from 'react-redux'
 import { AppState } from '../../state'
 import { TokenList } from '@uniswap/token-lists/dist/types'
 import { StyledCloseIcon } from '../../theme/components'
+import { useDarkModeManager } from '../../state/user/hooks'
 
 const Footer = styled.div`
   width: 100%;
@@ -63,6 +64,7 @@ export function CurrencySearch({
   showImportView,
   setImportToken
 }: CurrencySearchProps) {
+  const [darkMode] = useDarkModeManager()
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
@@ -108,17 +110,11 @@ export function CurrencySearch({
     return s === '' || s === 'e' || s === 'et' || s === 'eth'
   }, [debouncedQuery])
 
-  const tokenComparator = useTokenComparator(invertSearchOrder)
-
   const filteredTokens: Token[] = useMemo(() => {
     return filterTokens(Object.values(allTokens), debouncedQuery)
   }, [allTokens, debouncedQuery])
 
-  const sortedTokens: Token[] = useMemo(() => {
-    return filteredTokens.sort(tokenComparator)
-  }, [filteredTokens, tokenComparator])
-
-  const filteredSortedTokens = useSortedTokensByQuery(sortedTokens, debouncedQuery)
+  const sortedTokens = useSortedTokens(filteredTokens, invertSearchOrder)
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
@@ -148,17 +144,17 @@ export function CurrencySearch({
         const s = debouncedQuery.toLowerCase().trim()
         if (s === 'eth') {
           handleCurrencySelect(ETHER)
-        } else if (filteredSortedTokens.length > 0) {
+        } else if (sortedTokens.length > 0) {
           if (
-            filteredSortedTokens[0].symbol?.toLowerCase() === debouncedQuery.trim().toLowerCase() ||
-            filteredSortedTokens.length === 1
+            sortedTokens[0].symbol?.toLowerCase() === debouncedQuery.trim().toLowerCase() ||
+            sortedTokens.length === 1
           ) {
-            handleCurrencySelect(filteredSortedTokens[0])
+            handleCurrencySelect(sortedTokens[0])
           }
         }
       }
     },
-    [filteredSortedTokens, handleCurrencySelect, debouncedQuery]
+    [sortedTokens, handleCurrencySelect, debouncedQuery]
   )
 
   // menu ui
@@ -204,13 +200,23 @@ export function CurrencySearch({
         <Column style={{ margin: '20px 0', height: '100%' }}>
           <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
         </Column>
-      ) : filteredSortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
+      ) : sortedTokens?.length > 0 || filteredInactiveTokens?.length > 0 ? (
         <>
           <RowBetween style={{ padding: isUpToExtraSmall ? '20px 1.25rem 0' : '20px 2rem 0' }}>
             <Text fontWeight={500} fontSize={16}>
               {t('token_name')}
             </Text>
-            {invertSearchOrder === false ? <SortDownIcon onClick={handleSort} /> : <SortUpIcon onClick={handleSort} />}
+            {invertSearchOrder ? (
+              darkMode ? (
+                <SortDownIcon onClick={handleSort} />
+              ) : (
+                <SortUpIcon onClick={handleSort} />
+              )
+            ) : darkMode ? (
+              <SortUpIcon onClick={handleSort} />
+            ) : (
+              <SortDownIcon onClick={handleSort} />
+            )}
           </RowBetween>
           <div style={{ flex: '1' }}>
             <AutoSizer disableWidth>
@@ -218,10 +224,8 @@ export function CurrencySearch({
                 <CurrencyList
                   height={height}
                   showETH={showETH}
-                  currencies={
-                    filteredInactiveTokens ? filteredSortedTokens.concat(filteredInactiveTokens) : filteredSortedTokens
-                  }
-                  breakIndex={inactiveTokens && filteredSortedTokens ? filteredSortedTokens.length : undefined}
+                  currencies={filteredInactiveTokens ? sortedTokens.concat(filteredInactiveTokens) : sortedTokens}
+                  breakIndex={inactiveTokens && sortedTokens ? sortedTokens.length : undefined}
                   onCurrencySelect={handleCurrencySelect}
                   otherCurrency={otherSelectedCurrency}
                   selectedCurrency={selectedCurrency}
