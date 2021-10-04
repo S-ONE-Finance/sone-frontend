@@ -135,14 +135,14 @@ export default function ModalSearchPair({
               </Text>
               {invertSearchOrder ? (
                 darkMode ? (
-                  <SortUpIcon onClick={handleSort} />
-                ) : (
                   <SortDownIcon onClick={handleSort} />
+                ) : (
+                  <SortUpIcon onClick={handleSort} />
                 )
               ) : darkMode ? (
-                <SortDownIcon onClick={handleSort} />
-              ) : (
                 <SortUpIcon onClick={handleSort} />
+              ) : (
+                <SortDownIcon onClick={handleSort} />
               )}
             </RowBetween>
             <div style={{ flex: '1' }}>
