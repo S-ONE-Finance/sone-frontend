@@ -18,7 +18,7 @@
     "@reach/dialog": "^0.10.3",
     "@reduxjs/toolkit": "^1.3.5",
     "@s-one-finance/default-token-list": "^1.1.2",
-    "@s-one-finance/sdk-core": "^1.4.4",
+    "@s-one-finance/sdk-core": "^1.4.5",
     "@types/luxon": "^1.24.4",
     "@types/multicodec": "^1.0.0",
     "@types/node": "^13.13.5",
