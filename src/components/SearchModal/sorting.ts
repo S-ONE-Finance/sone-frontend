@@ -44,28 +44,20 @@ function getTokenComparator(balances: {
  */
 export function useSortedTokens(tokens: Token[], inverted: boolean): Token[] {
   const balances = useAllTokenBalances()
-  const tokensWithBalance = useMemo(
-    () =>
-      (Object.values(balances).filter(tokenAmount => tokenAmount !== undefined) as TokenAmount[]).filter(
-        tokenAmount => tokens.some(token => token.address === tokenAmount.token.address) && tokenAmount.greaterThan('0')
-      ),
-    [balances, tokens]
-  )
-  const comparator = useMemo(() => getTokenComparator(balances ?? {}), [balances])
-  const sortedTokensWithBalance = useMemo(
-    () => tokensWithBalance.map(tokenAmount => tokenAmount.token).sort(comparator),
-    [comparator, tokensWithBalance]
-  )
-  const tokensWithoutBalance = useMemo(
-    () => tokens.filter(token => !sortedTokensWithBalance.some((twb: Token) => twb.address === token.address)),
-    [sortedTokensWithBalance, tokens]
-  )
-  const sortedTokensWithoutBalance = useMemo(
-    () => (inverted ? [...tokensWithoutBalance.reverse()] : tokensWithoutBalance),
-    [inverted, tokensWithoutBalance]
-  )
-  return useMemo(() => [...sortedTokensWithBalance, ...sortedTokensWithoutBalance], [
-    sortedTokensWithBalance,
-    sortedTokensWithoutBalance
-  ])
+
+  return useMemo(() => {
+    const tokensWithBalance: Token[] = []
+    const tokensWithoutBalance: Token[] = []
+    tokens.forEach(token => {
+      if (balances[token.address]?.greaterThan('0')) {
+        tokensWithBalance.push(token)
+      } else {
+        tokensWithoutBalance.push(token)
+      }
+    })
+    const comparator = getTokenComparator(balances ?? {})
+    const sortedTokensWithBalance = tokensWithBalance.sort(comparator)
+    const sortedTokensWithoutBalance = inverted ? [...tokensWithoutBalance.reverse()] : tokensWithoutBalance
+    return [...sortedTokensWithBalance, ...sortedTokensWithoutBalance]
+  }, [balances, inverted, tokens])
 }
