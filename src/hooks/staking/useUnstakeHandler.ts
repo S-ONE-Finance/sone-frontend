@@ -6,6 +6,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { useSoneMasterFarmerContract } from 'hooks/useContract'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { TransactionType } from '../../state/transactions/types'
+import { plainNumber } from '../../utils/formatNumber'
 
 export default function useUnstakeHandler(pid: number) {
   const addTransaction = useTransactionAdder()
@@ -15,7 +16,7 @@ export default function useUnstakeHandler(pid: number) {
     async (amount: string, symbol: string) => {
       try {
         const tx = masterContract
-          ?.withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+          ?.withdraw(pid, plainNumber(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()))
           .then((txResponse: TransactionResponse) => {
             addTransaction(txResponse, {
               summary: {
