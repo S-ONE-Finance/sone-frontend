@@ -41,10 +41,11 @@ function TradeSummary({ trade, allowedSlippage }: { trade: Trade; allowedSlippag
           <RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
               {isExactIn
-                ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade.outputAmount.currency.symbol}` ??
-                  '-'
-                : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade.inputAmount.currency.symbol}` ??
-                  '-'}
+                ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) + ' '
+                : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4) + ' '}
+              <Text fontSize={13} display="inline">
+                {isExactIn ? trade.outputAmount.currency.symbol : trade.inputAmount.currency.symbol}
+              </Text>
             </Text>
           </RowFixed>
         </RowBetween>
