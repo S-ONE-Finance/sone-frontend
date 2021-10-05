@@ -169,7 +169,8 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
 
     try {
       const valueAsInt: number = Number.parseInt(value) * 60
-      if (!Number.isNaN(valueAsInt) && valueAsInt > 0) {
+      console.log(`valueAsInt`, valueAsInt)
+      if (!Number.isNaN(valueAsInt) && valueAsInt > 0 && valueAsInt <= 180 * 60) {
         setDeadline(valueAsInt)
       }
     } catch {}
