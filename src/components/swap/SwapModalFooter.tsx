@@ -3,20 +3,14 @@ import React, { useMemo, useState } from 'react'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
 import { Field } from '../../state/swap/actions'
-import { TYPE } from '../../theme'
-import {
-  computeSlippageAdjustedAmounts,
-  computeTradePriceBreakdown,
-  formatExecutionPrice,
-  warningSeverity
-} from '../../utils/prices'
+import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import { ButtonError } from '../Button'
 import { AutoColumn } from '../Column'
 import { RowBetween, RowFixed } from '../Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
-import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
+import { SwapCallbackError } from './styleds'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { RepeatIcon } from './TradePrice'
+import TradePrice from './TradePrice'
 import useTheme from '../../hooks/useTheme'
 
 export default function SwapModalFooter({
@@ -51,19 +45,7 @@ export default function SwapModalFooter({
           <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
             {t('price')}
           </Text>
-          <Text
-            fontWeight={700}
-            fontSize={isUpToExtraSmall ? 13 : 16}
-            color={theme.text6Sone}
-            style={{ justifyContent: 'center', alignItems: 'center', display: 'flex' }}
-          >
-            <>
-              <StyledBalanceMaxMini onClick={() => setShowInverted(prev => !prev)} style={{ margin: '0 0.5rem 0 0' }}>
-                <RepeatIcon />
-              </StyledBalanceMaxMini>
-              {formatExecutionPrice(trade, showInverted)}
-            </>
-          </Text>
+          <TradePrice price={trade?.executionPrice} showInverted={showInverted} setShowInverted={setShowInverted} />
         </RowBetween>
 
         <RowBetween>
@@ -75,14 +57,14 @@ export default function SwapModalFooter({
           <RowFixed>
             <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
               {trade.tradeType === TradeType.EXACT_INPUT
-                ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) ?? '-'
-                : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4) ?? '-'}
+                ? (slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) ?? '-') + ' '
+                : (slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4) ?? '-') + ' '}
+              <Text fontSize={13} display="inline">
+                {trade.tradeType === TradeType.EXACT_INPUT
+                  ? trade.outputAmount.currency.symbol
+                  : trade.inputAmount.currency.symbol}
+              </Text>
             </Text>
-            <TYPE.black fontSize={14} marginLeft={'4px'}>
-              {trade.tradeType === TradeType.EXACT_INPUT
-                ? trade.outputAmount.currency.symbol
-                : trade.inputAmount.currency.symbol}
-            </TYPE.black>
           </RowFixed>
         </RowBetween>
         <RowBetween>
@@ -100,7 +82,10 @@ export default function SwapModalFooter({
             </Text>
           </RowFixed>
           <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-            {realizedLPFee ? realizedLPFee?.toSignificant(6) + ' ' + trade.inputAmount.currency.symbol : '-'}
+            {realizedLPFee ? realizedLPFee.toSignificant(6) + ' ' : '-'}
+            <Text fontSize={13} display="inline">
+              {trade.inputAmount.currency.symbol}
+            </Text>
           </Text>
         </RowBetween>
       </AutoColumn>
