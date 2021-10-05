@@ -6,6 +6,7 @@ import BigNumber from 'bignumber.js'
 import { useSoneMasterFarmerContract } from 'hooks/useContract'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { TransactionType } from '../../state/transactions/types'
+import { plainNumber } from '../../utils/formatNumber'
 
 export default function useStakeHandler(pid: number) {
   const addTransaction = useTransactionAdder()
@@ -15,7 +16,7 @@ export default function useStakeHandler(pid: number) {
     async (amount: string, symbol: string) => {
       try {
         const tx = masterContract
-          ?.deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
+          ?.deposit(pid, plainNumber(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()))
           .then((txResponse: TransactionResponse) => {
             addTransaction(txResponse, {
               summary: {
