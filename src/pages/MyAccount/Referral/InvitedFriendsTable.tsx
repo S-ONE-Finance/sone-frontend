@@ -12,6 +12,7 @@ import { DEFAULT_CHAIN_ID, ETHERSCAN_URLS } from '../../../constants'
 import { ChainId } from '@s-one-finance/sdk-core'
 
 const Table = styled.table`
+  width: 100%;
   border-collapse: collapse;
   box-shadow: 0 8px 17px rgba(0, 0, 0, 0.18);
   border-radius: 15px;
