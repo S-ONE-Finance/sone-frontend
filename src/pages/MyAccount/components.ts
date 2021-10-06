@@ -338,7 +338,7 @@ export const ButtonRemove = styled(Button)`
   `}
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    height: 2.1875rem;
+    height: 45px;
     max-width: 122px;
     font-size: 13px;
   `}
