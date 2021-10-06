@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { UserInfoSone } from '@s-one-finance/sdk-core'
 import { Text } from 'rebass'
 import styled from 'styled-components'
@@ -45,8 +45,8 @@ const DetailedSectionIcon = styled.img`
   margin-right: 1rem;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 60px;
-    min-width: 60px;
+    width: 48px;
+    min-width: 48px;
     margin-right: 0.25rem;
   `}
 `
@@ -54,12 +54,22 @@ const DetailedSectionIcon = styled.img`
 const RewardedSone = styled(Text)`
   font-weight: 400;
   color: ${({ theme }) => theme.text8Sone};
+  font-size: 24px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `}
 `
 
 const RewardedSoneValue = styled(Text)`
   font-weight: 700;
   color: ${({ theme }) => theme.text5Sone};
   word-break: break-all;
+  font-size: 40px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 20px;
+  `}
 `
 
 const ButtonRequestReward = styled(MyStakingButton)`
@@ -172,20 +182,6 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
     }
   }
 
-  // Dynamic style.
-  const isLongNumber = useMemo(() => rewardedSone.toString().length + availableReward.toString().length >= 20, [
-    rewardedSone,
-    availableReward
-  ])
-  const valueFontSize = useMemo(
-    () => (isLongNumber ? (isUpToSmall ? '1.5rem' : '1.75rem') : isUpToSmall ? '2.25rem' : '2.5rem'),
-    [isLongNumber, isUpToSmall]
-  )
-  const titleFontSize = useMemo(
-    () => (isLongNumber ? (isUpToSmall ? '1rem' : '1.25rem') : isUpToSmall ? '1.25rem' : '1.5rem'),
-    [isLongNumber, isUpToSmall]
-  )
-
   const [isModalUnstakeWarningOpen, setIsModalUnstakeWarningOpen] = useState(false)
 
   const onModalUnstakeWarningDismiss = useCallback(() => {
@@ -254,16 +250,16 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
               <RowReward justify="center" gap="4rem">
                 <RowFixed>
                   <DetailedSectionIcon src={SoneLogoSvg} alt="sone-logo-svg" />
-                  <Column>
-                    <RewardedSoneValue style={{ fontSize: valueFontSize }}>{rewardedSone}</RewardedSoneValue>
-                    <RewardedSone style={{ fontSize: titleFontSize }}>{t('rewarded_sone')}</RewardedSone>
+                  <Column width={isUpToExtraSmall ? '33vw' : 'unset'}>
+                    <RewardedSoneValue>{rewardedSone}</RewardedSoneValue>
+                    <RewardedSone>{t('rewarded_sone')}</RewardedSone>
                   </Column>
                 </RowFixed>
                 <RowFixed>
                   <DetailedSectionIcon src={TickIconSvg} alt="tick-icon-svg" />
-                  <Column>
-                    <RewardedSoneValue style={{ fontSize: valueFontSize }}>{availableReward}</RewardedSoneValue>
-                    <RewardedSone style={{ fontSize: titleFontSize }}>{t('available_reward')}</RewardedSone>
+                  <Column width={isUpToExtraSmall ? '33vw' : 'unset'}>
+                    <RewardedSoneValue>{availableReward}</RewardedSoneValue>
+                    <RewardedSone>{t('available_reward')}</RewardedSone>
                   </Column>
                 </RowFixed>
               </RowReward>

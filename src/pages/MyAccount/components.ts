@@ -396,8 +396,7 @@ export const MyStakingButton = styled.button`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 13px;
     min-height: 45px;
-    min-width: 93px;
-    padding: unset 10px;
+    padding: 0 10px;
   `}
 `
 
