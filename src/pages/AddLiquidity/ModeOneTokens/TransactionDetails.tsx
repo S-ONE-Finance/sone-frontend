@@ -88,19 +88,6 @@ export default function TransactionDetails({
               </RowFixed>
               <TradePrice price={price} showInverted={showInverted} setShowInverted={setShowInverted} />
             </RowBetween>
-            {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
-              <RowBetween align="center">
-                <RowFixed>
-                  <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                    {t('slippage_tolerance')}
-                  </Text>
-                  <QuestionHelper1416 text={t('question_helper_slippage_tolerance')} />
-                </RowFixed>
-                <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-                  {allowedSlippage / 100}%
-                </Text>
-              </RowBetween>
-            )}
             <RowBetween>
               <RowFixed>
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
@@ -115,6 +102,19 @@ export default function TransactionDetails({
                 %
               </Text>
             </RowBetween>
+            {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
+              <RowBetween align="center">
+                <RowFixed>
+                  <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                    {t('slippage_tolerance')}
+                  </Text>
+                  <QuestionHelper1416 text={t('question_helper_slippage_tolerance')} />
+                </RowFixed>
+                <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+                  {allowedSlippage / 100}%
+                </Text>
+              </RowBetween>
+            )}
             <RowBetween>
               <RowFixed>
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
