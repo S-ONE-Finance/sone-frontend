@@ -27,8 +27,8 @@ const ButtonGroup = styled(Row)`
   margin-left: 16px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    width: 160px;
-    height: 28px;
+    width: 220px;
+    height: 43px;
   `}
 `
 
@@ -61,7 +61,7 @@ const ItemDescription = styled(Text)`
   font-weight: 400;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    display: none;
+    font-size: 11px;
   `}
 `
 
