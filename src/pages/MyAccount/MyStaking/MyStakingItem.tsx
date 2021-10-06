@@ -242,7 +242,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
             <TextAPY>{t('apy')}</TextAPY>
           </Column>
           <DownIcon
-            active={isShowDetailed ? 0 : 1}
+            active={isShowDetailed ? 1 : 0}
             onClick={() => setDetailUserInfo(prev => (prev === userInfo.id ? undefined : userInfo.id))}
           />
         </Row>
@@ -268,9 +268,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
                 </RowFixed>
               </RowReward>
               <RowButtons justify="center" gap="2rem">
-                {/* TODO: Specific pair. */}
                 <ButtonUnstake onClick={() => setIsModalUnstakeWarningOpen(true)}>{t('unstake')}</ButtonUnstake>
-                {/* TODO: Specific pair. */}
                 <ButtonStake as={Link} to={`/staking/${userInfo.pool?.pid}`}>
                   {t('stake_more')}
                 </ButtonStake>

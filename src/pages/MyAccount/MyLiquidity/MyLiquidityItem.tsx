@@ -109,7 +109,7 @@ export default function MyLiquidityItem({
             <TextAPY>{t('apy')}</TextAPY>
           </Column>
           <DownIcon
-            active={isShowDetailedSection ? 0 : 1}
+            active={isShowDetailedSection ? 1 : 0}
             onClick={() =>
               setDetailPair(prev => (prev === pair.liquidityToken.address ? undefined : pair.liquidityToken.address))
             }
