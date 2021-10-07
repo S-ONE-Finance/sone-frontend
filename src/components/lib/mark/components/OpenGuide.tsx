@@ -18,7 +18,7 @@ export default function OpenGuide({ screen }: OpenGuideProps) {
   }
 
   const onClickBtn = () => {
-    if (guideStep.showAgain) {
+    if (!guideStep.isGuide) {
       openGuidePopup(true, screen)
     }
   }
