@@ -44,7 +44,7 @@ const MyRewardValue = styled.div`
   font-size: 2.5rem;
   font-weight: 700;
   color: ${({ theme }) => theme.red1Sone};
-  word-break: break-all;
+  margin-right: 8px;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 30px;
@@ -87,8 +87,8 @@ export default function MyReward({ myReward }: { myReward?: number }) {
       <MyRewardTitle>{t('my_reward')}</MyRewardTitle>
       <MyRewardDesc style={{ marginTop: '0.25rem' }}>{t('you_have_rewarded_from_this_lp_token')}</MyRewardDesc>
       <RowFixed
-        gap="0.5rem"
         align="baseline"
+        flexWrap="wrap"
         style={{
           marginTop: isUpToExtraSmall ? '0.5rem' : '1rem',
           maxWidth: `calc(100% - 1rem - ${isUpToExtraSmall ? '4rem' : '6.75rem'} - ${
