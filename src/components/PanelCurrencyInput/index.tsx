@@ -96,7 +96,7 @@ export const StyledBalanceMax = styled.button`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-right: 0.5rem;
     height: 23px;
-    width: 48px;
+    width: 56px;
     font-size: 13px;
   `};
 `
@@ -301,9 +301,10 @@ export default function PanelCurrencyInput({
               onUserInput(val)
             }}
           />
-          {account && currency && showMaxButton && label !== 'To' && (
-            <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
-          )}
+          <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
+          {/*{account && currency && showMaxButton && label !== 'To' && (*/}
+          {/*  <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>*/}
+          {/*)}*/}
           {guideStep.screen === 'liquidity' && Number(guideStep.step) > 2 && (
             <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
           )}
