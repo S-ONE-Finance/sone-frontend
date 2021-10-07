@@ -31,7 +31,7 @@ import SoneLogoSvg from '../../../assets/images/logo_token_sone.svg'
 import TickIconSvg from '../../../assets/images/tick-icon.svg'
 import { HideExtraSmall } from '../../../theme'
 import usePendingReward from '../../../hooks/staking/usePendingReward'
-import { formatSONE, getBalanceNumber, getFixedNumberCommas } from '../../../utils/formatNumber'
+import { formatSONE, getFixedNumberCommas } from '../../../utils/formatNumber'
 import useClaimRewardHandler from '../../../hooks/staking/useClaimRewardHandler'
 import LiquidityProviderTokenLogo from '../../../components/LiquidityProviderTokenLogo'
 import BigNumber from 'bignumber.js'
@@ -167,8 +167,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
   const availableRewardRaw = usePendingReward(Number(userInfo.pool?.pid)).toString()
   const availableReward = formatSONE(availableRewardRaw, true, false) ?? '--'
 
-  // const myStakedLpToken = reduceFractionDigit('' + getBalanceNumber(userInfo.amount), 18)
-  const myStakedLpToken = getBalanceNumber(userInfo.amount)
+  const myStakedLpToken = formatSONE(userInfo.amount, true, false)
   const apy = userInfo.pool?.roiPerYear
   const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString())}%`
 
