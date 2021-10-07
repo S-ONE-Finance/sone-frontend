@@ -81,6 +81,9 @@ export const StyledBalanceMax = styled.button`
   cursor: pointer;
   color: ${({ theme }) => theme.textBlack};
   border: 0 none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   :hover {
     background-color: ${({ theme }) => darken(0.2, theme.white)};
