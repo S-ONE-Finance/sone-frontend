@@ -167,7 +167,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
   const availableRewardRaw = usePendingReward(Number(userInfo.pool?.pid)).toString()
   const availableReward = formatSONE(availableRewardRaw, true, false) ?? '--'
 
-  const myStakedLpToken = formatSONE(userInfo.amount, true, false)
+  const myStakedLpToken = +userInfo.amount < 1e14 ? '<0.0001' : formatSONE(userInfo.amount, true, false)
   const apy = userInfo.pool?.roiPerYear
   const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString(), 2)}%`
 

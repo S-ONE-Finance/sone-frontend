@@ -1,5 +1,5 @@
 import React from 'react'
-import { ETHER, JSBI, Pair, Percent } from '@s-one-finance/sdk-core'
+import { ETHER, Fraction, JSBI, Pair, Percent } from '@s-one-finance/sdk-core'
 import { Link } from 'react-router-dom'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
@@ -33,7 +33,7 @@ import {
 } from '../components'
 import usePoolIdByPairAddress from 'hooks/staking/usePoolIdByPairAddress'
 import useMyLiquidityApy from '../../../hooks/useMyLiquidityApy'
-import { getFixedNumberCommas } from '../../../utils/formatNumber'
+import { formatSONE, getFixedNumberCommas } from '../../../utils/formatNumber'
 import BigNumber from 'bignumber.js'
 
 export default function MyLiquidityItem({
@@ -99,7 +99,13 @@ export default function MyLiquidityItem({
             <Text color={theme.text8Sone} fontSize={isUpToSmall ? '13px' : '16px'}>
               {t('total_lp_token')}
             </Text>
-            <TextLpTokens>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</TextLpTokens>
+            <TextLpTokens>
+              {userPoolBalance?.lessThan(new Fraction('1', '10000'))
+                ? '<0.0001'
+                : userPoolBalance
+                ? formatSONE(userPoolBalance.raw.toString(), true, false)
+                : '-'}
+            </TextLpTokens>
           </Column>
           {poolId !== undefined && <StakeLink to={`/staking/${poolId}`}>{t('Stake')}</StakeLink>}
         </FlexibleRow>
