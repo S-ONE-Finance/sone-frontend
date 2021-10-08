@@ -169,7 +169,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
 
   const myStakedLpToken = formatSONE(userInfo.amount, true, false)
   const apy = userInfo.pool?.roiPerYear
-  const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString())}%`
+  const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString(), 2)}%`
 
   const [poolRequestPending, setPoolRequestPending] = useState(false)
   const onClaimReward = useClaimRewardHandler()
