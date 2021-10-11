@@ -34,7 +34,7 @@ const StyledStep2 = styled.div`
 
 const StyledStep2Content = styled.div`
   position: absolute;
-  left: 0;
+  left: 60px;
   top: 60px;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
