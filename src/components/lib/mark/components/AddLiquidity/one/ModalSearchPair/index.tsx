@@ -15,6 +15,7 @@ import Row, { RowBetween, RowFixed } from '../../../../../../Row'
 import { filterPairs } from '../../../../../../SearchModal/filtering'
 import { PaddedColumn, SearchInput } from '../../../../../../SearchModal/styleds'
 import PairList from './PairList'
+import { useDarkModeManager } from '../../../../../../../state/user/hooks'
 
 type ModalSearchPairProps = {
   isOpen: boolean
@@ -26,8 +27,8 @@ type ModalSearchPairProps = {
 }
 
 const ModalCustom = styled.div`
-  background-color: #212429;
-  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 5%);
+  //background-color: #212429;
+  //box-shadow: 0 4px 8px 0 rgb(0 0 0 / 5%);
   width: 470px;
   max-width: calc(100vw - 32px);
   padding: 0;
@@ -41,15 +42,15 @@ const ModalCustom = styled.div`
   border-radius: 25px;
 `
 
-const Mark = styled.div`
+const MarkRow = styled.div<{ background: string }>`
   position: absolute;
   left: 0;
+  top: 112px;
   width: 470px;
   max-width: calc(100vw - 32px);
-  max-height: 80vh;
-  min-height: 80vh;
-  border-radius: 25px;
-  background: rgba(0, 0, 0, 0.5);
+  background: ${({ background }) => background};
+  min-height: 56px;
+  z-index: 0;
 `
 
 export default function ModalSearchPair({
@@ -114,6 +115,8 @@ export default function ModalSearchPair({
     setInvertSearchOrder(prev => !prev)
   }, [])
 
+  const [darkMode] = useDarkModeManager()
+
   return (
     <ModalCustom>
       <PanelSearchContentWrapper>
@@ -171,6 +174,7 @@ export default function ModalSearchPair({
                   />
                 )}
               </AutoSizer>
+              <MarkRow background={darkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)'} />
             </div>
           </>
         ) : (
@@ -181,9 +185,6 @@ export default function ModalSearchPair({
           </Column>
         )}
       </PanelSearchContentWrapper>
-      <div>
-        <Mark />
-      </div>
     </ModalCustom>
   )
 }
