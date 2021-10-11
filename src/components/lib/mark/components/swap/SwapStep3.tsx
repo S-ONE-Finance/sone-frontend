@@ -4,14 +4,16 @@ import { useTranslation } from 'react-i18next'
 import { useGuideStepManager } from '../../../../../state/user/hooks'
 import { handIcon } from '../assets'
 import { ChildrenProp, BackgroundColor } from '../styled'
+import useTheme from '../../../../../hooks/useTheme'
 
 const SwapStep3 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
+  const theme = useTheme()
 
   return (
     <>
-      <StyledStep3 className="step-3" backgroundC={Number(guideStep.step) === 3 ? '#c7c7c7' : 'transparent'}>
+      <StyledStep3 className="step-3" backgroundC={Number(guideStep.step) === 3 ? theme.bg2Sone : 'transparent'}>
         {children}
         {Number(guideStep.step) === 3 && guideStep.screen === 'swap' && (
           <StyledStep3Content>
@@ -36,7 +38,6 @@ const StyledStep3 = styled.div`
 `
 
 const StyledStep3Content = styled.div`
-  position: absolute;
   position: absolute;
   left: 55px;
   top: 130px;

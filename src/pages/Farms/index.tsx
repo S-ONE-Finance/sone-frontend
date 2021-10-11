@@ -98,7 +98,13 @@ export default function Farms() {
             break
           case 'my_lp_tokens':
             const lpTokens = myLpToken.map((lp: LiquidityPosition) => lp.pair.id)
-            newSortedFilteredFarms = farms.filter((farm: Farm) => lpTokens.includes(farm.pairAddress))
+            newSortedFilteredFarms = farms.filter((farm: Farm) => {
+              if (lpTokens.indexOf(farm.pairAddress) !== -1) {
+                const balance = +myLpToken[lpTokens.indexOf(farm.pairAddress)]?.liquidityTokenBalance
+                return balance > 0
+              }
+              return false
+            })
             break
           case 'staked':
             const pairStaked = myStaked.map(pool => Number(pool.pool?.id))
