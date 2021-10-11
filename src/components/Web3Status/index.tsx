@@ -83,7 +83,15 @@ function Web3StatusInner() {
 
   const getLanguage = () => i18next.language || window.localStorage.i18nextLng
 
-  if (account) {
+  if (guideStep.isGuide && Number(guideStep.step) === 1) {
+    return (
+      <MarkHeader>
+        <ButtonMainRed id="connect-wallet" className="step-1">
+          {t('connect_wallet')}
+        </ButtonMainRed>
+      </MarkHeader>
+    )
+  } else if (account) {
     return (
       <ButtonMainRed
         id="web3-status-connected"
@@ -108,19 +116,9 @@ function Web3StatusInner() {
     )
   } else {
     return (
-      <>
-        {guideStep.isGuide && Number(guideStep.step) === 1 ? (
-          <MarkHeader>
-            <ButtonMainRed id="connect-wallet" className="step-1">
-              {t('connect_wallet')}
-            </ButtonMainRed>
-          </MarkHeader>
-        ) : (
-          <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
-            {guideStep.isGuide && Number(guideStep.step) > 1 ? t('my_account') : t('connect_wallet')}
-          </ButtonMainRed>
-        )}
-      </>
+      <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
+        {guideStep.isGuide && Number(guideStep.step) > 1 ? t('my_account') : t('connect_wallet')}
+      </ButtonMainRed>
     )
   }
 }
