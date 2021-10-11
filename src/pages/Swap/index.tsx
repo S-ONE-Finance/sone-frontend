@@ -569,33 +569,29 @@ export default function Swap({ history }: RouteComponentProps) {
           </AutoColumn>
           {/* Nếu không có thông tin trade thì để margin nhỏ (theo design). */}
           <BottomGrouping hasTrade={Boolean(trade)}>
-            {swapIsUnsupported ? (
+            {/* Check guide popup */}
+            {handleCheckOpenGuide() ? (
+              <>
+                {Number(guideStep.step) === 1 ? (
+                  <SwapStep1>
+                    <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
+                  </SwapStep1>
+                ) : (
+                  Number(guideStep.step) > 1 && (
+                    <SwapStep5>
+                      <ButtonPrimary className={`${Number(guideStep.step) > 1 ? 'step-5' : ''}`}>
+                        {t('swap_verb')}
+                      </ButtonPrimary>
+                    </SwapStep5>
+                  )
+                )}
+              </>
+            ) : swapIsUnsupported ? (
               <ButtonPrimary disabled={true}>
                 <TYPE.main mb="4px">{t('Unsupported Asset')}</TYPE.main>
               </ButtonPrimary>
             ) : !account ? (
-              <>
-                {/* Check guide popup */}
-                {handleCheckOpenGuide() ? (
-                  <>
-                    {Number(guideStep.step) === 1 ? (
-                      <SwapStep1>
-                        <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
-                      </SwapStep1>
-                    ) : (
-                      Number(guideStep.step) > 1 && (
-                        <SwapStep5>
-                          <ButtonPrimary className={`${Number(guideStep.step) > 1 ? 'step-5' : ''}`}>
-                            {t('swap_verb')}
-                          </ButtonPrimary>
-                        </SwapStep5>
-                      )
-                    )}
-                  </>
-                ) : (
-                  <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
-                )}
-              </>
+              <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
             ) : showWrap ? (
               <ButtonPrimary disabled={Boolean(wrapInputError)} onClick={onWrap}>
                 {wrapInputError ??

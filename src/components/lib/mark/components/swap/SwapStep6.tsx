@@ -32,14 +32,18 @@ const Step6Wrapper = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    left: 0;
     right: 0;
+    margin: 0 1rem;
   `};
 `
 
 const Step6Box = styled.div`
   box-shadow: 0px 4px 39px rgba(0, 0, 0, 0.15);
+
   & > img {
     border-radius: 8px;
+    max-width: calc(100vw - 32px);
   }
 `
 

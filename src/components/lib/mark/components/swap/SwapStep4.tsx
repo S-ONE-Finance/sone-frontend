@@ -42,6 +42,7 @@ const StyledStep4Content = styled.div`
   right: -375px;
   display: flex;
   align-items: center;
+  width: max-content;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     top: 130px;
@@ -56,9 +57,9 @@ const StyledStep4Content = styled.div`
 
 const StyledStep4Text = styled.div`
   font-weight: 700;
-  max-width: 300px;
   font-size: 36px;
   color: #fff;
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
     max-width: fit-content;
