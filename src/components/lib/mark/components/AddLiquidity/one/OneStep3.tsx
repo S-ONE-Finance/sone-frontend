@@ -44,6 +44,7 @@ const StyledStep2Content = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    flex-direction: column;
     left: -60px;
     top: 50px;
   `};
@@ -53,7 +54,7 @@ const StyledStep2Text = styled.div`
   font-size: 36px;
   color: #fff;
   margin-top: 20px;
-  width: 250px;
+  width: max-content;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
@@ -61,8 +62,8 @@ const StyledStep2Text = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    max-width: 130px;
     font-size: 16px;
+    margin-left: -30px;
   `};
 `
 

@@ -29,13 +29,16 @@ export default ConnectButton
 const Step1Wrapper = styled.div`
   position: relative;
 `
+
 const Step1Intro = styled.div`
   position: absolute;
   color: #fff;
   font-weight: 700;
   font-size: 36px;
-  max-width: 446px;
-  top: -190px;
+  top: -100px;
+  left: -50%;
+  transform: translateX(25%);
+  width: max-content;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
@@ -45,6 +48,8 @@ const Step1Intro = styled.div`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 16px;
     top: -50px;
+    left: 0;
+    transform: unset;
   `};
 `
 
