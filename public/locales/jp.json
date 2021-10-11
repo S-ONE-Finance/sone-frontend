@@ -277,7 +277,7 @@
   "transaction": "取引",
   "transaction_deadline": "最大取引時間",
   "transaction_history": "取引履歴",
-  "transaction_submitted": "交換完了",
+  "transaction_submitted": "Transaction Submitted",
   "transactions": "取引履歴",
   "trust_wallet": "Trust Wallet",
   "try_again": "もう一度試す",

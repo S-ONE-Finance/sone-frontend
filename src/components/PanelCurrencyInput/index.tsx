@@ -182,8 +182,6 @@ export default function PanelCurrencyInput({
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  // console.log(`currency`, currency)
-  // console.log(`selectedCurrencyBalance`, selectedCurrencyBalance?.raw.toString())
 
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
@@ -196,16 +194,16 @@ export default function PanelCurrencyInput({
   const handleGenerateCurrencyBalance = () => {
     if (guideStep.screen === 'swap') {
       return id === 'swap-currency-input' && Number(guideStep.step) > 2
-        ? '12,210'
+        ? '1.12'
         : Number(guideStep.step) > 3
-        ? `41.183`
+        ? `230`
         : ''
     }
 
     if (guideStep.screen === 'liquidity') {
-      if (id === 'add-liquidity-simple-input-tokena' && Number(guideStep.step) > 5) return `41.183`
-      if (id === 'add-liquidity-input-tokena' && Number(guideStep.step) > 2) return `41.183`
-      if (id === 'add-liquidity-input-tokenb' && Number(guideStep.step) > 2) return `41.183`
+      if (id === 'add-liquidity-simple-input-tokena' && Number(guideStep.step) > 5) return `230`
+      if (id === 'add-liquidity-input-tokena' && Number(guideStep.step) > 2) return `230`
+      if (id === 'add-liquidity-input-tokenb' && Number(guideStep.step) > 2) return `230`
       return ''
     }
 
@@ -245,6 +243,28 @@ export default function PanelCurrencyInput({
               </Aligner>
             </CurrencySelect>
           </SwapStep2>
+        )}
+
+        {id === 'swap-currency-input' && Number(guideStep.step) === 3 && (
+          <CurrencySelect selected={!!currency} className="open-currency-select-button">
+            <Aligner>
+              <CurrencyLogo currency={currency || undefined} size={'23px'} sizeMobile={'15px'} />
+              <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                {currency?.symbol}
+              </StyledTokenName>
+            </Aligner>
+          </CurrencySelect>
+        )}
+
+        {id === 'swap-currency-output' && Number(guideStep.step) === 4 && (
+          <CurrencySelect selected={!!currency} className="open-currency-select-button">
+            <Aligner>
+              <CurrencyLogo currency={currency || undefined} size={'23px'} sizeMobile={'15px'} />
+              <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                {currency?.symbol}
+              </StyledTokenName>
+            </Aligner>
+          </CurrencySelect>
         )}
 
         {id === 'add-liquidity-input-tokena' && Number(guideStep.step) > 2 && (
@@ -301,10 +321,9 @@ export default function PanelCurrencyInput({
               onUserInput(val)
             }}
           />
-          <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
-          {/*{account && currency && showMaxButton && label !== 'To' && (*/}
-          {/*  <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>*/}
-          {/*)}*/}
+          {account && currency && showMaxButton && label !== 'To' && (
+            <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
+          )}
           {guideStep.screen === 'liquidity' && Number(guideStep.step) > 2 && (
             <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
           )}

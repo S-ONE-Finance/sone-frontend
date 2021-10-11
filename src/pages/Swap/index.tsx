@@ -1,4 +1,4 @@
-import { CurrencyAmount, JSBI, Token, Trade } from '@s-one-finance/sdk-core'
+import { ChainId, Currency, CurrencyAmount, JSBI, Token, Trade } from '@s-one-finance/sdk-core'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ArrowDown, ChevronDown, ChevronUp } from 'react-feather'
 import ReactGA from 'react-ga'
@@ -28,7 +28,7 @@ import {
   useUserSlippageTolerance
 } from '../../state/user/hooks'
 
-import { INITIAL_ALLOWED_SLIPPAGE, REFERRAL_STATUS } from '../../constants'
+import { DEFAULT_CHAIN_ID, INITIAL_ALLOWED_SLIPPAGE, REFERRAL_STATUS, SONE } from '../../constants'
 import { getTradeVersion } from '../../data/V1'
 import { useSwapCallback } from '../../hooks/useSwapCallback'
 import useToggledVersion, { DEFAULT_VERSION, Version } from '../../hooks/useToggledVersion'
@@ -112,7 +112,7 @@ export default function Swap({ history }: RouteComponentProps) {
       return !Boolean(token.address in defaultTokens)
     })
 
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const theme = useTheme()
 
   // toggle wallet when disconnected
@@ -361,24 +361,6 @@ export default function Swap({ history }: RouteComponentProps) {
     !accountIsReferrerAndSavedReferralCodeIsOfThisAccount &&
     referralStatus === REFERRAL_STATUS.ENABLE
 
-  const tokenToGuide = {
-    decimals: 18,
-    symbol: 'DAI',
-    name: 'Dai Stablecoin',
-    chainId: 1,
-    address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-    tokenInfo: {
-      name: 'Dai Stablecoin',
-      address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-      symbol: 'DAI',
-      decimals: 18,
-      chainId: 1,
-      logoURI:
-        'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png'
-    },
-    tags: []
-  }
-
   const handleCheckOpenGuide = () => {
     return guideStep.screen === 'swap'
   }
@@ -414,9 +396,9 @@ export default function Swap({ history }: RouteComponentProps) {
               <SwapStep3>
                 <PanelCurrencyInput
                   label={t('from')}
-                  value={'1,223'}
+                  value="0.1"
                   showMaxButton={!atMaxAmountInput}
-                  currency={currencies[Field.INPUT]}
+                  currency={Currency.ETHER}
                   onUserInput={handleTypeInput}
                   onMax={handleMaxInput}
                   onCurrencySelect={handleInputSelect}
@@ -452,11 +434,11 @@ export default function Swap({ history }: RouteComponentProps) {
             {handleCheckOpenGuide() && Number(guideStep.step) > 3 ? (
               <SwapStep4>
                 <PanelCurrencyInput
-                  value={'81.548'}
+                  value="181.635"
                   onUserInput={handleTypeOutput}
                   label={t('to')}
                   showMaxButton={false}
-                  currency={tokenToGuide}
+                  currency={SONE[chainId ?? (DEFAULT_CHAIN_ID as ChainId)]}
                   onCurrencySelect={handleOutputSelect}
                   otherCurrency={currencies[Field.INPUT]}
                   id="swap-currency-output"

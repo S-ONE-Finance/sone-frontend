@@ -7,7 +7,7 @@ import closeIcon from '../../../../../assets/images/icon-close-guide.svg'
 import iconCheck from '../../../../../assets/images/check-icon-guide-popup.svg'
 import swapCloseIcon from '../../../../../assets/images/swap-close-icon-guide-popup.svg'
 import stakeTickIcon from '../../../../../assets/images/stake-tick-icon.svg'
-import swapMessage from '../../../../../assets/images/swap-message-light.png'
+import swapSummaryLight from '../../../../../assets/images/swap-summary-light.png'
 
 export {
   arrowLeft,
@@ -19,5 +19,5 @@ export {
   iconCheck,
   swapCloseIcon,
   stakeTickIcon,
-  swapMessage
+  swapSummaryLight
 }
