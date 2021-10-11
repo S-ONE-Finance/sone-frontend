@@ -65,26 +65,22 @@ export default function ButtonGrouping({
 
   return (
     <ButtonWrapper>
-      {addIsUnsupported ? (
+      {guideStep.isGuide && Number(guideStep.step) === 1 ? (
+        <ConnectButton>
+          <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
+        </ConnectButton>
+      ) : guideStep.isGuide && Number(guideStep.step) === 7 ? (
+        <OneStep5>
+          <ButtonPrimary onClick={toggleWalletModal}>
+            {Number(guideStep.step) === 7 ? t('add_liquidity') : t('connect_wallet')}
+          </ButtonPrimary>
+        </OneStep5>
+      ) : addIsUnsupported ? (
         <ButtonPrimary disabled={true}>
           <TYPE.main mb="4px">{t('Unsupported Asset')}</TYPE.main>
         </ButtonPrimary>
       ) : !account ? (
-        <>
-          {Number(guideStep.step) === 1 ? (
-            <ConnectButton>
-              <ButtonPrimary onClick={toggleWalletModal}>
-                {Number(guideStep.step) === 7 ? t('add_liquidity') : t('connect_wallet')}
-              </ButtonPrimary>
-            </ConnectButton>
-          ) : (
-            <OneStep5>
-              <ButtonPrimary onClick={toggleWalletModal}>
-                {Number(guideStep.step) === 7 ? t('add_liquidity') : t('connect_wallet')}
-              </ButtonPrimary>
-            </OneStep5>
-          )}
-        </>
+        <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
       ) : (
         <AutoColumn gap={'md'}>
           {/* FIXME: Có thể sẽ bug user auto click ở đây. */}

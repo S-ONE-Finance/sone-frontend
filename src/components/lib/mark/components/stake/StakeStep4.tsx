@@ -38,7 +38,6 @@ const Step6Wrapper = styled.div`
 `
 
 const Step6Box = styled.div`
-  box-shadow: 0px 4px 39px rgba(0, 0, 0, 0.15);
   & > img {
     border-radius: 8px;
   }

@@ -201,8 +201,8 @@ export default function PanelCurrencyInput({
     }
 
     if (guideStep.screen === 'liquidity') {
-      if (id === 'add-liquidity-simple-input-tokena' && Number(guideStep.step) > 5) return `230`
-      if (id === 'add-liquidity-input-tokena' && Number(guideStep.step) > 2) return `230`
+      if (id === 'add-liquidity-simple-input-tokena' && Number(guideStep.step) > 5) return `1.12`
+      if (id === 'add-liquidity-input-tokena' && Number(guideStep.step) > 2) return `1.12`
       if (id === 'add-liquidity-input-tokenb' && Number(guideStep.step) > 2) return `230`
       return ''
     }
@@ -324,9 +324,9 @@ export default function PanelCurrencyInput({
           {account && currency && showMaxButton && label !== 'To' && (
             <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
           )}
-          {guideStep.screen === 'liquidity' && Number(guideStep.step) > 2 && (
-            <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
-          )}
+          {/*{guideStep.screen === 'liquidity' && Number(guideStep.step) > 2 && (*/}
+          {/*  <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>*/}
+          {/*)}*/}
           {showCurrencySelect && (
             <>
               {guideStep.isGuide ? (

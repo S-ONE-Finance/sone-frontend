@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager, useAddLiquidityModeManager } from '../../../../../state/user/hooks'
+import { useAddLiquidityModeManager, useGuideStepManager } from '../../../../../state/user/hooks'
 import { AddLiquidityModeEnum } from '../../../../../state/user/actions'
 import { handIcon } from '../assets'
 import { ChildrenProp } from '../styled'
@@ -46,28 +46,29 @@ const StepWrapper = styled.div`
 `
 
 const Step2OneToken = styled.div`
-position: absolute;
-top: 70px;
-left: 95px;
-width: 460px;
-display: flex;
-align-items: center;
-${({ theme }) => theme.mediaWidth.upToLarge`
-  left: 45px;
-`};
+  position: absolute;
+  top: 70px;
+  left: 95px;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    left: 45px;
+  `};
 
-${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  top: 50px;
-  left: 25px;
-  width: fit-content;
-`};
-
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    top: 50px;
+    left: 25px;
+    width: fit-content;
+  `};
 }`
 
 const StepIntro = styled.div`
   font-weight: 700;
   font-size: 36px;
   color: #fff;
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
   `};

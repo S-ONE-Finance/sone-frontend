@@ -33,6 +33,7 @@ const Step1Wrapper = styled.div`
   z-index: 1001;
   pointer-events: none;
 `
+
 const Step1Intro = styled.div`
   position: absolute;
   color: #fff;
