@@ -321,12 +321,10 @@ export default function PanelCurrencyInput({
               onUserInput(val)
             }}
           />
-          {account && currency && showMaxButton && label !== 'To' && (
+          {((account && currency && showMaxButton && label !== 'To') ||
+            (guideStep.screen === 'liquidity' && Number(guideStep.step) > 2)) && (
             <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
           )}
-          {/*{guideStep.screen === 'liquidity' && Number(guideStep.step) > 2 && (*/}
-          {/*  <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>*/}
-          {/*)}*/}
           {showCurrencySelect && (
             <>
               {guideStep.isGuide ? (

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { handIcon, swapSummaryLight } from '../assets'
+import { handIcon, summarySwapEN } from '../assets'
 
 const StakeStep4 = () => {
   const { t } = useTranslation()
@@ -10,7 +10,7 @@ const StakeStep4 = () => {
     <>
       <Step6Wrapper>
         <Step6Box>
-          <img src={swapSummaryLight} alt="message" />
+          <img src={summarySwapEN} alt="message" />
         </Step6Box>
         <Step6Instruction>
           <Step6InstructionText>{t('lets_stake_lp_tokens_to_get_rewards')}</Step6InstructionText>

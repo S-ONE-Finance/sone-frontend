@@ -1,4 +1,4 @@
-import { Currency, TokenAmount } from '@s-one-finance/sdk-core'
+import { ChainId, Currency, TokenAmount } from '@s-one-finance/sdk-core'
 import TransactionConfirmationModal, { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
@@ -20,6 +20,8 @@ import ButtonGrouping from './ButtonGrouping'
 import TransactionDetails from './TransactionDetails'
 import { StyledPlus } from '../../../theme'
 import { useGuideStepManager } from '../../../state/user/hooks'
+import { DEFAULT_CHAIN_ID, SONE } from '../../../constants'
+import { useActiveWeb3React } from 'hooks'
 
 type ModeTwoTokensProps = {
   currencyIdA: string | undefined
@@ -30,6 +32,7 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
   const { t } = useTranslation()
   const history = useHistory()
   const [guideStep] = useGuideStepManager()
+  const { chainId } = useActiveWeb3React()
 
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
@@ -162,7 +165,7 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
       />
       <AutoColumn gap="md">
         <PanelCurrencyInput
-          value={Number(guideStep.step) > 2 ? '2.71828' : formattedAmounts[Field.CURRENCY_A]}
+          value={Number(guideStep.step) > 2 ? '0.1' : formattedAmounts[Field.CURRENCY_A]}
           onUserInput={onFieldAInput}
           onMax={() => {
             onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
@@ -180,14 +183,16 @@ export default function ModeTwoTokens({ currencyIdA, currencyIdB }: ModeTwoToken
           </AutoRow>
         </AutoColumn>
         <PanelCurrencyInput
-          value={Number(guideStep.step) > 2 ? '81.5484' : formattedAmounts[Field.CURRENCY_B]}
+          value={Number(guideStep.step) > 2 ? '185.309' : formattedAmounts[Field.CURRENCY_B]}
           onUserInput={onFieldBInput}
           onCurrencySelect={handleCurrencyBSelect}
           onMax={() => {
             onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
           }}
           showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
-          currency={currencies[Field.CURRENCY_B]}
+          currency={
+            Number(guideStep.step) > 2 ? SONE[chainId ?? (DEFAULT_CHAIN_ID as ChainId)] : currencies[Field.CURRENCY_B]
+          }
           id="add-liquidity-input-tokenb"
         />
       </AutoColumn>

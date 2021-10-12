@@ -1,16 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { handIcon, swapSummaryLight } from '../assets'
+import { handIcon, summarySwapEN, summarySwapJP, summarySwapZH } from '../assets'
+import useLanguage from 'hooks/useLanguage'
 
 const SwapStep6 = () => {
   const { t } = useTranslation()
+  const [language] = useLanguage()
 
   return (
     <>
       <Step6Wrapper>
         <Step6Box>
-          <img src={swapSummaryLight} alt="message" />
+          <img
+            src={
+              language?.startsWith('en')
+                ? summarySwapEN
+                : language?.startsWith('jp')
+                ? summarySwapJP
+                : language?.startsWith('zh')
+                ? summarySwapZH
+                : summarySwapEN
+            }
+            alt="message"
+          />
         </Step6Box>
         <Step6Instruction>
           <Step6InstructionText>{t('swap_successfully')}</Step6InstructionText>
