@@ -100,6 +100,20 @@ const StylesHandIconTow = styled(StyledHandIcon)`
 `
 
 const Step2TwoToken = styled(Step2OneToken)`
-  left: 10%;
+  left: 70%;
+  transform: translateX(-50%);
   flex-direction: column;
+  align-items: center;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    left: 70%;
+    transform: translateX(-50%);
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    top: 50px;
+    left: 70%;
+    transform: translateX(-50%);
+    width: fit-content;
+  `};
 `
