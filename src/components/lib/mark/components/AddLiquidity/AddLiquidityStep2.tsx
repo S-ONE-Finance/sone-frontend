@@ -24,14 +24,12 @@ const AddLiquidityStep2 = ({ children }: ChildrenProp) => {
               <StepIntro>{t('add_one_token_mode_is_recommended')}</StepIntro>
             </Step2OneToken>
           ) : (
-            <>
-              <Step2TwoToken>
-                <StylesHandIconTow>
-                  <img src={handIcon} alt="hand" />
-                </StylesHandIconTow>
-                <StepIntro>{t('when_add_two_tokens_mode_is_on')}</StepIntro>
-              </Step2TwoToken>
-            </>
+            <Step2TwoToken>
+              <StylesHandIconTow>
+                <img src={handIcon} alt="hand" />
+              </StylesHandIconTow>
+              <StepIntro>{t('when_add_two_tokens_mode_is_on')}</StepIntro>
+            </Step2TwoToken>
           )}
         </>
       )}
@@ -102,6 +100,6 @@ const StylesHandIconTow = styled(StyledHandIcon)`
 `
 
 const Step2TwoToken = styled(Step2OneToken)`
-  left: 50%;
+  left: 10%;
   flex-direction: column;
 `

@@ -16,19 +16,16 @@ import { filterPairs } from '../../../../../../SearchModal/filtering'
 import { PaddedColumn, SearchInput } from '../../../../../../SearchModal/styleds'
 import PairList from './PairList'
 import { useDarkModeManager } from '../../../../../../../state/user/hooks'
+import { useGetPairFromSubgraphAndParse } from 'graphql/hooks'
 
 type ModalSearchPairProps = {
   isOpen: boolean
   onDismiss: () => void
   selectedPair?: Pair | null
   onPairSelect: (pair: Pair) => void
-  isLoading: boolean
-  allPairs: Array<Pair>
 }
 
 const ModalCustom = styled.div`
-  //background-color: #212429;
-  //box-shadow: 0 4px 8px 0 rgb(0 0 0 / 5%);
   width: 470px;
   max-width: calc(100vw - 32px);
   padding: 0;
@@ -53,14 +50,7 @@ const MarkRow = styled.div<{ background: string }>`
   z-index: 0;
 `
 
-export default function ModalSearchPair({
-  isOpen,
-  onDismiss,
-  selectedPair,
-  onPairSelect,
-  isLoading,
-  allPairs
-}: ModalSearchPairProps) {
+export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPairSelect }: ModalSearchPairProps) {
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
@@ -72,6 +62,8 @@ export default function ModalSearchPair({
   const debouncedQuery = useDebounce(searchQuery, 200)
 
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
+
+  const [isLoading, allPairs] = useGetPairFromSubgraphAndParse()
 
   const filteredPairs: Pair[] = useMemo(() => {
     return filterPairs(allPairs, debouncedQuery)

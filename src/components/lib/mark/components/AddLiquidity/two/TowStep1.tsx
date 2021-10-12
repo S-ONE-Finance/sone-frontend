@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager, useAddLiquidityModeManager } from '../../../../../../state/user/hooks'
+import { useAddLiquidityModeManager, useGuideStepManager } from '../../../../../../state/user/hooks'
 import { AddLiquidityModeEnum } from '../../../../../../state/user/actions'
 import { ChildrenProp } from '../../styled'
 
@@ -18,7 +18,7 @@ const TowStep1 = ({ children }: ChildrenProp) => {
           guideStep.screen === 'liquidity' &&
           addLiquidityMode === AddLiquidityModeEnum.TwoToken && (
             <StyledOneStep1>
-              <StepIntro>{t('Explain about this function')}</StepIntro>
+              <StepIntro>{t('select_two_tokens_and_input_amount')}</StepIntro>
             </StyledOneStep1>
           )}
       </StepWrapper>
@@ -35,32 +35,33 @@ const StepWrapper = styled.div`
 `
 
 const StyledOneStep1 = styled.div`
-position: absolute;
-top: 50%;
-left: -490px;
-display: flex;
-align-items: center;
+  position: absolute;
+  top: 50%;
+  left: -490px;
+  display: flex;
+  align-items: center;
 
-${({ theme }) => theme.mediaWidth.upToLarge`
-  left: 0px;
-  top: -60px;
-`};
-
-${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  top: -45px;
-  left: 0;
-  width: 300px;
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    left: 0px;
+    top: -60px;
   `};
 
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    top: -45px;
+    left: 0;
+    width: 300px;
+  `};
 }`
 
 const StepIntro = styled.div`
   font-weight: 700;
   font-size: 36px;
   color: #fff;
+  max-width: 480px;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
+    max-width: unset;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`

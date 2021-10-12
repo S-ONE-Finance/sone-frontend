@@ -2,12 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
-import { useGuideStepManager } from '../../../../../../state/user/hooks'
+import { useGuideStepManager } from 'state/user/hooks'
 
 import { OneStep6, OneStep2 } from '../../index'
 import { arrowLeft, arrowRight, arrowSkip } from '../../assets'
 import { PaginationProps } from '../../styled'
-import { useIsUpToMedium } from '../../../../../../hooks/useWindowSize'
+import { useIsUpToMedium } from 'hooks/useWindowSize'
 
 const PaginationOne = ({ handlePrevious, handleNext, handleSkip }: PaginationProps) => {
   const { t } = useTranslation()
@@ -19,7 +19,7 @@ const PaginationOne = ({ handlePrevious, handleNext, handleSkip }: PaginationPro
     <>
       <StyledMark>
         {guideStep.step === 8 && guideStep.screen === 'liquidity' && <OneStep6 />}
-        {guideStep.step === 4 && guideStep.screen === 'liquidity' && <OneStep2 />}
+        <OneStep2 />
         <StyledMarkPagination>
           <StyledMarkPaginationButtonGroup>
             {guideStep.step !== 1 && (

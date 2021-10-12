@@ -1,39 +1,28 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from '../../../../../../state/user/hooks'
+import { useGuideStepManager } from 'state/user/hooks'
 import { ReactComponent as HandIcon } from 'assets/images/hand-guide.svg'
 import ModalSearchPair from './ModalSearchPair'
-import { useGetPairFromSubgraphAndParse } from '../../../../../../graphql/hooks'
 
 const OneStep2 = () => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
-  const [isLoading, allPairs] = useGetPairFromSubgraphAndParse()
 
   return (
-    <>
-      <StepWrapper>
-        <TextWrapper>
-          <ModalSearchPair
-            isOpen={true}
-            onDismiss={() => false}
-            onPairSelect={() => false}
-            selectedPair={null}
-            isLoading={isLoading}
-            allPairs={allPairs}
-          />
-          {Number(guideStep.step) === 4 && guideStep.screen === 'liquidity' && (
-            <StyledOneStep2>
-              <StyledHandIcon>
-                <HandIcon />
-              </StyledHandIcon>
-              <StepIntro>{t('select_a_pair_you_want')}</StepIntro>
-            </StyledOneStep2>
-          )}
-        </TextWrapper>
-      </StepWrapper>
-    </>
+    <StepWrapper
+      style={{ display: Number(guideStep.step) === 4 && guideStep.screen === 'liquidity' ? 'flex' : 'none' }}
+    >
+      <TextWrapper>
+        <ModalSearchPair isOpen={true} onDismiss={() => false} onPairSelect={() => false} selectedPair={null} />
+        <StyledOneStep2>
+          <StyledHandIcon>
+            <HandIcon />
+          </StyledHandIcon>
+          <StepIntro>{t('select_a_pair_you_want')}</StepIntro>
+        </StyledOneStep2>
+      </TextWrapper>
+    </StepWrapper>
   )
 }
 

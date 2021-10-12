@@ -1,16 +1,35 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { addLiquiditySimpleSummaryLight, handIcon } from '../../assets'
+import {
+  handIcon,
+  summaryAddLiquiditySimpleEN,
+  summaryAddLiquiditySimpleJP,
+  summaryAddLiquiditySimpleZH
+} from '../../assets'
+
+import useLanguage from 'hooks/useLanguage'
 
 const SwapStep6 = () => {
   const { t } = useTranslation()
+  const [language] = useLanguage()
 
   return (
     <>
       <Step6Wrapper>
         <Step6Box>
-          <img src={addLiquiditySimpleSummaryLight} alt="message" />
+          <img
+            src={
+              language?.startsWith('en')
+                ? summaryAddLiquiditySimpleEN
+                : language?.startsWith('jp')
+                ? summaryAddLiquiditySimpleJP
+                : language?.startsWith('zh')
+                ? summaryAddLiquiditySimpleZH
+                : summaryAddLiquiditySimpleEN
+            }
+            alt="message"
+          />
         </Step6Box>
         <Step6Instruction>
           <Step6InstructionText>{t('lets_stake_lp_tokens_to_get_rewards')}</Step6InstructionText>

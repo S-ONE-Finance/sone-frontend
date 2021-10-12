@@ -1,17 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from '../../../../../../state/user/hooks'
+import { useGuideStepManager } from 'state/user/hooks'
 import { handIcon } from '../../assets'
-import { ChildrenProp } from '../../styled'
+import { BackgroundColor, ChildrenProp } from '../../styled'
+import useTheme from 'hooks/useTheme'
 
 const OneStep4 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
+  const theme = useTheme()
 
   return (
     <>
-      <StyledStep2 className="step-6">
+      <StyledStep2 className="step-6" backgroundC={Number(guideStep.step) === 6 ? theme.bg2Sone : 'transparent'}>
         {children}
         {Number(guideStep.step) === 6 && guideStep.screen === 'liquidity' && (
           <StyledStep2Content>
@@ -27,8 +29,13 @@ const OneStep4 = ({ children }: ChildrenProp) => {
 }
 
 export default OneStep4
+
 const StyledStep2 = styled.div`
   position: relative;
+
+  & > #add-liquidity-simple-input-tokena {
+    background: ${({ backgroundC }: BackgroundColor) => backgroundC};
+  }
 `
 
 const StyledStep2Content = styled.div`
@@ -37,7 +44,6 @@ const StyledStep2Content = styled.div`
   bottom: -115px;
   display: flex;
   align-items: center;
-}
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     left: 0;
@@ -47,6 +53,7 @@ const StyledStep2Content = styled.div`
     top: 95px;
   `};
 `
+
 const StyledStep2Text = styled.div`
   font-weight: 700;
   font-size: 36px;
