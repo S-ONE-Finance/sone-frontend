@@ -5,8 +5,9 @@ import { useTranslation } from 'react-i18next'
 import { Farm } from '@s-one-finance/sdk-core/'
 import IconAPY from '../../assets/images/icon_apy.svg'
 import Loader from '../../components/Loader'
-import { getFixedNumberCommas, getNumberCommas } from '../../utils/formatNumber'
+import { formatSONE, getFixedNumberCommas } from '../../utils/formatNumber'
 import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenLogo'
+import BigNumber from 'bignumber.js'
 
 const FarmCards: React.FC<{ farms: Farm[] | undefined; isLoading: boolean }> = ({ farms = [], isLoading }) => {
   return (
@@ -33,6 +34,12 @@ interface FarmCardProps {
 const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
   const { t } = useTranslation()
   const { token0, token1 } = farm?.liquidityPair || {}
+
+  const apy = farm.roiPerYear
+  const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString(), 2)}%`
+
+  const totalLiquidity = farm.balanceUSD
+  const totalLiquidityRender = totalLiquidity === undefined ? '--' : formatSONE(totalLiquidity + '', true, true)
 
   return (
     <>
@@ -61,12 +68,12 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm }) => {
             {t('apy')}
             <StyledItemRowImage>
               <img src={IconAPY} alt="" />
-              <div>&nbsp;{`${getNumberCommas(farm.roiPerYear * 100)}%`}</div>
+              <div>&nbsp;{apyRender}</div>
             </StyledItemRowImage>
           </StyledItemRow>
           <StyledLastItemRow>
             {t('total_liquidity')}
-            <span>${farm.balanceUSD && getNumberCommas(farm.balanceUSD)}</span>
+            <span>${totalLiquidityRender}</span>
           </StyledLastItemRow>
           <StyledButton>
             <NavLink to={`/staking/${farm.id}`}>{t('select')}</NavLink>
