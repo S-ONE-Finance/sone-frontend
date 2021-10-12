@@ -33,18 +33,17 @@ const StepWrapper = styled.div`
 `
 
 const StyledOneStep1 = styled.div`
-position: absolute;
-top: 130%;
-left: 100%;
-display: flex;
-align-items: center;
-width: 100%;
+  position: absolute;
+  top: 130%;
+  left: 30%;
+  display: flex;
+  align-items: center;
+  width: 100%;
 
-${({ theme }) => theme.mediaWidth.upToLarge`
-  left: 50%;
-  width: 250px;
-`};
-
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    left: 50%;
+    width: 250px;
+  `};
 }`
 
 const StepIntro = styled.div`
