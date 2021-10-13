@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useAddLiquidityModeManager, useGuideStepManager } from '../../../../../state/user/hooks'
-import { AddLiquidityModeEnum } from '../../../../../state/user/actions'
+import { useAddLiquidityModeManager, useGuideStepManager } from 'state/user/hooks'
+import { AddLiquidityModeEnum } from 'state/user/actions'
 import { handIcon } from '../assets'
 import { ChildrenProp } from '../styled'
 

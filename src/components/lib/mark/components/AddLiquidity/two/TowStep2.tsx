@@ -1,32 +1,30 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from '../../../../../../state/user/hooks'
+import { useGuideStepManager } from 'state/user/hooks'
 import { handIcon } from '../../assets'
 import { ChildrenProp } from '../../styled'
 
-const TowStep1 = ({ children }: ChildrenProp) => {
+const TowStep2 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
 
   return (
-    <>
-      <StepWrapper className="step-4">
-        {children}
-        {Number(guideStep.step) === 4 && guideStep.screen === 'liquidity' && (
-          <StyledOneStep1>
-            <StyledHandIcon>
-              <img src={handIcon} alt="hand" />
-            </StyledHandIcon>
-            <StepIntro>{t('click_here')}</StepIntro>
-          </StyledOneStep1>
-        )}
-      </StepWrapper>
-    </>
+    <StepWrapper className="step-4">
+      {children}
+      {Number(guideStep.step) === 4 && guideStep.screen === 'liquidity' && (
+        <StyledOneStep1>
+          <StyledHandIcon>
+            <img src={handIcon} alt="hand" />
+          </StyledHandIcon>
+          <StepIntro>{t('click_here')}</StepIntro>
+        </StyledOneStep1>
+      )}
+    </StepWrapper>
   )
 }
 
-export default TowStep1
+export default TowStep2
 
 const StepWrapper = styled.div`
   position: relative;

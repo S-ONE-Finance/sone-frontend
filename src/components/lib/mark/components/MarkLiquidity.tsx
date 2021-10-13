@@ -76,7 +76,7 @@ const MarkLiquidity = () => {
   return (
     <>
       {guideStep.isGuide && (
-        <StyledMarkWrapper id="swap-mark">
+        <StyledMarkWrapper id="add-liquidity-mark">
           {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
             <PaginationOne handleNext={handleNext} handlePrevious={handlePrevious} handleSkip={handleSkip} />
           ) : (

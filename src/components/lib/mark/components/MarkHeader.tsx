@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useGuideStepManager } from '../../../../state/user/hooks'
+import { useGuideStepManager } from 'state/user/hooks'
 
 import { handIcon } from './assets'
 import { ChildrenProp } from './styled'
@@ -39,6 +39,7 @@ const StyledHandIcon = styled.div`
     left: 120%;
     top: -55%;
     transform: rotate(-90deg);
+    
     & > img {
       width: 60px;
     }

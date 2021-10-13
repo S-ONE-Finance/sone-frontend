@@ -16,38 +16,36 @@ const PaginationOne = ({ handlePrevious, handleNext, handleSkip }: PaginationPro
   const backgroundEnable = isUpToMedium && guideStep.step === 4 ? 1 : 0
 
   return (
-    <>
-      <StyledMark>
-        {guideStep.step === 8 && guideStep.screen === 'liquidity' && <OneStep6 />}
-        <OneStep2 />
-        <StyledMarkPagination>
-          <StyledMarkPaginationButtonGroup>
-            {guideStep.step !== 1 && (
-              <StyledMarkPaginationButton
-                onClick={() => handlePrevious(guideStep.step)}
-                backgroundEnable={backgroundEnable}
-              >
-                <img style={{ marginRight: '10px' }} src={arrowLeft} alt="arrow" />
-                {t('previous')}
-              </StyledMarkPaginationButton>
-            )}
-            {guideStep.step !== 8 && (
-              <StyledMarkPaginationButtonRight
-                onClick={() => handleNext(guideStep.step)}
-                backgroundEnable={backgroundEnable}
-              >
-                {t('next_step')}
-                <img style={{ marginLeft: '10px' }} src={arrowRight} alt="arrow" />
-              </StyledMarkPaginationButtonRight>
-            )}
-          </StyledMarkPaginationButtonGroup>
-          <StyledMarkPaginationButtonSkip onClick={handleSkip} backgroundEnable={backgroundEnable}>
-            {t('skip_tutorial')}
-            <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
-          </StyledMarkPaginationButtonSkip>
-        </StyledMarkPagination>
-      </StyledMark>
-    </>
+    <StyledMark>
+      {guideStep.step === 8 && guideStep.screen === 'liquidity' && <OneStep6 />}
+      <OneStep2 />
+      <StyledMarkPagination>
+        <StyledMarkPaginationButtonGroup>
+          {guideStep.step !== 1 && (
+            <StyledMarkPaginationButton
+              onClick={() => handlePrevious(guideStep.step)}
+              backgroundEnable={backgroundEnable}
+            >
+              <img style={{ marginRight: '10px' }} src={arrowLeft} alt="arrow" />
+              {t('previous')}
+            </StyledMarkPaginationButton>
+          )}
+          {guideStep.step !== 8 && (
+            <StyledMarkPaginationButtonRight
+              onClick={() => handleNext(guideStep.step)}
+              backgroundEnable={backgroundEnable}
+            >
+              {t('next_step')}
+              <img style={{ marginLeft: '10px' }} src={arrowRight} alt="arrow" />
+            </StyledMarkPaginationButtonRight>
+          )}
+        </StyledMarkPaginationButtonGroup>
+        <StyledMarkPaginationButtonSkip onClick={handleSkip} backgroundEnable={backgroundEnable}>
+          {t('skip_tutorial')}
+          <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
+        </StyledMarkPaginationButtonSkip>
+      </StyledMarkPagination>
+    </StyledMark>
   )
 }
 

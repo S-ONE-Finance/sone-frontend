@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 
-import { useGuideStepManager } from '../../../../../../state/user/hooks'
+import { useGuideStepManager } from 'state/user/hooks'
 
 import { TowStep3 } from '../../index'
 import { arrowLeft, arrowRight, arrowSkip } from '../../assets'
@@ -13,31 +13,29 @@ const PaginationOne = ({ handlePrevious, handleNext, handleSkip }: PaginationPro
   const [guideStep] = useGuideStepManager()
 
   return (
-    <>
-      <StyledMark>
-        {guideStep.step === 5 && guideStep.screen === 'liquidity' && <TowStep3 />}
-        <StyledMarkPagination>
-          <StyledMarkPaginationButtonGroup>
-            {guideStep.step !== 1 && (
-              <StyledMarkPaginationButton onClick={() => handlePrevious(guideStep.step)}>
-                <img style={{ marginRight: '10px' }} src={arrowLeft} alt="arrow" />
-                {t('previous')}
-              </StyledMarkPaginationButton>
-            )}
-            {guideStep.step !== 5 && (
-              <StyledMarkPaginationButtonRight onClick={() => handleNext(guideStep.step)}>
-                {t('next_step')}
-                <img style={{ marginLeft: '10px' }} src={arrowRight} alt="arrow" />
-              </StyledMarkPaginationButtonRight>
-            )}
-          </StyledMarkPaginationButtonGroup>
-          <StyledMarkPaginationButtonSkip onClick={handleSkip}>
-            {t('skip_tutorial')}
-            <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
-          </StyledMarkPaginationButtonSkip>
-        </StyledMarkPagination>
-      </StyledMark>
-    </>
+    <StyledMark>
+      {guideStep.step === 5 && guideStep.screen === 'liquidity' && <TowStep3 />}
+      <StyledMarkPagination>
+        <StyledMarkPaginationButtonGroup>
+          {guideStep.step !== 1 && (
+            <StyledMarkPaginationButton onClick={() => handlePrevious(guideStep.step)}>
+              <img style={{ marginRight: '10px' }} src={arrowLeft} alt="arrow" />
+              {t('previous')}
+            </StyledMarkPaginationButton>
+          )}
+          {guideStep.step !== 5 && (
+            <StyledMarkPaginationButtonRight onClick={() => handleNext(guideStep.step)}>
+              {t('next_step')}
+              <img style={{ marginLeft: '10px' }} src={arrowRight} alt="arrow" />
+            </StyledMarkPaginationButtonRight>
+          )}
+        </StyledMarkPaginationButtonGroup>
+        <StyledMarkPaginationButtonSkip onClick={handleSkip}>
+          {t('skip_tutorial')}
+          <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
+        </StyledMarkPaginationButtonSkip>
+      </StyledMarkPagination>
+    </StyledMark>
   )
 }
 
@@ -50,7 +48,8 @@ const StyledMarkPagination = styled.div`
   position: absolute;
   bottom: 124px;
   padding: 0 61px 0 88px;
-  z-index: 1001;
+  background: red;
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
     padding: 0 41px 0 68px;
   `};
@@ -71,6 +70,7 @@ const StyledMarkPaginationButton = styled.div`
   font-size: 36px;
   color: #fff;
   cursor: pointer;
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
      font-size: 26px;
   `};
