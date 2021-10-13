@@ -31,7 +31,7 @@ const PaginationOne = ({ handlePrevious, handleNext, handleSkip }: PaginationPro
           )}
         </StyledMarkPaginationButtonGroup>
         <StyledMarkPaginationButtonSkip onClick={handleSkip}>
-          {t('skip_tutorial')}
+          {guideStep.step === 5 ? t('finish_tutorial') : t('skip_tutorial')}
           <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
         </StyledMarkPaginationButtonSkip>
       </StyledMarkPagination>
@@ -48,7 +48,6 @@ const StyledMarkPagination = styled.div`
   position: absolute;
   bottom: 124px;
   padding: 0 61px 0 88px;
-  background: red;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     padding: 0 41px 0 68px;

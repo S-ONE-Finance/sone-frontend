@@ -41,7 +41,7 @@ const PaginationOne = ({ handlePrevious, handleNext, handleSkip }: PaginationPro
           )}
         </StyledMarkPaginationButtonGroup>
         <StyledMarkPaginationButtonSkip onClick={handleSkip} backgroundEnable={backgroundEnable}>
-          {t('skip_tutorial')}
+          {guideStep.step === 8 ? t('finish_tutorial') : t('skip_tutorial')}
           <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
         </StyledMarkPaginationButtonSkip>
       </StyledMarkPagination>
