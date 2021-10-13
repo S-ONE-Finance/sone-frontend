@@ -62,6 +62,7 @@ const Step6Wrapper = styled.div`
 const Step6Box = styled.div`
   & > img {
     border-radius: 8px;
+    width: 400px;
     max-width: calc(100vw - 32px);
   }
 `
