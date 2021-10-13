@@ -313,7 +313,7 @@ export default function WalletModal({
             {error instanceof UnsupportedChainIdError ? (
               <h5>{t('Please connect to the appropriate Ethereum network.')}</h5>
             ) : (
-              t('Error connecting. Try refreshing the page.')
+              t('Error connecting.')
             )}
           </ContentWrapper>
         </UpperSection>
