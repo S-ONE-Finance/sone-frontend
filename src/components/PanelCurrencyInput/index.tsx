@@ -15,6 +15,7 @@ import { useGuideStepManager } from '../../state/user/hooks'
 import { TextPanelLabel, CurrencySelect, StyledTokenName, StyledDropDown } from 'theme'
 
 import { SwapStep2, OneStep3 } from '../lib/mark/components'
+import { formatTwoDigits } from 'utils/formatNumber'
 
 export const InputRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -208,10 +209,7 @@ export default function PanelCurrencyInput({
     }
 
     return !hideBalance && !!currency && selectedCurrencyBalance
-      ? (customBalanceText ?? '') +
-          (selectedCurrencyBalance.lessThan('1')
-            ? selectedCurrencyBalance.toSignificant(2)
-            : selectedCurrencyBalance.toFixed(2))
+      ? (customBalanceText ?? '') + formatTwoDigits(selectedCurrencyBalance)
       : ''
   }
 
