@@ -18,12 +18,12 @@ import useTheme from '../../hooks/useTheme'
 import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenLogo'
 import StakeTxSectionDetails2 from './StakeTxSectionDetails2'
 import { useParams } from 'react-router-dom'
-import { ChainId, Farm, PoolInfo, UserInfo } from '@s-one-finance/sdk-core'
+import { ChainId, Farm, Fraction, PoolInfo, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/staking/useFarm'
 import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import useLpTokenBalance from '../../hooks/staking/useLpTokenBalance'
-import { getBalanceNumber, getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
+import { getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
 import BigNumber from 'bignumber.js'
 import useStakeHandler from '../../hooks/staking/useStakeHandler'
 import { TruncatedText } from '../../components/swap/styleds'
@@ -53,7 +53,7 @@ export default function Staking() {
 
   const { pairAddress, symbol } = farm || {}
   const lpBalanceRaw = useLpTokenBalance(pairAddress)
-  const lpBalance = getBalanceNumber(lpBalanceRaw.toString())
+  const lpBalance = new Fraction(lpBalanceRaw.toString(), (1e18).toString())
 
   const toggleWalletModal = useWalletModalToggle()
   const { account, chainId } = useActiveWeb3React()
@@ -120,7 +120,7 @@ export default function Staking() {
 
   const onMax = () => {
     if (lpBalance) {
-      setTypedValue(lpBalance.toString())
+      setTypedValue(lpBalance.toFixed(18))
     }
   }
 
@@ -134,7 +134,7 @@ export default function Staking() {
     ? t('connect_wallet')
     : +typedValue === 0
     ? t('enter_an_amount')
-    : lpBalance === undefined || new BigNumber(lpBalance).isLessThan(typedValue)
+    : lpBalance === undefined || new BigNumber(lpBalance.toFixed(18)).isLessThan(typedValue)
     ? t('insufficient_lp_token')
     : allowance.toString() === '0' && (isApproveTxPushed || isApproving)
     ? t('approving')
@@ -321,7 +321,13 @@ export default function Staking() {
                 <PanelPairInput
                   value={Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? '100,100' : typedValue}
                   onUserInput={onUserInput}
-                  balance={Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? '111634' : lpBalance}
+                  balance={
+                    Number(guideStep.step) > 1 && guideStep.screen === 'stake'
+                      ? '111634'
+                      : lpBalance.lessThan('1')
+                      ? lpBalance.toSignificant(2)
+                      : lpBalance.toFixed(2)
+                  }
                   onMax={onMax}
                   label={t('input')}
                   customBalanceText={t('lp_balance') + ':'}
