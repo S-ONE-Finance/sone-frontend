@@ -208,7 +208,10 @@ export default function PanelCurrencyInput({
     }
 
     return !hideBalance && !!currency && selectedCurrencyBalance
-      ? (customBalanceText ?? '') + selectedCurrencyBalance?.toExact()
+      ? (customBalanceText ?? '') +
+          (selectedCurrencyBalance.lessThan('1')
+            ? selectedCurrencyBalance.toSignificant(2)
+            : selectedCurrencyBalance.toFixed(2))
       : ''
   }
 
