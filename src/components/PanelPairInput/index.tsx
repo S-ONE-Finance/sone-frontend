@@ -9,7 +9,6 @@ import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../hooks'
 import { TextPanelLabel, TextPanelLabelAccent } from 'theme'
 import { Container, InputRow, LabelRow, RowBalance, StyledBalanceMax } from '../PanelCurrencyInput'
-import { getNumberCommas } from '../../utils/formatNumber'
 import styled from 'styled-components'
 import LiquidityProviderTokenLogo from '../LiquidityProviderTokenLogo'
 import { useGuideStepManager } from '../../state/user/hooks'
@@ -72,8 +71,7 @@ export default function PanelPairInput({
   const { account } = useActiveWeb3React()
   const [guideStep] = useGuideStepManager()
 
-  const balanceDisplay =
-    Number(guideStep.step) > 1 ? '123,456.789' : balance !== undefined ? getNumberCommas(balance) : '--'
+  const balanceDisplay = Number(guideStep.step) > 1 ? '123,456.789' : balance !== undefined ? balance : '--'
 
   return (
     <Container>
