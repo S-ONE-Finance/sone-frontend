@@ -23,7 +23,7 @@ import useFarm from '../../hooks/staking/useFarm'
 import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import useLpTokenBalance from '../../hooks/staking/useLpTokenBalance'
-import { getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
+import { formatTwoDigits, formatTwoDigitsFromString, getNumberCommas } from '../../utils/formatNumber'
 import BigNumber from 'bignumber.js'
 import useStakeHandler from '../../hooks/staking/useStakeHandler'
 import { TruncatedText } from '../../components/swap/styleds'
@@ -64,14 +64,23 @@ export default function Staking() {
   const [earnedRewardAfterStake, setEarnedRewardAfterStake] = useState<string>()
   const [apyAfterStake, setApyAfterStake] = useState<string>()
   const totalStakedAfterStakeRender =
-    totalStakedAfterStake === undefined ? '--' : getBalanceStringCommas(totalStakedAfterStake)
+    totalStakedAfterStake === undefined
+      ? '--'
+      : formatTwoDigits(new Fraction(totalStakedAfterStake, (1e18).toString()), true)
   const earnedRewardAfterStakeRender =
-    earnedRewardAfterStake === undefined ? '--' : getBalanceStringCommas(earnedRewardAfterStake, 0)
-  const apyAfterStakeRender = apyAfterStake === undefined ? '--' : getBalanceStringCommas(apyAfterStake, 0)
-
+    earnedRewardAfterStake === undefined ? '--' : formatTwoDigitsFromString(earnedRewardAfterStake, true)
+  const apyAfterStakeRender = apyAfterStake === undefined ? '--' : formatTwoDigitsFromString(apyAfterStake, true)
   const bonusMultiplier = (farm && (farm.owner as any))?.bonusMultiplier ?? 1
   const rewardPerBlock = farm && farm.rewardPerBlock * bonusMultiplier
+  const rewardPerBlockRender =
+    rewardPerBlock === undefined || isNaN(rewardPerBlock)
+      ? '--'
+      : formatTwoDigitsFromString(rewardPerBlock.toString(), true)
   const totalLiquidity = farm && +farm.balanceUSD
+  const totalLiquidityRender =
+    totalLiquidity === undefined || isNaN(totalLiquidity)
+      ? '--'
+      : formatTwoDigitsFromString(totalLiquidity.toString(), true)
 
   const block = useBlockNumber()
 
@@ -322,11 +331,7 @@ export default function Staking() {
                   value={Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? '100,100' : typedValue}
                   onUserInput={onUserInput}
                   balance={
-                    Number(guideStep.step) > 1 && guideStep.screen === 'stake'
-                      ? '111634'
-                      : lpBalance.lessThan('1')
-                      ? lpBalance.toSignificant(2)
-                      : lpBalance.toFixed(2)
+                    Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? '111634' : formatTwoDigits(lpBalance)
                   }
                   onMax={onMax}
                   label={t('input')}
@@ -413,7 +418,7 @@ export default function Staking() {
                 </ColumnCenter>
               )}
               {!error && isShowRewardInformation && (
-                <StakeTxSectionDetails2 rewardPerBlock={rewardPerBlock} totalLiquidity={totalLiquidity} />
+                <StakeTxSectionDetails2 rewardPerBlock={rewardPerBlockRender} totalLiquidity={totalLiquidityRender} />
               )}
               {!error && isShowRewardInformation && (
                 <ColumnCenter>

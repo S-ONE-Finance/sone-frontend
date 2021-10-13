@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import UnstakeTxSectionDetails from './UnstakeTxSectionDetails'
 import MyReward from 'components/MyReward'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
+import { formatTwoDigits, getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
 import { useParams } from 'react-router-dom'
 import { ChainId, Farm, Fraction, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/staking/useFarm'
@@ -281,9 +281,7 @@ export default function Unstake() {
             <PanelPairInput
               value={typedValue}
               onUserInput={onUserInput}
-              balance={
-                fullBalance && (fullBalance.lessThan('1') ? fullBalance.toSignificant(2) : fullBalance.toFixed(2))
-              }
+              balance={fullBalance && formatTwoDigits(fullBalance)}
               onMax={onMax}
               label={t('input')}
               customBalanceText={t('staked') + ':'}

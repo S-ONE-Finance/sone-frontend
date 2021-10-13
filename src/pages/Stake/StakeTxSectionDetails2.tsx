@@ -1,18 +1,17 @@
 import React from 'react'
 import Row from '../../components/Row'
 import { Text } from 'rebass'
-import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import { useIsUpToExtraSmall } from 'hooks/useWindowSize'
 import { useTranslation } from 'react-i18next'
 import { SectionDetails } from '../Unstake/UnstakeTxSectionDetails'
 import StakeTxDetailRow from './StakeTxDetailRow'
-import { getNumberCommas } from '../../utils/formatNumber'
 
 export default function StakeTxSectionDetails2({
   rewardPerBlock,
   totalLiquidity
 }: {
-  rewardPerBlock?: number
-  totalLiquidity?: number
+  rewardPerBlock: string
+  totalLiquidity: string
 }) {
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
@@ -27,13 +26,13 @@ export default function StakeTxSectionDetails2({
       <StakeTxDetailRow
         fieldName={t('reward_per_block')}
         qhText={t('question_helper_reward_per_block')}
-        value={rewardPerBlock === undefined ? '--' : getNumberCommas(rewardPerBlock)}
+        value={rewardPerBlock}
         unit="SONE"
       />
       <StakeTxDetailRow
         fieldName={t('total_liquidity')}
         qhText={t('question_helper_total_liquidity')}
-        value={totalLiquidity === undefined ? '--' : '$' + getNumberCommas(totalLiquidity)}
+        value={totalLiquidity}
         unit={undefined}
       />
     </SectionDetails>
