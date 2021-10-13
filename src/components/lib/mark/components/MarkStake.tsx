@@ -127,7 +127,7 @@ const MarkStake = () => {
 
   return (
     <>
-      <StyledMarkWrapper id="swap-mark">
+      <StyledMarkWrapper id="stake-mark">
         {guideStep.step === 1 && guideStep.screen === 'stake' && <StakeStep1Header />}
         <StyledMark>
           {guideStep.step === 4 && guideStep.screen === 'stake' && <StakeStep4 />}
