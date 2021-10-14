@@ -95,16 +95,16 @@ export default function Staking() {
     if (typedValue && farm?.userInfo) {
       const userInfo = new UserInfo(poolInfo, farm.userInfo)
       const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
-        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString()
+        new BigNumber(typedValue).multipliedBy(new BigNumber(10).pow(18)).toString()
       )
       setTotalStakedAfterStake(plainNumber(newTotalStaked))
       const newEarnedReward = userInfo.getEarnedRewardAfterStake(
-        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString(),
+        new BigNumber(typedValue).multipliedBy(new BigNumber(10).pow(18)).toString(),
         block || 0
       )
       setEarnedRewardAfterStake(plainNumber(newEarnedReward))
       const newAPY = userInfo.getAPYAfterStake(
-        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString(),
+        new BigNumber(typedValue).multipliedBy(new BigNumber(10).pow(18)).toString(),
         block || 0
       )
       setApyAfterStake(plainNumber(newAPY))
@@ -129,7 +129,7 @@ export default function Staking() {
 
   const onMax = () => {
     if (lpBalance) {
-      setTypedValue(lpBalance.toFixed(18))
+      lpBalance.equalTo('0') ? setTypedValue('') : setTypedValue(lpBalance.toFixed(18))
     }
   }
 
@@ -341,24 +341,16 @@ export default function Staking() {
                   decimal={18}
                 />
               </StakeStep2>
-              {error === t('connect_wallet') ? (
-                <>
-                  {Number(guideStep.step) === 1 && guideStep.screen === 'stake' ? (
-                    <StakeStep1>
-                      <ButtonPrimary>{error}</ButtonPrimary>
-                    </StakeStep1>
-                  ) : (
-                    <>
-                      {Number(guideStep.step) === 3 && guideStep.screen === 'stake' ? (
-                        <StakeStep3>
-                          <ButtonPrimary>{t('stake')}</ButtonPrimary>
-                        </StakeStep3>
-                      ) : (
-                        <ButtonPrimary onClick={toggleWalletModal}>{error}</ButtonPrimary>
-                      )}
-                    </>
-                  )}
-                </>
+              {guideStep.isGuide && Number(guideStep.step) === 1 && guideStep.screen === 'stake' ? (
+                <StakeStep1>
+                  <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
+                </StakeStep1>
+              ) : guideStep.isGuide && Number(guideStep.step) === 3 && guideStep.screen === 'stake' ? (
+                <StakeStep3>
+                  <ButtonPrimary>{t('stake')}</ButtonPrimary>
+                </StakeStep3>
+              ) : error === t('connect_wallet') ? (
+                <ButtonPrimary onClick={toggleWalletModal}>{error}</ButtonPrimary>
               ) : error === t('approve') || error === t('approving') ? (
                 <ButtonPrimary disabled={error === t('approving')} onClick={() => onApprove(symbol)}>
                   {error === t('approving')
@@ -368,19 +360,9 @@ export default function Staking() {
                       })}
                 </ButtonPrimary>
               ) : error ? (
-                Number(guideStep.step) === 1 && guideStep.screen === 'stake' ? (
-                  <StakeStep1>
-                    <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
-                  </StakeStep1>
-                ) : Number(guideStep.step) === 3 && guideStep.screen === 'stake' ? (
-                  <StakeStep3>
-                    <ButtonPrimary>{t('stake')}</ButtonPrimary>
-                  </StakeStep3>
-                ) : (
-                  <ButtonPrimary disabled={guideStep.screen === 'stake' ? false : true}>
-                    {Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? t('stake') : error}
-                  </ButtonPrimary>
-                )
+                <ButtonPrimary disabled>
+                  {Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? t('stake') : error}
+                </ButtonPrimary>
               ) : (
                 <ButtonPrimary
                   onClick={() => {
