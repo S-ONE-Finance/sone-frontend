@@ -57,7 +57,7 @@ const Step2OneToken = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     flex-direction: column;
-    align-items: start;
+    align-items: center;
     top: 50px;
     left: 50px;
     width: 210px;

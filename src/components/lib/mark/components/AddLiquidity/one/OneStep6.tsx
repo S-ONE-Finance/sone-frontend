@@ -43,6 +43,7 @@ const SwapStep6 = () => {
 export default SwapStep6
 
 const Step6Wrapper = styled.div`
+  z-index: 1000;
   position: absolute;
   top: 103px;
   right: 72px;

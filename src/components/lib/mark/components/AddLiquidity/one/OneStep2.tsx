@@ -29,11 +29,15 @@ const OneStep2 = () => {
 export default OneStep2
 
 const StepWrapper = styled.div`
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: absolute;
   height: 100vh;
   width: 100vw;
+  top: 0;
+  left: 0;
   pointer-events: none;
 `
 
