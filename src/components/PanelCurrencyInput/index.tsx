@@ -233,7 +233,7 @@ export default function PanelCurrencyInput({
           </OneStep3>
         )}
 
-        {id === 'swap-currency-input' && Number(guideStep.step) === 2 && (
+        {id === 'swap-currency-input' && Number(guideStep.step) >= 2 && (
           <SwapStep2>
             <CurrencySelect selected={!!currency} className="open-currency-select-button">
               <Aligner>
@@ -246,18 +246,7 @@ export default function PanelCurrencyInput({
           </SwapStep2>
         )}
 
-        {id === 'swap-currency-input' && Number(guideStep.step) === 3 && (
-          <CurrencySelect selected={!!currency} className="open-currency-select-button">
-            <Aligner>
-              <CurrencyLogo currency={currency || undefined} size={'23px'} sizeMobile={'15px'} />
-              <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
-                {currency?.symbol}
-              </StyledTokenName>
-            </Aligner>
-          </CurrencySelect>
-        )}
-
-        {id === 'swap-currency-output' && Number(guideStep.step) === 4 && (
+        {id === 'swap-currency-output' && Number(guideStep.step) >= 4 && (
           <CurrencySelect selected={!!currency} className="open-currency-select-button">
             <Aligner>
               <CurrencyLogo currency={currency || undefined} size={'23px'} sizeMobile={'15px'} />
@@ -323,7 +312,8 @@ export default function PanelCurrencyInput({
             }}
           />
           {((account && currency && showMaxButton && label !== 'To') ||
-            (guideStep.screen === 'liquidity' && Number(guideStep.step) > 2)) && (
+            (guideStep.isGuide && guideStep.screen === 'liquidity' && Number(guideStep.step) > 2) ||
+            (guideStep.isGuide && guideStep.screen === 'swap')) && (
             <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
           )}
           {showCurrencySelect && (
