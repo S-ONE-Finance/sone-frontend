@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from 'state/user/hooks'
+import { useAddLiquidityModeManager, useGuideStepManager } from 'state/user/hooks'
 import { handIcon } from '../../assets'
 import { ChildrenProp } from '../../styled'
+import { AddLiquidityModeEnum } from 'state/user/actions'
 
 const OneStep1 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()

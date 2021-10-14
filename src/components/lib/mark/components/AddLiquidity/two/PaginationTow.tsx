@@ -13,7 +13,8 @@ const PaginationOne = ({ handlePrevious, handleNext, handleSkip }: PaginationPro
   const [guideStep] = useGuideStepManager()
 
   return (
-    <StyledMark>
+    <>
+      <StyledMark />
       {guideStep.step === 5 && guideStep.screen === 'liquidity' && <TowStep3 />}
       <StyledMarkPagination>
         <StyledMarkPaginationButtonGroup>
@@ -35,18 +36,27 @@ const PaginationOne = ({ handlePrevious, handleNext, handleSkip }: PaginationPro
           <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
         </StyledMarkPaginationButtonSkip>
       </StyledMarkPagination>
-    </StyledMark>
+    </>
   )
 }
 
 export default PaginationOne
 
-const StyledMark = styled.div``
+const StyledMark = styled.div`
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+`
 
 const StyledMarkPagination = styled.div`
+  z-index: 1002;
+  bottom: 100px;
   width: 100%;
-  position: absolute;
-  bottom: 124px;
+  position: fixed;
   padding: 0 61px 0 88px;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
@@ -86,6 +96,7 @@ const StyledMarkPaginationButtonSkip = styled.div`
   color: #fff;
   text-align: right;
   cursor: pointer;
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
      font-size: 26px;
   `};

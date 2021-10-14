@@ -85,6 +85,7 @@ const StyledHandIcon = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    margin-right: 4px;
     & > img {
       width: 50px;
     }
