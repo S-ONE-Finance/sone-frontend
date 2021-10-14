@@ -16,11 +16,12 @@ const TowStep1 = ({ children }: ChildrenProp) => {
       addLiquidityAdvancedWrapper.current &&
       guideStep.isGuide &&
       guideStep.screen === 'liquidity' &&
-      guideStep.step === 3
+      guideStep.step === 3 &&
+      addLiquidityMode === AddLiquidityModeEnum.TwoToken
     ) {
       addLiquidityAdvancedWrapper.current.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' })
     }
-  }, [guideStep])
+  }, [guideStep, addLiquidityMode])
 
   return (
     <>
@@ -67,6 +68,7 @@ const StepIntro = styled.div`
   font-weight: 700;
   font-size: 36px;
   color: #fff;
+  width: max-content;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;

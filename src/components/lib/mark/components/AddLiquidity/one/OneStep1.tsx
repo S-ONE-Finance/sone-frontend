@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from '../../../../../../state/user/hooks'
+import { useGuideStepManager } from 'state/user/hooks'
 import { handIcon } from '../../assets'
 import { ChildrenProp } from '../../styled'
 

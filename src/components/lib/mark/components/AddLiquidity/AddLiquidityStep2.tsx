@@ -56,9 +56,11 @@ const Step2OneToken = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    flex-direction: column;
+    align-items: start;
     top: 50px;
-    left: 25px;
-    width: fit-content;
+    left: 50px;
+    width: 210px;
   `};
 }`
 
@@ -88,6 +90,7 @@ const StyledHandIcon = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    margin-right: 4px;
     & > img {
       width: 50px;
     }

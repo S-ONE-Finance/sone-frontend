@@ -8,16 +8,17 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import useAddLiquidityTwoTokensHandler from 'hooks/useAddLiquidityTwoTokensHandler'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { Dots } from 'pages/Pool/styleds'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useWalletModalToggle } from 'state/application/hooks'
 import { useDerivedMintInfo } from 'state/mint/hooks'
-import { useIsExpertMode } from 'state/user/hooks'
+import { useAddLiquidityModeManager, useIsExpertMode } from 'state/user/hooks'
 import { TYPE } from 'theme'
 import { ButtonWrapper } from '..'
 import { ROUTER_ADDRESS } from '../../../constants'
 import { Field } from 'state/mint/actions'
 import { useGuideStepManager } from 'state/user/hooks'
 import { TowStep2, ConnectButton } from '../../../components/lib/mark/components'
+import { AddLiquidityModeEnum } from 'state/user/actions'
 
 type ButtonGroupingProps = {
   currencyA?: Currency
@@ -54,11 +55,26 @@ export default function ButtonGrouping({
 
   const onAdd = useAddLiquidityTwoTokensHandler({ currencyA, currencyB, setAttemptingTxn, setTxHash })
 
+  const addLiquidityAdvancedStep1Ref = useRef<HTMLElement>(null)
+  const [addLiquidityMode] = useAddLiquidityModeManager()
+
+  useEffect(() => {
+    if (
+      addLiquidityAdvancedStep1Ref.current &&
+      guideStep.isGuide &&
+      guideStep.screen === 'liquidity' &&
+      guideStep.step === 1 &&
+      addLiquidityMode === AddLiquidityModeEnum.TwoToken
+    ) {
+      addLiquidityAdvancedStep1Ref.current.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' })
+    }
+  }, [guideStep, addLiquidityMode])
+
   return (
     <ButtonWrapper>
       {guideStep.isGuide && Number(guideStep.step) === 1 ? (
         <ConnectButton>
-          <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
+          <ButtonPrimary ref={addLiquidityAdvancedStep1Ref}>{t('connect_wallet')}</ButtonPrimary>
         </ConnectButton>
       ) : guideStep.isGuide && Number(guideStep.step) >= 3 ? (
         <TowStep2>

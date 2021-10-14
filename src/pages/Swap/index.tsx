@@ -1,5 +1,5 @@
 import { ChainId, Currency, CurrencyAmount, JSBI, Token, Trade } from '@s-one-finance/sdk-core'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowDown, ChevronDown, ChevronUp } from 'react-feather'
 import ReactGA from 'react-ga'
 import { Text } from 'rebass'
@@ -365,6 +365,14 @@ export default function Swap({ history }: RouteComponentProps) {
     return guideStep.screen === 'swap'
   }
 
+  const swapStep1Ref = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (swapStep1Ref.current && guideStep.isGuide && guideStep.screen === 'swap' && guideStep.step === 1) {
+      swapStep1Ref.current.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' })
+    }
+  }, [guideStep])
+
   return (
     <>
       <TokenWarningModal
@@ -556,7 +564,7 @@ export default function Swap({ history }: RouteComponentProps) {
               <>
                 {Number(guideStep.step) === 1 ? (
                   <SwapStep1>
-                    <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
+                    <ButtonPrimary ref={swapStep1Ref}>{t('connect_wallet')}</ButtonPrimary>
                   </SwapStep1>
                 ) : (
                   Number(guideStep.step) > 1 && (
