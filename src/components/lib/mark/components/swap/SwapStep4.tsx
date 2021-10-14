@@ -64,7 +64,6 @@ const StyledStep4Text = styled.div`
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
-    max-width: fit-content;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`

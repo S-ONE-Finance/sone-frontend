@@ -1,16 +1,31 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from 'state/user/hooks'
+import { useAddLiquidityModeManager, useGuideStepManager } from 'state/user/hooks'
 import { handIcon } from '../../assets'
 import { ChildrenProp } from '../../styled'
+import { AddLiquidityModeEnum } from 'state/user/actions'
 
 const TowStep2 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
+  const [addLiquidityMode] = useAddLiquidityModeManager()
+  const addLiquidityAdvancedStep4Ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (
+      addLiquidityAdvancedStep4Ref.current &&
+      guideStep.isGuide &&
+      guideStep.screen === 'liquidity' &&
+      guideStep.step === 4 &&
+      addLiquidityMode === AddLiquidityModeEnum.TwoToken
+    ) {
+      addLiquidityAdvancedStep4Ref.current.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' })
+    }
+  }, [guideStep, addLiquidityMode])
 
   return (
-    <StepWrapper className="step-4">
+    <StepWrapper ref={addLiquidityAdvancedStep4Ref} className="step-4">
       {children}
       {Number(guideStep.step) === 4 && guideStep.screen === 'liquidity' && (
         <StyledOneStep1>
