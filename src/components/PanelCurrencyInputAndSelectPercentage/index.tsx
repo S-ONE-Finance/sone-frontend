@@ -13,6 +13,7 @@ import { Container, InputRow, LabelRow, RowBalance, TextSmaller } from '../Panel
 import styled from 'styled-components'
 import { darken } from 'polished'
 import { Field } from '../../state/burn/actions'
+import { formatTwoDigits } from 'utils/formatNumber'
 
 const ButtonPercentage = styled.button<{ width?: string; active: boolean }>`
   height: 41px;
@@ -81,11 +82,10 @@ export default function PanelCurrencyInputAndSelectPercentage({
         <RowBetween align="center">
           <TextPanelLabel>{label}</TextPanelLabel>
           {account && (
-            // TODO: onClick
             <RowBalance onClick={() => {}}>
               <TextPanelLabel>
                 {!hideBalance && !!lpToken && selectedCurrencyBalance
-                  ? (customBalanceText ?? '') + selectedCurrencyBalance?.toExact()
+                  ? (customBalanceText ?? '') + formatTwoDigits(selectedCurrencyBalance)
                   : ''}
               </TextPanelLabel>
               {lpToken && <TextSmaller>&nbsp;{LPTokenName}</TextSmaller>}

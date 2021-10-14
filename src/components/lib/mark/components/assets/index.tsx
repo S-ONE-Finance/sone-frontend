@@ -16,6 +16,9 @@ import summaryAddLiquiditySimpleZH from 'assets/images/summary-add-liquidity-sim
 import summaryAddLiquidityAdvancedEN from 'assets/images/summary-add-liquidity-advanced-en.png'
 import summaryAddLiquidityAdvancedJP from 'assets/images/summary-add-liquidity-advanced-jp.png'
 import summaryAddLiquidityAdvancedZH from 'assets/images/summary-add-liquidity-advanced-zh.png'
+import summaryStakeEN from 'assets/images/summary-stake-en.png'
+import summaryStakeJP from 'assets/images/summary-stake-jp.png'
+import summaryStakeZH from 'assets/images/summary-stake-zh.png'
 
 export {
   arrowLeft,
@@ -35,5 +38,8 @@ export {
   summaryAddLiquiditySimpleZH,
   summaryAddLiquidityAdvancedEN,
   summaryAddLiquidityAdvancedJP,
-  summaryAddLiquidityAdvancedZH
+  summaryAddLiquidityAdvancedZH,
+  summaryStakeEN,
+  summaryStakeJP,
+  summaryStakeZH
 }

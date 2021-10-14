@@ -15,7 +15,7 @@ const StakeStep3 = ({ children }: ChildrenProp) => {
         {children}
         {Number(guideStep.step) === 3 && guideStep.screen === 'stake' && (
           <>
-            <Step1Intro>{t('Click here to stake.')}</Step1Intro>
+            <Step1Intro>{t('click_here_to_stake')}</Step1Intro>
             <StyledHandIcon>
               <img src={handIcon} alt="hand" />
             </StyledHandIcon>
@@ -33,13 +33,14 @@ const Step1Wrapper = styled.div`
   z-index: 1001;
   pointer-events: none;
 `
+
 const Step1Intro = styled.div`
   position: absolute;
   color: #fff;
   font-weight: 700;
   font-size: 36px;
   max-width: 446px;
-  top: -190px;
+  top: -90px;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
