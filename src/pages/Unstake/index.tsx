@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import UnstakeTxSectionDetails from './UnstakeTxSectionDetails'
 import MyReward from 'components/MyReward'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { formatTwoDigits, getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
+import { formatTwoDigits, getBalanceStringCommas, getNumberCommas, plainNumber } from '../../utils/formatNumber'
 import { useParams } from 'react-router-dom'
 import { ChainId, Farm, Fraction, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/staking/useFarm'
@@ -63,7 +63,7 @@ export default function Unstake() {
   const amountStaked = farm?.userInfo?.amount
 
   const fullBalance = useMemo(() => {
-    return amountStaked === undefined ? undefined : new Fraction(amountStaked, (1e18).toString())
+    return amountStaked === undefined ? undefined : new Fraction(plainNumber(amountStaked), (1e18).toString())
   }, [amountStaked])
 
   const [typedValue, setTypedValue] = useState('')
@@ -302,9 +302,9 @@ export default function Unstake() {
             )}
             {!error && (
               <UnstakeTxSectionDetails
-                totalLpToken={totalLpToken}
-                remainStakedLp={remainStakedLp}
-                availableReward={availableReward}
+                totalLpToken={plainNumber(totalLpToken)}
+                remainStakedLp={plainNumber(remainStakedLp)}
+                availableReward={plainNumber(availableReward)}
               />
             )}
           </AutoColumn>

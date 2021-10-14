@@ -23,7 +23,7 @@ import useFarm from '../../hooks/staking/useFarm'
 import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import useLpTokenBalance from '../../hooks/staking/useLpTokenBalance'
-import { formatTwoDigits, formatTwoDigitsFromString, getNumberCommas } from '../../utils/formatNumber'
+import { formatTwoDigits, formatTwoDigitsFromString, getNumberCommas, plainNumber } from '../../utils/formatNumber'
 import BigNumber from 'bignumber.js'
 import useStakeHandler from '../../hooks/staking/useStakeHandler'
 import { TruncatedText } from '../../components/swap/styleds'
@@ -97,17 +97,17 @@ export default function Staking() {
       const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
         new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString()
       )
-      setTotalStakedAfterStake(newTotalStaked)
+      setTotalStakedAfterStake(plainNumber(newTotalStaked))
       const newEarnedReward = userInfo.getEarnedRewardAfterStake(
         new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString(),
         block || 0
       )
-      setEarnedRewardAfterStake(newEarnedReward)
+      setEarnedRewardAfterStake(plainNumber(newEarnedReward))
       const newAPY = userInfo.getAPYAfterStake(
         new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString(),
         block || 0
       )
-      setApyAfterStake(newAPY)
+      setApyAfterStake(plainNumber(newAPY))
     }
   }, [typedValue, farm, block, chainId])
 
