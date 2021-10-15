@@ -2101,10 +2101,10 @@
   resolved "https://registry.yarnpkg.com/@s-one-finance/default-token-list/-/default-token-list-1.1.2.tgz#b0475398569f32a71b1bf2e7e76e10ecdcc5618f"
   integrity sha512-1yYbxAmBVd8ya0OvoobuVYSWgu2moAz0W9ZL/Rj1P+W7mO2tXRXCR30iif7P/Qb47jxxIujzOAdKZFZs1W0wUw==
 
-"@s-one-finance/sdk-core@^1.4.5":
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/@s-one-finance/sdk-core/-/sdk-core-1.4.5.tgz#dce827d0799cbd071a0b528fc5f195e80bce93a4"
-  integrity sha512-qVuUxFfMTwqOtQSL708/jCQS3ly1G3q7NLCGKx9kpxEI9gX6jun2vhPq6b0EwzxCSGK4ZWCVco3F4dVTrixjTg==
+"@s-one-finance/sdk-core@^1.4.6":
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/@s-one-finance/sdk-core/-/sdk-core-1.4.6.tgz#1bb5c017c9c6ed50c6ecba17851bd403b456bc70"
+  integrity sha512-RPY7o9+SO+40lhmPhkWB0qcELSEAW9ZDItZ/T3BPtQKTlr1c7uhQEnWkkegNeTMIL/Fz4uROSexZx0o2MlBbDw==
   dependencies:
     "@s-one-finance/core" "^2.0.0-rc1"
     big.js "^5.2.2"
