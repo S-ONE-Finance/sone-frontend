@@ -92,7 +92,7 @@ export default function Staking() {
       return
     }
     const poolInfo = new PoolInfo(farm, CONFIG_MASTER_FARMER[chainId || (3 as ChainId)])
-    if (typedValue && farm?.userInfo) {
+    if (typedValue && +typedValue !== 0 && farm?.userInfo) {
       const userInfo = new UserInfo(poolInfo, farm.userInfo)
       const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
         new BigNumber(typedValue).multipliedBy(new BigNumber(10).pow(18)).toString()
