@@ -359,7 +359,6 @@ export function ManageLists({
   // temporary fetched list for import flow
   const [tempList, setTempList] = useState<TokenList>()
   const [addError, setAddError] = useState<string | undefined>()
-  const { t } = useTranslation()
 
   const handleAddList = useCallback(() => {
     async function fetchTempList() {
