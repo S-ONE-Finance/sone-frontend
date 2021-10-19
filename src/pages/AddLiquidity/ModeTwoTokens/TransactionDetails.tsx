@@ -109,7 +109,7 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
             <RowBetween>
               <RowFixed>
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                  {t('reward_0.05%_by_sone')}
+                  {t('reward_xxx_percent_by_sone')}
                 </Text>
                 <QuestionHelper1416 text={t('question_helper_reward_0.05%_by_sone')} color={theme.text4Sone} />
               </RowFixed>
