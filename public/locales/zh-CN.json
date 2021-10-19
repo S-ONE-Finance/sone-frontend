@@ -290,6 +290,7 @@
   "transaction_deadline": "交易截止时间",
   "transaction_history": "交易历史",
   "transaction_submitted": "交易提交完成",
+  "transaction_submitted": "交易提交完成",
   "transactions": "交易记录",
   "trust_wallet": "Trust Wallet",
   "try_again": "再试一次",
