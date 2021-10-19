@@ -359,26 +359,27 @@ export function ManageLists({
   // temporary fetched list for import flow
   const [tempList, setTempList] = useState<TokenList>()
   const [addError, setAddError] = useState<string | undefined>()
+  const { t } = useTranslation()
 
   const handleAddList = useCallback(() => {
     async function fetchTempList() {
       fetchList(listUrlInput, false)
         .then(list => setTempList(list))
-        .catch(() => setAddError('Error importing list'))
+        .catch(() => setAddError(t('error_importing_list')))
     }
     // if valid url, fetch details for card
     if (validUrl) {
       fetchTempList()
     } else {
       setTempList(undefined)
-      listUrlInput !== '' && setAddError('Enter valid list location')
+      listUrlInput !== '' && setAddError(t('enter_valid_list_location'))
     }
 
     // reset error
     if (listUrlInput === '') {
       setAddError(undefined)
     }
-  }, [fetchList, listUrlInput, validUrl])
+  }, [t, fetchList, listUrlInput, validUrl])
 
   // check if list is already imported
   const isImported = Object.keys(lists).includes(listUrlInput)

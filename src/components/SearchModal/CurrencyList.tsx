@@ -121,6 +121,7 @@ function CurrencyRow({
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency)
   const customAdded = useIsUserAddedToken(currency)
   const balance = useCurrencyBalance(account ?? undefined, currency)
+  const { t } = useTranslation()
 
   // only show add or remove buttons if not on selected list
   return (
@@ -137,7 +138,7 @@ function CurrencyRow({
           {currency.symbol}
         </Text>
         <TYPE.darkGray ml="0" fontSize="12px" fontWeight={300}>
-          {currency.name} {!isOnSelectedList && customAdded && '• Added by user'}
+          {currency.name} {!isOnSelectedList && customAdded && `• ${t('added_by_user')}`}
         </TYPE.darkGray>
       </Column>
       <TokenTags currency={currency} />

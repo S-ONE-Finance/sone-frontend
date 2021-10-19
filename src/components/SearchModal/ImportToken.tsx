@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { Token, Currency } from '@s-one-finance/sdk-core'
+import { Currency, Token } from '@s-one-finance/sdk-core'
 import styled from 'styled-components'
-import { TYPE, StyledCloseIcon } from 'theme'
+import { StyledCloseIcon, TYPE } from 'theme'
 import Card from 'components/Card'
 import { AutoColumn } from 'components/Column'
-import { RowBetween, RowFixed, AutoRow } from 'components/Row'
+import { AutoRow, RowBetween, RowFixed } from 'components/Row'
 import CurrencyLogo from 'components/CurrencyLogo'
-import { ArrowLeft, AlertTriangle } from 'react-feather'
+import { AlertTriangle, ArrowLeft } from 'react-feather'
 import { transparentize } from 'polished'
 import useTheme from 'hooks/useTheme'
 import { ButtonPrimary } from 'components/Button'
@@ -17,7 +17,7 @@ import { useActiveWeb3React } from 'hooks'
 import { ExternalLink } from '../../theme/components'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import ListLogo from 'components/ListLogo'
-import { PaddedColumn, Checkbox } from './styleds'
+import { Checkbox, PaddedColumn } from './styleds'
 import { useTranslation } from 'react-i18next'
 
 const Wrapper = styled.div`
@@ -97,7 +97,7 @@ export function ImportToken({ tokens, onBack, onDismiss, handleCurrencySelect }:
                   <RowFixed>
                     {list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
                     <TYPE.small ml="6px" color={theme.text3}>
-                      via {list.name}
+                      {t('via') + ' ' + list.name}
                     </TYPE.small>
                   </RowFixed>
                 ) : (
