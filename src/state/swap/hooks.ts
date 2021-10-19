@@ -206,7 +206,7 @@ export function useDerivedSwapInfo(): {
   ]
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    inputError = 'Insufficient ' + amountIn.currency.symbol + ' balance'
+    inputError = t('insufficient_eth_balance', { symbol: amountIn.currency.symbol })
   }
 
   return {

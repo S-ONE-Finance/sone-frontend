@@ -7,13 +7,10 @@ import { useGuideStepManager } from 'state/user/hooks'
 import { OneStep6, OneStep2 } from '../../index'
 import { arrowLeft, arrowRight, arrowSkip } from '../../assets'
 import { PaginationProps } from '../../styled'
-import { useIsUpToMedium } from 'hooks/useWindowSize'
 
 const PaginationOne = ({ handlePrevious, handleNext, handleSkip }: PaginationProps) => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
-  const isUpToMedium = useIsUpToMedium()
-  const backgroundEnable = isUpToMedium && guideStep.step === 4 ? 1 : 0
 
   return (
     <>
@@ -23,25 +20,19 @@ const PaginationOne = ({ handlePrevious, handleNext, handleSkip }: PaginationPro
       <StyledMarkPagination>
         <StyledMarkPaginationButtonGroup>
           {guideStep.step !== 1 && (
-            <StyledMarkPaginationButton
-              onClick={() => handlePrevious(guideStep.step)}
-              backgroundEnable={backgroundEnable}
-            >
+            <StyledMarkPaginationButton onClick={() => handlePrevious(guideStep.step)}>
               <img style={{ marginRight: '10px' }} src={arrowLeft} alt="arrow" />
               {t('previous')}
             </StyledMarkPaginationButton>
           )}
           {guideStep.step !== 8 && (
-            <StyledMarkPaginationButtonRight
-              onClick={() => handleNext(guideStep.step)}
-              backgroundEnable={backgroundEnable}
-            >
+            <StyledMarkPaginationButtonRight onClick={() => handleNext(guideStep.step)}>
               {t('next_step')}
               <img style={{ marginLeft: '10px' }} src={arrowRight} alt="arrow" />
             </StyledMarkPaginationButtonRight>
           )}
         </StyledMarkPaginationButtonGroup>
-        <StyledMarkPaginationButtonSkip onClick={handleSkip} backgroundEnable={backgroundEnable}>
+        <StyledMarkPaginationButtonSkip onClick={handleSkip}>
           {guideStep.step === 8 ? t('finish_tutorial') : t('skip_tutorial')}
           <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
         </StyledMarkPaginationButtonSkip>
@@ -84,12 +75,11 @@ const StyledMarkPaginationButtonGroup = styled.div`
   margin-bottom: 50px;
 `
 
-const StyledMarkPaginationButton = styled.div<{ backgroundEnable: 0 | 1 }>`
+const StyledMarkPaginationButton = styled.div`
   font-weight: 500;
   font-size: 36px;
   color: #fff;
   cursor: pointer;
-  background: ${({ theme, backgroundEnable }) => (backgroundEnable ? theme.modalBG : '')};
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
@@ -101,7 +91,7 @@ const StyledMarkPaginationButtonRight = styled(StyledMarkPaginationButton)`
   margin-right: 0;
 `
 
-const StyledMarkPaginationButtonSkip = styled.div<{ backgroundEnable: 0 | 1 }>`
+const StyledMarkPaginationButtonSkip = styled.div`
   font-weight: 500;
   font-size: 36px;
   color: #fff;
@@ -109,7 +99,6 @@ const StyledMarkPaginationButtonSkip = styled.div<{ backgroundEnable: 0 | 1 }>`
   cursor: pointer;
   width: fit-content;
   float: right;
-  background: ${({ theme, backgroundEnable }) => (backgroundEnable ? theme.modalBG : '')};
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;

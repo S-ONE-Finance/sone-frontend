@@ -166,7 +166,7 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
                   />
                 )}
               </AutoSizer>
-              <MarkRow background={darkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)'} />
+              <MarkRow background={darkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.25)'} />
             </div>
           </>
         ) : (

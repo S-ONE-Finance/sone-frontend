@@ -141,8 +141,7 @@ export function useDerivedMintSimpleInfo(
   } else if (noLiquidity) {
     error = t('invalid_pair_no_liquidity')
   } else if (selectedTokenUserInputAmount && currencyBalance?.lessThan(selectedTokenUserInputAmount)) {
-    // TODO: i18n.
-    error = 'Insufficient ' + selectedCurrency?.symbol + ' balance'
+    error = t('insufficient_eth_balance', { symbol: selectedCurrency?.symbol })
   } else if (
     typeof isSelectedToken0 === 'boolean' &&
     pair &&
