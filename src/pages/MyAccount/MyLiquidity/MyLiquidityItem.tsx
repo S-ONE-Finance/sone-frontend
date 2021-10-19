@@ -1,21 +1,21 @@
 import React from 'react'
-import { ETHER, Fraction, JSBI, Pair, Percent } from '@s-one-finance/sdk-core'
+import { ETHER, JSBI, Pair, Percent } from '@s-one-finance/sdk-core'
 import { Link } from 'react-router-dom'
 import { Text } from 'rebass'
 import { useTranslation } from 'react-i18next'
 import Row, { RowFitContent } from '../../../components/Row'
 import CurrencyLogoDouble from '../../../components/CurrencyLogoDouble'
 import Column from '../../../components/Column'
-import { useIsUpToExtraSmall, useIsUpToSmall } from '../../../hooks/useWindowSize'
+import { useIsUpToExtraSmall, useIsUpToSmall } from 'hooks/useWindowSize'
 import useTheme from '../../../hooks/useTheme'
 import MoneyBagLight from '../../../assets/images/money-bag-light.svg'
 import MoneyBagDark from '../../../assets/images/money-bag-dark.svg'
-import { useIsDarkMode } from '../../../state/user/hooks'
+import { useIsDarkMode } from 'state/user/hooks'
 import DetailedSectionItem from './DetailedSectionItem'
-import { useActiveWeb3React } from '../../../hooks'
-import { useTokenBalance } from '../../../state/wallet/hooks'
-import { useTotalSupply } from '../../../data/TotalSupply'
-import { unwrappedToken } from '../../../utils/wrappedCurrency'
+import { useActiveWeb3React } from 'hooks'
+import { useTokenBalance } from 'state/wallet/hooks'
+import { useTotalSupply } from 'data/TotalSupply'
+import { unwrappedToken } from 'utils/wrappedCurrency'
 import {
   ButtonAdd,
   ButtonRemove,
@@ -33,7 +33,7 @@ import {
 } from '../components'
 import usePoolIdByPairAddress from 'hooks/staking/usePoolIdByPairAddress'
 import useMyLiquidityApy from '../../../hooks/useMyLiquidityApy'
-import { formatSONE, getFixedNumberCommas } from '../../../utils/formatNumber'
+import { formatTwoDigitsFromString, getFixedNumberCommas } from 'utils/formatNumber'
 import BigNumber from 'bignumber.js'
 
 export default function MyLiquidityItem({
@@ -100,11 +100,7 @@ export default function MyLiquidityItem({
               {t('total_lp_token')}
             </Text>
             <TextLpTokens>
-              {userPoolBalance?.lessThan(new Fraction('1', '10000'))
-                ? '<0.0001'
-                : userPoolBalance
-                ? formatSONE(userPoolBalance.raw.toString(), true, false)
-                : '-'}
+              {userPoolBalance ? formatTwoDigitsFromString(userPoolBalance.raw.toString(), true, true) : '-'}
             </TextLpTokens>
           </Column>
           {poolId !== undefined && <StakeLink to={`/staking/${poolId}`}>{t('Stake')}</StakeLink>}
