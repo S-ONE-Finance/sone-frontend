@@ -110,7 +110,7 @@ export default function MyLiquidityItem({
           {poolId !== undefined && <StakeLink to={`/staking/${poolId}`}>{t('Stake')}</StakeLink>}
         </FlexibleRow>
         <Row gap="10px" justify="flex-end">
-          <Column width="fit-content" justify="center" align="center">
+          <Column width="fit-content" justify="center" align="flex-end">
             <TextPercentage>{apyRender}</TextPercentage>
             <TextAPY>{t('apy')}</TextAPY>
           </Column>

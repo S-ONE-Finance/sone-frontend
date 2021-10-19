@@ -232,7 +232,7 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
           </Column>
         </FlexibleRow>
         <Row gap="10px" justify="flex-end">
-          <Column width="fit-content" justify="center" align="center">
+          <Column width="fit-content" justify="center" align="flex-end">
             <TextPercentage>{apyRender}</TextPercentage>
             <TextAPY>{t('apy')}</TextAPY>
           </Column>
