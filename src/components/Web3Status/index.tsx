@@ -111,7 +111,7 @@ function Web3StatusInner() {
     return (
       <ButtonMainRed onClick={toggleWalletModal}>
         <NetworkIcon />
-        <Text>{error instanceof UnsupportedChainIdError ? t('Wrong Network') : t('Error')}</Text>
+        <Text>{error instanceof UnsupportedChainIdError ? t('wrong_network') : t('Error')}</Text>
       </ButtonMainRed>
     )
   } else {
