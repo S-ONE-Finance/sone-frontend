@@ -33,7 +33,7 @@ import {
 } from '../components'
 import usePoolIdByPairAddress from 'hooks/staking/usePoolIdByPairAddress'
 import useMyLiquidityApy from '../../../hooks/useMyLiquidityApy'
-import { formatTwoDigitsFromString, getFixedNumberCommas } from 'utils/formatNumber'
+import { formatTwoDigits, formatTwoDigitsFromString, getFixedNumberCommas } from 'utils/formatNumber'
 import BigNumber from 'bignumber.js'
 
 export default function MyLiquidityItem({
@@ -125,12 +125,12 @@ export default function MyLiquidityItem({
             <DetailedSectionItem
               name={currency0?.symbol ? t('pooled_currency', { symbol: currency0.symbol }) : '-'}
               explain={t('question_helper_pooled_currency')}
-              value={token0Deposited ? token0Deposited.toSignificant(6) : '-'}
+              value={token0Deposited ? formatTwoDigits(token0Deposited) : '-'}
             />
             <DetailedSectionItem
               name={currency1?.symbol ? t('pooled_currency', { symbol: currency1.symbol }) : '-'}
               explain={t('question_helper_pooled_currency')}
-              value={token1Deposited ? token1Deposited.toSignificant(6) : '-'}
+              value={token1Deposited ? formatTwoDigits(token1Deposited) : '-'}
             />
             <DetailedSectionItem
               name={t('your_pool_share')}
