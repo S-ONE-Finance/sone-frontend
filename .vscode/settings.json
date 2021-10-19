@@ -1,0 +1,7 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.accessibilitySupport": "off",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.trimTrailingWhitespace": true
+}
