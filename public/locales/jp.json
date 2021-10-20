@@ -334,5 +334,10 @@
   "your_recent_transactions_will_appear_here": "最近の取引はここに表示されます…",
   "your_referral_id": "紹介者ID",
   "your_transaction_may_be_frontrun": "あなたの取引はフロントランニングかもしれません",
-  "your_transaction_may_fail": "取引が失敗する可能性があります"
+  "your_transaction_may_fail": "取引が失敗する可能性があります",
+  "What is the difference between simple and advance?": "簡単モードと通常モードの違いは何ですか？",
+  "Simple provides liquidity with 1 token": "簡単モードは1つのトークンで流動性を提供します",
+  "Advance provides liquidity with 2 tokens": "通常モードは2つのトークンで流動性を提供します",
+  "During the first 8 weeks since launch, 25% of your earned SONE is available to unlock.": "サービス開始から最初の8週間は、獲得したSONEの25％をロック解除できます。",
+  "Beginning December 1st, 2021, the remaining 75% will be unlocked linearly every block over 1 year.": "2021年12月1日以降、残りの75％は1年間にわたってブロックごとに直線的にロック解除されます。"
 }
