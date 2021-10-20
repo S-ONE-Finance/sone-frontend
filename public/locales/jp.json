@@ -338,6 +338,6 @@
   "What is the difference between simple and advance?": "簡単モードと通常モードの違いは何ですか？",
   "Simple provides liquidity with 1 token": "簡単モードは1つのトークンで流動性を提供します",
   "Advance provides liquidity with 2 tokens": "通常モードは2つのトークンで流動性を提供します",
-  "During the first 8 weeks since launch, 25% of your earned SONE is available to unlock.": "サービス開始から最初の8週間は、獲得したSONEの25％をロック解除できます。",
+  "During the first 8 weeks since launch, 25% of your earned SONE is available to unlock.": "サービス開始から最初の8週間は、<0>獲得したSONEの25％</0>をロック解除できます。",
   "Beginning December 1st, 2021, the remaining 75% will be unlocked linearly every block over 1 year.": "2021年12月1日以降、残りの75％は1年間にわたってブロックごとに直線的にロック解除されます。"
 }
