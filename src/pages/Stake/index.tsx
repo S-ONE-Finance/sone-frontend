@@ -34,6 +34,7 @@ import useApproveHandler from '../../hooks/staking/useApproveHandler'
 import { OpenGuide, StakeStep1, StakeStep2, StakeStep3 } from '../../components/lib/mark/components'
 import { CONFIG_MASTER_FARMER } from '../../constants'
 import BubbleMessage from 'components/BubbleMessage'
+import GuidePopup from './GuidePopup'
 
 export default function Staking() {
   const { t } = useTranslation()
@@ -297,6 +298,7 @@ export default function Staking() {
 
   return (
     <>
+      <GuidePopup />
       <TransactionConfirmationModal
         isOpen={showConfirm}
         onDismiss={handleDismissConfirmation}

@@ -37,7 +37,7 @@ const BubbleTextHighlight = styled(BubbleText)`
   font-weight: 700;
 `
 
-const Chibi = styled.img`
+export const Chibi = styled.img`
   width: 104px;
   align-self: flex-end;
 

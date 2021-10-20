@@ -67,7 +67,7 @@ const StyledOneStep2 = styled.div`
 const StepIntro = styled.div`
   font-weight: 700;
   font-size: 36px;
-  color: ${({ theme }) => theme.text1Sone};
+  color: #ffffff;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
@@ -81,10 +81,6 @@ const StepIntro = styled.div`
 const StyledHandIcon = styled.div`
   margin-right: 31px;
   transform: rotate(-29.31deg);
-
-  path {
-    fill: ${({ theme }) => theme.text1Sone};
-  }
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     transform: unset;

@@ -111,7 +111,7 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
 
   return (
     <ModalCustom>
-      <PanelSearchContentWrapper>
+      <PanelSearchContentWrapper style={{ backgroundColor: darkMode ? '#0E2B4A' : 'gray' }}>
         <PaddedColumn gap="16px" style={{ padding: isUpToExtraSmall ? '2em 1em 0 1em' : '2.5em 2em 0 2em' }}>
           <RowBetween>
             <RowFixed>
@@ -139,7 +139,7 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
         {isLoading ? (
           <Column width="unset" style={{ margin: '20px', height: '100%' }}>
             <TYPE.main color={theme.text3} textAlign="center" mb="20px">
-              {t('Loading...')}
+              {t('loading')}
             </TYPE.main>
           </Column>
         ) : sortedPairs?.length > 0 ? (
@@ -166,13 +166,13 @@ export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPai
                   />
                 )}
               </AutoSizer>
-              <MarkRow background={darkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)'} />
+              <MarkRow background={darkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.25)'} />
             </div>
           </>
         ) : (
           <Column width="unset" style={{ margin: '20px', height: '100%' }}>
             <TYPE.main color={theme.text3} textAlign="center" mb="20px">
-              {t('No results found.')}
+              {t('no_results_found')}
             </TYPE.main>
           </Column>
         )}

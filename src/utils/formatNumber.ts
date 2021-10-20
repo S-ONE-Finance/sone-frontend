@@ -99,12 +99,13 @@ export const formatTwoDigits = (number: Fraction, addComma = false) => {
  * Làm tròn 2 chữ số sau dấu phẩy, nhân 1e100 cho chắc.
  * @param number
  * @param addComma
+ * @param needDivide1e18
  */
-export const formatTwoDigitsFromString = (number: string, addComma = false) => {
+export const formatTwoDigitsFromString = (number: string, addComma = false, needDivide1e18 = false) => {
   return formatTwoDigits(
     new Fraction(
       plainNumber(new BigNumber(number).multipliedBy((1e100).toString()).toString()),
-      plainNumber((1e100).toString())
+      plainNumber((needDivide1e18 ? 1e100 * 1e18 : 1e100).toString())
     ),
     addComma
   )

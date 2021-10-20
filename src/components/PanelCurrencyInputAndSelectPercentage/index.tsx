@@ -4,16 +4,17 @@
 
 import { Token } from '@s-one-finance/sdk-core'
 import React from 'react'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
+import { useCurrencyBalance } from 'state/wallet/hooks'
 import { RowBetween } from '../Row'
 import { Input as NumericalInput } from '../NumericalInput'
-import { useActiveWeb3React } from '../../hooks'
+import { useActiveWeb3React } from 'hooks'
 import { TextPanelLabel } from 'theme'
 import { Container, InputRow, LabelRow, RowBalance, TextSmaller } from '../PanelCurrencyInput'
 import styled from 'styled-components'
 import { darken } from 'polished'
-import { Field } from '../../state/burn/actions'
+import { Field } from 'state/burn/actions'
 import { formatTwoDigits } from 'utils/formatNumber'
+import { useTranslation } from 'react-i18next'
 
 const ButtonPercentage = styled.button<{ width?: string; active: boolean }>`
   height: 41px;
@@ -75,6 +76,7 @@ export default function PanelCurrencyInputAndSelectPercentage({
 }: PanelLpTokenInputProps) {
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, lpToken ?? undefined)
+  const { t } = useTranslation()
 
   return (
     <Container id={id} height="175px" height_mobile="132px">
@@ -134,7 +136,7 @@ export default function PanelCurrencyInputAndSelectPercentage({
             onUserInput(Field.LIQUIDITY_PERCENT, '100')
           }}
         >
-          MAX
+          {t('max')}
         </ButtonPercentage>
       </RowPercentage>
     </Container>

@@ -90,9 +90,8 @@ export default function Unstake() {
     typedValue === '' || +typedValue === 0 || tryParse === undefined
       ? t('enter_an_amount')
       : fullBalance !== undefined && new BigNumber(fullBalance.toFixed(18)).isLessThan(typedValue)
-      ? t('Insufficient LP Token')
+      ? t('insufficient_lp_token')
       : undefined
-
   const { symbol } = farm || {
     symbol: '--'
   }
