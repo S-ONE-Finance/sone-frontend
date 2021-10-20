@@ -15,6 +15,7 @@ import BrandIdentitySoneForMobile from '../../components/BrandIdentitySoneForMob
 import { OpenGuide } from '../../components/lib/mark/components'
 import { useGuideStepManager } from '../../state/user/hooks'
 import { TowStep1 } from '../../components/lib/mark/components'
+import GuidePopup from 'pages/AddLiquidity/GuidePopup'
 
 export const ButtonWrapper = styled.div<{ hasTrade?: boolean }>`
   margin: ${({ hasTrade }) => (hasTrade ? '17.5px 0' : '2.1875rem 0 0 0')};
@@ -52,6 +53,7 @@ export default function AddLiquidity({
 
   return (
     <>
+      <GuidePopup />
       <BrandIdentitySoneForMobile />
       <TabSwapLiquidity />
       <TowStep1>

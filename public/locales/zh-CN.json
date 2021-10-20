@@ -176,8 +176,8 @@
   "question_helper_price_impact": "这是交换后的价格偏差。",
   "question_helper_referral_id": "您的推荐人ID。 输入此推荐人ID的用户每进行一笔交易，您将获得0.025%的交易手续费作为报酬。",
   "question_helper_remain_staked_lp": "用户解除质押后的剩余LP。",
-  "question_helper_reward_0.05%_by_sone": "0.05%的交易费以SONE代币支付给流动性提供者",
   "question_helper_reward_per_block": "这是每当产生一个区块时获得的SONE代币数量。",
+  "question_helper_reward_xxx_percent_by_sone": "0.05%的交易费以SONE代币支付给流动性提供者",
   "question_helper_route": "路线实体代表一个或多个有序的S-ONE互换对，具有从输入代币到输出代币的完全指定路径。",
   "question_helper_select_a_pair": "通过搜索名字或符号，或粘贴地址来找到代币对。",
   "question_helper_select_a_token": "通过搜索其名称或符号，或粘贴地址来找到代币。",
@@ -335,5 +335,10 @@
   "your_recent_transactions_will_appear_here": "您最近的交易显示如下...",
   "your_referral_id": "您的推荐人ID",
   "your_transaction_may_be_frontrun": "您的交易可能会被优先处理",
-  "your_transaction_may_fail": "您的交易可能会失败"
+  "your_transaction_may_fail": "您的交易可能会失败",
+  "What is the difference between simple and advance?": "简单模式和普通模式的区别是什么 ?",
+  "Simple provides liquidity with 1 token": "简单模式提供1个代币的流动性",
+  "Advance provides liquidity with 2 tokens": "普通模式提供2个代币的流动性",
+  "During the first 8 weeks since launch, 25% of your earned SONE is available to unlock.": "在推出后的前8周内，<0>你赚取的SONE的25%</0>可以解锁。",
+  "Beginning December 1st, 2021, the remaining 75% will be unlocked linearly every block over 1 year.": "从2021年12月1日开始，剩余的75%将在1年内每块线性解锁。"
 }

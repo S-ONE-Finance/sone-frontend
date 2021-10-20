@@ -176,8 +176,8 @@
   "question_helper_price_impact": "This is the price deviation after swapping.",
   "question_helper_referral_id": "Your referral ID. If the person who entered your referral ID trades, you will receive 0.025% of the transaction fee as your reward.",
   "question_helper_remain_staked_lp": "User's remaining LP after unstaking.",
-  "question_helper_reward_0.05%_by_sone": "0.05% of the transaction fee will be paid to the liquidity provider in SONE tokens",
   "question_helper_reward_per_block": "This is the amount of SONE tokens awarded whenever a block is generated.",
+  "question_helper_reward_xxx_percent_by_sone": "0.05% of the transaction fee will be paid to the liquidity provider in SONE tokens",
   "question_helper_route": "Routing through these tokens resulted in the best price for your trade.",
   "question_helper_select_a_pair": "Find a pair by searching for its name or symbol or by pasting its address below.",
   "question_helper_select_a_token": "Find a token by searching for its name or symbol or by pasting its address below.",
@@ -334,5 +334,10 @@
   "your_recent_transactions_will_appear_here": "Your recent transactions will appear here...",
   "your_referral_id": "Your Referral ID",
   "your_transaction_may_be_frontrun": "Your transaction may be frontrun",
-  "your_transaction_may_fail": "Your transaction may fail"
+  "your_transaction_may_fail": "Your transaction may fail",
+  "What is the difference between simple and advance?": "What is the difference between simple and advance?",
+  "Simple provides liquidity with 1 token": "Simple provides liquidity with 1 token",
+  "Advance provides liquidity with 2 tokens": "Advance provides liquidity with 2 tokens",
+  "During the first 8 weeks since launch, 25% of your earned SONE is available to unlock.": "During the first 8 weeks since launch, <0>25% of your earned SONE </0>is available to unlock.",
+  "Beginning December 1st, 2021, the remaining 75% will be unlocked linearly every block over 1 year.": "Beginning December 1st, 2021, the remaining 75% will be unlocked linearly every block over 1 year."
 }

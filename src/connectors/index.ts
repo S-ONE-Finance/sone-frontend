@@ -24,8 +24,9 @@ if (typeof INFURA_KEY === 'undefined') {
 const NETWORK_URLS: {
   [chainId: number]: string
 } = {
-  [1]: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
-  [4]: `https://rinkeby.infura.io/v3/${INFURA_KEY}`,
+  [1]: `http://eth.s-one.finance:8545`,
+  [4]: `http://3.1.49.97:8545`,
+  // [4]: `https://rinkeby.infura.io/v3/${INFURA_KEY}`,
   [3]: `https://ropsten.infura.io/v3/${INFURA_KEY}`,
   [5]: `https://goerli.infura.io/v3/${INFURA_KEY}`,
   [42]: `https://kovan.infura.io/v3/${INFURA_KEY}`
