@@ -4,14 +4,16 @@ import { useTranslation } from 'react-i18next'
 import { useGuideStepManager } from '../../../../../state/user/hooks'
 import { handIcon } from '../assets'
 import { ChildrenProp, BackgroundColor } from '../styled'
+import useTheme from '../../../../../hooks/useTheme'
 
 const SwapStep4 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
+  const theme = useTheme()
 
   return (
     <>
-      <StyledStep4 className="step-4" backgroundC={Number(guideStep.step) === 4 ? '#c7c7c7' : 'transparent'}>
+      <StyledStep4 className="step-4" backgroundC={Number(guideStep.step) === 4 ? theme.bg2Sone : 'transparent'}>
         {children}
         {Number(guideStep.step) === 4 && guideStep.screen === 'swap' && (
           <StyledStep4Content>
@@ -42,6 +44,7 @@ const StyledStep4Content = styled.div`
   right: -375px;
   display: flex;
   align-items: center;
+  width: max-content;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     top: 130px;
@@ -56,12 +59,11 @@ const StyledStep4Content = styled.div`
 
 const StyledStep4Text = styled.div`
   font-weight: 700;
-  max-width: 300px;
   font-size: 36px;
   color: #fff;
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
-    max-width: fit-content;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`

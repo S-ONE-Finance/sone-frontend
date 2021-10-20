@@ -1,7 +1,7 @@
 import React from 'react'
 import Row from '../../components/Row'
 import { Text } from 'rebass'
-import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import { useIsUpToExtraSmall } from 'hooks/useWindowSize'
 import { useTranslation } from 'react-i18next'
 import { SectionDetails } from '../Unstake/UnstakeTxSectionDetails'
 import StakeTxDetailRow from './StakeTxDetailRow'

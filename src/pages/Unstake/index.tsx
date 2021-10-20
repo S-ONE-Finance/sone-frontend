@@ -12,9 +12,9 @@ import styled from 'styled-components'
 import UnstakeTxSectionDetails from './UnstakeTxSectionDetails'
 import MyReward from 'components/MyReward'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
-import { getBalanceNumber, getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
+import { formatTwoDigits, getBalanceStringCommas, getNumberCommas, plainNumber } from '../../utils/formatNumber'
 import { useParams } from 'react-router-dom'
-import { ChainId, Farm, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
+import { ChainId, Farm, Fraction, PoolInfo, Token, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/staking/useFarm'
 import useUnstakeHandler from '../../hooks/staking/useUnstakeHandler'
 import TransactionConfirmationModal, { ConfirmationModalContent } from '../../components/TransactionConfirmationModal'
@@ -63,7 +63,7 @@ export default function Unstake() {
   const amountStaked = farm?.userInfo?.amount
 
   const fullBalance = useMemo(() => {
-    return amountStaked === undefined ? undefined : getBalanceNumber(amountStaked)
+    return amountStaked === undefined ? undefined : new Fraction(plainNumber(amountStaked), (1e18).toString())
   }, [amountStaked])
 
   const [typedValue, setTypedValue] = useState('')
@@ -74,7 +74,7 @@ export default function Unstake() {
 
   const onMax = () => {
     if (fullBalance) {
-      setTypedValue(fullBalance)
+      setTypedValue(fullBalance.toFixed(18))
     }
   }
 
@@ -89,10 +89,9 @@ export default function Unstake() {
   const error: string | undefined =
     typedValue === '' || +typedValue === 0 || tryParse === undefined
       ? t('enter_an_amount')
-      : fullBalance !== undefined && new BigNumber(fullBalance).isLessThan(typedValue)
-      ? t('Insufficient LP Token')
+      : fullBalance !== undefined && new BigNumber(fullBalance.toFixed(18)).isLessThan(typedValue)
+      ? t('insufficient_lp_token')
       : undefined
-
   const { symbol } = farm || {
     symbol: '--'
   }
@@ -281,7 +280,7 @@ export default function Unstake() {
             <PanelPairInput
               value={typedValue}
               onUserInput={onUserInput}
-              balance={fullBalance}
+              balance={fullBalance && formatTwoDigits(fullBalance)}
               onMax={onMax}
               label={t('input')}
               customBalanceText={t('staked') + ':'}
@@ -302,9 +301,9 @@ export default function Unstake() {
             )}
             {!error && (
               <UnstakeTxSectionDetails
-                totalLpToken={totalLpToken}
-                remainStakedLp={remainStakedLp}
-                availableReward={availableReward}
+                totalLpToken={plainNumber(totalLpToken)}
+                remainStakedLp={plainNumber(remainStakedLp)}
+                availableReward={plainNumber(availableReward)}
               />
             )}
           </AutoColumn>

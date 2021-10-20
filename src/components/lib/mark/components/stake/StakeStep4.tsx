@@ -1,15 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { handIcon, swapMessage } from '../assets'
+import { handIcon, summaryStakeEN, summaryStakeJP, summaryStakeZH } from '../assets'
+import useLanguage from 'hooks/useLanguage'
 
 const StakeStep4 = () => {
   const { t } = useTranslation()
+  const [language] = useLanguage()
+
   return (
     <>
       <Step6Wrapper>
         <Step6Box>
-          <img src={swapMessage} alt="message" />
+          <img
+            src={
+              language?.startsWith('en')
+                ? summaryStakeEN
+                : language?.startsWith('jp')
+                ? summaryStakeJP
+                : language?.startsWith('zh')
+                ? summaryStakeZH
+                : summaryStakeEN
+            }
+            alt="message"
+          />
         </Step6Box>
         <Step6Instruction>
           <Step6InstructionText>{t('lets_stake_lp_tokens_to_get_rewards')}</Step6InstructionText>
@@ -26,20 +40,25 @@ const Step6Wrapper = styled.div`
   position: absolute;
   top: 103px;
   right: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     margin: 0 1rem;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    right: 0;
+    left:0;
+    right: unset;
   `};
 `
 
 const Step6Box = styled.div`
-  box-shadow: 0px 4px 39px rgba(0, 0, 0, 0.15);
   & > img {
     border-radius: 8px;
+    width: 400px;
+    max-width: calc(100vw - 32px);
   }
 `
 
@@ -55,7 +74,8 @@ const Step6Instruction = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  justify-content: center;
+    justify-content: center;
+    flex-direction: column;
     & > img {
       width: 50px;
     }
@@ -67,16 +87,15 @@ const Step6InstructionText = styled.div`
   font-size: 36px;
   text-align: right;
   color: #ffffff;
-  max-width: 360px;
+  width: max-content;
   margin-right: 34px;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
-    max-width: 300px;
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    max-width: 100%;
     font-size: 16px;
+    order: 1;
   `};
 `

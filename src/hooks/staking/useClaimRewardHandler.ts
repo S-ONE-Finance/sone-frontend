@@ -4,7 +4,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 
 import { useSoneMasterFarmerContract } from 'hooks/useContract'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { TransactionType } from '../../state/transactions/types'
+import { TransactionType } from 'state/transactions/types'
 
 export default function useClaimRewardHandler() {
   const addTransaction = useTransactionAdder()

@@ -594,27 +594,9 @@ export default function Header() {
                 </TYPE.language>
               </StyledMenuButtonWithText>
               <ResponsiveBottomRightSubMenu style={{ display: showLanguageMenu ? 'block' : 'none' }}>
-                <SubMenuItemText
-                  onClick={e => {
-                    setLanguage('jp')
-                  }}
-                >
-                  日本語
-                </SubMenuItemText>
-                <SubMenuItemText
-                  onClick={e => {
-                    setLanguage('en')
-                  }}
-                >
-                  English
-                </SubMenuItemText>
-                <SubMenuItemText
-                  onClick={e => {
-                    setLanguage('zh-CN')
-                  }}
-                >
-                  簡体中文
-                </SubMenuItemText>
+                <SubMenuItemText onClick={() => setLanguage('en')}>English</SubMenuItemText>
+                <SubMenuItemText onClick={() => setLanguage('jp')}>日本語</SubMenuItemText>
+                <SubMenuItemText onClick={() => setLanguage('zh-CN')}>簡体中文</SubMenuItemText>
               </ResponsiveBottomRightSubMenu>
             </ResponsiveMenuItem>
             <ShowOnlyExtraSmall>

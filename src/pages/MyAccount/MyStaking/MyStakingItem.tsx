@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { UserInfoSone } from '@s-one-finance/sdk-core'
 import { Text } from 'rebass'
 import styled from 'styled-components'
@@ -31,7 +31,7 @@ import SoneLogoSvg from '../../../assets/images/logo_token_sone.svg'
 import TickIconSvg from '../../../assets/images/tick-icon.svg'
 import { HideExtraSmall } from '../../../theme'
 import usePendingReward from '../../../hooks/staking/usePendingReward'
-import { formatSONE, getBalanceNumber, getFixedNumberCommas } from '../../../utils/formatNumber'
+import { formatSONE, formatTwoDigitsFromString, getFixedNumberCommas } from '../../../utils/formatNumber'
 import useClaimRewardHandler from '../../../hooks/staking/useClaimRewardHandler'
 import LiquidityProviderTokenLogo from '../../../components/LiquidityProviderTokenLogo'
 import BigNumber from 'bignumber.js'
@@ -45,8 +45,8 @@ const DetailedSectionIcon = styled.img`
   margin-right: 1rem;
 
   ${({ theme }) => theme.mediaWidth.upToSmall`
-    width: 60px;
-    min-width: 60px;
+    width: 48px;
+    min-width: 48px;
     margin-right: 0.25rem;
   `}
 `
@@ -54,12 +54,22 @@ const DetailedSectionIcon = styled.img`
 const RewardedSone = styled(Text)`
   font-weight: 400;
   color: ${({ theme }) => theme.text8Sone};
+  font-size: 24px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 13px;
+  `}
 `
 
 const RewardedSoneValue = styled(Text)`
   font-weight: 700;
   color: ${({ theme }) => theme.text5Sone};
   word-break: break-all;
+  font-size: 40px;
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 20px;
+  `}
 `
 
 const ButtonRequestReward = styled(MyStakingButton)`
@@ -157,10 +167,10 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
   const availableRewardRaw = usePendingReward(Number(userInfo.pool?.pid)).toString()
   const availableReward = formatSONE(availableRewardRaw, true, false) ?? '--'
 
-  // const myStakedLpToken = reduceFractionDigit('' + getBalanceNumber(userInfo.amount), 18)
-  const myStakedLpToken = getBalanceNumber(userInfo.amount)
+  // const myStakedLpToken = +userInfo.amount < 1e14 ? '<0.0001' : formatSONE(userInfo.amount, true, false)
+  const myStakedLpToken = userInfo.amount ? formatTwoDigitsFromString(userInfo.amount, true, true) : '-'
   const apy = userInfo.pool?.roiPerYear
-  const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString())}%`
+  const apyRender = apy === undefined ? '--' : `${getFixedNumberCommas(new BigNumber(apy * 100).toString(), 2)}%`
 
   const [poolRequestPending, setPoolRequestPending] = useState(false)
   const onClaimReward = useClaimRewardHandler()
@@ -171,20 +181,6 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
       setPoolRequestPending(false)
     }
   }
-
-  // Dynamic style.
-  const isLongNumber = useMemo(() => rewardedSone.toString().length + availableReward.toString().length >= 20, [
-    rewardedSone,
-    availableReward
-  ])
-  const valueFontSize = useMemo(
-    () => (isLongNumber ? (isUpToSmall ? '1.5rem' : '1.75rem') : isUpToSmall ? '2.25rem' : '2.5rem'),
-    [isLongNumber, isUpToSmall]
-  )
-  const titleFontSize = useMemo(
-    () => (isLongNumber ? (isUpToSmall ? '1rem' : '1.25rem') : isUpToSmall ? '1.25rem' : '1.5rem'),
-    [isLongNumber, isUpToSmall]
-  )
 
   const [isModalUnstakeWarningOpen, setIsModalUnstakeWarningOpen] = useState(false)
 
@@ -237,12 +233,12 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
           </Column>
         </FlexibleRow>
         <Row gap="10px" justify="flex-end">
-          <Column width="fit-content" justify="center" align="center">
+          <Column width="fit-content" justify="center" align="flex-end">
             <TextPercentage>{apyRender}</TextPercentage>
             <TextAPY>{t('apy')}</TextAPY>
           </Column>
           <DownIcon
-            active={isShowDetailed ? 0 : 1}
+            active={isShowDetailed ? 1 : 0}
             onClick={() => setDetailUserInfo(prev => (prev === userInfo.id ? undefined : userInfo.id))}
           />
         </Row>
@@ -254,23 +250,21 @@ export default function MyStakingItem({ userInfo, isShowDetailed, setDetailUserI
               <RowReward justify="center" gap="4rem">
                 <RowFixed>
                   <DetailedSectionIcon src={SoneLogoSvg} alt="sone-logo-svg" />
-                  <Column>
-                    <RewardedSoneValue style={{ fontSize: valueFontSize }}>{rewardedSone}</RewardedSoneValue>
-                    <RewardedSone style={{ fontSize: titleFontSize }}>{t('rewarded_sone')}</RewardedSone>
+                  <Column width={isUpToExtraSmall ? '33vw' : 'unset'}>
+                    <RewardedSoneValue>{rewardedSone}</RewardedSoneValue>
+                    <RewardedSone>{t('rewarded_sone')}</RewardedSone>
                   </Column>
                 </RowFixed>
                 <RowFixed>
                   <DetailedSectionIcon src={TickIconSvg} alt="tick-icon-svg" />
-                  <Column>
-                    <RewardedSoneValue style={{ fontSize: valueFontSize }}>{availableReward}</RewardedSoneValue>
-                    <RewardedSone style={{ fontSize: titleFontSize }}>{t('available_reward')}</RewardedSone>
+                  <Column width={isUpToExtraSmall ? '33vw' : 'unset'}>
+                    <RewardedSoneValue>{availableReward}</RewardedSoneValue>
+                    <RewardedSone>{t('available_reward')}</RewardedSone>
                   </Column>
                 </RowFixed>
               </RowReward>
               <RowButtons justify="center" gap="2rem">
-                {/* TODO: Specific pair. */}
                 <ButtonUnstake onClick={() => setIsModalUnstakeWarningOpen(true)}>{t('unstake')}</ButtonUnstake>
-                {/* TODO: Specific pair. */}
                 <ButtonStake as={Link} to={`/staking/${userInfo.pool?.pid}`}>
                   {t('stake_more')}
                 </ButtonStake>

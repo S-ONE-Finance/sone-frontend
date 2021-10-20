@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager, useAddLiquidityModeManager } from '../../../../../state/user/hooks'
-import { AddLiquidityModeEnum } from '../../../../../state/user/actions'
+import { useAddLiquidityModeManager, useGuideStepManager } from 'state/user/hooks'
+import { AddLiquidityModeEnum } from 'state/user/actions'
 import { handIcon } from '../assets'
 import { ChildrenProp } from '../styled'
 
@@ -24,14 +24,12 @@ const AddLiquidityStep2 = ({ children }: ChildrenProp) => {
               <StepIntro>{t('add_one_token_mode_is_recommended')}</StepIntro>
             </Step2OneToken>
           ) : (
-            <>
-              <Step2TwoToken>
-                <StylesHandIconTow>
-                  <img src={handIcon} alt="hand" />
-                </StylesHandIconTow>
-                <StepIntro>{t('when_add_two_tokens_mode_is_on')}</StepIntro>
-              </Step2TwoToken>
-            </>
+            <Step2TwoToken>
+              <StylesHandIconTow>
+                <img src={handIcon} alt="hand" />
+              </StylesHandIconTow>
+              <StepIntro>{t('when_add_two_tokens_mode_is_on')}</StepIntro>
+            </Step2TwoToken>
           )}
         </>
       )}
@@ -46,28 +44,31 @@ const StepWrapper = styled.div`
 `
 
 const Step2OneToken = styled.div`
-position: absolute;
-top: 70px;
-left: 95px;
-width: 460px;
-display: flex;
-align-items: center;
-${({ theme }) => theme.mediaWidth.upToLarge`
-  left: 45px;
-`};
+  position: absolute;
+  top: 70px;
+  left: 95px;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    left: 45px;
+  `};
 
-${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  top: 50px;
-  left: 25px;
-  width: fit-content;
-`};
-
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    flex-direction: column;
+    align-items: center;
+    top: 50px;
+    left: 50px;
+    width: 210px;
+  `};
 }`
 
 const StepIntro = styled.div`
   font-weight: 700;
   font-size: 36px;
   color: #fff;
+
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
   `};
@@ -89,6 +90,7 @@ const StyledHandIcon = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    margin-right: 4px;
     & > img {
       width: 50px;
     }
@@ -101,6 +103,20 @@ const StylesHandIconTow = styled(StyledHandIcon)`
 `
 
 const Step2TwoToken = styled(Step2OneToken)`
-  left: 50%;
+  left: 70%;
+  transform: translateX(-50%);
   flex-direction: column;
+  align-items: center;
+
+  ${({ theme }) => theme.mediaWidth.upToLarge`
+    left: 70%;
+    transform: translateX(-50%);
+  `};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    top: 50px;
+    left: 70%;
+    transform: translateX(-50%);
+    width: fit-content;
+  `};
 `

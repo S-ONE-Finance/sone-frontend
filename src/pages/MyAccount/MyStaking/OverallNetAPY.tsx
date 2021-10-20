@@ -17,7 +17,7 @@ const StakingBackground = styled.div`
   background-image: url(${({ theme }) => theme.bgMyStaking});
   background-size: cover;
   position: relative;
-  border-bottom: 1px solid ${({ theme }) => theme.text6Sone};
+  border-bottom: 1px solid ${({ theme }) => theme.bg5Sone};
   border-radius: 15px 15px 0 0;
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`

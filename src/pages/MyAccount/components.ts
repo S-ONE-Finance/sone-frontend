@@ -338,7 +338,7 @@ export const ButtonRemove = styled(Button)`
   `}
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    height: 2.1875rem;
+    height: 45px;
     max-width: 122px;
     font-size: 13px;
   `}
@@ -396,8 +396,7 @@ export const MyStakingButton = styled.button`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 13px;
     min-height: 45px;
-    min-width: 93px;
-    padding: unset 10px;
+    padding: 0 10px;
   `}
 `
 

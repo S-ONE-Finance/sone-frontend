@@ -163,8 +163,8 @@ export default function ModeOneToken({ currencyIdA, currencyIdB }: ModeOneTokenP
             <OneStep4>
               <PanelCurrencyInput
                 id="add-liquidity-simple-input-tokena"
-                label={t('from')}
-                value={Number(guideStep.step) > 5 ? '3.14159' : typedValue}
+                label={t('input')}
+                value={Number(guideStep.step) > 5 ? '0.2' : typedValue}
                 onUserInput={onFieldInput}
                 showMaxButton
                 onMax={() => {

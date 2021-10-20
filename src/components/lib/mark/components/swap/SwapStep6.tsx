@@ -1,15 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { handIcon, swapMessage } from '../assets'
+import { handIcon, summarySwapEN, summarySwapJP, summarySwapZH } from '../assets'
+import useLanguage from 'hooks/useLanguage'
 
 const SwapStep6 = () => {
   const { t } = useTranslation()
+  const [language] = useLanguage()
+
   return (
     <>
       <Step6Wrapper>
         <Step6Box>
-          <img src={swapMessage} alt="message" />
+          <img
+            src={
+              language?.startsWith('en')
+                ? summarySwapEN
+                : language?.startsWith('jp')
+                ? summarySwapJP
+                : language?.startsWith('zh')
+                ? summarySwapZH
+                : summarySwapEN
+            }
+            alt="message"
+          />
         </Step6Box>
         <Step6Instruction>
           <Step6InstructionText>{t('swap_successfully')}</Step6InstructionText>
@@ -32,14 +46,17 @@ const Step6Wrapper = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    left: 0;
     right: 0;
+    margin: 0 1rem;
   `};
 `
 
 const Step6Box = styled.div`
-  box-shadow: 0px 4px 39px rgba(0, 0, 0, 0.15);
   & > img {
     border-radius: 8px;
+    width: 400px;
+    max-width: calc(100vw - 32px);
   }
 `
 

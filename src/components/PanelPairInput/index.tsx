@@ -9,10 +9,10 @@ import { Input as NumericalInput } from '../NumericalInput'
 import { useActiveWeb3React } from '../../hooks'
 import { TextPanelLabel, TextPanelLabelAccent } from 'theme'
 import { Container, InputRow, LabelRow, RowBalance, StyledBalanceMax } from '../PanelCurrencyInput'
-import { getNumberCommas } from '../../utils/formatNumber'
 import styled from 'styled-components'
 import LiquidityProviderTokenLogo from '../LiquidityProviderTokenLogo'
 import { useGuideStepManager } from '../../state/user/hooks'
+import useTheme from 'hooks/useTheme'
 
 const PanelPairLabelRow = styled(LabelRow)`
   padding: 18px 30px 0 30px;
@@ -71,13 +71,13 @@ export default function PanelPairInput({
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [guideStep] = useGuideStepManager()
+  const theme = useTheme()
 
-  const balanceDisplay =
-    Number(guideStep.step) > 1 ? '123,456.789' : balance !== undefined ? getNumberCommas(balance) : '--'
+  const balanceDisplay = Number(guideStep.step) > 1 ? '123,456.789' : balance !== undefined ? balance : '--'
 
   return (
     <Container>
-      <BackgroundColor style={{ backgroundColor: Number(guideStep.step) === 2 ? '#c4c4c4' : 'transparent' }}>
+      <BackgroundColor style={{ backgroundColor: Number(guideStep.step) === 2 ? theme.bg2Sone : 'transparent' }}>
         <PanelPairLabelRow>
           <RowBetween align="center">
             <TextPanelLabel>{label}</TextPanelLabel>

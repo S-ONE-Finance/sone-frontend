@@ -6,15 +6,7 @@ import { useGuideStepManager, useAddLiquidityModeManager } from '../../../../sta
 import { AddLiquidityModeEnum } from '../../../../state/user/actions'
 import { PaginationTow, PaginationOne } from './index'
 
-const StyledMarkWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-`
+const StyledMarkWrapper = styled.div``
 
 const MarkLiquidity = () => {
   const [guideStep, updateStepGuide] = useGuideStepManager()
@@ -76,7 +68,7 @@ const MarkLiquidity = () => {
   return (
     <>
       {guideStep.isGuide && (
-        <StyledMarkWrapper id="swap-mark">
+        <StyledMarkWrapper id="add-liquidity-mark">
           {addLiquidityMode === AddLiquidityModeEnum.OneToken ? (
             <PaginationOne handleNext={handleNext} handlePrevious={handlePrevious} handleSkip={handleSkip} />
           ) : (

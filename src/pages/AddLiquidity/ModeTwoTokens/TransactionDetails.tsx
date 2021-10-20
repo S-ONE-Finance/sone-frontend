@@ -79,6 +79,20 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
               </RowFixed>
               <TradePrice price={price} showInverted={showInverted} setShowInverted={setShowInverted} />
             </RowBetween>
+            <RowBetween>
+              <RowFixed>
+                <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
+                  {t('share_of_pair')}
+                </Text>
+                <QuestionHelper1416 text={t('question_helper_share_of_pair')} color={theme.text4Sone} />
+              </RowFixed>
+              <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
+                {noLiquidity && price
+                  ? '100'
+                  : (poolTokenPercentage?.lessThan(ONE_BIPS) ? '<0.01' : poolTokenPercentage?.toFixed(2)) ?? '0'}
+                %
+              </Text>
+            </RowBetween>
             {allowedSlippage !== INITIAL_ALLOWED_SLIPPAGE && (
               <RowBetween align="center">
                 <RowFixed>
@@ -95,23 +109,9 @@ export default function TransactionDetails({ currencyA, currencyB }: Transaction
             <RowBetween>
               <RowFixed>
                 <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                  {t('share_of_pair')}
+                  {t('reward_xxx_percent_by_sone')}
                 </Text>
-                <QuestionHelper1416 text={t('question_helper_share_of_pair')} color={theme.text4Sone} />
-              </RowFixed>
-              <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
-                {noLiquidity && price
-                  ? '100'
-                  : (poolTokenPercentage?.lessThan(ONE_BIPS) ? '<0.01' : poolTokenPercentage?.toFixed(2)) ?? '0'}
-                %
-              </Text>
-            </RowBetween>
-            <RowBetween>
-              <RowFixed>
-                <Text fontWeight={500} fontSize={mobile13Desktop16} color={theme.text4Sone}>
-                  {t('reward_0.05%_by_sone')}
-                </Text>
-                <QuestionHelper1416 text={t('question_helper_reward_0.05%_by_sone')} color={theme.text4Sone} />
+                <QuestionHelper1416 text={t('question_helper_reward_xxx_percent_by_sone')} color={theme.text4Sone} />
               </RowFixed>
               <Text fontWeight={700} fontSize={mobile13Desktop16} color={theme.text6Sone}>
                 {canRewardSone === true ? t('yes') : canRewardSone === false ? t('no') : '--'}

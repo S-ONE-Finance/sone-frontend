@@ -127,7 +127,7 @@ const MarkStake = () => {
 
   return (
     <>
-      <StyledMarkWrapper id="swap-mark">
+      <StyledMarkWrapper id="stake-mark">
         {guideStep.step === 1 && guideStep.screen === 'stake' && <StakeStep1Header />}
         <StyledMark>
           {guideStep.step === 4 && guideStep.screen === 'stake' && <StakeStep4 />}
@@ -147,7 +147,7 @@ const MarkStake = () => {
               )}
             </StyledMarkPaginationButtonGroup>
             <StyledMarkPaginationButtonSkip onClick={handleSkip}>
-              {t('skip_tutorial')}
+              {guideStep.step === 4 ? t('finish_tutorial') : t('skip_tutorial')}
               <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
             </StyledMarkPaginationButtonSkip>
           </StyledMarkPagination>

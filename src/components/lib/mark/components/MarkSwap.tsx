@@ -149,7 +149,7 @@ const MarkSwap = () => {
                 )}
               </StyledMarkPaginationButtonGroup>
               <StyledMarkPaginationButtonSkip onClick={handleSkip}>
-                {t('skip_tutorial')}
+                {guideStep.step === 6 ? t('finish_tutorial') : t('skip_tutorial')}
                 <img style={{ marginLeft: '10px' }} src={arrowSkip} alt="arrow" />
               </StyledMarkPaginationButtonSkip>
             </StyledMarkPagination>

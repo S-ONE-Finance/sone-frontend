@@ -15,6 +15,7 @@ import { useGuideStepManager } from '../../state/user/hooks'
 import { TextPanelLabel, CurrencySelect, StyledTokenName, StyledDropDown } from 'theme'
 
 import { SwapStep2, OneStep3 } from '../lib/mark/components'
+import { formatTwoDigits } from 'utils/formatNumber'
 
 export const InputRow = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -81,6 +82,9 @@ export const StyledBalanceMax = styled.button`
   cursor: pointer;
   color: ${({ theme }) => theme.textBlack};
   border: 0 none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   :hover {
     background-color: ${({ theme }) => darken(0.2, theme.white)};
@@ -93,7 +97,7 @@ export const StyledBalanceMax = styled.button`
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     margin-right: 0.5rem;
     height: 23px;
-    width: 48px;
+    width: 56px;
     font-size: 13px;
   `};
 `
@@ -179,8 +183,6 @@ export default function PanelCurrencyInput({
   const [modalOpen, setModalOpen] = useState(false)
   const { account } = useActiveWeb3React()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
-  // console.log(`currency`, currency)
-  // console.log(`selectedCurrencyBalance`, selectedCurrencyBalance?.raw.toString())
 
   const handleDismissSearch = useCallback(() => {
     setModalOpen(false)
@@ -193,21 +195,21 @@ export default function PanelCurrencyInput({
   const handleGenerateCurrencyBalance = () => {
     if (guideStep.screen === 'swap') {
       return id === 'swap-currency-input' && Number(guideStep.step) > 2
-        ? '12,210'
+        ? '1.12'
         : Number(guideStep.step) > 3
-        ? `41.183`
+        ? `230`
         : ''
     }
 
     if (guideStep.screen === 'liquidity') {
-      if (id === 'add-liquidity-simple-input-tokena' && Number(guideStep.step) > 5) return `41.183`
-      if (id === 'add-liquidity-input-tokena' && Number(guideStep.step) > 2) return `41.183`
-      if (id === 'add-liquidity-input-tokenb' && Number(guideStep.step) > 2) return `41.183`
+      if (id === 'add-liquidity-simple-input-tokena' && Number(guideStep.step) > 5) return `1.12`
+      if (id === 'add-liquidity-input-tokena' && Number(guideStep.step) > 2) return `1.12`
+      if (id === 'add-liquidity-input-tokenb' && Number(guideStep.step) > 2) return `230`
       return ''
     }
 
     return !hideBalance && !!currency && selectedCurrencyBalance
-      ? (customBalanceText ?? '') + selectedCurrencyBalance?.toExact()
+      ? (customBalanceText ?? '') + formatTwoDigits(selectedCurrencyBalance)
       : ''
   }
 
@@ -231,7 +233,7 @@ export default function PanelCurrencyInput({
           </OneStep3>
         )}
 
-        {id === 'swap-currency-input' && Number(guideStep.step) === 2 && (
+        {id === 'swap-currency-input' && Number(guideStep.step) >= 2 && (
           <SwapStep2>
             <CurrencySelect selected={!!currency} className="open-currency-select-button">
               <Aligner>
@@ -242,6 +244,17 @@ export default function PanelCurrencyInput({
               </Aligner>
             </CurrencySelect>
           </SwapStep2>
+        )}
+
+        {id === 'swap-currency-output' && Number(guideStep.step) >= 4 && (
+          <CurrencySelect selected={!!currency} className="open-currency-select-button">
+            <Aligner>
+              <CurrencyLogo currency={currency || undefined} size={'23px'} sizeMobile={'15px'} />
+              <StyledTokenName className="token-symbol-container" active={Boolean(currency && currency.symbol)}>
+                {currency?.symbol}
+              </StyledTokenName>
+            </Aligner>
+          </CurrencySelect>
         )}
 
         {id === 'add-liquidity-input-tokena' && Number(guideStep.step) > 2 && (
@@ -298,10 +311,9 @@ export default function PanelCurrencyInput({
               onUserInput(val)
             }}
           />
-          {account && currency && showMaxButton && label !== 'To' && (
-            <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
-          )}
-          {guideStep.screen === 'liquidity' && Number(guideStep.step) > 2 && (
+          {((account && currency && showMaxButton && label !== 'To') ||
+            (guideStep.isGuide && guideStep.screen === 'liquidity' && Number(guideStep.step) > 2) ||
+            (guideStep.isGuide && guideStep.screen === 'swap')) && (
             <StyledBalanceMax onClick={onMax}>{t('max')}</StyledBalanceMax>
           )}
           {showCurrencySelect && (

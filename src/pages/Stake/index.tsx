@@ -18,12 +18,12 @@ import useTheme from '../../hooks/useTheme'
 import LiquidityProviderTokenLogo from '../../components/LiquidityProviderTokenLogo'
 import StakeTxSectionDetails2 from './StakeTxSectionDetails2'
 import { useParams } from 'react-router-dom'
-import { ChainId, Farm, PoolInfo, UserInfo } from '@s-one-finance/sdk-core'
+import { ChainId, Farm, Fraction, PoolInfo, UserInfo } from '@s-one-finance/sdk-core'
 import useFarm from '../../hooks/staking/useFarm'
 import { useBlockNumber, useWalletModalToggle } from '../../state/application/hooks'
 import { useActiveWeb3React } from '../../hooks'
 import useLpTokenBalance from '../../hooks/staking/useLpTokenBalance'
-import { getBalanceNumber, getBalanceStringCommas, getNumberCommas } from '../../utils/formatNumber'
+import { formatTwoDigits, formatTwoDigitsFromString, getNumberCommas, plainNumber } from '../../utils/formatNumber'
 import BigNumber from 'bignumber.js'
 import useStakeHandler from '../../hooks/staking/useStakeHandler'
 import { TruncatedText } from '../../components/swap/styleds'
@@ -34,6 +34,7 @@ import useApproveHandler from '../../hooks/staking/useApproveHandler'
 import { OpenGuide, StakeStep1, StakeStep2, StakeStep3 } from '../../components/lib/mark/components'
 import { CONFIG_MASTER_FARMER } from '../../constants'
 import BubbleMessage from 'components/BubbleMessage'
+import GuidePopup from './GuidePopup'
 
 export default function Staking() {
   const { t } = useTranslation()
@@ -53,7 +54,7 @@ export default function Staking() {
 
   const { pairAddress, symbol } = farm || {}
   const lpBalanceRaw = useLpTokenBalance(pairAddress)
-  const lpBalance = getBalanceNumber(lpBalanceRaw.toString())
+  const lpBalance = new Fraction(lpBalanceRaw.toString(), (1e18).toString())
 
   const toggleWalletModal = useWalletModalToggle()
   const { account, chainId } = useActiveWeb3React()
@@ -64,14 +65,23 @@ export default function Staking() {
   const [earnedRewardAfterStake, setEarnedRewardAfterStake] = useState<string>()
   const [apyAfterStake, setApyAfterStake] = useState<string>()
   const totalStakedAfterStakeRender =
-    totalStakedAfterStake === undefined ? '--' : getBalanceStringCommas(totalStakedAfterStake)
+    totalStakedAfterStake === undefined
+      ? '--'
+      : formatTwoDigits(new Fraction(totalStakedAfterStake, (1e18).toString()), true)
   const earnedRewardAfterStakeRender =
-    earnedRewardAfterStake === undefined ? '--' : getBalanceStringCommas(earnedRewardAfterStake, 0)
-  const apyAfterStakeRender = apyAfterStake === undefined ? '--' : getBalanceStringCommas(apyAfterStake, 0)
-
+    earnedRewardAfterStake === undefined ? '--' : formatTwoDigitsFromString(earnedRewardAfterStake, true)
+  const apyAfterStakeRender = apyAfterStake === undefined ? '--' : formatTwoDigitsFromString(apyAfterStake, true)
   const bonusMultiplier = (farm && (farm.owner as any))?.bonusMultiplier ?? 1
   const rewardPerBlock = farm && farm.rewardPerBlock * bonusMultiplier
+  const rewardPerBlockRender =
+    rewardPerBlock === undefined || isNaN(rewardPerBlock)
+      ? '--'
+      : formatTwoDigitsFromString(rewardPerBlock.toString(), true)
   const totalLiquidity = farm && +farm.balanceUSD
+  const totalLiquidityRender =
+    totalLiquidity === undefined || isNaN(totalLiquidity)
+      ? '--'
+      : formatTwoDigitsFromString(totalLiquidity.toString(), true)
 
   const block = useBlockNumber()
 
@@ -83,22 +93,22 @@ export default function Staking() {
       return
     }
     const poolInfo = new PoolInfo(farm, CONFIG_MASTER_FARMER[chainId || (3 as ChainId)])
-    if (typedValue && farm?.userInfo) {
+    if (typedValue && +typedValue !== 0 && farm?.userInfo) {
       const userInfo = new UserInfo(poolInfo, farm.userInfo)
       const newTotalStaked = userInfo.getTotalStakedValueAfterStake(
-        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString()
+        new BigNumber(typedValue).multipliedBy(new BigNumber(10).pow(18)).toString()
       )
-      setTotalStakedAfterStake(newTotalStaked)
+      setTotalStakedAfterStake(plainNumber(newTotalStaked))
       const newEarnedReward = userInfo.getEarnedRewardAfterStake(
-        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString(),
+        new BigNumber(typedValue).multipliedBy(new BigNumber(10).pow(18)).toString(),
         block || 0
       )
-      setEarnedRewardAfterStake(newEarnedReward)
+      setEarnedRewardAfterStake(plainNumber(newEarnedReward))
       const newAPY = userInfo.getAPYAfterStake(
-        new BigNumber(typedValue).times(new BigNumber(10).pow(18)).toString(),
+        new BigNumber(typedValue).multipliedBy(new BigNumber(10).pow(18)).toString(),
         block || 0
       )
-      setApyAfterStake(newAPY)
+      setApyAfterStake(plainNumber(newAPY))
     }
   }, [typedValue, farm, block, chainId])
 
@@ -120,7 +130,7 @@ export default function Staking() {
 
   const onMax = () => {
     if (lpBalance) {
-      setTypedValue(lpBalance.toString())
+      lpBalance.equalTo('0') ? setTypedValue('') : setTypedValue(lpBalance.toFixed(18))
     }
   }
 
@@ -134,7 +144,7 @@ export default function Staking() {
     ? t('connect_wallet')
     : +typedValue === 0
     ? t('enter_an_amount')
-    : lpBalance === undefined || new BigNumber(lpBalance).isLessThan(typedValue)
+    : lpBalance === undefined || new BigNumber(lpBalance.toFixed(18)).isLessThan(typedValue)
     ? t('insufficient_lp_token')
     : allowance.toString() === '0' && (isApproveTxPushed || isApproving)
     ? t('approving')
@@ -288,6 +298,7 @@ export default function Staking() {
 
   return (
     <>
+      <GuidePopup />
       <TransactionConfirmationModal
         isOpen={showConfirm}
         onDismiss={handleDismissConfirmation}
@@ -321,7 +332,9 @@ export default function Staking() {
                 <PanelPairInput
                   value={Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? '100,100' : typedValue}
                   onUserInput={onUserInput}
-                  balance={Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? '111634' : lpBalance}
+                  balance={
+                    Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? '111634' : formatTwoDigits(lpBalance)
+                  }
                   onMax={onMax}
                   label={t('input')}
                   customBalanceText={t('lp_balance') + ':'}
@@ -330,24 +343,16 @@ export default function Staking() {
                   decimal={18}
                 />
               </StakeStep2>
-              {error === t('connect_wallet') ? (
-                <>
-                  {Number(guideStep.step) === 1 && guideStep.screen === 'stake' ? (
-                    <StakeStep1>
-                      <ButtonPrimary>{error}</ButtonPrimary>
-                    </StakeStep1>
-                  ) : (
-                    <>
-                      {Number(guideStep.step) === 3 && guideStep.screen === 'stake' ? (
-                        <StakeStep3>
-                          <ButtonPrimary>{t('stake')}</ButtonPrimary>
-                        </StakeStep3>
-                      ) : (
-                        <ButtonPrimary onClick={toggleWalletModal}>{error}</ButtonPrimary>
-                      )}
-                    </>
-                  )}
-                </>
+              {guideStep.isGuide && Number(guideStep.step) === 1 && guideStep.screen === 'stake' ? (
+                <StakeStep1>
+                  <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
+                </StakeStep1>
+              ) : guideStep.isGuide && Number(guideStep.step) === 3 && guideStep.screen === 'stake' ? (
+                <StakeStep3>
+                  <ButtonPrimary>{t('stake')}</ButtonPrimary>
+                </StakeStep3>
+              ) : error === t('connect_wallet') ? (
+                <ButtonPrimary onClick={toggleWalletModal}>{error}</ButtonPrimary>
               ) : error === t('approve') || error === t('approving') ? (
                 <ButtonPrimary disabled={error === t('approving')} onClick={() => onApprove(symbol)}>
                   {error === t('approving')
@@ -357,19 +362,9 @@ export default function Staking() {
                       })}
                 </ButtonPrimary>
               ) : error ? (
-                Number(guideStep.step) === 1 && guideStep.screen === 'stake' ? (
-                  <StakeStep1>
-                    <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
-                  </StakeStep1>
-                ) : Number(guideStep.step) === 3 && guideStep.screen === 'stake' ? (
-                  <StakeStep3>
-                    <ButtonPrimary>{t('stake')}</ButtonPrimary>
-                  </StakeStep3>
-                ) : (
-                  <ButtonPrimary disabled={guideStep.screen === 'stake' ? false : true}>
-                    {Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? t('stake') : error}
-                  </ButtonPrimary>
-                )
+                <ButtonPrimary disabled>
+                  {Number(guideStep.step) > 1 && guideStep.screen === 'stake' ? t('stake') : error}
+                </ButtonPrimary>
               ) : (
                 <ButtonPrimary
                   onClick={() => {
@@ -407,7 +402,7 @@ export default function Staking() {
                 </ColumnCenter>
               )}
               {!error && isShowRewardInformation && (
-                <StakeTxSectionDetails2 rewardPerBlock={rewardPerBlock} totalLiquidity={totalLiquidity} />
+                <StakeTxSectionDetails2 rewardPerBlock={rewardPerBlockRender} totalLiquidity={totalLiquidityRender} />
               )}
               {!error && isShowRewardInformation && (
                 <ColumnCenter>

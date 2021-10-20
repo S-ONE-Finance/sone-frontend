@@ -15,19 +15,17 @@ import Row, { RowBetween, RowFixed } from '../../../../../../Row'
 import { filterPairs } from '../../../../../../SearchModal/filtering'
 import { PaddedColumn, SearchInput } from '../../../../../../SearchModal/styleds'
 import PairList from './PairList'
+import { useDarkModeManager } from '../../../../../../../state/user/hooks'
+import { useGetPairFromSubgraphAndParse } from 'graphql/hooks'
 
 type ModalSearchPairProps = {
   isOpen: boolean
   onDismiss: () => void
   selectedPair?: Pair | null
   onPairSelect: (pair: Pair) => void
-  isLoading: boolean
-  allPairs: Array<Pair>
 }
 
 const ModalCustom = styled.div`
-  background-color: #212429;
-  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 5%);
   width: 470px;
   max-width: calc(100vw - 32px);
   padding: 0;
@@ -41,25 +39,18 @@ const ModalCustom = styled.div`
   border-radius: 25px;
 `
 
-const Mark = styled.div`
+const MarkRow = styled.div<{ background: string }>`
   position: absolute;
   left: 0;
+  top: 112px;
   width: 470px;
   max-width: calc(100vw - 32px);
-  max-height: 80vh;
-  min-height: 80vh;
-  border-radius: 25px;
-  background: rgba(0, 0, 0, 0.5);
+  background: ${({ background }) => background};
+  min-height: 56px;
+  z-index: 0;
 `
 
-export default function ModalSearchPair({
-  isOpen,
-  onDismiss,
-  selectedPair,
-  onPairSelect,
-  isLoading,
-  allPairs
-}: ModalSearchPairProps) {
+export default function ModalSearchPair({ isOpen, onDismiss, selectedPair, onPairSelect }: ModalSearchPairProps) {
   const { t } = useTranslation()
   const isUpToExtraSmall = useIsUpToExtraSmall()
   const theme = useTheme()
@@ -71,6 +62,8 @@ export default function ModalSearchPair({
   const debouncedQuery = useDebounce(searchQuery, 200)
 
   const [invertSearchOrder, setInvertSearchOrder] = useState<boolean>(false)
+
+  const [isLoading, allPairs] = useGetPairFromSubgraphAndParse()
 
   const filteredPairs: Pair[] = useMemo(() => {
     return filterPairs(allPairs, debouncedQuery)
@@ -114,9 +107,11 @@ export default function ModalSearchPair({
     setInvertSearchOrder(prev => !prev)
   }, [])
 
+  const [darkMode] = useDarkModeManager()
+
   return (
     <ModalCustom>
-      <PanelSearchContentWrapper>
+      <PanelSearchContentWrapper style={{ backgroundColor: darkMode ? '#0E2B4A' : 'gray' }}>
         <PaddedColumn gap="16px" style={{ padding: isUpToExtraSmall ? '2em 1em 0 1em' : '2.5em 2em 0 2em' }}>
           <RowBetween>
             <RowFixed>
@@ -144,7 +139,7 @@ export default function ModalSearchPair({
         {isLoading ? (
           <Column width="unset" style={{ margin: '20px', height: '100%' }}>
             <TYPE.main color={theme.text3} textAlign="center" mb="20px">
-              {t('Loading...')}
+              {t('loading')}
             </TYPE.main>
           </Column>
         ) : sortedPairs?.length > 0 ? (
@@ -171,19 +166,17 @@ export default function ModalSearchPair({
                   />
                 )}
               </AutoSizer>
+              <MarkRow background={darkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.25)'} />
             </div>
           </>
         ) : (
           <Column width="unset" style={{ margin: '20px', height: '100%' }}>
             <TYPE.main color={theme.text3} textAlign="center" mb="20px">
-              {t('No results found.')}
+              {t('no_results_found')}
             </TYPE.main>
           </Column>
         )}
       </PanelSearchContentWrapper>
-      <div>
-        <Mark />
-      </div>
     </ModalCustom>
   )
 }

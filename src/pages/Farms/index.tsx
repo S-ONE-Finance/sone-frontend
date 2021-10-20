@@ -9,13 +9,13 @@ import Balances from './Balances'
 import FarmCards from './FarmCards'
 import StakingHeader from './StakingHeader'
 import FilterC from './FilterC'
-import { pxToRem } from '../../utils/PxToRem'
+import { pxToRem } from 'utils/PxToRem'
 import iconFilter from '../../assets/images/icon-filter.svg'
 import iconSort from '../../assets/images/icon-sort.svg'
 import useFarms from '../../hooks/staking/useFarms'
 import useMyStaked from '../../hooks/staking/useMyStaked'
 import useMyLpToken from '../../hooks/staking/useMyLpToken'
-import { formatSONE } from '../../utils/formatNumber'
+import { formatSONE } from 'utils/formatNumber'
 
 export type SORT_KEY = 'apy' | 'total_liquidity' | 'bonus_campaign' | 'lp_name'
 export type SortOptions = { [p in SORT_KEY]: string }
@@ -98,7 +98,13 @@ export default function Farms() {
             break
           case 'my_lp_tokens':
             const lpTokens = myLpToken.map((lp: LiquidityPosition) => lp.pair.id)
-            newSortedFilteredFarms = farms.filter((farm: Farm) => lpTokens.includes(farm.pairAddress))
+            newSortedFilteredFarms = farms.filter((farm: Farm) => {
+              if (lpTokens.indexOf(farm.pairAddress) !== -1) {
+                const balance = +myLpToken[lpTokens.indexOf(farm.pairAddress)]?.liquidityTokenBalance
+                return balance > 0
+              }
+              return false
+            })
             break
           case 'staked':
             const pairStaked = myStaked.map(pool => Number(pool.pool?.id))

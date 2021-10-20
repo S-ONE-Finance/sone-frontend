@@ -85,3 +85,28 @@ export const formatSONE = (
     : amount.toSignificant(8)
   return res
 }
+
+/**
+ * Làm tròn 2 chữ số sau dấu phẩy.
+ * @param number
+ * @param addComma
+ */
+export const formatTwoDigits = (number: Fraction, addComma = false) => {
+  return number.lessThan('1') ? number.toSignificant(2) : number.toFixed(2, { groupSeparator: addComma ? ',' : '' })
+}
+
+/**
+ * Làm tròn 2 chữ số sau dấu phẩy, nhân 1e100 cho chắc.
+ * @param number
+ * @param addComma
+ * @param needDivide1e18
+ */
+export const formatTwoDigitsFromString = (number: string, addComma = false, needDivide1e18 = false) => {
+  return formatTwoDigits(
+    new Fraction(
+      plainNumber(new BigNumber(number).multipliedBy((1e100).toString()).toString()),
+      plainNumber((needDivide1e18 ? 1e100 * 1e18 : 1e100).toString())
+    ),
+    addComma
+  )
+}

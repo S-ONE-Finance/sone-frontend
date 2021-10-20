@@ -7,7 +7,18 @@ import closeIcon from '../../../../../assets/images/icon-close-guide.svg'
 import iconCheck from '../../../../../assets/images/check-icon-guide-popup.svg'
 import swapCloseIcon from '../../../../../assets/images/swap-close-icon-guide-popup.svg'
 import stakeTickIcon from '../../../../../assets/images/stake-tick-icon.svg'
-import swapMessage from '../../../../../assets/images/swap-message-light.png'
+import summarySwapEN from 'assets/images/summary-swap-en.png'
+import summarySwapJP from 'assets/images/summary-swap-jp.png'
+import summarySwapZH from 'assets/images/summary-swap-zh.png'
+import summaryAddLiquiditySimpleEN from 'assets/images/summary-add-liquidity-simple-en.png'
+import summaryAddLiquiditySimpleJP from 'assets/images/summary-add-liquidity-simple-jp.png'
+import summaryAddLiquiditySimpleZH from 'assets/images/summary-add-liquidity-simple-zh.png'
+import summaryAddLiquidityAdvancedEN from 'assets/images/summary-add-liquidity-advanced-en.png'
+import summaryAddLiquidityAdvancedJP from 'assets/images/summary-add-liquidity-advanced-jp.png'
+import summaryAddLiquidityAdvancedZH from 'assets/images/summary-add-liquidity-advanced-zh.png'
+import summaryStakeEN from 'assets/images/summary-stake-en.png'
+import summaryStakeJP from 'assets/images/summary-stake-jp.png'
+import summaryStakeZH from 'assets/images/summary-stake-zh.png'
 
 export {
   arrowLeft,
@@ -19,5 +30,16 @@ export {
   iconCheck,
   swapCloseIcon,
   stakeTickIcon,
-  swapMessage
+  summarySwapEN,
+  summarySwapJP,
+  summarySwapZH,
+  summaryAddLiquiditySimpleEN,
+  summaryAddLiquiditySimpleJP,
+  summaryAddLiquiditySimpleZH,
+  summaryAddLiquidityAdvancedEN,
+  summaryAddLiquidityAdvancedJP,
+  summaryAddLiquidityAdvancedZH,
+  summaryStakeEN,
+  summaryStakeJP,
+  summaryStakeZH
 }

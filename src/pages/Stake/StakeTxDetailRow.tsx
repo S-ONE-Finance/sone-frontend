@@ -1,6 +1,6 @@
 import React from 'react'
-import { RowBetween, RowFixed } from '../../components/Row'
-import { QuestionHelper1416 } from '../../components/QuestionHelper'
+import { RowBetween, RowFixed } from 'components/Row'
+import { QuestionHelper1416 } from 'components/QuestionHelper'
 import useTheme from '../../hooks/useTheme'
 import { TextDetailsValue, TextDetailsField } from 'pages/Unstake/UnstakeTxDetailRow'
 

@@ -1,17 +1,33 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGuideStepManager } from '../../../../../../state/user/hooks'
+import { useAddLiquidityModeManager, useGuideStepManager } from '../../../../../../state/user/hooks'
 import { handIcon } from '../../assets'
 import { ChildrenProp } from '../../styled'
+import { AddLiquidityModeEnum } from 'state/user/actions'
 
 const OneStep3 = ({ children }: ChildrenProp) => {
   const { t } = useTranslation()
   const [guideStep] = useGuideStepManager()
 
+  const [addLiquidityMode] = useAddLiquidityModeManager()
+  const addLiquiditySimpleRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (
+      addLiquiditySimpleRef.current &&
+      guideStep.isGuide &&
+      guideStep.screen === 'liquidity' &&
+      guideStep.step === 5 &&
+      addLiquidityMode === AddLiquidityModeEnum.OneToken
+    ) {
+      addLiquiditySimpleRef.current.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' })
+    }
+  }, [guideStep, addLiquidityMode])
+
   return (
     <>
-      <StyledStep2 className="step-5">
+      <StyledStep2 ref={addLiquiditySimpleRef} className="step-5">
         {children}
         {Number(guideStep.step) === 5 && guideStep.screen === 'liquidity' && (
           <StyledStep2Content>
@@ -44,6 +60,7 @@ const StyledStep2Content = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    flex-direction: column;
     left: -60px;
     top: 50px;
   `};
@@ -53,7 +70,7 @@ const StyledStep2Text = styled.div`
   font-size: 36px;
   color: #fff;
   margin-top: 20px;
-  width: 250px;
+  width: max-content;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;
@@ -61,8 +78,8 @@ const StyledStep2Text = styled.div`
   `};
 
   ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-    max-width: 130px;
     font-size: 16px;
+    margin-left: -30px;
   `};
 `
 

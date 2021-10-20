@@ -37,8 +37,8 @@ const Step1Intro = styled.div`
   color: #fff;
   font-weight: 700;
   font-size: 36px;
-  max-width: 446px;
   top: -108px;
+  width: max-content;
 
   ${({ theme }) => theme.mediaWidth.upToLarge`
     font-size: 26px;

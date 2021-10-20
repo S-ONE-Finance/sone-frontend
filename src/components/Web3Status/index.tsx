@@ -83,7 +83,15 @@ function Web3StatusInner() {
 
   const getLanguage = () => i18next.language || window.localStorage.i18nextLng
 
-  if (account) {
+  if (guideStep.isGuide && Number(guideStep.step) === 1) {
+    return (
+      <MarkHeader>
+        <ButtonMainRed id="connect-wallet" className="step-1">
+          {t('connect_wallet')}
+        </ButtonMainRed>
+      </MarkHeader>
+    )
+  } else if (account) {
     return (
       <ButtonMainRed
         id="web3-status-connected"
@@ -103,24 +111,14 @@ function Web3StatusInner() {
     return (
       <ButtonMainRed onClick={toggleWalletModal}>
         <NetworkIcon />
-        <Text>{error instanceof UnsupportedChainIdError ? t('Wrong Network') : t('Error')}</Text>
+        <Text>{error instanceof UnsupportedChainIdError ? t('wrong_network') : t('Error')}</Text>
       </ButtonMainRed>
     )
   } else {
     return (
-      <>
-        {guideStep.isGuide && Number(guideStep.step) === 1 ? (
-          <MarkHeader>
-            <ButtonMainRed id="connect-wallet" className="step-1">
-              {t('connect_wallet')}
-            </ButtonMainRed>
-          </MarkHeader>
-        ) : (
-          <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
-            {guideStep.isGuide && Number(guideStep.step) > 1 ? t('my_account') : t('connect_wallet')}
-          </ButtonMainRed>
-        )}
-      </>
+      <ButtonMainRed id="connect-wallet" onClick={toggleWalletModal}>
+        {guideStep.isGuide && Number(guideStep.step) > 1 ? t('my_account') : t('connect_wallet')}
+      </ButtonMainRed>
     )
   }
 }

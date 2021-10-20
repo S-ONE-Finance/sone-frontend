@@ -8,17 +8,17 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import useAddLiquidityTwoTokensHandler from 'hooks/useAddLiquidityTwoTokensHandler'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { Dots } from 'pages/Pool/styleds'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useWalletModalToggle } from 'state/application/hooks'
 import { useDerivedMintInfo } from 'state/mint/hooks'
-import { useIsExpertMode } from 'state/user/hooks'
+import { useAddLiquidityModeManager, useIsExpertMode } from 'state/user/hooks'
 import { TYPE } from 'theme'
 import { ButtonWrapper } from '..'
 import { ROUTER_ADDRESS } from '../../../constants'
-import { Field } from '../../../state/mint/actions'
-import { useGuideStepManager } from '../../../state/user/hooks'
+import { Field } from 'state/mint/actions'
+import { useGuideStepManager } from 'state/user/hooks'
 import { TowStep2, ConnectButton } from '../../../components/lib/mark/components'
-import iconCheck from '../../../assets/images/check-icon-guide-popup-white.svg'
+import { AddLiquidityModeEnum } from 'state/user/actions'
 
 type ButtonGroupingProps = {
   currencyA?: Currency
@@ -55,34 +55,37 @@ export default function ButtonGrouping({
 
   const onAdd = useAddLiquidityTwoTokensHandler({ currencyA, currencyB, setAttemptingTxn, setTxHash })
 
+  const addLiquidityAdvancedStep1Ref = useRef<HTMLElement>(null)
+  const [addLiquidityMode] = useAddLiquidityModeManager()
+
+  useEffect(() => {
+    if (
+      addLiquidityAdvancedStep1Ref.current &&
+      guideStep.isGuide &&
+      guideStep.screen === 'liquidity' &&
+      guideStep.step === 1 &&
+      addLiquidityMode === AddLiquidityModeEnum.TwoToken
+    ) {
+      addLiquidityAdvancedStep1Ref.current.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' })
+    }
+  }, [guideStep, addLiquidityMode])
+
   return (
     <ButtonWrapper>
-      {addIsUnsupported ? (
+      {guideStep.isGuide && Number(guideStep.step) === 1 ? (
+        <ConnectButton>
+          <ButtonPrimary ref={addLiquidityAdvancedStep1Ref}>{t('connect_wallet')}</ButtonPrimary>
+        </ConnectButton>
+      ) : guideStep.isGuide && Number(guideStep.step) >= 3 ? (
+        <TowStep2>
+          <ButtonPrimary onClick={toggleWalletModal}>{t('add_liquidity')}</ButtonPrimary>
+        </TowStep2>
+      ) : addIsUnsupported ? (
         <ButtonPrimary disabled={true}>
           <TYPE.main mb="4px">Unsupported Asset</TYPE.main>
         </ButtonPrimary>
       ) : !account ? (
-        <>
-          {guideStep.isGuide && Number(guideStep.step) === 1 ? (
-            <ConnectButton>
-              <ButtonPrimary>{t('connect_wallet')}</ButtonPrimary>
-            </ConnectButton>
-          ) : (
-            <TowStep2>
-              {Number(guideStep.step) > 4 && guideStep.screen === 'liquidity' ? (
-                <ButtonPrimary onClick={toggleWalletModal}>
-                  <img src={iconCheck} alt="iconCheck" />
-                </ButtonPrimary>
-              ) : (
-                <ButtonPrimary onClick={toggleWalletModal}>
-                  {Number(guideStep.step) === 3 || Number(guideStep.step) === 4
-                    ? t('add_liquidity')
-                    : t('connect_wallet')}
-                </ButtonPrimary>
-              )}
-            </TowStep2>
-          )}
-        </>
+        <ButtonPrimary onClick={toggleWalletModal}>{t('connect_wallet')}</ButtonPrimary>
       ) : (
         <AutoColumn gap={'md'}>
           {(approvalA === ApprovalState.NOT_APPROVED ||

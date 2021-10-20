@@ -156,7 +156,7 @@ export default function SlippageTabs({ rawSlippage, setRawSlippage, deadline, se
       const valueAsIntFromRoundedFloat = Number.parseInt((Number.parseFloat(value) * 100).toString())
       if (
         !Number.isNaN(valueAsIntFromRoundedFloat) &&
-        valueAsIntFromRoundedFloat < 5000 &&
+        valueAsIntFromRoundedFloat <= 5000 &&
         valueAsIntFromRoundedFloat > 0
       ) {
         setRawSlippage(valueAsIntFromRoundedFloat)
