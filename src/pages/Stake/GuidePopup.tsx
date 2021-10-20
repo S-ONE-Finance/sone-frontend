@@ -4,7 +4,7 @@ import { StyledCloseIcon as CloseIcon } from '../../theme'
 import Row, { RowFixed } from '../../components/Row'
 import Column from 'components/Column'
 import { Text } from 'rebass'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import CheckedIcon from 'assets/svg/checked.svg'
 import useTheme from '../../hooks/useTheme'
 import { ButtonStake, ButtonUnstake } from '../MyAccount/components'
@@ -56,9 +56,10 @@ export default memo(function GuidePopup() {
         <RowFixed gap="8px">
           <img src={CheckedIcon} alt="checked-icon" />
           <Text fontWeight={400} fontSize={16} color={theme.text3Sone}>
-            {t('During the first 8 weeks since launch, 25% of your earned SONE is available to unlock.', {
-              interpolation: { escapeValue: false }
-            })}
+            <Trans
+              i18nKey="During the first 8 weeks since launch, 25% of your earned SONE is available to unlock."
+              components={[<Text display="inline" key="0" fontWeight={700} fontSize={16} color={theme.text5Sone} />]}
+            />
           </Text>
         </RowFixed>
         <RowFixed gap="8px">
