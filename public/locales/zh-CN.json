@@ -335,5 +335,10 @@
   "your_recent_transactions_will_appear_here": "您最近的交易显示如下...",
   "your_referral_id": "您的推荐人ID",
   "your_transaction_may_be_frontrun": "您的交易可能会被优先处理",
-  "your_transaction_may_fail": "您的交易可能会失败"
+  "your_transaction_may_fail": "您的交易可能会失败",
+  "What is the difference between simple and advance?": "简单模式和普通模式的区别是什么 ?",
+  "Simple provides liquidity with 1 token": "简单模式提供1个代币的流动性",
+  "Advance provides liquidity with 2 tokens": "普通模式提供2个代币的流动性",
+  "During the first 8 weeks since launch, 25% of your earned SONE is available to unlock.": "在推出后的前8周内，你赚取的SONE的25%可以解锁。",
+  "Beginning December 1st, 2021, the remaining 75% will be unlocked linearly every block over 1 year.": "从2021年12月1日开始，剩余的75%将在1年内每块线性解锁。"
 }

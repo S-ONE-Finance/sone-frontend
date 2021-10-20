@@ -334,5 +334,10 @@
   "your_recent_transactions_will_appear_here": "Your recent transactions will appear here...",
   "your_referral_id": "Your Referral ID",
   "your_transaction_may_be_frontrun": "Your transaction may be frontrun",
-  "your_transaction_may_fail": "Your transaction may fail"
+  "your_transaction_may_fail": "Your transaction may fail",
+  "What is the difference between simple and advance?": "What is the difference between simple and advance?",
+  "Simple provides liquidity with 1 token": "Simple provides liquidity with 1 token",
+  "Advance provides liquidity with 2 tokens": "Advance provides liquidity with 2 tokens",
+  "During the first 8 weeks since launch, 25% of your earned SONE is available to unlock.": "During the first 8 weeks since launch, 25% of your earned SONE is available to unlock.",
+  "Beginning December 1st, 2021, the remaining 75% will be unlocked linearly every block over 1 year.": "Beginning December 1st, 2021, the remaining 75% will be unlocked linearly every block over 1 year."
 }
