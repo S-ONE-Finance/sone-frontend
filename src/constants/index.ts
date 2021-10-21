@@ -9,7 +9,7 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 export const DEFAULT_CHAIN_ID = Number(process.env.REACT_APP_DEFAULT_CHAIN_ID)
 
 export const ROUTER_ADDRESS: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: '',
+  [ChainId.MAINNET]: '0x165D4b71FfBe26Acd83bdCedA51Cb0fc5710DFF6',
   [ChainId.RINKEBY]: '0x5E9705FF88F548cba6BBF91F8C9Ae2611f5E83BB',
   [ChainId.ROPSTEN]: '0x5065C6C5BCE00739Fb90bC5ab33e397c14f63335',
   [ChainId.GÖRLI]: '',
@@ -65,7 +65,7 @@ export const SONE_PRICE_MINIMUM = 0.00001 // 1 SONE >= 0.00001 USDT
 
 // TODO: Need fill address of sone in all 5 networks.
 export const SONE: { [chainId in ChainId]: Token } = {
-  [ChainId.MAINNET]: new Token(ChainId.MAINNET, UNI_ADDRESS, 18, 'SONE', 'SONE Token'),
+  [ChainId.MAINNET]: new Token(ChainId.MAINNET, '0xf5c771e0b749444eAec5C1F7EF5c0B93200BB0E4', 18, 'SONE', 'SONE Token'),
   [ChainId.RINKEBY]: new Token(ChainId.RINKEBY, '0x5FEA1f4aEf9c78BC56cEd5083fb59d351396748f', 18, 'SONE', 'SONE Token'),
   [ChainId.ROPSTEN]: new Token(ChainId.ROPSTEN, '0x57bb30bdb0D449bf687ed648ACF2467F045c8E74', 18, 'SONE', 'SONE Token'),
   [ChainId.GÖRLI]: new Token(ChainId.GÖRLI, UNI_ADDRESS, 18, 'SONE', 'SONE Token'),
@@ -73,7 +73,7 @@ export const SONE: { [chainId in ChainId]: Token } = {
 }
 
 export const SONE_MASTER_FARMER: { [chainId in ChainId]: string } = {
-  [ChainId.MAINNET]: '',
+  [ChainId.MAINNET]: '0xb5aEFea17eC832d2DcAF0a9c160dB96f86FC5Db9',
   [ChainId.RINKEBY]: '0x05bf874f71AAbf40966489e45DE3E5FcDC823927',
   [ChainId.ROPSTEN]: '0xfB3bEEE96FA08c2CAb70E6DbE34084A99B47b9aD',
   [ChainId.GÖRLI]: '',
@@ -83,7 +83,7 @@ export const SONE_MASTER_FARMER: { [chainId in ChainId]: string } = {
 export const CONFIG_MASTER_FARMER: { [chainId in ChainId]: ConfigMasterFarmer | null } = {
   // TODO: chỉnh chỗ này khi lên mainnet.
   [ChainId.MAINNET]: {
-    startBlock: 10897613,
+    startBlock: 13723975,
     rewardMultiplier: [32, 32, 32, 32, 16, 8, 4, 2, 1],
     blocksPerWeek: 45134
   },
