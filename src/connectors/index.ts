@@ -25,8 +25,8 @@ const NETWORK_URLS: {
   [chainId: number]: string
 } = {
   [1]: `https://eth-prod.s-one.finance`,
-  [4]: `http://3.1.49.97:8545`,
   [3]: `https://ropsten.infura.io/v3/${INFURA_KEY}`,
+  [4]: `http://3.1.49.97:8545`,
   [5]: `https://goerli.infura.io/v3/${INFURA_KEY}`,
   [42]: `https://kovan.infura.io/v3/${INFURA_KEY}`
 }
