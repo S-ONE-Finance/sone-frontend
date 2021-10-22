@@ -11,6 +11,7 @@ import { useActiveWeb3React } from '../../hooks'
 import useCurrencyIsSone from '../../hooks/useCurrencyIsSone'
 import { SONE } from '../../constants'
 import { useIsUpToExtraSmall } from '../../hooks/useWindowSize'
+import { isAddress } from 'utils'
 
 export const getTokenLogoURL = (address: string) =>
   `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${address}/logo.png`
@@ -133,7 +134,7 @@ export default function CurrencyLogo({
       <Logo
         size={size}
         sizeMobile={sizeMobile}
-        srcs={[getTokenLogoURL(address)]}
+        srcs={[getTokenLogoURL(isAddress(address) as string)]}
         alt={`${currency?.symbol ?? 'token'} logo`}
         style={style}
       />
