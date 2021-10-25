@@ -1,5 +1,5 @@
 import { useSoneContract } from 'hooks/useContract'
-import React, { FC, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Contract } from '@ethersproject/contracts'
 import { BigNumber } from 'ethers'
@@ -7,13 +7,10 @@ import { useTranslation } from 'react-i18next'
 import { pxToRem } from '../../utils/PxToRem'
 import { formatSONE } from '../../utils/formatNumber'
 
-interface BalanceProps {
-  circulatingSupplyValue: string
-}
-
-const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
+const Balances = () => {
   const { t } = useTranslation()
   const [totalSupply, setTotalSupply] = useState<string>()
+  const [circulatingSupply, setCirculatingSupply] = useState<string>()
 
   const soneContract: Contract | null = useSoneContract()
 
@@ -23,6 +20,10 @@ const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
         const balanceDataRaw: BigNumber = await soneContract?.totalSupply()
         const balanceData = formatSONE(balanceDataRaw.toString(), true, false)
         setTotalSupply(balanceData)
+
+        const circulatingSupplyDataRaw: BigNumber = await soneContract?.circulatingSupply()
+        const circulatingSupplyData = formatSONE(circulatingSupplyDataRaw.toString(), true, false)
+        setCirculatingSupply(circulatingSupplyData)
       }
     })()
   }, [soneContract])
@@ -31,7 +32,7 @@ const Balances: FC<BalanceProps> = ({ circulatingSupplyValue }) => {
     <>
       <StyledWrapper>
         <StyledItem>
-          {t('sone_circulating_supply')} <span>&nbsp;{circulatingSupplyValue} SONE</span>
+          {t('sone_circulating_supply')} <span>&nbsp;{circulatingSupply} SONE</span>
         </StyledItem>
         <StyledSticky />
         <StyledItem>
