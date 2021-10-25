@@ -6,15 +6,15 @@ import { BigNumber } from 'ethers'
 import { useTranslation } from 'react-i18next'
 import { pxToRem } from '../../utils/PxToRem'
 import { formatSONE } from '../../utils/formatNumber'
-import { SONE_MASTER_FARMER } from '../../constants/'
+import { DEFAULT_CHAIN_ID, SONE_MASTER_FARMER } from '../../constants/'
 import { ChainId } from '@s-one-finance/sdk-core'
-import { useWeb3React } from '@web3-react/core'
+import { useActiveWeb3React } from '../../hooks'
 
 const Balances = () => {
   const { t } = useTranslation()
   const [totalSupply, setTotalSupply] = useState<string>()
   const [circulatingSupply, setCirculatingSupply] = useState<string>()
-  const { chainId } = useWeb3React()
+  const { chainId, account } = useActiveWeb3React()
 
   const soneContract: Contract | null = useSoneContract()
 
@@ -25,8 +25,7 @@ const Balances = () => {
         const balanceData = formatSONE(balanceDataRaw.toString(), true, false)
         setTotalSupply(balanceData)
 
-        const masterFarmerAddress = SONE_MASTER_FARMER[chainId as ChainId]
-
+        const masterFarmerAddress = SONE_MASTER_FARMER[account && chainId ? chainId : (DEFAULT_CHAIN_ID as ChainId)]
         const circulatingSupplyDataRaw: BigNumber = await soneContract?.circulatingSupply()
         const balanceLockInFarmer: BigNumber = await soneContract?.balanceOf(masterFarmerAddress)
         const circulatingSupplyData = formatSONE(
@@ -37,7 +36,7 @@ const Balances = () => {
         setCirculatingSupply(circulatingSupplyData)
       }
     })()
-  }, [chainId, soneContract])
+  }, [account, chainId, soneContract])
 
   return (
     <>
