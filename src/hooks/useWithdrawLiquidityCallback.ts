@@ -130,9 +130,6 @@ export default function useWithdrawLiquidityCallback({
       throw new Error('Attempting to confirm without approval or a signature. Please contact support.')
     }
 
-    console.log(`methodNames`, methodNames)
-    console.log(`args`, args)
-
     const safeGasEstimates: (BigNumber | undefined)[] = await Promise.all(
       methodNames.map(methodName =>
         router.estimateGas[methodName](...args)

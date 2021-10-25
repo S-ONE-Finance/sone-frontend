@@ -63,14 +63,6 @@ export default function useAddLiquidityOneTokenHandler({
       theOtherTokenMinOutputAmountJSBI
     ] = selectedPair.getAmountsAddOneToken(selectedTokenUserInputAmount, allowedSlippage)
 
-    // TODO: Khi nào hiểu logic thì xoá chỗ này đi.
-    console.clear()
-    console.log(`selectedPair`, selectedPair)
-    console.log('selectedTokenUserInputAmountJSBI', +selectedTokenUserInputAmountJSBI.toString())
-    console.log('selectedTokenMinAmountJSBI', +selectedTokenMinAmountJSBI.toString())
-    console.log('theOtherTokenMinAmountJSBI', +theOtherTokenMinAmountJSBI.toString())
-    console.log('theOtherTokenMinOutputAmountJSBI', +theOtherTokenMinOutputAmountJSBI.toString())
-
     let estimate,
       method: (...args: any) => Promise<TransactionResponse>,
       args: Array<string | string[] | number>,
@@ -141,7 +133,6 @@ export default function useAddLiquidityOneTokenHandler({
         account,
         deadline.toHexString()
       ]
-      console.log(`args`, JSON.stringify(args))
       value = null
     }
 
