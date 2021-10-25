@@ -27,7 +27,6 @@ export default function Farms() {
 
   const [sortedFilteredFarms, setSortedFilteredFarms] = useState<Farm[] | undefined>([])
   const [totalLockValue, setTotalLockValue] = useState<BigNumber>(new BigNumber(0))
-  const [circulatingSupplyValue, setCirculatingSupplyValue] = useState<BigNumber>(new BigNumber(0))
   const [isLoading, farms] = useFarms()
   const myStaked: UserInfoSone[] = useMyStaked()
   const myLpToken: LiquidityPosition[] = useMyLpToken()
@@ -125,17 +124,14 @@ export default function Farms() {
     }
   }, [farms, filterBy, myLpToken, myStaked, orderByOptions, sortBy])
 
-  // Calculate totalLockValue & circulatingSupplyValue
+  // Calculate totalLockValue
   useEffect(() => {
     if (farms) {
       let totalLock: BigNumber = new BigNumber(0)
-      let circulatingSupply: BigNumber = new BigNumber(0)
       farms.forEach((farm: Farm) => {
         totalLock = totalLock.plus(new BigNumber(farm.tvl | 0))
-        circulatingSupply = circulatingSupply.plus(new BigNumber(farm.soneHarvested || 0))
       })
       setTotalLockValue(totalLock)
-      setCirculatingSupplyValue(circulatingSupply)
     }
   }, [farms])
 
@@ -151,9 +147,7 @@ export default function Farms() {
             })
           }}
         />
-        <Balances
-          circulatingSupplyValue={formatSONE(circulatingSupplyValue.multipliedBy(1e18).toString(), true, false) ?? '0'}
-        />
+        <Balances />
       </WrapTitle>
       <StyledFilterWrap>
         <StyledFilter>
