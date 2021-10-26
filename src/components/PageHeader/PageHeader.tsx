@@ -10,7 +10,9 @@ const PageHeader: React.FC<PageHeaderProps> = ({ icon, title }) => {
   return (
     <div>
       <StyledPageHeader>
-        <StyledIcon><img src={icon} alt=""/></StyledIcon>
+        <StyledIcon>
+          <img src={icon} alt="" />
+        </StyledIcon>
         <StyledTitle>{title}</StyledTitle>
       </StyledPageHeader>
     </div>

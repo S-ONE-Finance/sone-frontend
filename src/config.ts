@@ -16,7 +16,6 @@ export const NUMBER_BLOCKS_PER_YEAR: { [chainId in ChainId]: number } = {
   42: 2425000
 }
 
-
 export const LUA_CONTRACT: { [chainId in ChainId]: string } = {
   1: '0xf5c771e0b749444eaec5c1f7ef5c0b93200bb0e4',
   3: '',
