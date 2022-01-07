@@ -27,7 +27,7 @@ export const swapClients: { [chainId: number]: ApolloClient<NormalizedCacheObjec
 export const stakingClients: { [chainId: number]: ApolloClient<NormalizedCacheObject> } = {
   [ChainId.MAINNET]: new ApolloClient({
     link: new HttpLink({
-      uri: 'https://graph-node-2.s-one.finance/subgraphs/name/s-one-finance/soneswap'
+      uri: 'https://graph-node-2.s-one.finance/subgraphs/name/s-one-finance/master-farmer'
     }),
     cache: new InMemoryCache()
   }),
