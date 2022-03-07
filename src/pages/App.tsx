@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Route } from 'react-router-dom'
 import styled from 'styled-components'
 import { useLocation } from 'react-router'
@@ -19,6 +19,7 @@ import AbsolutePendingTxs from '../components/AbsolutePendingTxs'
 
 import Routing from './Routing'
 import Mark from '../components/lib/mark/Mark'
+import Notice from '../components/Notice'
 
 const AppWrapper = styled.div<{ pathC?: string }>`
   display: flex;
@@ -96,6 +97,20 @@ export default function App() {
   const location = useLocation()
   const { pathname } = location
 
+  const [isDisplayMaintenanceNotice, setIsDisplayMaintenanceNotice] = useState<boolean>(true)
+
+  // notice
+  useEffect(() => {
+    if (sessionStorage.getItem('is_display_maintenance_notice') === '0') {
+      setIsDisplayMaintenanceNotice(false)
+    }
+  }, [])
+
+  const onCloseMaintenanceNotice = () => {
+    setIsDisplayMaintenanceNotice(false)
+    sessionStorage.setItem('is_display_maintenance_notice', '0')
+  }
+
   return (
     <>
       <Route component={GoogleAnalyticsReporter} />
@@ -119,6 +134,24 @@ export default function App() {
         <div>
           <Mark />
         </div>
+        <Notice
+          isDisplay={isDisplayMaintenanceNotice}
+          title="Maintenance Notice"
+          content={
+            <div>
+              <p>
+                <div>We are checking the system in preparation for developing an upgrade.</div>
+                <div>
+                  You can still use the system without any problems, but we recommend that you use the service after
+                  April.
+                </div>
+                <div>The roadmap is here.</div>
+              </p>
+            </div>
+          }
+          link="https://twitter.com/Sone_finance/status/1498208436110397444"
+          onClose={onCloseMaintenanceNotice}
+        />
       </AppWrapper>
     </>
   )
