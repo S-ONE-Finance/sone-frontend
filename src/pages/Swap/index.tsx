@@ -69,6 +69,7 @@ import { OpenGuide, SwapStep1, SwapStep3, SwapStep4, SwapStep5 } from '../../com
 import WeeklyRanking from '../../components/WeeklyRanking'
 import TabSwapLiquidity from '../../components/TabSwapLiquidity'
 import BrandIdentitySoneForMobile from '../../components/BrandIdentitySoneForMobile'
+import Notice from '../../components/Notice'
 
 export const ResponsiveAutoColumn = styled(AutoColumn)`
   padding: 23px 14px 0;
@@ -100,6 +101,9 @@ export default function Swap({ history }: RouteComponentProps) {
     () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
     [loadedInputCurrency, loadedOutputCurrency]
   )
+
+  const [isDisplayMaintenanceNotice, setIsDisplayMaintenanceNotice] = useState<boolean>(true)
+
   const handleConfirmTokenWarning = useCallback(() => {
     setDismissTokenWarning(true)
   }, [])
@@ -373,8 +377,38 @@ export default function Swap({ history }: RouteComponentProps) {
     }
   }, [guideStep])
 
+  // notice
+  useEffect(() => {
+    if (sessionStorage.getItem('is_display_maintenance_notice') === '0') {
+      setIsDisplayMaintenanceNotice(false)
+    }
+  }, [])
+
+  const onCloseMaintenanceNotice = () => {
+    setIsDisplayMaintenanceNotice(false)
+    sessionStorage.setItem('is_display_maintenance_notice', '0')
+  }
+
   return (
     <>
+      <Notice
+        isDisplay={isDisplayMaintenanceNotice}
+        title="Maintenance Notice"
+        content={
+          <div>
+            <p>
+              <div>We are checking the system in preparation for developing an upgrade.</div>
+              <div>
+                You can still use the system without any problems, but we recommend that you use the service after
+                April.
+              </div>
+              <div>The roadmap is here.</div>
+            </p>
+          </div>
+        }
+        link="https://twitter.com/Sone_finance/status/1498208436110397444"
+        onClose={onCloseMaintenanceNotice}
+      />
       <TokenWarningModal
         isOpen={importTokensNotInDefault.length > 0 && !dismissTokenWarning}
         tokens={importTokensNotInDefault}
