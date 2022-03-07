@@ -14,7 +14,16 @@ const NoticeWrapper = styled.div<{ isDisplay?: boolean }>`
   width: 596px;
   height: 440px;
   padding: 32px 60px 36px 56px;
+  z-index: 100;
   background: ${({ theme }) => theme.bg1Sone};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    padding: 24px;
+    bottom: 85px;
+    right: 2.5%;
+    width: 95%;
+    height: 85%;
+  `};
 `
 
 const NoticeTitle = styled.div<{}>`
@@ -24,6 +33,10 @@ const NoticeTitle = styled.div<{}>`
   font-size: 28px;
   line-height: 33px;
   color: ${({ theme }) => theme.text1Sone};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 20px;
+  `};
 `
 
 const NoticeContent = styled.div<{}>`
@@ -34,6 +47,11 @@ const NoticeContent = styled.div<{}>`
   font-size: 28px;
   line-height: 33px;
   color: ${({ theme }) => theme.text1Sone};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 20px;
+    line-height: 24px;
+  `};
 `
 
 const NoticeCloseButton = styled.div<{}>`
@@ -42,6 +60,11 @@ const NoticeCloseButton = styled.div<{}>`
   right: 56px;
   top: 36px;
   color: ${({ theme }) => theme.text1Sone};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    right: 24px;
+    top: 24px;
+  `};
 `
 
 const NoticeLink = styled.a<{}>`
@@ -52,6 +75,11 @@ const NoticeLink = styled.a<{}>`
   font-size: 28px;
   line-height: 33px;
   color: ${({ theme }) => theme.text7Sone};
+
+  ${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 20px;
+    line-height: 24px;
+  `};
 `
 
 const NoticeIcon = styled.img<{}>`
