@@ -6,7 +6,7 @@ import { ChainId } from '@s-one-finance/sdk-core'
 export const swapClients: { [chainId: number]: ApolloClient<NormalizedCacheObject> } = {
   [ChainId.MAINNET]: new ApolloClient({
     link: new HttpLink({
-      uri: 'https://graph-node.s-one.finance/subgraphs/name/s-one-finance/soneswap'
+      uri: 'https://api.thegraph.com/subgraphs/name/s-one-system/s-one-swap-mainnet'
     }),
     cache: new InMemoryCache()
   }),
@@ -27,7 +27,7 @@ export const swapClients: { [chainId: number]: ApolloClient<NormalizedCacheObjec
 export const stakingClients: { [chainId: number]: ApolloClient<NormalizedCacheObject> } = {
   [ChainId.MAINNET]: new ApolloClient({
     link: new HttpLink({
-      uri: 'https://graph-node.s-one.finance/subgraphs/name/s-one-finance/master-farmer'
+      uri: 'https://api.thegraph.com/subgraphs/name/s-one-system/s-one-liquidity-mining'
     }),
     cache: new InMemoryCache()
   }),
