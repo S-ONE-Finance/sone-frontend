@@ -15,7 +15,6 @@ import iconSort from '../../assets/images/icon-sort.svg'
 import useFarms from '../../hooks/staking/useFarms'
 import useMyStaked from '../../hooks/staking/useMyStaked'
 import useMyLpToken from '../../hooks/staking/useMyLpToken'
-import { formatSONE } from 'utils/formatNumber'
 
 export type SORT_KEY = 'apy' | 'total_liquidity' | 'bonus_campaign' | 'lp_name'
 export type SortOptions = { [p in SORT_KEY]: string }

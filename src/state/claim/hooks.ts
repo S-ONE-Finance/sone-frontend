@@ -22,6 +22,7 @@ interface UserClaimData {
 const CLAIM_PROMISES: { [key: string]: Promise<UserClaimData | null> } = {}
 
 // returns the claim for the given address, or null if not valid
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function fetchClaim(account: string, chainId: ChainId): Promise<UserClaimData | null> {
   const formatted = isAddress(account)
   if (!formatted) return Promise.reject(new Error('Invalid address'))
@@ -47,6 +48,7 @@ export function useUserClaimData(account: string | null | undefined): UserClaimD
   const { chainId } = useActiveWeb3React()
 
   const key = `${chainId}:${account}`
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [claimInfo, setClaimInfo] = useState<{ [key: string]: UserClaimData | null }>({})
 
   useEffect(() => {

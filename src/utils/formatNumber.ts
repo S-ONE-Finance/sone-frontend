@@ -72,7 +72,12 @@ export const formatSONE = (
     return undefined
   } else if (typeof _amount === 'string') {
     amount = new Fraction(
-      plainNumber(new BigNumber(_amount).multipliedBy(isDividedFrom1e18 ? 1e18 : 1).toString()),
+      plainNumber(
+        new BigNumber(_amount)
+          .multipliedBy(isDividedFrom1e18 ? 1e18 : 1)
+          .toFixed(0)
+          .toString()
+      ),
       (1e18).toString()
     )
   } else {
